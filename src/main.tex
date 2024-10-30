@@ -29,7 +29,8 @@
     A polynomial time algorithm is given to find a $K(q, q, q)$ in $G$ for
 
     \begin{align*}
-        q = c^{(3)}_{\epsilon} \sqrt {\log n}\label{eq:q}
+        q = \left \lfloor c^{(3)}_{\epsilon} \sqrt {\log n} \right \rfloor
+        \label{eq:q}
     \end{align*}
 
     As long as (insert condition here). % TODO: Insert condition
@@ -58,7 +59,7 @@
 
     \begin{lemma}\label{many_edges}
 
-        As long as  $r < \epsilon n$ , % TODO: Check this
+        As long as  $r \leq \epsilon n$ ,
         there are at least $\epsilon r n^2$ edges in $G$ with exactly one vertex in $R$.
 
         \begin{proof}
@@ -77,7 +78,7 @@
             \end{itemize}
 
             Therefore, the condition will hold as long as
-            $r^{2}n < \epsilon r n^2 \iff r < \epsilon n$.
+            $r^{2}n \leq \epsilon r n^2 \iff r \leq \epsilon n$.
         \end{proof}
     \end{lemma}
 
@@ -88,7 +89,7 @@
 
     \begin{lemma}\label{s}
         Under the same assumptions as in Lemma~\ref{many_edges},
-        and assuming $r \leq n/2$,
+        and assuming $r \leq n/2$, $r \geq q / \epsilon$,
         there is a subset $Q \subset R$
         of size $q$  and a subset $S \subset \binom{[n] \setminus Q}{2}$ of size
         \begin{align*}
@@ -117,7 +118,17 @@
                 \frac{n^2}{8} \binom{\epsilon r}{q}
             \end{align*}
 
-            Where the first inequality follows from Jensen's inequality and the third
+            Where the first inequality follows from the convexity of
+
+            \[
+                f(x) =
+                \begin{cases}
+                   \binom{x}{q} & \text{if } x \geq q - 1 \\
+                   0 & \text{otherwise}
+                \end{cases}
+
+            \]
+            and the third
             from the fact that $r \leq n/2$.
 
             On the other hand, there are only $\binom{r}{q}$ possible $q-$subsets of $R$.
@@ -134,7 +145,7 @@
     \end{lemma}
 
     Now, the algorithm of~\cite{MUBAYI2010174} is applied to the graph $G'$ with vertex set $[n]$
-    and edge set $S$.
+    and edge set $S$. % TODO: explicitly state that we are assuming s is large enough, i.e. > n^3/2
 
     This yields a $K(q', q') \subset G'$ with
     \begin{align*}
@@ -162,11 +173,49 @@
     so a valid value for $q$ is
 
     \begin{align*}
-        q = \frac{\sqrt {4 \ln(n/(32e))\ln(e/ \epsilon)}}
-        {2\ln(e / \epsilon)} =
+        q =
+        %
+        \left \lfloor
+        \frac{\sqrt {4 \ln(n/(32e))\ln(e/ \epsilon)}}
+        {2\ln(e / \epsilon)}
+        \right \rfloor =
+        %
+        \left \lfloor
         \frac{\sqrt {\ln(n/(32e))}}
         {\sqrt {\ln(e / \epsilon)}}
+        \right \rfloor \sim
+        %
+        \frac{\sqrt {\ln n}}{\sqrt {\ln(e / \epsilon)}}, \,
+        n \to \infty
     \end{align*}
+
+    This means that, for small $n$, we can just find the biggest $3$-partite
+    subgraph in $G$ by hand, and for large $n$, we can use the algorithm
+    described with
+    \begin{align*}
+        q = \left \lfloor c^{(3)}_{\epsilon} \sqrt {\log n} \right \rfloor
+    \end{align*}
+
+    and
+    \begin{align*}
+        c^{(3)}_{\epsilon} = \frac{1}{\sqrt {\ln(2e / \epsilon)}} =
+        \frac{1}{\sqrt {\ln(2en^3/m)}}
+    \end{align*}
+
+    Finally, to determine the value of $r$ and the running time of the algorithm,
+    recall that the only conditions we have imposed on $r$ are
+    \begin{align*}
+        r & \leq \epsilon n \\
+        r & \leq n/2 \\
+        r & \geq q / \epsilon
+    \end{align*}
+    So we can define $r = \left \lceil q / \epsilon \right \rceil$
+    as long as $\left \lceil q / \epsilon \right \rceil \leq \min \left\{n/2, \, \epsilon n\right\}$.
+    For $\epsilon \geq 1/2$ this clearly holds for $n$ large enough,
+    % TODO: what if not? Probably will get some conditions on epsilon, just like in the case r = q
+
+
+
 
 
 

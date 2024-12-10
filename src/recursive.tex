@@ -9,6 +9,7 @@
 \usepackage[margin=70pt]{geometry}
 \usepackage{amsthm}
 \usepackage{mathtools}
+\usepackage{xcolor}
 \author{Ferran Espuña}
 \date{} % clear date
 
@@ -29,7 +30,7 @@
     A polynomial time algorithm is given to find a $K_{q,\, \ldots\, ,\, q} \subset G$ for
 
     \begin{align*}
-        q (k, d) = % TODO: Insert formula
+        q (k, d) = \left\lfloor \left(  \frac{\log n}{\log (d/2^k)} \right)^{\frac{1}{k-1}} \right\rfloor
         \label{eq:q}
     \end{align*}
 
@@ -43,12 +44,12 @@
     The procedure is as follows:
 
     \begin{enumerate}
-        \item Choose parameters $q, r, s$ depending on $n, k$ and $d$.
-        \item Find the set $R$ of $r$ vertices with the highest degree in $G$.
+        \item Choose parameters $q, r, s$ depending on $n, k$ and $d$. \label{step:choose_parameters}
+        \item Find the set $R$ of $r$ vertices with the highest degree in $G$. \label{step:find_R}
 
         \item find a subset $Q \subset R$ with $q$ vertices and a
         $S \subset T \coloneqq \binom{[n] \setminus Q}{k-1}$ with $s$ edges satisfying
-        \[\{x_1, x_2, \ldots, x_k\} \in E(G) \; \forall \, \{x_2, \ldots, x_k\} \in S, \, x_1 \in Q\]
+        \[\{x_1, x_2, \ldots, x_k\} \in E(G) \; \forall \, \{x_2, \ldots, x_k\} \in S, \, x_1 \in Q\] \label{step:find_Q_S}
 
         \item The set $S$ induces a $(k-1)$-graph $G'$ on $T$.
         Evaluate \verb|FIND_PARTITE|$(k-1, G')$ to find a $K_{q',\, \ldots\, ,\, q'}$ in $G'$
@@ -58,10 +59,46 @@
 
     \end{enumerate}
 
-    Our goal is now to verify the correctness of the algorithm and to find the parameters $q, r, s$
-    such that the above procedure is successful, and to prove that it runs in polynomial time.
+    For step~\ref{step:choose_parameters}, we will use the following formulas:
 
-    \begin{lemma}\label{many_edges}
+    \begin{align*}
+            q(k, d) &= \left\lfloor \left(  \frac{\log n}{\log (d/2^k)} \right)^{\frac{1}{k-1}} \right\rfloor \\
+            r(k, d) &= \left \lceil \frac{2q(k, d)}{d} \right \rceil \\
+            s(k, d) &= \left\lfloor \left( \frac{d}{2} \right)^{q(k, d)} n^{k-1} \right\rfloor
+    \end{align*}
+
+    Our goal is to prove that the algorithm is successful and runs in polynomial time.
+
+    \begin{lemma}\label{many_edges}There exist sets $Q, S$ as described in step~\ref{step:find_Q_S} of the algorithm.
+
+        \begin{proof}
+            We first show that ther are at least $drn^{k-1}$ edges in $G$ with exactly one vertex in $R$.
+            inded, $\color{red}\ldots$ % TODO add minimum density condition and prove this with it
+
+            Now, consider the biparite graph with vertex set $\left( R, \binom{T}{k-1} \right)$
+            and edges corresponding to edges in $G$ with exactly one vertex in $R$ (and thus all others in $T$).
+            The sets $Q$ and $S$ we want to find correspond to a complete bipartite subgraph of this graph
+            with parts of size $q$ and $s$ respectively.
+            Suppose that such a subgraph does not exist.
+            ~\cite{Kovari1954} tells us then that
+
+            \begin{align*}\label{eq:equation}
+                drn^{k-1} & < z\left(\binom{n-r}{k-1}, r; s, q  \right) < (s-1)^{1/q}(r-q+1)\binom{n-r}{k-1}^{1-1/q} + (q-1)\binom{n-r}{k-1} \\
+                           & \leq s^{1/q} r \binom{n}{k-1}^{1-1/q} + q \binom{n}{k-1} \leq s^{1/q} r \binom{n}{k-1}^{1-1/q} + \frac{1}{2} drn^{k-1}
+            \end{align*}
+
+            Where the last inequality follows from $\color{red} \ldots$
+
+            Rearranging and approximating the binomial coefficient, we get
+            \begin{align*}
+                drn^{k-1} &< 2s^{1/q}r n^{(k-1)(1-1/q)} \implies d < 2 \left( \frac{s}{n^{k-1}} \right)^{1/q}
+            \end{align*}
+
+            Which is false for our election of $s$.
+
+
+
+        \end{proof}
 
     \end{lemma}
 

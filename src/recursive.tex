@@ -1,0 +1,78 @@
+%! Author = Ferran
+
+% Preamble
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{parskip}
+\usepackage[margin=70pt]{geometry}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\author{Ferran Espuña}
+\date{} % clear date
+
+
+\newtheorem{thm}{Theorem}
+\newtheorem{lemma}[thm]{Lemma}
+
+
+
+% Document
+\begin{document}
+
+    \title{Extending Mubayi and Turán's Algorithm to $k$-graphs}
+
+    \maketitle
+
+    Let $G$ be an $r$-graph with $n$ vertices and $m = dn^k$ edges.
+    A polynomial time algorithm is given to find a $K_{q,\, \ldots\, ,\, q} \subset G$ for
+
+    \begin{align*}
+        q (k, d) = % TODO: Insert formula
+        \label{eq:q}
+    \end{align*}
+
+    As long as (insert condition here). % TODO: Insert condition
+    
+    Note that this result is tight up to the constant $c(k, d)$,
+    as proved in~\cite{Erods1964}.
+    This result is a generalization of the result in $2$-graphs by~\cite{MUBAYI2010174},
+    and algorithm will be analogous to the one given there.
+    We will call this algorithm \verb|FIND_PARTITE|$(k, \cdot)$.
+    The procedure is as follows:
+
+    \begin{enumerate}
+        \item Choose parameters $q, r, s$ depending on $n, k$ and $d$.
+        \item Find the set $R$ of $r$ vertices with the highest degree in $G$.
+
+        \item find a subset $Q \subset R$ with $q$ vertices and a
+        $S \subset T \coloneqq \binom{[n] \setminus Q}{k-1}$ with $s$ edges satisfying
+        \[\{x_1, x_2, \ldots, x_k\} \in E(G) \; \forall \, \{x_2, \ldots, x_k\} \in S, \, x_1 \in Q\]
+
+        \item The set $S$ induces a $(k-1)$-graph $G'$ on $T$.
+        Evaluate \verb|FIND_PARTITE|$(k-1, G')$ to find a $K_{q',\, \ldots\, ,\, q'}$ in $G'$
+        (say, $\{U_1, \ldots, U_{k-1}\}$). We will prove that $q' \geq q$,
+        and because of the condition for $S$ we can return $\{Q, V_1, \ldots V_{k-1}\}$
+        where $V_i$ is a subset of $U_i$ of size $q$.
+
+    \end{enumerate}
+
+    Our goal is now to verify the correctness of the algorithm and to find the parameters $q, r, s$
+    such that the above procedure is successful, and to prove that it runs in polynomial time.
+
+    \begin{lemma}\label{many_edges}
+
+    \end{lemma}
+
+
+
+
+
+
+
+
+    \bibliography{main}
+    \bibliographystyle{plain}
+
+\end{document}

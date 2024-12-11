@@ -40,11 +40,11 @@
     as proved in~\cite{Erods1964}.
     This result is a generalization of the result in $2$-graphs by~\cite{MUBAYI2010174},
     and algorithm will be analogous to the one given there.
-    We will call this algorithm \verb|FIND_PARTITE|$(k, \cdot)$.
-    The procedure is as follows:
+    This algorithm, referred to as \verb|FIND_PARTITE|$(k, \cdot)$, involves the following steps:
 
     \begin{enumerate}
         \item Choose parameters $q, r, s$ depending on $n, k$ and $d$. \label{step:choose_parameters}
+
         \item Find the set $R$ of $r$ vertices with the highest degree in $G$. \label{step:find_R}
 
         \item find a subset $Q \subset R$ with $q$ vertices and a
@@ -53,9 +53,10 @@
 
         \item The set $S$ induces a $(k-1)$-graph $G'$ on $T$.
         Evaluate \verb|FIND_PARTITE|$(k-1, G')$ to find a $K_{q',\, \ldots\, ,\, q'}$ in $G'$
-        (say, $\{U_1, \ldots, U_{k-1}\}$). We will prove that $q' \geq q$,
-        and because of the condition for $S$ we can return $\{Q, V_1, \ldots V_{k-1}\}$
-        where $V_i$ is a subset of $U_i$ of size $q$.
+        (say, $H' = \{U_1, \ldots, U_{k-1}\}$). It will turn out that $q' \geq q$,
+        and because of the condition for $S$ the $k$-partite subgraph $H = \{Q, V_1, \ldots V_{k-1}\}$
+        is complete in $G$, where $V_i \subset U_i$ is a subset of size $q$.
+        Return $H$.
 
     \end{enumerate}
 
@@ -65,15 +66,18 @@
             q(k, d) &= \left\lfloor \left(  \frac{\log n}{\log (d/2^k)} \right)^{\frac{1}{k-1}} \right\rfloor \\
             r(k, d) &= \left \lceil \frac{2q(k, d)}{d} \right \rceil \\
             s(k, d) &= \left\lfloor \left( \frac{d}{2} \right)^{q(k, d)} n^{k-1} \right\rfloor
+            % TODO: show s <= choose(n-r, k-1)
     \end{align*}
 
-    Our goal is to prove that the algorithm is successful and runs in polynomial time.
+    The goal is to prove that the algorithm is successful and runs in polynomial time.
 
-    \begin{lemma}\label{many_edges}There exist sets $Q, S$ as described in step~\ref{step:find_Q_S} of the algorithm.
+    \begin{lemma}\label{lemma:q_s}
+        For this selection of parameters,
+        there exist sets $Q, S$ as described in step~\ref{step:find_Q_S} of the algorithm.
 
         \begin{proof}
             We first show that ther are at least $drn^{k-1}$ edges in $G$ with exactly one vertex in $R$.
-            inded, $\color{red}\ldots$ % TODO add minimum density condition and prove this with it
+            inded, $\color{red}\ldots$ % TODO: add minimum density condition and prove this with it
 
             Now, consider the biparite graph with vertex set $\left( R, \binom{T}{k-1} \right)$
             and edges corresponding to edges in $G$ with exactly one vertex in $R$ (and thus all others in $T$).
@@ -94,8 +98,22 @@
                 drn^{k-1} &< 2s^{1/q}r n^{(k-1)(1-1/q)} \implies d < 2 \left( \frac{s}{n^{k-1}} \right)^{1/q}
             \end{align*}
 
-            Which is false for our election of $s$.
+            Which is false for the given choice of $s$.
 
+        \end{proof}
+
+    \end{lemma}
+
+    \begin{lemma} \label{lemma:q_prime}
+        For this choice of parameters, $q' \geq q$.
+
+        \begin{proof}
+            First we calculate a lower bond for the corresponding edge density $d'$ in $G'$:
+
+            \begin{equation*}
+                d' = \frac{s}{(n-r)^{k-1}} \geq \frac{1}{n^{k-1}} \left(  n^{k-1} \left( \frac{d}{2} \right)^{q(k, d)} - 1\right)
+                \geq \left( \frac{d}{2} \right)^{\left(  \frac{\log n}{\log (d/2^k)} \right)^{\frac{1}{k-1}}} - \frac{1}{n^{k-1}}
+            \end{equation*}
 
 
         \end{proof}

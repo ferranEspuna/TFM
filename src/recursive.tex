@@ -63,7 +63,7 @@
     For step~\ref{step:choose_parameters}, we will use the following formulas:
 
     \begin{align*}
-            q(k, d) &= \left\lfloor \left(  \frac{\log n}{\log (d/2^k)} \right)^{\frac{1}{k-1}} \right\rfloor \\
+            q(k, d) &= \left\lfloor \left(  \frac{\log n}{\log (2^k/d)} \right)^{\frac{1}{k-1}} \right\rfloor \\
             r(k, d) &= \left \lceil \frac{2q(k, d)}{d} \right \rceil \\
             s(k, d) &= \left\lfloor \left( \frac{d}{2} \right)^{q(k, d)} n^{k-1} \right\rfloor
             % TODO: show s <= choose(n-r, k-1)

@@ -95,7 +95,7 @@
 
             Rearranging and approximating the binomial coefficient, we get
             \begin{align*}
-                drn^{k-1} &< 2s^{1/q}r n^{(k-1)(1-1/q)} \implies d < 2 \left( \frac{s}{n^{k-1}} \right)^{1/q}
+                drn^{k-1} &< 2s^{1/q}r n^{(k-1)(1-1/q)} \iff d < 2 \left( \frac{s}{n^{k-1}} \right)^{1/q}
             \end{align*}
 
             Which is false for the given choice of $s$.
@@ -112,8 +112,22 @@
 
             \begin{equation*}
                 d' = \frac{s}{(n-r)^{k-1}} \geq \frac{1}{n^{k-1}} \left(  n^{k-1} \left( \frac{d}{2} \right)^{q(k, d)} - 1\right)
-                \geq \left( \frac{d}{2} \right)^{\left(  \frac{\log n}{\log (d/2^k)} \right)^{\frac{1}{k-1}}} - \frac{1}{n^{k-1}}
+                \geq \left( \frac{d}{2} \right)^{\left(  \frac{\log n}{\log (2^k/d)} \right)^{\frac{1}{k-1}}} - \frac{1}{n^{k-1}}
             \end{equation*}
+
+            Therefore, we can bound $q'$ as follows:
+
+            \begin{align*} % TODO: finish this. Also, at this moment it is false because we are missing the -1/n^{k-1} term
+                q' \geq &
+                \left(
+                \frac{\log n}{(k-1) \log 2 - \left(\frac{\log n}{\log (2^k/d)} \right)^{\frac{1}{k-1}} (\log d - \log 2)}
+                \right)^{\frac{1}{k-2}} - 1 \\
+                \geq &
+                \left(
+                \frac{(\log n)^{1 - \frac{1}{k-1}}}{\left(\frac{1}{\log (2^k/d)} \right)^{\frac{1}{k-1}} (k \log 2 - \log d)}
+                \right)^{\frac{1}{k-2}} - 1 \\
+                \geq &
+            \end{align*}
 
 
         \end{proof}

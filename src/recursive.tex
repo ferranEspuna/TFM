@@ -34,7 +34,7 @@
         \label{eq:q}
     \end{align*}
 
-    As long as (insert condition here). % TODO: Insert condition
+    As long as there are more than $2^{k-1}n^{k-\frac{1}{2}}$ edges in $G$.
     
     Note that this result is tight up to the constant $c(k, d)$,
     as proved in~\cite{Erods1964}.
@@ -63,13 +63,23 @@
     For step~\ref{step:choose_parameters}, we will use the following formulas:
 
     \begin{align*}
-            q(k, d) &= \left\lfloor \left(  \frac{\log n}{\log (2^k/d)} \right)^{\frac{1}{k-1}} \right\rfloor \\
-            r(k, d) &= \left \lceil \frac{2q(k, d)}{d} \right \rceil \\
-            s(k, d) &= \left\lfloor \left( \frac{d}{2} \right)^{q(k, d)} n^{k-1} \right\rfloor
-            % TODO: show s <= choose(n-r, k-1)
+            q(k, d) = \left\lfloor \left(  \frac{\log n}{\log (2^k/d)} \right)^{\frac{1}{k-1}} \right\rfloor,\,
+            r(k, d) = \left \lceil \frac{2q(k, d)}{d} \right \rceil,\,
+            s(k, d) = \left\lfloor \left( \frac{d}{2} \right)^{q(k, d)} n^{k-1} \right\rfloor
     \end{align*}
 
     The goal is to prove that the algorithm is successful and runs in polynomial time.
+
+    \begin{lemma}
+        This selection of parameters is sound in the sense that $q  \leq r \leq n$, $k - 1 \leq n - r$ and $s \leq \binom{n - r}{k - 1}$.
+
+        \begin{proof}
+            $q \leq r$ is clear from the definition of $r$.
+            Suppose by way of contradiction that $r > n$.
+            Then, $2q/d > n$, which implies that $q > dn/2$.
+        \end{proof}
+
+    \end{lemma}
 
     \begin{lemma}\label{lemma:q_s}
         For this selection of parameters,

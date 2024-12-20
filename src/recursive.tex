@@ -34,7 +34,7 @@
         \label{eq:q}
     \end{align*}
 
-    As long as there are more than $2^{k-1}n^{k-\frac{1}{2}}$ edges in $G$.
+    As long as there are more than $n^{k-\frac{1}{2^{k-1}}}$ edges in $G$.
     
     Note that this result is tight up to the constant $c(k, d)$,
     as proved in~\cite{Erods1964}.
@@ -65,7 +65,7 @@
     \begin{align*}
             q(k, d) = \left\lfloor \left(  \frac{\log n}{\log (2^k/d)} \right)^{\frac{1}{k-1}} \right\rfloor,\,
             r(k, d) = \left \lceil \frac{2q(k, d)}{d} \right \rceil,\,
-            s(k, d) = \left\lfloor \left( \frac{d}{2} \right)^{q(k, d)} n^{k-1} \right\rfloor
+            s(k, d) = \left\lfloor d^{q(k, d)} n^{k-1} \right\rfloor
     \end{align*}
 
     The goal is to prove that the algorithm is successful and runs in polynomial time.
@@ -75,10 +75,51 @@
 
         \begin{proof}
             $q \leq r$ is clear from the definition of $r$.
-            Suppose by way of contradiction that $r > n$.
-            Then, $2q/d > n$, which implies that $q > dn/2$.
+            Suppose by way of contradiction that $r > n$. \color{red} $\ldots$ % TODO: finish this proof
+
+
+
         \end{proof}
 
+    \end{lemma}
+
+    \begin{lemma}
+        With the above restrictions and choice of parameters, \color{red} for $k \geq 3$, \color{black}
+        there are at least $\frac{3}{2}drn^{k-1}$
+        edges with exactly one vertex in $R$.
+
+        \begin{proof}
+
+            The degree sum over $V(G)$ is $kdn^{k}$.
+            Thus, by the pigeonhole principle, the degree sum over $R$ is at least
+            $\frac{r}{n}kdn^{k} = rkdn^{k-1}$.
+            For $2 \leq j \leq n$, consider the contribution to this sum by edges with exactly $j$ vertices in $R$.
+            Each such edge contributes $j$ to the sum, and there are at most
+            $\binom{r}{j}\binom{n-r}{k-j} \leq \frac{r^j n^{k-j}}{j!} \leq \frac{r^j n^{k-j}}{j}$ of them.
+            Thus, the total contrition of these edges is at most $r^j n^{k-j} \leq r^{2}n^{k-2}$.
+            The number of edges we want is then at least
+
+            \[
+                rkdn^{k-1} - (k-1)r^{2}n^{k-2} = drn^{k-1} \left( k - \frac{(k-1)r}{nd}\right)
+            \]
+            
+            Suppose, by way of contradiction,
+            that $ k - \frac{(k-1)r}{nd} < \frac{3}{2}$.
+            Using that $\frac{k-1}{k-3/2} \leq 2$
+            for $k \geq 2$, we arrive at
+
+            \[
+                d < 2rn^{-1} \leq \frac{3q}{nd} \implies nd^2 < 3 \log n
+            \]
+            
+            Applying our minimum density, this means
+            
+            \[
+                \sqrt {n} \leq n^{1 - \frac{1}{2^{k-2}}} < 3 \log n
+            \]
+
+            which is false for all $n$.
+        \end{proof}
     \end{lemma}
 
     \begin{lemma}\label{lemma:q_s}
@@ -86,10 +127,8 @@
         there exist sets $Q, S$ as described in step~\ref{step:find_Q_S} of the algorithm.
 
         \begin{proof}
-            We first show that ther are at least $drn^{k-1}$ edges in $G$ with exactly one vertex in $R$.
-            inded, $\color{red}\ldots$ % TODO: add minimum density condition and prove this with it
 
-            Now, consider the biparite graph with vertex set $\left( R, \binom{T}{k-1} \right)$
+            Consider the biparite graph with vertex set $\left( R, \binom{T}{k-1} \right)$
             and edges corresponding to edges in $G$ with exactly one vertex in $R$ (and thus all others in $T$).
             The sets $Q$ and $S$ we want to find correspond to a complete bipartite subgraph of this graph
             with parts of size $q$ and $s$ respectively.
@@ -97,15 +136,15 @@
             ~\cite{Kovari1954} tells us then that
 
             \begin{align*}\label{eq:equation}
-                drn^{k-1} & < z\left(\binom{n-r}{k-1}, r; s, q  \right) < (s-1)^{1/q}(r-q+1)\binom{n-r}{k-1}^{1-1/q} + (q-1)\binom{n-r}{k-1} \\
+                \frac{3}{2}drn^{k-1} & < z\left(\binom{n-r}{k-1}, r; s, q  \right) < (s-1)^{1/q}(r-q+1)\binom{n-r}{k-1}^{1-1/q} + (q-1)\binom{n-r}{k-1} \\
                            & \leq s^{1/q} r \binom{n}{k-1}^{1-1/q} + q \binom{n}{k-1} \leq s^{1/q} r \binom{n}{k-1}^{1-1/q} + \frac{1}{2} drn^{k-1}
             \end{align*}
 
-            Where the last inequality follows from $\color{red} \ldots$
+            Where the last inequality follows from our choice of $r$.
 
             Rearranging and approximating the binomial coefficient, we get
             \begin{align*}
-                drn^{k-1} &< 2s^{1/q}r n^{(k-1)(1-1/q)} \iff d < 2 \left( \frac{s}{n^{k-1}} \right)^{1/q}
+                drn^{k-1} < s^{1/q}r n^{(k-1)(1-1/q)} \iff d < \left( \frac{s}{n^{k-1}} \right)^{1/q}
             \end{align*}
 
             Which is false for the given choice of $s$.
@@ -115,14 +154,16 @@
     \end{lemma}
 
     \begin{lemma} \label{lemma:q_prime}
-        For this choice of parameters, $q' \geq q$.
+        For this choice of parameters, the number of edges $s$ in $G'$
+        is such that we can apply the algorithm to $G'$.
+        Furthermore, the resulting $q'$ satisfies $q' \geq q$.
 
         \begin{proof}
             First we calculate a lower bond for the corresponding edge density $d'$ in $G'$:
 
             \begin{equation*}
-                d' = \frac{s}{(n-r)^{k-1}} \geq \frac{1}{n^{k-1}} \left(  n^{k-1} \left( \frac{d}{2} \right)^{q(k, d)} - 1\right)
-                \geq \left( \frac{d}{2} \right)^{\left(  \frac{\log n}{\log (2^k/d)} \right)^{\frac{1}{k-1}}} - \frac{1}{n^{k-1}}
+                d' = \frac{s}{(n-r)^{k-1}} \geq \frac{\left(n^{k-1} d^{q} - 1\right)}{n^{k-1}}
+                \geq \frac{\left(n^{k - 1 - \frac{q}{2^{k-1}}} - 1\right)}{n^{k-1}}
             \end{equation*}
 
             Therefore, we can bound $q'$ as follows:
@@ -130,13 +171,8 @@
             \begin{align*} % TODO: finish this. Also, at this moment it is false because we are missing the -1/n^{k-1} term
                 q' \geq &
                 \left(
-                \frac{\log n}{(k-1) \log 2 - \left(\frac{\log n}{\log (2^k/d)} \right)^{\frac{1}{k-1}} (\log d - \log 2)}
+                \frac{\log n}{(k-1) \log 2 - \left(\frac{\log n}{\log (2^k/d)} \right)^{\frac{1}{k-1}} \log d}
                 \right)^{\frac{1}{k-2}} - 1 \\
-                \geq &
-                \left(
-                \frac{(\log n)^{1 - \frac{1}{k-1}}}{\left(\frac{1}{\log (2^k/d)} \right)^{\frac{1}{k-1}} (k \log 2 - \log d)}
-                \right)^{\frac{1}{k-2}} - 1 \\
-                \geq &
             \end{align*}
 
 

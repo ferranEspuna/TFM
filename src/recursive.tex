@@ -38,7 +38,9 @@
 
     This result is a generalization of the result in $2$-graphs by~\cite{MUBAYI2010174},
     and algorithm will be analogous to the one given there.
-    This algorithm, referred to as \verb|FIND_PARTITE|$(k, \cdot)$, involves the following steps:
+    This algorithm, referred to as \verb|FIND_PARTITE|$(k, \cdot)$,
+    is the one described in~\cite{MUBAYI2010174}
+    when $k=2$, and for $k \geq 3$ involves the following steps:
 
     \begin{enumerate}
         \item Choose parameters $q, r, s$ depending on $n, k$ and $d$. \label{step:choose_parameters}
@@ -69,13 +71,43 @@
     The goal is to prove that the algorithm is successful and runs in polynomial time.
 
     \begin{lemma}
-        This selection of parameters is sound in the sense that $q  \leq r \leq n$, $k - 1 \leq n - r$ and $s \leq \binom{n - r}{k - 1}$.
+        This selection of parameters, \color{red} for $k \geq 3$, \color{black} is sound in the sense that $q  \leq r \leq n$, $k - 1 \leq n - r$ and $s \leq \binom{n - r}{k - 1}$.
 
         \begin{proof}
             $q \leq r$ is clear from the definition of $r$.
-            Suppose by way of contradiction that $r > n$. \color{red} $\ldots$ % TODO: finish this proof
+            We will show that in fact $r < \frac{n}{2}$.
+            Suppose not:
+            \[
+                \frac{n}{2} < r \leq 1 + \frac{2q}{d} \leq 1 + \frac{2 \log n}{2^{k+1}n^{-\frac{1}{2^{k-1}}}}
+                \leq 1 + \frac{\log n \cdot \sqrt {n}}{8} \leq 1 + \frac{n}{8} \implies n < 3
+            \]
+            Which is a contradicion, as there cannot be any edges and thus $d = 0$.
+            In particular, $r \leq n$.
+     
+            We can similarly show that $k \leq \frac{n}{2}$.
+            Suppose not:
+            
+            \[
+                1 \geq d \geq 2^{\frac{n}{2}} n^{- \frac{1}{2^{n/2}-1}}
+                = n^{\frac{\log(2) n}{2} - \frac{1}{2^{n/2}-1}} \implies
+                \frac{\log (2) n}{2} \leq \frac{1}{2^{n/2}-1} \implies n < 3
+            \]
 
+            Therefore, $k+r \leq n < n + 1 \implies k - 1 \leq n - r$.
 
+            Finally, suppose that $s > \binom{n - r}{k - 1}$.
+            Then,
+
+            \begin{align*}
+                \left( \frac{n}{2k} \right)^{k-1} \leq \left( \frac{n-r}{k-1} \right)^{k-1} \leq \binom{n - r}{k - 1} < s \leq d^q n^{k-1}
+                \implies  \left( \frac{1}{2k} \right)^{k-1} < d^q \leq \left( \frac{1}{k!} \right)^2
+            \end{align*}
+            
+            Where in the last inequality we use that $q \geq 2$ and there are at most
+            $\binom{n}{k} \leq \frac{n^k}{k!}$ edges in $G$.
+
+            We can show that \color{red} $k!^2 \geq (2k)^{k-1}$ for all $k$ % TODO proof by freaking look at it!!
+            \color{black}, which means we have reached a contradiction.
 
         \end{proof}
 
@@ -179,7 +211,7 @@
             Furthermore, we can bound
 
 
-            \begin{align*} % TODO: finish this. Also, at this moment it is false because we are missing the -1/n^{k-1} term
+            \begin{align*}
                 q' \geq &
                 \left\lfloor \left(  \frac{\log n}{\log (2 \cdot 2^{(k-1)+1}/d^q)} \right)^{\frac{1}{k-2}} \right\rfloor =
                 \left\lfloor \left(  \frac{\log n}{(k+1) \log 2 - q \log d} \right)^{\frac{1}{k-2}} \right\rfloor \\
@@ -189,7 +221,7 @@
                 \left\lfloor \left(  \frac{(\log n)^{1-\frac{1}{k-1}}}{\frac{(k-1) \log 2}{(\log n)^{\frac{1}{k-1}}} - \frac{\log d}{\log (2^{k+1}/d)^{\frac{1}{k-1}}} } \right)^{\frac{1}{k-2}} \right\rfloor \\
                 \geq &
                 \left\lfloor  \frac{(\log n)^{\frac{1}{k-1}}}{\left(\frac{\log (2^{k+1}/d)}{\log (2^{k+1}/d)^{\frac{1}{k-1}}} \right)^{\frac{1}{k-2}} } \right\rfloor
-                = \left\lfloor  \frac{(\log n)^{\frac{1}{k-1}}}{\left(\log (2^{k+1}/d)} \right)^{(1-\frac{1}{k-1})\frac{1}{k-2}}\right\rfloor
+                = \left\lfloor  \frac{(\log n)^{\frac{1}{k-1}}}{\left(\log (2^{k+1}/d)\right)^{(1-\frac{1}{k-1})\frac{1}{k-2}}} \right\rfloor
                 = \left\lfloor \left(  \frac{\log n}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor = q
             \end{align*}
 

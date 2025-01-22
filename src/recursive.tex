@@ -126,7 +126,7 @@
             For $2 \leq j \leq n$, consider the contribution to this sum by edges with exactly $j$ vertices in $R$.
             Each such edge contributes $j$ to the sum, and there are at most
             $\binom{r}{j}\binom{n-r}{k-j} \leq \frac{r^j n^{k-j}}{j!} \leq \frac{r^j n^{k-j}}{j}$ of them.
-            Thus, the total contrition of these edges is at most $r^j n^{k-j} \leq r^{2}n^{k-2}$.
+            Thus, the total contribution of these edges is at most $r^j n^{k-j} \leq r^{2}n^{k-2}$.
             The number of edges we want is then at least
 
             \[
@@ -218,7 +218,7 @@
                 \geq &
                 \left\lfloor \left(  \frac{\log n}{(k+1) \log 2 - \left(  \frac{\log n}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}}  \log d} \right)^{\frac{1}{k-2}} \right\rfloor
                 =
-                \left\lfloor \left(  \frac{(\log n)^{1-\frac{1}{k-1}}}{\frac{(k-1) \log 2}{(\log n)^{\frac{1}{k-1}}} - \frac{\log d}{\log (2^{k+1}/d)^{\frac{1}{k-1}}} } \right)^{\frac{1}{k-2}} \right\rfloor \\
+                \left\lfloor \left(  \frac{(\log n)^{1-\frac{1}{k-1}}}{\frac{(k+1) \log 2}{(\log n)^{\frac{1}{k-1}}} - \frac{\log d}{\log (2^{k+1}/d)^{\frac{1}{k-1}}} } \right)^{\frac{1}{k-2}} \right\rfloor \\
                 \geq &
                 \left\lfloor  \frac{(\log n)^{\frac{1}{k-1}}}{\left(\frac{\log (2^{k+1}/d)}{\log (2^{k+1}/d)^{\frac{1}{k-1}}} \right)^{\frac{1}{k-2}} } \right\rfloor
                 = \left\lfloor  \frac{(\log n)^{\frac{1}{k-1}}}{\left(\log (2^{k+1}/d)\right)^{(1-\frac{1}{k-1})\frac{1}{k-2}}} \right\rfloor
@@ -231,13 +231,6 @@
         \end{proof}
 
     \end{lemma}
-
-
-
-
-
-
-
 
     \bibliography{main}
     \bibliographystyle{plain}

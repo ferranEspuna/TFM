@@ -30,11 +30,11 @@
     A polynomial time algorithm is given to find a $K_{q,\, \ldots\, ,\, q} \subset G$ for
 
     \begin{align*}
-        q (k, d) = \left\lfloor \left(  \frac{\log n}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
+        q (k, d) = \left\lfloor \left(  \frac{\log (n/2)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
         \label{eq:q}
     \end{align*}
 
-    As long as $d \geq 2^{k+1} n^{-\frac{1}{2^{k-1}}}$, that is, as long as $q(k, d) \geq 2$.
+    as long as $d \geq 2^{k+1} n^{-\frac{1}{2^{k-1}}}$, which implied by $q(k, d) \geq 2$.
 
     This result is a generalization of the result in $2$-graphs by~\cite{MUBAYI2010174},
     and algorithm will be analogous to the one given there.
@@ -63,7 +63,7 @@
     For step~\ref{step:choose_parameters}, we will use the following formulas:
 
     \begin{align*}
-            q(k, d) = \left\lfloor \left(  \frac{\log n}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor,\,
+            q(k, d) = \left\lfloor \left(  \frac{\log (n/2)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor,\,
             r(k, d) = \left \lceil \frac{2q(k, d)}{d} \right \rceil,\,
             s(k, d) = \left\lfloor d^{q(k, d)} n^{k-1} \right\rfloor
     \end{align*}
@@ -78,7 +78,7 @@
             We will show that in fact $r < \frac{n}{2}$.
             Suppose not:
             \[
-                \frac{n}{2} < r \leq 1 + \frac{2q}{d} \leq 1 + \frac{2 \log n}{2^{k+1}n^{-\frac{1}{2^{k-1}}}}
+                \frac{n}{2} \leq r \leq 1 + \frac{2q}{d} \leq 1 + \frac{2 \log (n/2)}{2^{k+1}n^{-\frac{1}{2^{k-1}}}}
                 \leq 1 + \frac{\log n \cdot \sqrt {n}}{8} \leq 1 + \frac{n}{8} \implies n < 3
             \]
             Which is a contradicion, as there cannot be any edges and thus $d = 0$.
@@ -213,14 +213,16 @@
 
             \begin{align*}
                 q' \geq &
-                \left\lfloor \left(  \frac{\log n}{\log (2 \cdot 2^{(k-1)+1}/d^q)} \right)^{\frac{1}{k-2}} \right\rfloor =
-                \left\lfloor \left(  \frac{\log n}{(k+1) \log 2 - q \log d} \right)^{\frac{1}{k-2}} \right\rfloor \\
-                \geq &
-                \left\lfloor \left(  \frac{\log n}{(k+1) \log 2 - \left(  \frac{\log n}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}}  \log d} \right)^{\frac{1}{k-2}} \right\rfloor
+                \color{blue} \left\lfloor \left(  \frac{\log ((n-r)/2^{k-2})}{\log (2 \cdot 2^{(k-1)+1}/d^q)} \right)^{\frac{1}{k-2}} \right\rfloor
+                \geq \left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (2 \cdot 2^{(k-1)+1}/d^q)} \right)^{\frac{1}{k-2}} \right\rfloor =
+                \left\lfloor \left(  \frac{\log (n / 2^{k-1})}{(k+1) \log 2 - q \log d} \right)^{\frac{1}{k-2}} \right\rfloor \\
+                \color {blue}\geq &
+                \color {blue} \left\lfloor \left(  \frac{\log (n / 2^{k-1})}{(k+1) \log 2 - \left(  \frac{\log (n / 2^{k-1})}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}}  \log d} \right)^{\frac{1}{k-2}} \right\rfloor
                 =
-                \left\lfloor \left(  \frac{(\log n)^{1-\frac{1}{k-1}}}{\frac{(k+1) \log 2}{(\log n)^{\frac{1}{k-1}}} - \frac{\log d}{\log (2^{k+1}/d)^{\frac{1}{k-1}}} } \right)^{\frac{1}{k-2}} \right\rfloor \\
+                \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}{\frac{(k+1) \log 2}{\log(n / 2^{k-1})^{\frac{1}{k-1}}} - \frac{\log d}{\log (2^{k+1}/d)^{\frac{1}{k-1}}} } \right)^{\frac{1}{k-2}} \right\rfloor \\
                 \geq &
-                \left\lfloor  \frac{(\log n)^{\frac{1}{k-1}}}{\left(\frac{\log (2^{k+1}/d)}{\log (2^{k+1}/d)^{\frac{1}{k-1}}} \right)^{\frac{1}{k-2}} } \right\rfloor
+                \left\lfloor  \frac{(\log n)^{\frac{
+                    1}{k-1}}}{\left(\frac{\log (2^{k+1}/d)}{\log (2^{k+1}/d)^{\frac{1}{k-1}}} \right)^{\frac{1}{k-2}} } \right\rfloor
                 = \left\lfloor  \frac{(\log n)^{\frac{1}{k-1}}}{\left(\log (2^{k+1}/d)\right)^{(1-\frac{1}{k-1})\frac{1}{k-2}}} \right\rfloor
                 = \left\lfloor \left(  \frac{\log n}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor = q
             \end{align*}

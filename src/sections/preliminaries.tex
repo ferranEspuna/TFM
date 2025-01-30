@@ -1,0 +1,187 @@
+\section{Preliminaries}\label{sec:preliminaries}
+In this section we introduce some basic definitions and results that will be used throughout the thesis.
+
+\begin{definition}
+
+    For an integer $k \geq 2$ a finite \emph{$k$-graph}
+    is a tuple $G = (V, E)$ where $V$ is a finite set
+    and $E \subseteq \binom{V}{k}$.
+    We call the elements of $V \eqqcolon V(G)$ its \emph{vertices}
+    and those of $E \eqqcolon E(G)$ its \emph{edges}.
+\end{definition}
+
+\begin{remark}
+    If we let $k=2$ we recover the usual definition of a graph.
+\end{remark}
+
+% TODO define degrees, complete graph, etc.
+
+\begin{definition}
+    Let $G = (V, E)$ and $H = (W, F)$ be $k$-graphs.
+    A \emph{homomorphism} from $G$ to $H$ is a map $f: V \to W$
+    such that for every edge $e \in E$ the set $f(e) \coloneqq \{f(v) \mid v \in e\}$
+    is an edge in $H$ (that is, $f(e) \in F$). If such a homomorphism exists
+    and is injective, we say that $f$ is an embedding of $G$ on $H$
+    and that $H$ contains $G$ as a subgraph.
+    If, furthermore, $f^{-1}: \text{Im}(f) \to V$ is a homomorphism, we say that $f$
+    is an \emph{induced} embedding and that $H$ contains $G$ as an \emph{induced}
+    subgraph.
+    We write $G \subseteq H$.
+    If, in addition, $f$ is a bijection, we say that $f$ is an \emph{isomorphism}
+    and that $G$ is \emph{isomorphic} to $H$.
+    We write $G \cong H$.
+\end{definition}
+
+\begin{remark} % TODO maybe turn into proposition + proof?
+
+    It is elementary to check that
+    (induced) inclusion is an order relation and that
+    isomorphism is an equivalence relation.
+    Furthermore, isomorphism preserves (induced) inclusion.
+    Therefore, we can talk about the (induced) subgraph
+    condition up to isomorphism, both in the \emph{host} $k$-graph
+    ($H$) and in the \emph{guest} $k$-graph ($G$).
+\end{remark}
+
+\begin{remark} \label{rem:change_vertices}
+    Given a $k$-graph $G = (V, E)$ and a set $W$ satisfying $|V| = |W|$,
+    we can define an edge set $E'$ on $W$ such that $G \cong (W, E')$
+    by taking any bijection $f: V \to W$ and setting $E' = \{f(e) \mid e \in E\}$.
+    This frees us, up to isomorphism, to change or reorder
+    the vertices of a $k$-graph.
+\end{remark}
+
+\begin{proposition} \label{prop:extremal}
+    Let $G = (V, E)$ be a $k$-graph with nonempty edge set and $n \geq |V|$ be an integer.
+    Then there exists an integer $M_0 = ex(n, G) \in \left[ 0, \binom{n}{k}\right)$ such that
+    the condition
+    \[
+        \text{``All $k$-graphs with $n$ vertices and $m$ edges contain $G$ as a subgraph''}
+    \]
+    is true for all $\binom{n}{k} \geq m > M_0$ and false for all $0 \leq m \leq M_0$.
+
+    \begin{proof}
+        Note that, if $M_0$ exists, clearly it is unique.
+        Also, the condition is clearly false for $m = 0$ and
+        true for $m = \binom{n}{k}$
+        (the only graph $H$ with vertex set $W$, $|W|=n$ and $\binom{|V|}{k}$ vertices
+        is the one having all $k$-sets of vertices so any injective map $f: V \to W$
+        is an embedding of $G$ in $H$).
+        We only need to show that if the condition is true for $m$ then it is true for
+        all $m' \geq m$.
+        Suppose it is true for $m$ and let $m' \geq m$.
+        Let $H = (W, F)$ be a $k$-graph with $n$ vertices and $m'$ edges.
+        We can just take $F' \subseteq F$ with $|F'| = m$.
+        By hypothesis, the graph $H' = (W, F')$ contains $G$ as a subgraph,
+        and the identity map in $W$ is an embedding of $H'$ in $H$:
+        \[
+            G \subseteq H' \subseteq H \implies G \subseteq H \qedhere
+        \]
+    \end{proof}
+
+\end{proposition}
+
+\begin{remark}
+    We call $ex(n, G)$ the \emph{extremal number} of $G$.
+    It is clearly invariant under isomorphism.
+\end{remark}
+
+\begin{definition}
+    for an integer $p \geq k$, a $k$-graph $G = (V, E)$ is \emph{$p$-partite}
+    if there exists a partition $V = V_1 \cup \dots \cup V_p$
+    such that every edge $e \in E$ intersects every part $V_i$ in at most one vertex.
+    We may write $G = (V_1, \dots, V_p; E)$ and say that
+    $G$ is a partite $k$-graph on $V_1, \dots, V_p$.
+\end{definition}
+
+\begin{remark}
+    If $p=k$, every edge intersects every part in exactly one vertex,
+    so we can identify the edges with a subset of $ V_1 \times \dots \times V_k$.
+\end{remark}
+
+\begin{definition}
+    A $k$-partite $k$-graph $G = (V_1, \dots, V_k; E)$ is \emph{complete}
+    if every $k$-set of vertices $(v_1, \dots, v_k)$ with $v_i \in V_i$
+    satisfies $\{v_1, \dots, v_k\} \in E$.
+    We write $G = K(V_1, \dots, V_k)$.
+\end{definition}
+
+\begin{remark}
+    $V_1, \dots, V_k$, $W_1, \dots, W_k$ are disjoint sets,
+    and $|V_i| = |W_i| \eqqcolon a_i$ for all $i$ then it is elementary to check that
+    \[K(V_1, \dots, V_k) \cong K(W_1, \dots, W_k)\]
+    by a construction very similar to the one in Remark~\ref{rem:change_vertices}.
+    This allows us to talk about \emph{the} complete $k$-partite $k$-graph on
+    $a_1, \dots, a_k$ vertices, which we denote by $K(a_1, \dots, a_k)$.
+    All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$
+    are contained $K(a_1, \dots, a_k)$ as subgraphs.
+    This lets us follow the exact same argument as in Proposition~\ref{prop:extremal}
+    to define the following:
+\end{remark}
+
+\begin{definition}\label{def:zarankiewicz}
+    let $0 < r_1 \leq n_1, \dots, 0 < r_k \leq n_k$ be integers.
+    Then the \emph{Zarankiewicz number} $z(n_1, \dots, n_k; r_1, \dots, r_k)$
+    is the largest integer $0 \leq z < n_1  \dots n_k$ for which there exists $k$-partite $k$-graph
+    $H$ with part sizes $ |V_1| = n_1, \dots, |V_k| = n_k$ and $z$ edges
+    such that no embedding $f$ of $K(W_1, \dots, W_k)$ with $|W_i| = r_i$ in it exists
+    satisfying $f(W_i) \subseteq V_i$ for all $i$.
+\end{definition}
+
+The problem on finding the Zarankiewicz number was first posed by K. Zarankiewicz in 1951 for the
+case of bipartite 2-graphs (that is, finding $z(m, n; s, t)$),
+in terms of finding all-1 minors in a matrix.
+An upper bound for it in the case $m=n, s=t$ was found by Kővari, Sós and Turán in~\cite{Kovari1954} in 1954.
+This was generalized to arbitrary partite 2-graphs by C. Hyltén-Cavallius in~\cite{Hylten1958}
+in 1958.
+The result is stated and proved here for completeness:
+
+\begin{theorem}
+    Let $0 < m \leq s$ and $0 < n \leq t$ be integers. 
+    Then 
+    \[z(m, n; s, t) \leq (s - 1)^{1 / t}(n - t + 1)m^{1 - 1 / t} + (t - 1)m\]
+    \begin{proof}
+        Suppose that we have a graph $G = (V_1, V_2; E)$
+        with $|V_1| = m$, $|V_2| = n$ and $|E| = z$ exceeding the bound.
+        Let us consider the set
+        \[
+            P = \left\{ (x, Y) \in V_1 \times \binom{V_2}{t}
+            \Big| \forall y \in Y: \{x, y\} \in E \right\}
+        \]
+        Counting on the first coordinate, and using Jensen's inequality, we get
+        \[
+            |P| = \nsum_{x \in V_1} \binom{d_G(x)}{t} \geq m \binom{z / m}{t}
+        \]
+        Because the function
+
+        \[
+            f(x) =
+            \begin{cases}
+                \binom{x}{t}, & \text{if } x \geq t - 1 \\
+                0, & \text{otherwise}.
+            \end{cases}
+        \]
+        Is convex and by our bound $z \geq (t-1)m \implies z/m \geq t - 1$.
+
+        If we had $s$ different elements of $P$ with the same second coordinate $T$,
+        they would all have different first coordinates (say $S = \{x_1, \dots, x_s\}$).
+        But now, by definition of $P$, for all $a \in S, b \in T$, we have $\{a, b\} \in E$.
+        This would mean that the inclusion map from $ S \cup T$ to $V_1 \cup V_2$ is an embedding of
+        $K(s, t)$ in $G$, as described in Definition~\ref{def:zarankiewicz}.
+        Supposing that this is not the case, by the pigeonhole principle, we have:
+        \[
+            |P| \leq (s - 1) \binom{n}{t}
+        \]
+        Putting the two inequalities together, we get:
+        \[
+            m \binom{z / m}{t} \leq (s - 1) \binom{n}{t}
+        \]
+
+        And the rest follows by algebraic manipulation. % TODO: finish proof
+
+
+    \end{proof}
+
+\end{theorem}
+
+

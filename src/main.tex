@@ -65,7 +65,8 @@
         \begin{proof}
             The sum of the degrees in $G$ is $3m$.
             Therefore, by the pigeonhole principle,
-            \begin{align*} \label{eq:pigeonhole}
+            \begin{align*} 
+%            	\label{eq:pigeonhole}
                 \sum_{v \in R} d(v) \geq r \cdot \frac{3m}{n} = 3 \epsilon r n^2
             \end{align*}
             However, here we are overcounting:
@@ -119,15 +120,13 @@
             \end{align*}
 
             Where the first inequality follows from the convexity of
-
-            \[
-                f(x) =
-                \begin{cases}
-                   \binom{x}{q} & \text{if } x \geq q - 1 \\
-                   0 & \text{otherwise}
-                \end{cases}
-
-            \]
+            \begin{align*}
+            	f(x) =
+            	\begin{cases}
+            		\binom{x}{q} & \text{if } x \geq q - 1 \\
+            		0 & \text{otherwise}
+            	\end{cases}
+            \end{align*}
             and the third
             from the fact that $r \leq n/2$.
 

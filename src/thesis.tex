@@ -1,0 +1,90 @@
+\documentclass[12,twoside]{mammeTFM}
+%\usepackage[active]{srcltx}
+\usepackage{amsthm,amsmath,amssymb,amsfonts,amscd}
+\usepackage{enumerate}
+\usepackage[all]{xy}
+\usepackage{booktabs}
+%\usepackage[usenames]{xcolor}
+%\usepackage{fancyhdr}
+\usepackage{graphicx}
+
+%%%%%Author packages if necessary
+\usepackage{mathtools}
+
+
+% Theorem Environments: add extra ones at the end if you need it.
+
+\newtheorem*{theoremA}{Theorem A}
+\newtheorem{theorem}{Theorem}[section]
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{remarknonumber}{Remark}
+\newtheorem{observation}[theorem]{Observation}
+
+\usepackage{calc}
+\newlength{\depthofsumsign}
+\setlength{\depthofsumsign}{\depthof{$\sum$}}
+\newlength{\totalheightofsumsign}
+\newlength{\heightanddepthofargument}
+
+\newcommand{\nsum}[1][1.4]{% only for \displaystyle
+    \mathop{%
+        \raisebox
+            {-#1\depthofsumsign+1\depthofsumsign}
+            {\scalebox
+                {#1}
+                {$\displaystyle\sum$}%
+            }
+    }
+}
+
+
+%%%%%%%%%%%%%%%%%%
+% macros/abbreviations: Include here your own.
+%%%%%%%%%%%%%%%%%%
+
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+
+% Body of document
+
+\titol{Finding Partite Graphs Efficiently}
+\titolcurt{Finding Partite Graphs Efficiently}
+\authorStudent{Ferran Espuña Bertomeu}
+\supervisors{Richard Lang}
+\monthYear{June 2025}
+
+%\msc[2010]{Primary 55M25, 57P10, Secondary 55P15, 57R19, 57N15.}
+
+\paraulesclau{hypergraph, algorithm, graph, partite, extremal}
+\agraiments{
+Thanks to...}
+
+
+\abstracteng{}
+
+%%%%%%%%%
+\begin{document}
+
+\maketitle
+
+
+\include{sections/introduction}
+\include{sections/preliminaries}
+
+
+
+\section{Bibliography}\label{sec:bibliography}
+\bibliography{main}
+\bibliographystyle{plain}
+
+\end{document}

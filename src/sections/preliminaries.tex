@@ -137,7 +137,8 @@ The problem on finding the Zarankiewicz number was first posed by K. Zarankiewic
 case of bipartite 2-graphs (that is, finding $z(m, n; s, t)$),
 in terms of finding all-1 minors in a matrix.
 An upper bound for it in the case $m=n, s=t$ was found by Kővari, Sós and Turán in~\cite{Kovari1954} in 1954.
-This was generalized to arbitrary partite 2-graphs by C. Hyltén-Cavallius in~\cite{Hylten1958}
+This was generalized to arbitrary complete
+partite 2-graphs by C. Hyltén-Cavallius in~\cite{Hylten1958}
 in 1958.
 The result is stated and proved here for completeness:
 
@@ -155,21 +156,29 @@ The result is stated and proved here for completeness:
         \]
         Counting on the first coordinate, and using Jensen's inequality, we get
         \[
-            |P| = \nsum_{x \in V_1} \binom{d_G(x)}{t} \geq m \binom{z / m}{t}
-        \]
-        Because the function
+            |P|
+            = \nsum_{x \in V_1} \binom{d_G(x)}{t}
+            = \nsum_{x \in V_1} f(d_G(x))
+            \geq m  \nsum_{x \in V_1} f(z/m)
+            = m \binom{z / m}{t}
 
+        \]
+        Where we define
         \[
-            f(x) =
+            f(x) \coloneqq
             \begin{cases}
                 \binom{x}{t}, & \text{if } x \geq t - 1 \\
-                0, & \text{otherwise}.
+                0, & \text{otherwise}
             \end{cases}
         \]
-        Is convex and by our bound $z \geq (t-1)m \implies z/m \geq t - 1$.
+        Which is convex, meaning we get the inequality as Jensen's inequality.
+        The other equalities come from the fact that $f(d)$ agrees
+        with $\binom{d}{t}$ for all integers $d \geq 0$;
+        and that by our bound on $z$, $z \geq (t-1)m \implies z/m \geq t - 1$.
 
         If we had $s$ different elements of $P$ with the same second coordinate $T$,
-        they would all have different first coordinates (say $S = \{x_1, \dots, x_s\}$).
+        they would all necessarily have different first coordinates
+        (say $S = \{x_1, \dots, x_s\}$).
         But now, by definition of $P$, for all $a \in S, b \in T$, we have $\{a, b\} \in E$.
         This would mean that the inclusion map from $ S \cup T$ to $V_1 \cup V_2$ is an embedding of
         $K(s, t)$ in $G$, as described in Definition~\ref{def:zarankiewicz}.
@@ -181,8 +190,22 @@ The result is stated and proved here for completeness:
         \[
             m \binom{z / m}{t} \leq (s - 1) \binom{n}{t}
         \]
-
-        And the rest follows by algebraic manipulation. % TODO: finish proof
+        Now, because we can see $E$ as a subset of $V_1 \times V_2$,
+        we get $z \leq mn \implies z/m \leq n$.
+        In particular, we have:
+        \[
+            \frac{(z/m - (t - 1))^t}{\binom{z/m}{t}} \leq \frac{(n - (t - 1))^t}{\binom{n}{t}}
+        \]
+        which is true for each factor when expanding the denominators.
+        Multiplying the two inequalities, we get:
+        \[
+            m \, (z/m - (t - 1))^t \leq (s - 1)(n - (t - 1))^t
+        \]
+        which, by algebraic manipulation, gives
+        \[
+            z \leq (s - 1)^{1 / t}(n - t + 1)m^{1 - 1 / t} + (t - 1)m
+        \]
+        In contradiction with our assumption. \qedhere
 
 
     \end{proof}

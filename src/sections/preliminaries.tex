@@ -107,9 +107,11 @@ In this section we introduce some basic definitions and results that will be use
 \end{definition}
 
 \begin{remark}
-    $V_1, \dots, V_k$, $W_1, \dots, W_k$ are disjoint sets,
+    $V_1, \dots, V_k, W_1, \dots, W_k$ are disjoint sets,
     and $|V_i| = |W_i| \eqqcolon a_i$ for all $i$ then it is elementary to check that
-    \[K(V_1, \dots, V_k) \cong K(W_1, \dots, W_k)\]
+    \[
+        K(V_1, \dots, V_k) \cong K(W_1, \dots, W_k)
+    \]
     by a construction very similar to the one in Remark~\ref{rem:change_vertices}.
     This allows us to talk about \emph{the} complete $k$-partite $k$-graph on
     $a_1, \dots, a_k$ vertices, which we denote by $K(a_1, \dots, a_k)$.
@@ -161,7 +163,6 @@ The result is stated and proved here for completeness:
             = \nsum_{x \in V_1} f(d_G(x))
             \geq m  \nsum_{x \in V_1} f(z/m)
             = m \binom{z / m}{t}
-
         \]
         Where we define
         \[

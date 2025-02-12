@@ -18,6 +18,11 @@
 \newtheorem{lemma}[thm]{Lemma}
 
 
+\theoremstyle{remark}
+\newtheorem{remark}[thm]{Remark}
+
+
+
 
 % Document
 \begin{document}
@@ -26,15 +31,19 @@
 
     \maketitle
 
-    Let $G$ be an $r$-graph with $n$ vertices and $m = dn^k$ edges.
+    Let $G$ be a $k$-graph with $n$ vertices and $m = dn^k$ edges.
     A polynomial time algorithm is given to find a $K_{q,\, \ldots\, ,\, q} \subset G$ for
 
     \begin{align*}
-        q (k, d) = \left\lfloor \left(  \frac{\log (n/2)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
+        q (k, d) = \left\lfloor \left(  \frac{\log (n/2^k)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
         \label{eq:q}
     \end{align*}
 
-    As long as $d \geq 2^{k+1} n^{-\frac{1}{2^{k-1}}}$, that is, as long as $q(k, d) \geq 2$.
+    As long as $d \geq 4^k n^{-\frac{1}{2^{k-1}}}$.
+
+    \begin{remark}
+        This minimum density requirement is not a big restriction.
+    \end{remark}
 
     This result is a generalization of the result in $2$-graphs by~\cite{MUBAYI2010174},
     and algorithm will be analogous to the one given there.
@@ -63,7 +72,7 @@
     For step~\ref{step:choose_parameters}, we will use the following formulas:
 
     \begin{align*}
-            q(k, d) = \left\lfloor \left(  \frac{\log (n/2)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor,\,
+                    q (k, d) = \left\lfloor \left(  \frac{\log (n/2^k)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor,\,
             r(k, d) = \left \lceil \frac{2q(k, d)}{d} \right \rceil,\,
             s(k, d) = \left\lfloor d^{q(k, d)} n^{k-1} \right\rfloor
     \end{align*}

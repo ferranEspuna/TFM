@@ -127,13 +127,29 @@ In this section we introduce some basic definitions and results that will be use
 \end{remark}
 
 \begin{definition}\label{def:zarankiewicz}
-    let $0 < r_1 \leq n_1, \dots, 0 < r_k \leq n_k$ be integers.
-    Then the \emph{Zarankiewicz number} $z(n_1, \dots, n_k; r_1, \dots, r_k)$
+    let $0 < t_1 \leq n_1, \dots, 0 < t_k \leq n_k$ be integers.
+    Then the \emph{generalized Zarankiewicz number} $z(n_1, \dots, n_k; t_1, \dots, t_k)$
     is the largest integer $0 \leq z < n_1  \dots n_k$ for which there exists $k$-partite $k$-graph
     $H$ with part sizes $ |V_1| = n_1, \dots, |V_k| = n_k$ and $z$ edges
-    such that no embedding $f$ of $K(W_1, \dots, W_k)$ with $|W_i| = r_i$ in it exists
+    such that no embedding $f$ of $K(W_1, \dots, W_k)$ with $|W_i| = t_i$ in it exists
     satisfying $f(W_i) \subseteq V_i$ for all $i$.
 \end{definition}
+
+\begin{remark}\label{rem:zar_vs_turan}
+    Finding this number can help us upper bound the extremal number of $K(t_1, \dots, t_k)$ asymptotically:
+    Assume that G is a $K(t_1, \dots, t_k)$-free $n$-vertex $k$-graph with $m$ edges.
+    pick $n_1, \dots, n_k$ such that $\sum_{i} n_i = n $ and $n_i \sim n/k $.
+    Let $V_1, \dots, V_k$ be a random partition of $V(G)$ with $|V_i| = n_i$.
+    for an edge $e \in E(G)$, the probability that $e$ is an edge in $K(V_1, \dots, V_k)$ is
+    greater than
+    \[k! \prod_i n_i \sim k! (1/k)^k\]
+    which is independent of $n$.
+    Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
+    Applying the probabilistic method, we can conclude that
+    \[ex(n, K(t_1, \dots, t_k)) = O(z(n_1, \dots, n_k; t_1, \dots, t_k))\]
+
+\end{remark}
+
 
 The problem on finding the Zarankiewicz number was first posed by K. Zarankiewicz in 1951 for the
 case of bipartite 2-graphs (that is, finding $z(m, n; s, t)$),
@@ -213,6 +229,23 @@ The result is stated and proved here for completeness:
 
 \end{theorem}
 
+\begin{remark}
+    Following Remark~\ref{rem:zar_vs_turan}, we can use this bound to get an upper bound on the extremal number of $K(s, t)$:
+    \[
+        ex(n, K(s, t)) = O\left((s - 1)^{1 / t}(n - t + 1)n^{1 - 1 / t} + (t - 1)n\right) = O\left(n^{2 - 1 / t}\right)
+    \]
+    Note that if $s < t$, we get the better bound $O\left(n^{2 - 1 / s}\right)$ by interchanging the roles of $s$ and $t$.
+\end{remark}
+
+In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete partite $k$-graphs in the following theorem:
+
+\begin{theorem}
+    ex$(n, K(t, \dots, t)) = O\left(n^{k - \frac{1}{t^{k-1}}}\right)$
+\end{theorem}
+
+A more modern proof of this result can be found in~\cite{carvajal2024canonical},
+which also generalizes it to arbitrary complete
+$k$-partite $k$-graphs (not necessarily with equal part sizes).
 
 
 

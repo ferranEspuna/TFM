@@ -202,11 +202,11 @@ Master in Advanced Mathematics and Mathematical Engineering\\[0.2em]
 %                                     {\normalfont\normalsize\bfseries}}
 % \renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}%
 %                                        {3.25ex \@plus1ex \@minus .2ex}%
-%                                        {-1em}%                                     
+%                                        {-1em}%
 %                                        {\normalfont\normalsize\bfseries}}
 % No te indentacio i te separacio entre paragrafs
 \setlength{\parskip}{1mm}
-%\setlength{\parindent}{0pt}
+\setlength{\parindent}{0pt}
 % Modifiquem les fonts
 \renewcommand*{\familydefault}{\sfdefault}
 %\renewcommand{\normalsize}{\fontsize{12pt}{14pt}\selectfont}

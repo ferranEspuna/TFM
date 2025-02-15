@@ -1,1 +1,12 @@
 \section{Our Algorithm}\label{sec:algorithm}
+
+In this section we present a polynomial-time algorithm to find a balanced partite $k$-graph in a given $k$-graph
+with $n$ vertices and $m$ edges with part size in the same order of magnitude as stated in
+Theorem~\ref{thm:erdos64}.
+
+\begin{remark}
+    If we let $q$ be the size of each part in the partite $k$-graph we are looking for, we need
+    \[
+        m \leq ex(n, K(t, \overset{k}{\cdots}, t)) = O(n^{k-1}q^{k-1}).
+    \]
+\end{remark}

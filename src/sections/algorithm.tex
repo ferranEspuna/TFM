@@ -19,22 +19,51 @@ Theorem~\ref{thm:erdos64}.
     \]
 \end{remark}
 
-This algorithmic problem has already been solved for $k = 2$ Mubayi and Turán~\cite{MUBAYI2010174}.
+This algorithmic problem has already been solved for $k = 2$ by Mubayi and Turán~\cite{MUBAYI2010174}.
 The algorithm in that case follows very closely the structure of the proof of Theorem~\ref{thm:kst}.
 We outline the algorithm for $k = 2$ here for context and clarity.
 The variable names have been altered to match the notation used in this thesis.
 
 \begin{algorithm}
-    \caption{Finding a balanced partite graph in a graph $G$ with $n$ vertices and $m = dn^2$ edges}
+    \caption{Finding a balanced partite graph in a graph}
     \label{alg:bipartite}
         \begin{algorithmic}[1]
-        \Require Integers \(a > 0\) and \(b > 0\)
-        \Ensure \( \gcd(a, b) \), the greatest common divisor of \(a\) and \(b\)
-        \While{$b \neq 0$}
-            \State $r \gets a \mod b$ \Comment{Compute the remainder of \(a\) divided by \(b\)}
-            \State $a \gets b$
-            \State $b \gets r$
-        \EndWhile
-        \State \Return $a$ \Comment{\(a\) now holds the GCD of the original inputs}
+        \Require A graph G = $(V, E)$ with $|V| = n$, $E = m$
+        \State $d \gets m / n^2 $
+        \Ensure $d \geq 3 n^\frac{1}{2}$
+        \State $t \gets \left\lfloor\frac{\log (n/2) }{\log (2e/d)}\right\rfloor,\, w \gets \lfloor t/d \rfloor$
+        \State $W \gets $ The set of $t$ vertices with highest degree in $G$
+        \State $U \gets V \setminus W$
+        \ForAll{$T \in \binom{W}{t} $}
+            \State $S \gets \{x \in U : {x, y} \in E \text{ for all } y \in T\}$
+            \If{$|S| \geq t$}
+                \State \Return $(S, T)$
+            \EndIf
+        \EndFor
         \end{algorithmic}
 \end{algorithm}
+
+If the set $S$ is too large we can simply take a subset of it of size $t$.
+The algorithm is correct if at some point it returns a pair of sets $(S, T)$.
+The argument of why this is the case boils down to showing that there is a
+large number of edges between $U$ and $W$ and then applying Theorem~\ref{thm:kst}
+with $u = |U| = n - w$ and $s = t$ .
+Finally, the algorithm runs in polynomial time because 
+the  number of iterations of the loop is
+\[
+    \binom{w}{t} \leq \left(\frac{ew}{t}\right)^t \leq \left(\frac{1}{d}\right)^t e^t < e^{t \log (1/d) + \log n} < e^{2\log n} = n^2
+\]
+
+\begin{remark}
+    The requirement for a minimum density is because if $d = o\left(n^{1/2}\right)$ then
+    there may not even be a $K(2, 2)$ in $G$. % TODO: Explain this better
+\end{remark}
+
+We will now describe an extended algorithm which will find a balanced partite $k$-graph in a $k$-graph $G$ with
+$n$ vertices and $m = d n^k$ with part size
+
+\[
+    t (k, d) = \left\lfloor \left(  \frac{\log (n/2^k)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
+\]
+
+

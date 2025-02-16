@@ -117,8 +117,6 @@ In this section we introduce some basic definitions and results that will be use
     $a_1, \dots, a_k$ vertices, which we denote by $K(a_1, \dots, a_k)$.
 \end{remark}
 
-% TODO: approximate Ex(n, K(a_1, \dots, a_k)) and in particular Ex(n, K(a, \dots a))
-
 \begin{remark}
     All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$
     are contained in $K(a_1, \dots, a_k)$ as subgraphs.
@@ -127,18 +125,19 @@ In this section we introduce some basic definitions and results that will be use
 \end{remark}
 
 \begin{definition}\label{def:zarankiewicz}
-    let $0 < t_1 \leq n_1, \dots, 0 < t_k \leq n_k$ be integers.
-    Then the \emph{generalized Zarankiewicz number} $z(n_1, \dots, n_k; t_1, \dots, t_k)$
-    is the largest integer $0 \leq z < n_1  \dots n_k$ for which there exists $k$-partite $k$-graph
-    $H$ with part sizes $ |V_1| = n_1, \dots, |V_k| = n_k$ and $z$ edges
-    such that no embedding $f$ of $K(W_1, \dots, W_k)$ with $|W_i| = t_i$ in it exists
-    satisfying $f(W_i) \subseteq V_i$ for all $i$.
+    let $0 < t_1 \leq v_1, \dots, 0 < t_k \leq v_k$ be integers.
+    Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
+    is the largest integer $0 \leq z < v_1  \dots v_k$ for which there exists $k$-partite $k$-graph
+    $H$ with part sizes $ |V_1| = v_1, \dots, |V_k| = v_k$ and $z$ edges
+    such that no embedding $f$ of $K(T_1, \dots, T_k)$ with $|T_i| = t_i$ in it exists
+    satisfying $f(T_i) \subseteq V_i$ for all $i$.
 \end{definition}
 
 \begin{remark}\label{rem:zar_vs_turan}
     Finding this number can help us upper bound the extremal number of $K(t_1, \dots, t_k)$ asymptotically:
     Assume that G is a $K(t_1, \dots, t_k)$-free $n$-vertex $k$-graph with $m$ edges.
-    pick $n_1, \dots, n_k$ such that $\sum_{i} n_i = n $ and $n_i \sim n/k $.
+    pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
+    (For example, $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$)
     Let $V_1, \dots, V_k$ be a random partition of $V(G)$ with $|V_i| = n_i$.
     for an edge $e \in E(G)$, the probability that $e$ is an edge in $K(V_1, \dots, V_k)$ is
     greater than
@@ -146,42 +145,42 @@ In this section we introduce some basic definitions and results that will be use
     which is independent of $n$.
     Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
     Applying the probabilistic method, we can conclude that
-    \[ex(n, K(t_1, \dots, t_k)) = O(z(n_1, \dots, n_k; t_1, \dots, t_k))\]
+    \[ex(n, K(t_1, \dots, t_k)) = O(z(\lceil n / k \rceil , \overset{k}{\cdots}, \lceil n / k \rceil; t_1, \dots, t_k))\]
 
 \end{remark}
 
 
-% TODO CHANGE VARIABLES m, n; s, t => u, v; p, q
-% This will make notation more consistent with the rest of the thesis
+% TODO v --> w
 
 The problem on finding the Zarankiewicz number was first posed by K. Zarankiewicz in 1951 for the
-case of bipartite 2-graphs (that is, finding $z(m, n; s, t)$),
-in terms of finding all-1 minors in a matrix.
+case of bipartite 2-graphs (that is, finding $z(u, w; s, t)$),
+in terms of finding all-1 minors in a $0-1$ matrix.
 An upper bound for it in the case $m=n, s=t$ was found by Kővari, Sós and Turán in~\cite{Kovari1954} in 1954.
 This was generalized to arbitrary complete
 partite 2-graphs by C. Hyltén-Cavallius in~\cite{Hylten1958}
 in 1958.
 The result is stated and proved here for completeness:
 
+% m, n --> u, w
 \begin{theorem}\label{thm:kst}
     Let $0 < m \leq s$ and $0 < n \leq t$ be integers. 
     Then 
-    \[z(m, n; s, t) \leq (s - 1)^{1 / t}(n - t + 1)m^{1 - 1 / t} + (t - 1)m\]
+    \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
     \begin{proof}
-        Suppose that we have a bipartite graph $G = (M, N; E)$
-        with $|M| = m$, $|N| = n$ and $|E| = z$ exceeding the bound stated above.
+        Suppose that we have a bipartite graph $G = (U, W; E)$
+        with $|U| = u$, $|W| = w$ and $|E| = z$ exceeding the bound stated above.
         Let us consider the set
         \[
-            P = \left\{ (x, Y) \in M \times \binom{N}{t}
+            P = \left\{ (x, Y) \in U \times \binom{W}{t}
             \Big| \forall y \in Y: \{x, y\} \in E \right\}
         \]
         Counting on the first coordinate, and using Jensen's inequality, we get
         \[
             |P|
-            = \nsum_{x \in M} \binom{d_G(x)}{t}
-            = \nsum_{x \in M} f(d_G(x))
-            \geq m  \nsum_{x \in M} f(z/m)
-            = m \binom{z / m}{t}
+            = \nsum_{x \in U} \binom{d_G(x)}{t}
+            = \nsum_{x \in U} f(d_G(x))
+            \geq u  \nsum_{x \in U} f(z/u)
+            = m \binom{z / u}{t}
         \]
         Where we define
         \[
@@ -194,36 +193,36 @@ The result is stated and proved here for completeness:
         Which is convex, meaning we get the inequality as Jensen's inequality.
         The other equalities come from the fact that $f(d)$ agrees
         with $\binom{d}{t}$ for all integers $d \geq 0$;
-        and that by our bound on $z$, $z \geq (t-1)m \implies z/m \geq t - 1$.
+        and that by our bound on $z$, $z \geq (t-1)u \implies z/u \geq t - 1$.
 
         If we had $s$ different elements of $P$ with the same second coordinate $T$,
         they would all necessarily have different first coordinates
         (say $S = \{x_1, \dots, x_s\}$).
         But now, by definition of $P$, for all $a \in S, b \in T$, we have $\{a, b\} \in E$.
-        This would mean that the inclusion map from $ S \cup T$ to $M \cup N$ is an embedding of
+        This would mean that the inclusion map from $ S \cup T$ to $U \cup W$ is an embedding of
         $K(s, t)$ in $G$, as described in Definition~\ref{def:zarankiewicz}.
         Supposing that this is not the case, by the pigeonhole principle, we have:
         \[
-            |P| \leq (s - 1) \binom{n}{t}
+            |P| \leq (s - 1) \binom{w}{t}
         \]
         Putting the two inequalities together, we get:
         \[
-            m \binom{z / m}{t} \leq (s - 1) \binom{n}{t}
+            u \binom{z / u}{t} \leq (s - 1) \binom{w}{t}
         \]
-        Now, because we can see $E$ as a subset of $M \times N$,
-        we get $z \leq mn \implies z/m \leq n$.
+        Now, because we can see $E$ as a subset of $U \times W$,
+        we get $z \leq uw \implies z/u \leq w$.
         In particular, we have:
         \[
-            \frac{(z/m - (t - 1))^t}{\binom{z/m}{t}} \leq \frac{(n - (t - 1))^t}{\binom{n}{t}}
+            \frac{(z/u - (t - 1))^t}{\binom{z/u}{t}} \leq \frac{(w - (t - 1))^t}{\binom{w}{t}}
         \]
         which is true for each factor when expanding the denominators.
         Multiplying the two inequalities, we get:
         \[
-            m \, (z/m - (t - 1))^t \leq (s - 1)(n - (t - 1))^t
+            m \, (z/u - (t - 1))^t \leq (s - 1)(w - (t - 1))^t
         \]
         which, by algebraic manipulation, gives
         \[
-            z \leq (s - 1)^{1 / t}(n - t + 1)m^{1 - 1 / t} + (t - 1)m
+            z \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u
         \]
         In contradiction with our assumption. \qedhere
 

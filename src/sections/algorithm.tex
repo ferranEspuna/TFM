@@ -85,7 +85,7 @@ $n$ vertices and $m = d n^k$ with part size
             \ForAll{$T \in \binom{W}{t}$} \label{line:for}
                 \State $S \gets \{\,y \in U : \{x\} \cup y \in E \text{ for all } x \in T\,\}$
                 \If{$|S| \geq s$}
-                    \State \Return $(S)\, \circ $\Call{FIND\_PARTITE\,}{$G' \coloneqq (V \setminus W, S),\, k-1$} \label{line:return}
+                    \State \Return $(S)\, \circ $\Call{FIND\_PARTITE\,}{$G' \coloneqq (V \setminus W,\, S),\, k-1$} \label{line:return}
                 \EndIf
             \EndFor
         \EndFunction
@@ -139,10 +139,13 @@ For the recursive step, we need:
     the density condition of line~\ref{line:min_density} is met for $k-1$.
     That is,
     \[
-        \frac{s}{(n-w)^k} \eqqcolon d'  \geq 4^{k-1} (n-w)^{-\frac{1}{2^{k-2}}}
+        d' \coloneqq \frac{s}{(n-w)^{k-1}} \geq 4^{k-1} (n-w)^{-\frac{1}{2^{k-2}}}
     \]
     Furthermore,
-    the resulting part size $t'$ satisfies $t' \coloneqq t(n - w, d', k - 1) \geq t$.
+    the resulting part size $t'$ satisfies
+    \[
+        t' \coloneqq t(n - w, d', k - 1) \geq t
+    \]
     \begin{proof}
         TODO % TODO
     \end{proof}

@@ -30,7 +30,7 @@ The variable names have been altered to match the notation used in this thesis.
         \begin{algorithmic}[1]
         \Require A graph G = $(V, E)$ with $|V| = n$, $E = m$
         \State $d \gets m / n^2 $
-        \Ensure $d \geq 3 n^\frac{1}{2}$
+        \Ensure $d \geq 3 n^{1/2}$
         \State $t \gets \left\lfloor\frac{\log (n/2) }{\log (2e/d)}\right\rfloor,\, w \gets \lfloor t/d \rfloor$
         \State $W \gets $ The set of $t$ vertices with highest degree in $G$
         \State $U \gets V \setminus W$
@@ -65,5 +65,37 @@ $n$ vertices and $m = d n^k$ with part size
 \[
     t (k, d) = \left\lfloor \left(  \frac{\log (n/2^k)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
 \]
+
+\begin{algorithm}
+    \caption{Finding a balanced partite $k$-graph in a $k$-graph}
+    \label{alg:kpartite}
+    \begin{algorithmic}[1]
+        \Function{FIND\_PARTITE}{$G, k$}
+            \State \textbf{assert} G is a $k$-graph
+            \If {$k = 1$}
+                \State \Return $\{x : \{x\} \in E(G)\}$
+            \EndIf
+
+            \State \textbf{assert} $d \geq 4^k n^{-\frac{1}{2^{k-1}}}$
+            \State $n \gets |V(G)|,\, m \gets |E(G)|,\, d \gets m/n^k$
+            \State $t \gets t(d, k),\, w \gets \lceil 2t/d \rceil,\, s \gets \lfloor d^t n^{k-1} \rfloor$
+            \State $W \gets$ the set of $t$ vertices with highest degree in $G$
+            \State $U \gets \binom{V\setminus W}{k-1}$
+
+            \ForAll{$T \in \binom{W}{t}$}
+                \State $S \gets \{\,y \in U : \{x\} \cup y \in E \text{ for all } x \in T\,\}$
+                \If{$|S| \geq s$}
+                    \Return $(S)\, \circ $\Call{FIND\_PARTITE}{$G' \coloneqq (V \setminus W, S),\, k-1$}
+                \EndIf
+            \EndFor
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+Where the operator $\circ$ denotes the concatenation of tuples, and we
+understand a $1$-graph to be a subset of a set.
+
+
+
 
 

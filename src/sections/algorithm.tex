@@ -161,7 +161,34 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
     With $W  \subset V$ as defined in line~\ref{line:W},
     There are at least $\frac{3}{2}dwn^{k-1}$ edges of $G$ with exactly one vertex in $W$.
     \begin{proof}
+        The degree sum over $V$ is $kdn^{k}$.
+        Thus, by the pigeonhole principle, the degree sum over $W$ is at least
+        $\frac{w}{n}kdn^{k} = wkdn^{k-1}$.
+        For $2 \leq j \leq n$, consider the contribution to this sum by edges with exactly $j$ vertices in $W$.
+        Each such edge contributes $j$ to the sum, and there are at most
+        $\binom{w}{j}\binom{n-w}{k-j} \leq \frac{w^j n^{k-j}}{j!} \leq \frac{w^j n^{k-j}}{j}$ of them.
+        Thus, the total contribution of these edges is at most $w^j n^{k-j} \leq w^{2}n^{k-2}$.
+        The number of edges with only one vertex in $W$ is then at least
+
+        \[
+            wkdn^{k-1} - (k-1)w^{2}n^{k-2} = dwn^{k-1} \left( k - \frac{(k-1)w}{nd}\right)
+        \]
+
+        Suppose, by way of contradiction,
+        that $ k - \frac{(k-1)w}{nd} < \frac{3}{2}$.
+        Using that $\frac{k-1}{k-3/2} \leq 2$
+        for $k \geq 2$, we arrive at
+
+        \[
+            2 \geq  \frac{nd}{w} \geq \frac{nd}{2t/d + 1} \dots
+        \]
         TODO % TODO
+
+        Applying our minimum density, this means
+
+        TODO % TODO
+
+        which is false for all $n$.
     \end{proof}
 \end{lemma}
 

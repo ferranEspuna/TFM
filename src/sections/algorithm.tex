@@ -113,10 +113,10 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
     $t  \leq w \leq n$, $k - 1 \leq n - w$ and $s \leq \binom{n - w}{k - 1}$.
     \begin{proof}
         $t \leq w$ is clear.
-        We will in fact show that $w \leq \frac{n}{2}$.
+        We will in fact show that $w < \frac{n}{2}$.
         If not,
         \[
-            \frac{n}{2} <
+            \frac{n}{2} \leq
             w \leq 1 + \frac{2t}{d} <
             1 + \frac{2 \log (n/2^k)}{4^k n^{-\frac{1}{2^{k-1}}}} <
             + \frac{\log(n)}{2^{2k-1} n^{-\frac{1}{2}}} =
@@ -143,7 +143,7 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
         \]
 
         Finally, suppose $s > \binom{n - w}{k - 1}$.
-        Then,
+        Then, using the fact that $w < \frac{n}{2}$,
         \[
             \left( \frac{n}{2k} \right)^{k-1} \leq \left( \frac{n-w}{k-1} \right)^{k-1} \leq \binom{n - w}{k - 1} < s \leq d^t n^{k-1}
             \implies  \left( \frac{1}{2k} \right)^{k-1} < d^t \leq \left( \frac{1}{k!} \right)^2

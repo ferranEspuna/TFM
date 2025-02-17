@@ -25,12 +25,12 @@ We outline the algorithm for $k = 2$ here for context and clarity.
 The variable names have been altered to match the notation used in this thesis.
 
 \begin{algorithm}
-    \caption{Finding a balanced partite graph in a graph}
+    \caption{Finding a balanced bipartite graph in a $2$-graph}
     \label{alg:bipartite}
         \begin{algorithmic}[1]
         \Require A graph G = $(V, E)$ with $|V| = n$, $E = m$
         \State $d \gets m / n^2 $
-        \Ensure $d \geq 3 n^{1/2}$
+        \State \textbf{assert} $d \geq 3 n^{1/2}$
         \State $t \gets \left\lfloor\frac{\log (n/2) }{\log (2e/d)}\right\rfloor,\, w \gets \lfloor t/d \rfloor$
         \State $W \gets $ The set of $t$ vertices with highest degree in $G$
         \State $U \gets V \setminus W$
@@ -63,7 +63,7 @@ We will now describe an extended algorithm which will find a balanced partite $k
 $n$ vertices and $m = d n^k$ with part size
 
 \[
-    t (k, d) = \left\lfloor \left(  \frac{\log (n/2^k)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
+    t (n, d, k) = \left\lfloor \left(  \frac{\log (n/2^k)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
 \]
 
 \begin{algorithm}
@@ -76,16 +76,16 @@ $n$ vertices and $m = d n^k$ with part size
                 \State \Return $\{x : \{x\} \in E(G)\}$
             \EndIf
 
-            \State \textbf{assert} $d \geq 4^k n^{-\frac{1}{2^{k-1}}}$
+            \State \textbf{assert} $d \geq 4^k n^{-\frac{1}{2^{k-1}}}$ \label{line:min_density}
             \State $n \gets |V(G)|,\, m \gets |E(G)|,\, d \gets m/n^k$
-            \State $t \gets t(d, k),\, w \gets \lceil 2t/d \rceil,\, s \gets \lfloor d^t n^{k-1} \rfloor$
-            \State $W \gets$ the set of $t$ vertices with highest degree in $G$
+            \State $t \gets t(n, d, k),\, w \gets \lceil 2t/d \rceil,\, s \gets \lfloor d^t n^{k-1} \rfloor$ \label{line:tws}
+            \State $W \gets$ the set of $t$ vertices with highest degree in $G$ \label{line:W}
             \State $U \gets \binom{V\setminus W}{k-1}$
 
-            \ForAll{$T \in \binom{W}{t}$}
+            \ForAll{$T \in \binom{W}{t}$} \label{line:for}
                 \State $S \gets \{\,y \in U : \{x\} \cup y \in E \text{ for all } x \in T\,\}$
                 \If{$|S| \geq s$}
-                    \Return $(S)\, \circ $\Call{FIND\_PARTITE}{$G' \coloneqq (V \setminus W, S),\, k-1$}
+                    \State \Return $(S)\, \circ $\Call{FIND\_PARTITE\,}{$G' \coloneqq (V \setminus W, S),\, k-1$} \label{line:return}
                 \EndIf
             \EndFor
         \EndFunction
@@ -94,6 +94,70 @@ $n$ vertices and $m = d n^k$ with part size
 
 Where the operator $\circ$ denotes the concatenation of tuples, and we
 understand a $1$-graph to be a subset of a set.
+We will now argue that this algorithm is correct (as long as the the density condition is met on the first call)
+and runs in polynomial time.
+The following lemmas are stated assuming that $k \geq 2$ and
+the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref{alg:kpartite} is met.
+
+\begin{lemma}
+    The selection of $t, w, s$ in line~\ref{line:tws} is sound in the sense that
+    $t  \leq w \leq n$, $k - 1 \leq n - w$ and $s \leq \binom{n - w}{k - 1}$.
+    \begin{proof}
+        TODO % TODO
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    With $W  \subset V$ as defined in line~\ref{line:W},
+    There are at least $\frac{3}{2}dwn^{k-1}$ edges of $G$ with exactly one vertex in $W$.
+    \begin{proof}
+        TODO % TODO
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    Line~\ref{line:return} of Algorithm~\ref{alg:kpartite} is reached at some point in the for
+    loop in line~\ref{line:for}.
+    \begin{proof}
+        TODO % TODO
+    \end{proof}
+\end{lemma}
+
+Now, for the base case, we need:
+
+\begin{lemma}
+    For $k=2$, Algorithm~\ref{alg:kpartite} finds $s \geq t$.
+    \begin{proof}
+        TODO % TODO
+    \end{proof}
+\end{lemma}
+
+For the recursive step, we need:
+
+\begin{lemma}
+    For $k \geq 3$, in the recursive call in line~\ref{line:return} of Algorithm~\ref{alg:kpartite},
+    the density condition of line~\ref{line:min_density} is met for $k-1$.
+    That is,
+    \[
+        \frac{s}{(n-w)^k} \eqqcolon d'  \geq 4^{k-1} (n-w)^{-\frac{1}{2^{k-2}}}
+    \]
+    Furthermore,
+    the resulting part size $t'$ satisfies $t' \coloneqq t(n - w, d', k - 1) \geq t$.
+    \begin{proof}
+        TODO % TODO
+    \end{proof}
+
+\end{lemma}
+
+All in all, we can now state the following theorem:
+
+\begin{theorem}
+    Algorithm~\ref{alg:kpartite} finds a balanced partite $k$-graph in a $k$-graph $G$ with
+    $n$ vertices and $m = d n^k$ with part size $t(n, d, k)$ in polynomial time.
+    \begin{proof}
+        TODO % TODO
+    \end{proof}
+\end{theorem}
 
 
 

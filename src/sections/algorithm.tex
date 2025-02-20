@@ -152,7 +152,7 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
         $\binom{n}{k} \leq \frac{n^k}{k!}$ edges in $G$.
 
         We can show that $k!^2 \geq (2k)^{k-1}$ for all $k$ % TODO proof by freaking look at it!!
-        , which means we have reached a contradiction.
+        , which means we have reached a contradiction. \qedhere
 
     \end{proof}
 \end{lemma}
@@ -180,15 +180,20 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
         for $k \geq 2$, we arrive at
 
         \[
-            2 \geq  \frac{nd}{w} \geq \frac{nd}{2t/d + 1} \dots
+            2 \geq  \frac{nd}{w} \implies d \leq \frac{2w}{n} = \frac{2 \left\lceil\frac{2t}{d} \right\rceil}{n}
+            < \frac{6t}{dn}
         \]
+
+        Where the last inequality follows from the fact that $t > 1$ and $d \leq 1$.
+        Rearranging, and applying the density requirement, if $k \geq 3$ we have
+        \[
+            16 \sqrt {n} \leq 4^{2k} n \cdot n^{-\frac{2}{2^{k-1}}} \leq nd^2 < 6t < 6 \log n
+        \]
+        Which is false for all $n$.
+        We have to be more careful in the $k = 2$ case.
+
         TODO % TODO
 
-        Applying our minimum density, this means
-
-        TODO % TODO
-
-        which is false for all $n$.
     \end{proof}
 \end{lemma}
 

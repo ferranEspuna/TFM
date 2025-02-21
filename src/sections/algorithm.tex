@@ -1,0 +1,250 @@
+\section{Our Algorithm}\label{sec:algorithm}
+
+In this section we present a polynomial-time algorithm to find a balanced partite $k$-graph in a given $k$-graph $G$
+with $n$ vertices and $m$ edges with part size in the same order of magnitude as stated in
+Theorem~\ref{thm:erdos64}.
+
+\begin{remark}
+    If we let $q$ be the size of each part in the partite $k$-graph we are looking for, we need
+    \[
+        m \geq ex(n, K(t, \overset{k}{\cdots}, t)) = O\left(n^{k - \frac{1}{t^{k-1}}}\right)
+    \]
+    Defining $d = \frac{m}{n^k}$, and taking logarithms, this is true iff
+    \[
+        \log d \geq - \frac{\log n}{t^{k-1}} + O(1)
+    \]
+    which implies
+    \[
+        t = O\left(\left(\frac{\log n}{\log (1/d)}\right)^{\frac{1}{k-1}}\right)
+    \]
+\end{remark}
+
+This algorithmic problem has already been solved for $k = 2$ by Mubayi and Turán~\cite{MUBAYI2010174}.
+The algorithm in that case follows very closely the structure of the proof of Theorem~\ref{thm:kst}.
+We outline the algorithm for $k = 2$ here for context and clarity.
+The variable names have been altered to match the notation used in this thesis.
+
+\begin{algorithm}
+    \caption{Finding a balanced bipartite graph in a $2$-graph}
+    \label{alg:bipartite}
+        \begin{algorithmic}[1]
+        \Require A graph G = $(V, E)$ with $|V| = n$, $E = m$
+        \State $d \gets m / n^2 $
+        \State \textbf{assert} $d \geq 3 n^{1/2}$
+        \State $t \gets \left\lfloor\frac{\log (n/2) }{\log (2e/d)}\right\rfloor,\, w \gets \lfloor t/d \rfloor$
+        \State $W \gets $ The set of $t$ vertices with highest degree in $G$
+        \State $U \gets V \setminus W$
+        \ForAll{$T \in \binom{W}{t} $}
+            \State $S \gets \{x \in U : {x, y} \in E \text{ for all } y \in T\}$
+            \If{$|S| \geq t$}
+                \State \Return $(S, T)$
+            \EndIf
+        \EndFor
+        \end{algorithmic}
+\end{algorithm}
+
+If the set $S$ is too large we can simply take a subset of it of size $t$.
+The algorithm is correct if at some point it returns a pair of sets $(S, T)$.
+The argument of why this is the case boils down to showing that there is a
+large number of edges between $U$ and $W$ and then applying Theorem~\ref{thm:kst}
+with $u = |U| = n - w$ and $s = t$ .
+Finally, the algorithm runs in polynomial time because 
+the  number of iterations of the loop is
+\[
+    \binom{w}{t} \leq \left(\frac{ew}{t}\right)^t \leq \left(\frac{1}{d}\right)^t e^t < e^{t \log (1/d) + \log n} < e^{2\log n} = n^2
+\]
+
+\begin{remark}
+    The requirement for a minimum density is because if $d = o\left(n^{1/2}\right)$ then
+    there may not even be a $K(2, 2)$ in $G$. % TODO: Explain this better
+\end{remark}
+
+We will now describe an extended algorithm which will find a balanced partite $k$-graph in a $k$-graph $G$ with
+$n$ vertices and $m = d n^k$ with part size
+
+\[
+    t (n, d, k) = \left\lfloor \left(  \frac{\log (n/2^k)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
+\]
+
+\begin{algorithm}
+    \caption{Finding a balanced partite $k$-graph in a $k$-graph}
+    \label{alg:kpartite}
+    \begin{algorithmic}[1]
+        \Function{FIND\_PARTITE}{$G, k$}
+            \State \textbf{assert} G is a $k$-graph
+            \If {$k = 1$}
+                \State \Return $\{x : \{x\} \in E(G)\}$
+            \EndIf
+
+            \State \textbf{assert} $d \geq 4^k n^{-\frac{1}{2^{k-1}}}$ \label{line:min_density}
+            \State $n \gets |V(G)|,\, m \gets |E(G)|,\, d \gets m/n^k$
+            \State $t \gets t(n, d, k),\, w \gets \lceil 2t/d \rceil,\, s \gets \lfloor d^t n^{k-1} \rfloor$ \label{line:tws}
+            \State $W \gets$ the set of $t$ vertices with highest degree in $G$ \label{line:W}
+            \State $U \gets \binom{V\setminus W}{k-1}$
+
+            \ForAll{$T \in \binom{W}{t}$} \label{line:for}
+                \State $S \gets \{\,y \in U : \{x\} \cup y \in E \text{ for all } x \in T\,\}$
+                \If{$|S| \geq s$}
+                    \State \Return $(S)\, \circ $\Call{FIND\_PARTITE\,}{$G' \coloneqq (V \setminus W,\, S),\, k-1$} \label{line:return}
+                \EndIf
+            \EndFor
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+Where the operator $\circ$ denotes the concatenation of tuples, and we
+understand a $1$-graph to be a subset of a set.
+We will now argue that this algorithm is correct (as long as the the density condition is met on the first call)
+and runs in polynomial time.
+The following lemmas are stated assuming that $k \geq 2$ and
+the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref{alg:kpartite} is met.
+
+\begin{remark} % TODO explain better
+    The $t=1$ case is trivial, as we can simply select one edge of $G$.
+    The minimum density requirement implies $t \geq 2$, although the converse is not true for any $n$.
+    However, it \emph{is} true that, for all $k$, $t \geq 3$ implies the minimum density requirement
+    for $n \geq n_0(k)$.
+    Therefore, we can simply solve the problem for $t = 2$ or $n < n_0(k)$
+    by checking all possible embeddings (which clearly can be done in polynomial time for every $k$) and apply~\ref{alg:kpartite} otherwise.
+\end{remark}
+
+\begin{lemma}
+    The selection of $t, w, s$ in line~\ref{line:tws} is sound in the sense that
+    $t  \leq w \leq n$, $k - 1 \leq n - w$ and $s \leq \binom{n - w}{k - 1}$.
+    \begin{proof}
+        $t \leq w$ is clear.
+        We will in fact show that $w < \frac{n}{2}$.
+        If not,
+        \[
+            \frac{n}{2} \leq
+            w \leq 1 + \frac{2t}{d} <
+            1 + \frac{2 \log (n/2^k)}{4^k n^{-\frac{1}{2^{k-1}}}} <
+            + \frac{\log(n)}{2^{2k-1} n^{-\frac{1}{2}}} =
+            1 + \frac{\log n \cdot \sqrt {n}}{8} <
+            1 + \frac{n}{8} \implies n < 3
+        \]
+        But because we have positive density this implies $n = k = 2$, with at most one edge, which clearly
+        does not satisfy the density condition.
+
+        We can also show that $k < \frac{n}{2}$.
+        If not,
+        \[
+            1 \geq
+            d \geq
+            4^{\frac{n}{2}} n^{-\frac{1}{2^{n/2-1}}} \geq
+            e^{\frac{n}{2} \log 4 - \frac{\log n}{2^{n/2-1}}} \implies
+            \frac{n}{2} \log 4 \leq \frac{\log n}{2^{n/2-1}}
+        \]
+        which is false for all $n > 0$. % TODO show this
+
+        Therefore,
+        \[
+            k + w < n \implies k - 1 < n - w
+        \]
+
+        Finally, suppose $s > \binom{n - w}{k - 1}$.
+        Then, using the fact that $w < \frac{n}{2}$,
+        \[
+            \left( \frac{n}{2k} \right)^{k-1} \leq \left( \frac{n-w}{k-1} \right)^{k-1} \leq \binom{n - w}{k - 1} < s \leq d^t n^{k-1}
+            \implies  \left( \frac{1}{2k} \right)^{k-1} < d^t \leq \left( \frac{1}{k!} \right)^2
+        \]
+        Where in the last inequality we use that $t \geq 2$ and there are at most
+        $\binom{n}{k} \leq \frac{n^k}{k!}$ edges in $G$.
+
+        We can show that $k!^2 \geq (2k)^{k-1}$ for all $k$ % TODO proof by freaking look at it!!
+        , which means we have reached a contradiction. \qedhere
+
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    With $W  \subset V$ as defined in line~\ref{line:W},
+    There are at least $\frac{3}{2}dwn^{k-1}$ edges of $G$ with exactly one vertex in $W$.
+    \begin{proof}
+        The degree sum over $V$ is $kdn^{k}$.
+        Thus, by the pigeonhole principle, the degree sum over $W$ is at least
+        $\frac{w}{n}kdn^{k} = wkdn^{k-1}$.
+        For $2 \leq j \leq n$, consider the contribution to this sum by edges with exactly $j$ vertices in $W$.
+        Each such edge contributes $j$ to the sum, and there are at most
+        $\binom{w}{j}\binom{n-w}{k-j} \leq \frac{w^j n^{k-j}}{j!} \leq \frac{w^j n^{k-j}}{j}$ of them.
+        Thus, the total contribution of these edges is at most $w^j n^{k-j} \leq w^{2}n^{k-2}$.
+        The number of edges with only one vertex in $W$ is then at least
+
+        \[
+            wkdn^{k-1} - (k-1)w^{2}n^{k-2} = dwn^{k-1} \left( k - \frac{(k-1)w}{nd}\right)
+        \]
+
+        Suppose, by way of contradiction,
+        that $ k - \frac{(k-1)w}{nd} < \frac{3}{2}$.
+        Using that $\frac{k-1}{k-3/2} \leq 2$
+        for $k \geq 2$, we arrive at
+
+        \[
+            2 \geq  \frac{nd}{w} \implies d \leq \frac{2w}{n} = \frac{2 \left\lceil\frac{2t}{d} \right\rceil}{n}
+            < \frac{6t}{dn}
+        \]
+
+        Where the last inequality follows from the fact that $t > 1$ and $d \leq 1$.
+        Rearranging, and applying the density requirement, if $k \geq 3$ we have
+        \[
+            16 \sqrt {n} \leq 4^{2k} n \cdot n^{-\frac{2}{2^{k-1}}} \leq nd^2 < 6t < 6 \log n
+        \]
+        Which is false for all $n$.
+        We have to be more careful in the $k = 2$ case.
+
+        TODO % TODO
+
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    Line~\ref{line:return} of Algorithm~\ref{alg:kpartite} is reached at some point in the for
+    loop in line~\ref{line:for}.
+    \begin{proof}
+        TODO % TODO
+    \end{proof}
+\end{lemma}
+
+Now, for the base case, we need:
+
+\begin{lemma}
+    For $k=2$, Algorithm~\ref{alg:kpartite} finds $s \geq t$.
+    \begin{proof}
+        TODO % TODO
+    \end{proof}
+\end{lemma}
+
+For the recursive step, we need:
+
+\begin{lemma}
+    For $k \geq 3$, in the recursive call in line~\ref{line:return} of Algorithm~\ref{alg:kpartite},
+    the density condition of line~\ref{line:min_density} is met for $k-1$.
+    That is,
+    \[
+        d' \coloneqq \frac{s}{(n-w)^{k-1}} \geq 4^{k-1} (n-w)^{-\frac{1}{2^{k-2}}}
+    \]
+    Furthermore,
+    the resulting part size $t'$ satisfies
+    \[
+        t' \coloneqq t(n - w, d', k - 1) \geq t
+    \]
+    \begin{proof}
+        TODO % TODO
+    \end{proof}
+
+\end{lemma}
+
+All in all, we can now state the following theorem:
+
+\begin{theorem}
+    Algorithm~\ref{alg:kpartite} finds a balanced partite $k$-graph in a $k$-graph $G$ with
+    $n$ vertices and $m = d n^k$ with part size $t(n, d, k)$ in polynomial time.
+    \begin{proof}
+        TODO % TODO
+    \end{proof}
+\end{theorem}
+
+
+
+
+

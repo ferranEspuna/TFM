@@ -51,7 +51,10 @@ with $u = |U| = n - w$ and $s = t$ .
 Finally, the algorithm runs in polynomial time because 
 the  number of iterations of the loop is
 \[
-    \binom{w}{t} \leq \left(\frac{ew}{t}\right)^t \leq \left(\frac{1}{d}\right)^t e^t < e^{t \log (1/d) + \log n} < e^{2\log n} = n^2
+    \binom{w}{t} \leq
+    \left(\frac{ew}{t}\right)^t \leq
+    \left(\frac{1}{d}\right)^t e^t < e^{t \log (1/d) + \log n} <
+    e^{2\log n} = n^2
 \]
 
 \begin{remark}
@@ -85,7 +88,8 @@ $n$ vertices and $m = d n^k$ with part size
             \ForAll{$T \in \binom{W}{t}$} \label{line:for}
                 \State $S \gets \{\,y \in U : \{x\} \cup y \in E \text{ for all } x \in T\,\}$
                 \If{$|S| \geq s$}
-                    \State \Return $(S)\, \circ $\Call{FIND\_PARTITE\,}{$G' \coloneqq (V \setminus W,\, S),\, k-1$} \label{line:return}
+                    \State \Return $(T)\, \circ $\Call{FIND\_PARTITE\,}
+                    {$G' \coloneqq (V \setminus W,\, S),\, k-1$} \label{line:return}
                 \EndIf
             \EndFor
         \EndFunction
@@ -105,7 +109,8 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
     However, it \emph{is} true that, for all $k$, $t \geq 3$ implies the minimum density requirement
     for $n \geq n_0(k)$.
     Therefore, we can simply solve the problem for $t = 2$ or $n < n_0(k)$
-    by checking all possible embeddings (which clearly can be done in polynomial time for every $k$) and apply~\ref{alg:kpartite} otherwise.
+    by checking all possible embeddings (which clearly can be done in polynomial time for every $k$)
+    and apply~\ref{alg:kpartite} otherwise.
 \end{remark}
 
 \begin{lemma}
@@ -157,7 +162,7 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
     \end{proof}
 \end{lemma}
 
-\begin{lemma}
+\begin{lemma}\label{many_edges}
     With $W  \subset V$ as defined in line~\ref{line:W},
     There are at least $\frac{3}{2}dwn^{k-1}$ edges of $G$ with exactly one vertex in $W$.
     \begin{proof}
@@ -201,7 +206,37 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
     Line~\ref{line:return} of Algorithm~\ref{alg:kpartite} is reached at some point in the for
     loop in line~\ref{line:for}.
     \begin{proof}
-        TODO % TODO
+        We will apply Theorem~\ref{thm:kst} to the $2$-partite $2$-graph
+        \[
+            \mathcal{P} = (U, W, \{(x, y) \in U \times W) | \{x\} \cup y \in E \})
+        \]
+        By Lemma~\ref{many_edges}, $\mathcal{P}$ has at least
+        $\frac{3}{2}dwn^{k-1}$ edges.
+
+        Suppose that what we want to show is false.
+        This means that for no sets $S \in \binom{U}{s}, T \in \binom{W}{t}$
+        such that $(x, y) \in E (\mathcal{P})$ for all $x \in S, y \in T $.
+        In other words, there is no embedding of $K(s, t)$ on $\mathcal{P}$.
+        This means that
+
+        % TODO: check the math works, just copied
+
+        \begin{align*}
+            \frac{3}{2}dwn^{k-1} \leq &
+            \, z \left(\binom{n - w}{k-1}, w, s, t  \right) \leq
+            (s-1)^{1/t}(w-t+1)\binom{n-w}{k-1}^{1-1/t} + (t-1)\binom{n-w}{k-1} \leq \\
+            \leq & \, s^{1/t} w \binom{n}{k-1}^{1-1/t} + t \binom{n}{k-1} \leq
+             s^{1/t} wn^{(k-1)(1-1/t)} + tn^{k-1} \leq \\
+            \leq & \, s^{1/t} wn^{(k-1)(1-1/t)} + \frac{1}{2} dwn^{k-1}
+        \end{align*}
+
+        Where the last inequality follows from our definition of $w$.
+        Rearranging, we get
+
+        \[
+            dwn^{k-1} \leq s^{1/t} wn^{(k-1)(1-1/t)} \implies d \leq \left(\frac{s}{n^{k-1}}\right)^{1/t}
+        \]
+        which is false by the definition of $s$.
     \end{proof}
 \end{lemma}
 
@@ -210,6 +245,13 @@ Now, for the base case, we need:
 \begin{lemma}
     For $k=2$, Algorithm~\ref{alg:kpartite} finds $s \geq t$.
     \begin{proof}
+        Suppose not.
+        Substituting $k=2$, we get
+        \[
+            \left\lfloor d^t n  \right\rfloor < t \implies
+            % n^{1 - \frac{1}{1 - \log 8 / \log d}} = d^{\frac{\log n}{\log 8 - \log d}} n < \log n
+        \]
+
         TODO % TODO
     \end{proof}
 \end{lemma}

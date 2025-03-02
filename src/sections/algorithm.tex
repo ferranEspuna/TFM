@@ -66,7 +66,7 @@ We will now describe an extended algorithm which will find a balanced partite $k
 $n$ vertices and $m = d n^k$ with part size
 
 \[
-    t (n, d, k) = \left\lfloor \left(  \frac{\log (n/2^k)}{\log (2^{k+1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
+    t (n, d, k) = \left\lfloor \left(  \frac{\log (n/2^{k-2})}{\log (2^{k-1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
 \]
 
 \begin{algorithm}
@@ -124,7 +124,7 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
             \frac{n}{2} \leq
             w \leq 1 + \frac{2t}{d} <
             1 + \frac{2 \log (n/2^k)}{4^k n^{-\frac{1}{2^{k-1}}}} <
-            + \frac{\log(n)}{2^{2k-1} n^{-\frac{1}{2}}} =
+            1 + \frac{\log(n)}{2^{2k-1} n^{-\frac{1}{2}}} =
             1 + \frac{\log n \cdot \sqrt {n}}{8} <
             1 + \frac{n}{8} \implies n < 3
         \]

@@ -1,6 +1,7 @@
 \section{Our Algorithm}\label{sec:algorithm}
 
-In this section we present a polynomial-time algorithm to find a balanced partite $k$-graph in a given $k$-graph $G$
+In this section we present a polynomial-time algorithm to find a balanced $k$-partite
+$k$-graph in a given $k$-graph $G$
 with $n$ vertices and $m$ edges with part size in the same order of magnitude as stated in
 Theorem~\ref{thm:erdos64}.
 
@@ -66,7 +67,9 @@ We will now describe an extended algorithm which will find a balanced partite $k
 $n$ vertices and $m = d n^k$ with part size
 
 \[
-    t (n, d, k) = \left\lfloor \left(  \frac{\log (n/2^{k-2})}{\log (2^{k-1}/d)} \right)^{\frac{1}{k-1}} \right\rfloor
+    t (n, d, k) = \left\lfloor
+    \left(  \frac{\log (n/2^{k-2})}{\log (2^{k-1}/d)} \right)
+    ^{\frac{1}{k-1}} \right\rfloor
 \]
 
 \begin{algorithm}
@@ -98,10 +101,12 @@ $n$ vertices and $m = d n^k$ with part size
 
 Where the operator $\circ$ denotes the concatenation of tuples, and we
 understand a $1$-graph to be a subset of a set.
-We will now argue that this algorithm is correct (as long as the the density condition is met on the first call)
+We will now argue that this algorithm is correct
+(as long as the the density condition is met on the first call)
 and runs in polynomial time.
 The following lemmas are stated assuming that $k \geq 2$ and
-the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref{alg:kpartite} is met.
+the minimum density requirement of line~\ref{line:min_density}
+of Algorithm~\ref{alg:kpartite} is met.
 
 \begin{remark} % TODO explain better
     The $t=1$ case is trivial, as we can simply select one edge of $G$.
@@ -109,7 +114,8 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
     However, it \emph{is} true that, for all $k$, $t \geq 3$ implies the minimum density requirement
     for $n \geq n_0(k)$.
     Therefore, we can simply solve the problem for $t = 2$ or $n < n_0(k)$
-    by checking all possible embeddings (which clearly can be done in polynomial time for every $k$)
+    by checking all possible embeddings
+    (which clearly can be done in polynomial time for every $k$)
     and apply~\ref{alg:kpartite} otherwise.
 \end{remark}
 
@@ -129,17 +135,18 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
         \]
 
         Where the last inequality comes from $3 \sqrt {n} \log n < n$.
-        Because we have positive density this implies $n = k = 2$, with at most one edge, which clearly
+        Because we have positive density this implies $n = k = 2$,
+        with at most one edge, which clearly
         does not satisfy the density condition.
 
-        % TODO correctness starts here.
+        % TODO correctness stops here.
 
         We can also show that $k < \frac{n}{2}$.
         If not,
         \[
             1 \geq
             d \geq
-            4^{\frac{n}{2}} n^{-\frac{1}{2^{n/2-1}}} \geq
+            4^{\frac{n}{2}-1} n^{-\frac{1}{2^{n/2-1}}} \geq
             e^{\frac{n}{2} \log 4 - \frac{\log n}{2^{n/2-1}}} \implies
             \frac{n}{2} \log 4 \leq \frac{\log n}{2^{n/2-1}}
         \]
@@ -153,8 +160,11 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
         Finally, suppose $s > \binom{n - w}{k - 1}$.
         Then, using the fact that $w < \frac{n}{2}$,
         \[
-            \left( \frac{n}{2k} \right)^{k-1} \leq \left( \frac{n-w}{k-1} \right)^{k-1} \leq \binom{n - w}{k - 1} < s \leq d^t n^{k-1}
-            \implies  \left( \frac{1}{2k} \right)^{k-1} < d^t \leq \left( \frac{1}{k!} \right)^2
+            \left( \frac{n}{2k} \right)^{k-1} \leq
+            \left( \frac{n-w}{k-1} \right)^{k-1} \leq
+            \binom{n - w}{k - 1} < s \leq d^t n^{k-1}
+            \implies  \left( \frac{1}{2k} \right)^{k-1} < d^t \leq
+            \left( \frac{1}{k!} \right)^2
         \]
         Where in the last inequality we use that $t \geq 2$ and there are at most
         $\binom{n}{k} \leq \frac{n^k}{k!}$ edges in $G$.
@@ -172,9 +182,12 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
         The degree sum over $V$ is $kdn^{k}$.
         Thus, by the pigeonhole principle, the degree sum over $W$ is at least
         $\frac{w}{n}kdn^{k} = wkdn^{k-1}$.
-        For $2 \leq j \leq n$, consider the contribution to this sum by edges with exactly $j$ vertices in $W$.
+        For $2 \leq j \leq n$,
+        consider the contribution to this sum by edges with exactly $j$ vertices in $W$.
         Each such edge contributes $j$ to the sum, and there are at most
-        $\binom{w}{j}\binom{n-w}{k-j} \leq \frac{w^j n^{k-j}}{j!} \leq \frac{w^j n^{k-j}}{j}$ of them.
+        $\binom{w}{j}\binom{n-w}{k-j} \leq
+        \frac{w^j n^{k-j}}{j!} \leq
+        \frac{w^j n^{k-j}}{j}$ of them.
         Thus, the total contribution of these edges is at most $w^j n^{k-j} \leq w^{2}n^{k-2}$.
         The number of edges with only one vertex in $W$ is then at least
 
@@ -188,7 +201,8 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
         for $k \geq 2$, we arrive at
 
         \[
-            2 \geq  \frac{nd}{w} \implies d \leq \frac{2w}{n} = \frac{2 \left\lceil\frac{2t}{d} \right\rceil}{n}
+            2 \geq  \frac{nd}{w} \implies
+            d \leq \frac{2w}{n} = \frac{2 \left\lceil\frac{2t}{d} \right\rceil}{n}
             < \frac{6t}{dn}
         \]
 

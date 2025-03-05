@@ -32,7 +32,10 @@ The variable names have been altered to match the notation used in this thesis.
         \Require A graph G = $(V, E)$ with $|V| = n$, $E = m$
         \State $d \gets m / n^2 $
         \State \textbf{assert} $d \geq 3 n^{1/2}$
-        \State $t \gets \left\lfloor\frac{\log (n/2) }{\log (2e/d)}\right\rfloor,\, w \gets \lfloor t/d \rfloor$
+
+        \State $t \gets \left\lfloor\frac{\log (n/2) }
+        {\log (2e/d)}\right\rfloor,\, w \gets \lfloor t/d \rfloor$
+
         \State $W \gets $ The set of $t$ vertices with highest degree in $G$
         \State $U \gets V \setminus W$
         \ForAll{$T \in \binom{W}{t} $}
@@ -63,7 +66,8 @@ the  number of iterations of the loop is
     there may not even be a $K(2, 2)$ in $G$. % TODO: Explain this better
 \end{remark}
 
-We will now describe an extended algorithm which will find a balanced partite $k$-graph in a $k$-graph $G$ with
+We will now describe an extended algorithm which will find a balanced partite
+$k$-graph in a $k$-graph $G$ with
 $n$ vertices and $m = d n^k$ with part size
 
 \[
@@ -139,18 +143,16 @@ of Algorithm~\ref{alg:kpartite} is met.
         with at most one edge, which clearly
         does not satisfy the density condition.
 
-        % TODO correctness stops here.
-
         We can also show that $k < \frac{n}{2}$.
         If not,
         \[
             1 \geq
             d \geq
             4^{\frac{n}{2}-1} n^{-\frac{1}{2^{n/2-1}}} \geq
-            e^{\frac{n}{2} \log 4 - \frac{\log n}{2^{n/2-1}}} \implies
-            \frac{n}{2} \log 4 \leq \frac{\log n}{2^{n/2-1}}
+            e^{\frac{n-2}{2} \log 4 - \frac{\log n}{2^{n/2-1}}} \implies
+            \frac{n-2}{2} \log 4 \leq \frac{\log n}{2^{n/2-1}}
         \]
-        which is false for all $n > 0$. % TODO show this
+        which is false for all $n > 2$. % TODO show this
 
         Therefore,
         \[
@@ -174,6 +176,8 @@ of Algorithm~\ref{alg:kpartite} is met.
 
     \end{proof}
 \end{lemma}
+
+% TODO correctness stops here.
 
 \begin{lemma}\label{many_edges}
     With $W  \subset V$ as defined in line~\ref{line:W},

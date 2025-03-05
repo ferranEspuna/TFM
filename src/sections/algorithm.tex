@@ -79,7 +79,7 @@ $n$ vertices and $m = d n^k$ with part size
                 \State \Return $\{x : \{x\} \in E(G)\}$
             \EndIf
 
-            \State \textbf{assert} $d \geq 4^k n^{-\frac{1}{2^{k-1}}}$ \label{line:min_density}
+            \State \textbf{assert} $d \geq 4^{k-1} n^{-\frac{1}{2^{k-1}}}$ \label{line:min_density}
             \State $n \gets |V(G)|,\, m \gets |E(G)|,\, d \gets m/n^k$
             \State $t \gets t(n, d, k),\, w \gets \lceil 2t/d \rceil,\, s \gets \lfloor d^t n^{k-1} \rfloor$ \label{line:tws}
             \State $W \gets$ the set of $t$ vertices with highest degree in $G$ \label{line:W}
@@ -123,13 +123,16 @@ the minimum density requirement of line~\ref{line:min_density} of Algorithm~\ref
         \[
             \frac{n}{2} \leq
             w \leq 1 + \frac{2t}{d} <
-            1 + \frac{2 \log (n/2^k)}{4^k n^{-\frac{1}{2^{k-1}}}} <
-            1 + \frac{\log(n)}{2^{2k-1} n^{-\frac{1}{2}}} =
-            1 + \frac{\log n \cdot \sqrt {n}}{8} <
-            1 + \frac{n}{8} \implies n < 3
+            1 + \frac{2 \log n}{4^{k-1} n^{-\frac{1}{2^{k-1}}}} \leq
+            1 + \frac{\log(n)}{2 n^{-\frac{1}{2}}} \leq
+            1 + \frac{n}{6} \implies n < 3
         \]
-        But because we have positive density this implies $n = k = 2$, with at most one edge, which clearly
+
+        Where the last inequality comes from $3 \sqrt {n} \log n < n$.
+        Because we have positive density this implies $n = k = 2$, with at most one edge, which clearly
         does not satisfy the density condition.
+
+        % TODO correctness starts here.
 
         We can also show that $k < \frac{n}{2}$.
         If not,

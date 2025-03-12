@@ -31,7 +31,7 @@ The variable names have been altered to match the notation used in this thesis.
         \begin{algorithmic}[1]
         \Require A graph G = $(V, E)$ with $|V| = n$, $E = m$
         \State $d \gets m / n^2 $
-        \State \textbf{assert} $d \geq 3 n^{1/2}$
+        \State \textbf{assert} $d \geq 3 n^{-\frac{1}{2}}$
 
         \State $t \gets \left\lfloor\frac{\log (n/2) }
         {\log (2e/d)}\right\rfloor,\, w \gets \lfloor t/d \rfloor$
@@ -62,8 +62,8 @@ the  number of iterations of the loop is
 \]
 
 \begin{remark}
-    The requirement for a minimum density is because if $d = o\left(n^{1/2}\right)$ then
-    there may not even be a $K(2, 2)$ in $G$. % TODO: Explain this better
+    The requirement for a minimum density is because if $d = o\left(n^{-1/2}\right)$ then
+    there may not even be a $K(2, 2)$ embedded in $G$. % TODO: Explain this better
 \end{remark}
 
 We will now state the main theorem of this dissertation, which is a generalization of the above algorithm.
@@ -348,9 +348,6 @@ For the recursive step, we need:
     \end{proof}
 
 \end{lemma}
-
-\begin{remark}
-\end{remark}
 
 \begin{lemma}\label{lm:t_prime}
     For $k \geq 3$, in the recursive call in line~\ref{line:return} of Algorithm~\ref{alg:kpartite},

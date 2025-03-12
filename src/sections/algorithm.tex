@@ -354,7 +354,7 @@ For the recursive step, we need:
         Therefore,
         \[
             d' \geq
-            \frac{1}{2} \cdot 4^{k-1}n^{-\frac{1}{2^{k-1}}} >
+            \frac{1}{2} \cdot 4^{k-1}n^{-\frac{1}{2^{k-2}}} >
             4^{k-2} (n-w)^{-\frac{1}{2^{k-2}}} \qedhere
         \]
     \end{proof}
@@ -391,8 +391,8 @@ For the recursive step, we need:
             =
             %
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
-            {\frac{(k-1) \log 2}{\log(n / 2^{k-1})^{\frac{1}{k-1}}} - \frac{\log d}{\log (2^{k-1}/d)^{\frac{1}{k-1}}} } \right)^
-            {\frac{1}{k-2}} \right\rfloor \\
+            {\frac{(k-1) \log 2}{\log(n / 2^{k-1})^{\frac{1}{k-1}}} - \frac{\log d}{\log (2^{k-1}/d)^{\frac{1}{k-1}}} }
+            \right)^{\frac{1}{k-2}} \right\rfloor \\
             \geq &
             %
             %
@@ -429,10 +429,13 @@ All in all, we can now state the following theorem:
         reach line~\ref{line:return} at some point.
         Using the induction hypothesis for $k-1$ and Lemma~\ref{lm:t_prime},
         we know that the recursive call in line~\ref{line:return}
-        gives us a tuple of pairwise disjoint sets $(X_1, X_2, \ldots, X_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that:
+        gives us a tuple of pairwise disjoint sets
+        $(X_1, X_2, \ldots, X_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that:
         \begin{itemize}
             \item $|X_i| \geq t(n-w, d', k-1) \geq t$
-            \item $X_1 \times \dots \times X_{k-1} \subseteq E(G') = S = \left\{x \in \binom{V \setminus W}{k-1} : \{x\} \cup y \in E \text{ for all } y \in T\right\}$
+
+            \item $X_1 \times \dots \times X_{k-1} \subseteq E(G') = S =
+            \left\{x \in \binom{V \setminus W}{k-1} : \{x\} \cup y \in E \text{ for all } y \in T\right\}$
         \end{itemize}
 
         That is, (making the sizes of the $X_i$ smaller if necessary) the returned tuple $(X_1, \dots, X_{k-1}, T)$

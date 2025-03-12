@@ -4,13 +4,25 @@ In this section we present a polynomial-time algorithm to find a balanced $k$-pa
 $k$-graph in a given $k$-graph $G$
 with $n$ vertices and $m$ edges with part size in the same order of magnitude as stated in
 Theorem~\ref{thm:erdos64}.
+In fact, we will prove the following:
+
+\begin{theorem}\label{thm:kpartite}
+    Let $G$ be a $k$-graph with $n$ vertices and $m = dn^k$ edges.
+    If $d \geq 4^{k-1} n^{-\frac{1}{2^{k-1}}}$, then there is a polynomial-time algorithm
+    to find a balanced partite $k$-graph embedded in $G$ with part size
+    \[
+        t (n, d, k) = \left\lfloor
+        \left(  \frac{\log (n/2^{k-1})}{\log (2^{k-1}/d)} \right)
+        ^{\frac{1}{k-1}} \right\rfloor
+    \]
+\end{theorem}
 
 \begin{remark}
-    If we let $q$ be the size of each part in the partite $k$-graph we are looking for, we need
+    If we let $t$ be the size of each part in the partite $k$-graph we are looking for, we need
     \[
         m \geq ex(n, K(t, \overset{k}{\cdots}, t)) = O\left(n^{k - \frac{1}{t^{k-1}}}\right)
     \]
-    Defining $d = \frac{m}{n^k}$, and taking logarithms, this is true iff
+    Defining $d = \frac{m}{n^k}$, and taking logarithms, this is true when
     \[
         \log d \geq - \frac{\log n}{t^{k-1}} + O(1)
     \]
@@ -18,6 +30,8 @@ Theorem~\ref{thm:erdos64}.
     \[
         t = O\left(\left(\frac{\log n}{\log (1/d)}\right)^{\frac{1}{k-1}}\right)
     \]
+    Therefore, Theorem~\ref{thm:kpartite} gives a part size in the same order of magnitude as the bound
+    given by Theorem~\ref{thm:erdos64}.
 \end{remark}
 
 This algorithmic problem has already been solved for $k = 2$ by Mubayi and Turán~\cite{MUBAYI2010174}.
@@ -66,20 +80,9 @@ the  number of iterations of the loop is
     there may not even be a $K(2, 2)$ embedded in $G$. % TODO: Explain this better
 \end{remark}
 
-We will now state the main theorem of this dissertation, which is a generalization of the above algorithm.
-
-\begin{theorem}
-    Let $G$ be a $k$-graph with $n$ vertices and $m = dn^k$ edges.
-    If $d \geq 4^{k-1} n^{-\frac{1}{2^{k-1}}}$, then there is a polynomial-time algorithm
-    to find a balanced partite $k$-graph embedded in $G$ with part size
-    \[
-        t (n, d, k) = \left\lfloor
-        \left(  \frac{\log (n/2^{k-1})}{\log (2^{k-1}/d)} \right)
-        ^{\frac{1}{k-1}} \right\rfloor
-    \]
-\end{theorem}
-
-The algorithm is presented here:
+We now present the algorithm for the general case mentioned in Theorem~\ref{thm:kpartite}.
+It follows the same structure as Algorithm~\ref{alg:bipartite},
+but it is defined recursively.
 
 \begin{algorithm}
     \caption{Finding a balanced partite $k$-graph in a $k$-graph}
@@ -140,29 +143,30 @@ of Algorithm~\ref{alg:kpartite} is met.
             w \leq 1 + \frac{2t}{d} <
             1 + \frac{2 \log n}{4^{k-1} n^{-\frac{1}{2^{k-1}}}} \leq
             1 + \frac{\log(n)}{2 n^{-\frac{1}{2}}} <
-            1 + \frac{n}{6} \implies n < 3
+            1 + \frac{n}{6}
         \]
 
         Where the last inequality comes from $3 \sqrt {n} \log n < n$.
-        Because we have positive density this implies $n = k = 2$,
+        This implies that $n < 3$.
+        Since we have positive density, this implies $n = k = 2$,
         with at most one edge, which clearly
-        does not satisfy the density condition.
+        does not satisfy the minimum density condition.
 
-        We can also show that $k < \frac{n}{2}$.
+        We also show that $k < \frac{n}{2}$.
         If not,
         \[
             1 \geq
             d \geq
             4^{\frac{n}{2}-1} n^{-\frac{1}{2^{n/2-1}}} \geq
-            e^{\frac{n-2}{2} \log 4 - \frac{\log n}{2^{n/2-1}}} \implies
+            e^{\frac{n-2}{2} \log 4 - \frac{\log n}{2^{n/2-1}}}
+        \]
+        which implies
+        \[
             \frac{n-2}{2} \log 4 \leq \frac{\log n}{2^{n/2-1}}
         \]
-        which is false for all $n > 2$. % TODO show this
-
-        Therefore,
-        \[
-            k + w < n \implies k - 1 < n - w
-        \]
+        and this is false for all $n > 2$.
+        Therefore, $ k + w < n$, which by rearranging implies $k - 1 < n - w$,
+        as we wanted to show.
 
         Finally, suppose $s > \binom{n - w}{k - 1}$.
         Then, using the fact that $w < \frac{n}{2}$,
@@ -170,13 +174,16 @@ of Algorithm~\ref{alg:kpartite} is met.
             \left( \frac{n}{2k} \right)^{k-1} \leq
             \left( \frac{n-w}{k-1} \right)^{k-1} \leq
             \binom{n - w}{k - 1} < s \leq d^t n^{k-1}
-            \implies  \left( \frac{1}{2k} \right)^{k-1} < d^t \leq
+        \]
+        which implies
+        \[
+            \left( \frac{1}{2k} \right)^{k-1} < d^t \leq
             \left( \frac{1}{k!} \right)^2
         \]
         Where in the last inequality we use that $t \geq 2$ and there are at most
         $\binom{n}{k} \leq \frac{n^k}{k!}$ edges in $G$.
-        We can show that $k!^2 \geq (2k)^{k-1}$ for all $k$, % TODO proof by freaking look at it!!
-        which means we have reached a contradiction. \qedhere
+        Since $k!^2 \geq (2k)^{k-1}$ for all $k$,
+        we have reached a contradiction. \qedhere
 
     \end{proof}
 \end{lemma}
@@ -205,9 +212,11 @@ of Algorithm~\ref{alg:kpartite} is met.
         that $ k - \frac{(k-1)w}{nd} < \frac{3}{2}$.
         Using that $\frac{k-1}{k-3/2} \leq 2$
         for $k \geq 2$, we arrive at
-
         \[
-            2 \geq  \frac{nd}{w} \implies
+             2 \geq  \frac{nd}{w}
+        \]
+        which implies
+        \[
             d \leq \frac{2w}{n} = \frac{2 \left\lceil\frac{2t}{d} \right\rceil}{n}
             < \frac{6t}{dn}
         \]
@@ -257,7 +266,11 @@ of Algorithm~\ref{alg:kpartite} is met.
         Rearranging, we get
 
         \[
-            dwn^{k-1} \leq s^{1/t} wn^{(k-1)(1-1/t)} \implies d \leq \left(\frac{s}{n^{k-1}}\right)^{1/t}
+            dwn^{k-1} \leq s^{1/t} wn^{(k-1)(1-1/t)}
+        \]
+        which implies
+        \[
+            d \leq \left(\frac{s}{n^{k-1}}\right)^{1/t}
         \]
         which is false by the definition of $s$.
     \end{proof}
@@ -269,9 +282,8 @@ Now, for the base case, we need:
     For $k=2$, Algorithm~\ref{alg:kpartite} finds $s \geq t$.
     \begin{proof}
         Suppose $t < s$.
-        Substituting $k=2$, we get
+        Substituting $k=2$, we get $t > \left\lfloor d^t n \right\rfloor$ which implies
         \[
-            t > \left\lfloor d^t n  \right\rfloor \implies
             t >
             d^t n \geq
             d^{\frac{\log n}{\log (2/d)}} n =
@@ -310,7 +322,7 @@ For the recursive step, we need:
             d^{\left( \frac{\log \left(\frac{n}{2^{k-1}}\right)}{\log \left(\frac{2^{k-1}}{d}\right)} \right)^{1/(k-1)}}
         \]
 
-        and the right hand side is increasing in $d$ for $d \leq 1$. % TODO show this
+        and the right hand side is increasing in $d$ for $d \leq 1$.
         Therefore, we can substitute our minimum density requirement:
         
         \[

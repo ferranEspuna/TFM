@@ -91,8 +91,8 @@ The algorithm is presented here:
                 \State \Return $\{x : \{x\} \in E(G)\}$
             \EndIf
 
-            \State \textbf{assert} $d \geq 4^{k-1} n^{-\frac{1}{2^{k-1}}}$ \label{line:min_density}
             \State $n \gets |V(G)|,\, m \gets |E(G)|,\, d \gets m/n^k$
+            \State \textbf{assert} $d \geq 4^{k-1} n^{-\frac{1}{2^{k-1}}}$ \label{line:min_density}
             \State $t \gets t(n, d, k),\, w \gets \lceil 2t/d \rceil,\, s \gets \lfloor d^t n^{k-1} \rfloor$ \label{line:tws}
             \State $W \gets$ the set of $w$ vertices with highest degree in $G$ \label{line:W}
             \State $U \gets \binom{V\setminus W}{k-1}$

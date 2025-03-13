@@ -356,31 +356,9 @@ For the recursive step, we need:
                 {\left( \frac{\log \left(\frac{n}{2^{k-1}}\right)}
                 {\log \left( \frac{n^{1 / \left(2^{k-1}\right)}}{2^{k-1}}\right)} \right)^{1/(k-1)}} \geq
             %
-            4^{k-1}  n^{-\frac{1}{2^{k-1}}
-                \left( \frac{\log \left(\frac{n}{2^{k-1}}\right)}
-                {\log \left( \frac{n^{1 / \left(2^{k-1}\right)}}{2^{k-1}}\right)} \right)^{1/(k-1)}} \geq
-            %
-            4^{k-1}  n^{-\frac{1}{2^{k-2}}}
+            \dots
         \]
-        Where the last inequality follows from
-        \[
-            \frac{\log \left(\frac{n}{2^{k-1}}\right)}
-                {\log \left( \frac{n^{1 / \left(2^{k-1}\right)}}{2^{k-1}}\right)} \leq
-            %
-            \frac{\log \left(\frac{n}{2^{k-1}}\right)}
-                {\log \left( \frac{n^{1 / \left(2^{k-1}\right)}}{2^{k-1}}\right)} \leq
-            %
-            \frac{\log n}{\log (n^{1/2^{k-1}})} =
-            %
-            2^{k-1}
-        \]
-        In particular, $n^{1-k} < \frac{d^t}{2}$ so $d' \geq \frac{d^t}{2}$.
-        Therefore,
-        \[
-            d' \geq
-            \frac{1}{2} \cdot 4^{k-1}n^{-\frac{1}{2^{k-2}}} >
-            4^{k-2} (n-w)^{-\frac{1}{2^{k-2}}} \qedhere
-        \]
+
     \end{proof}
 
 \end{lemma}

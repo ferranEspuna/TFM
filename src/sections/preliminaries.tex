@@ -1,7 +1,6 @@
 \section{Preliminaries}\label{sec:preliminaries}
 In this section we introduce some basic definitions and results that will be used throughout this thesis.
 
-% todo change embeddings from f to \varphi
 \begin{definition}
 
     For an integer $k \geq 2$ a finite \emph{$k$-graph}
@@ -126,7 +125,7 @@ In this section we introduce some basic definitions and results that will be use
 \end{remark}
 
 \begin{definition}\label{def:zarankiewicz}
-    let $0 < t_1 \leq v_1, \dots, 0 < t_k \leq v_k$ be integers.
+    Let $0 < t_1 \leq v_1, \dots, 0 < t_k \leq v_k$ be integers.
     Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
     is the largest integer $0 \leq z < v_1  \dots v_k$ for which there exists $k$-partite $k$-graph
     $H$ with part sizes $ |V_1| = v_1, \dots, |V_k| = v_k$ and $z$ edges
@@ -142,7 +141,7 @@ onto another we will assume that condition $f(T_i) \subset V_i$.
     Assume that G is a $K(t_1, \dots, t_k)$-free $n$-vertex $k$-graph with $m$ edges.
     pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
     (For example $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$)
-    Let $V_1, \dots, V_k$ be a random partition of $V(G)$ with $|V_i| = n_i$.
+    Let $V_1, \dots, V_k$ be a random partition of $V(G)$ with $|V_i| = v_i$.
     for an edge $e \in E(G)$, the probability that $e$ is an edge in $K(V_1, \dots, V_k)$ is
     greater than
     \[k! \prod_i n_i \sim k! (1/k)^k\]
@@ -163,10 +162,9 @@ partite 2-graphs by C. Hyltén-Cavallius in~\cite{Hylten1958}
 in 1958.
 The result is stated and proved here for completeness:
 
-% m, n --> u, w
 % TODO: replace \leq with < ??
 \begin{theorem}\label{thm:kst}
-    Let $0 < m \leq s$ and $0 < n \leq t$ be integers. 
+    Let $0 < u \leq s$ and $0 < w \leq t$ be integers.
     Then 
     \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
     \begin{proof}
@@ -181,20 +179,20 @@ The result is stated and proved here for completeness:
         \[
             |P|
             = \nsum_{x \in U} \binom{d_G(x)}{t}
-            = \nsum_{x \in U} f(d_G(x))
-            \geq u  \nsum_{x \in U} f(z/u)
+            = \nsum_{x \in U} \varphi(d_G(x))
+            \geq u  \nsum_{x \in U} \varphi(z/u)
             = u \binom{z / u}{t}
         \]
         Where we define
         \[
-            f(x) \coloneqq
+            \varphi(x) \coloneqq
             \begin{cases}
                 \binom{x}{t}, & \text{if } x \geq t - 1 \\
                 0, & \text{otherwise}
             \end{cases}
         \]
         Which is convex, meaning we get the inequality as Jensen's inequality.
-        The other equalities come from the fact that $f(d)$ agrees
+        The other equalities come from the fact that $\varphi(d)$ agrees
         with $\binom{d}{t}$ for all integers $d \geq 0$;
         and that by our bound on $z$, $z \geq (t-1)u \implies z/u \geq t - 1$.
 

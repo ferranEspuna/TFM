@@ -95,7 +95,7 @@ but it is defined recursively.
                 \State \Return $\{x : \{x\} \in E(G)\}$
             \EndIf
 
-            \State $n \gets |V(G)|,\, m \gets |E(G)|,\, d \gets m/n^k$
+            \State $V \gets V(G), E \gets E(G), n \gets |V|,\, m \gets |E|,\, d \gets m/n^k$
             \State $t \gets t(n, d, k),\, w \gets \lceil 2t/d \rceil,\, s \gets \lfloor d^t n^{k-1} \rfloor$ \label{line:tws}
             \State \textbf{assert} $t \geq 2$ \label{line:min_t}
             \State $W \gets$ the set of $w$ vertices with highest degree in $G$ \label{line:W}
@@ -268,7 +268,7 @@ $t \geq 2$.
     \begin{proof}
         We will apply Theorem~\ref{thm:kst} to the $2$-partite $2$-graph
         \[
-            \mathcal{P} = (U, W, \{(x, y) \in U \times W) | \{x\} \cup y \in E \})
+            \mathcal{P} = (U, W, \{(x, y) \in U \times W | \{x\} \cup y \in E \})
         \]
         By Lemma~\ref{lm:many_edges}, $\mathcal{P}$ has at least
         $\frac{3}{2}dwn^{k-1}$ edges.

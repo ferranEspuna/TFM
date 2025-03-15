@@ -375,8 +375,8 @@ For the recursive step, we need:
 
         We start by using Lemma~\ref{lm:d_t} and the fact that $w \leq n/2$:
 
-        \begin{align*}
-            t' \geq &
+        \[
+            t' \geq
             %
             \left\lfloor \left(  \frac{\log ((n-w)/2^{k-2})}{\log (2 \cdot 2^{k-1}/d^t)} \right)^
             {\frac{1}{k-2}} \right\rfloor \geq
@@ -384,10 +384,14 @@ For the recursive step, we need:
             \left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (2^{k}/d^t)} \right)^{\frac{1}{k-2}} \right\rfloor =
             %
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})}{k \log 2 - t \log d} \right)^
-            {\frac{1}{k-2}} \right\rfloor \\
+            {\frac{1}{k-2}} \right\rfloor
+        \]
+        Then, we substitute the definition of $t$, where removing the floor function
+        maintains the inequality because the right hand side is decreasing in $t$ (recall $d \leq 1$):
+
+        \[
+            t' \geq
             %
-            %
-            \geq &
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})}
             {k \log 2 - \left(  \frac{\log (n / 2^{k-1})}{\log (2^{k}/d)} \right)^{\frac{1}{k-1}}  \log d} \right)^
             {\frac{1}{k-2}} \right\rfloor
@@ -396,8 +400,32 @@ For the recursive step, we need:
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
             {\frac{k \log 2}{\log(n / 2^{k-1})^{\frac{1}{k-1}}} - \frac{\log d}{\log (2^{k}/d)^{\frac{1}{k-1}}} }
             \right)^{\frac{1}{k-2}} \right\rfloor \\
-            \geq &
-            %
+        \]
+
+        Now we argue that $n/2^{k-1} \geq 2^{k}/d$.
+        Otherwise,
+        \[
+            2^{k} 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}} \leq d < \frac{2^{2k-1}}{n}
+        \]
+        which implies
+        \[
+            n^{1 - \frac{1}{2^{k-1}}} \leq 2^{k-1}
+        \]
+        so that
+        \[
+            n \leq 2^{\frac{k-1}{1-\frac{1}{2^{k-1}}}}
+        \]
+        Substituting this expression into the minimum density requirement, we get
+        \[
+            d >
+            2^{k} \left( 2^{\frac{k-1}{1-\frac{1}{2^{k-1}}}} \right)^{-\frac{1}{2^{k-1}}}  \geq
+            2^{k-(k-1)} = 2
+        \]
+        which is a contradiction as $d \leq 1$.
+        This allows us to find a common denominator on the
+        right hand side of the previous inequality:
+        \[
+            t' \geq
             %
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
             {\frac{\log (2^{k} / d)}{\log(2^{k} / d)^{\frac{1}{k-1}}} } \right)^
@@ -411,10 +439,8 @@ For the recursive step, we need:
             {\log (2^{k} / d)} \right)^
             {\frac{1}{k-1}} \right\rfloor =
             %
-            t
-        \end{align*}
-        where the last inequality follows from $\frac{n}{2^{k-1}} \geq \frac{2^{k}}{d}$
-        which is clear from the minimum density requirement.
+            t \qedhere
+        \]
     \end{proof}
     
 
@@ -428,11 +454,13 @@ All in all, we can now state the following theorem:
     \begin{proof}
         To prove the correctness of the algorithm, we will proceed by induction on $k$:
         If $k=2$, it follows from Lemmas~\ref{lm:return} and~\ref{lm:base_case}.
-        Likewise, if $k \geq 3$, Lemmas~\ref{lm:return} tells us that the algorithm will
+        Likewise, if $k \geq 3$, Lemma~\ref{lm:return} tells us that the algorithm will
         reach line~\ref{line:return} at some point.
-        Using the induction hypothesis for $k-1$ and Lemma~\ref{lm:t_prime},
-        we know that the recursive call in line~\ref{line:return}
-        gives us a tuple of pairwise disjoint sets
+        Furthermore, Lemma~\ref{lm:t_prime} tells us that the recursive call in line~\ref{line:return}
+        will have a part size $t'$ that is at least $t$.
+        In particular, this means that $t' \geq 2$.
+        Using the induction hypothesis for $k-1$, this recursive call will be successful and
+        return a tuple of pairwise disjoint sets
         $(X_1, X_2, \ldots, X_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that:
         \begin{itemize}
             \item $|X_i| \geq t(n-w, d', k-1) \geq t$

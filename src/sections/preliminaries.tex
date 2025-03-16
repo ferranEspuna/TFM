@@ -143,7 +143,8 @@ contain $G$ as a subgraph.
     \centering
     \input{figures/222}
     \caption{The complete 3-partite 3-graph $K(2, 2, 2)$, with parts $V_1, V_2, V_3$.
-    Each edge is represented as one of the colored dots, and connected to the vertices it contains.}
+    Each vertex is represented as a black dot while
+    each edge is represented as one of the colored dots, and connected by a line to the vertices it contains.}
     \label{fig:222}
 \end{figure}
 
@@ -157,7 +158,7 @@ contain $G$ as a subgraph.
 \begin{definition}\label{def:zarankiewicz}
     Let $0 < t_1 \leq v_1, \dots, 0 < t_k \leq v_k$ be integers.
     Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
-    is the largest integer $0 \leq z < v_1  \dots v_k$ for which there exists $k$-partite $k$-graph
+    is the largest integer $0 \leq z < \prod_i{ v_i}$ for which there exists $k$-partite $k$-graph
     $H$ with part sizes $ |V_1| = v_1, \dots, |V_k| = v_k$ and $z$ edges
     such that no embedding $f$ of $K(T_1, \dots, T_k)$ with $|T_i| = t_i$ in it exists
     satisfying $f(T_i) \subseteq V_i$ for all $i$.

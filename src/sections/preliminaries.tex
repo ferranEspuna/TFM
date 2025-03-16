@@ -1,5 +1,6 @@
 \section{Preliminaries}\label{sec:preliminaries}
 In this section we introduce some basic definitions and results that will be used throughout this thesis.
+We start by defining $k$-graphs, which generalize the usual notion of a graph.
 
 \begin{definition}
 
@@ -11,10 +12,20 @@ In this section we introduce some basic definitions and results that will be use
 \end{definition}
 
 \begin{remark}
-    If we let $k=2$ we recover the usual definition of a graph.
+    If we let $k=2$ we recover the usual definition of an undirected graph with no loops.
 \end{remark}
 
-% TODO define degrees, complete graph, etc.
+\begin{definition}
+    Let $G = (V, E)$ be a $k$-graph and $v \in V$.
+    The \emph{degree} $d_G(v)$ of $v$ in $G$
+    is the number of edges containing $v$, that is
+    \[
+        d_G(v) \coloneqq |\{e \in E \mid v \in e\}|
+    \]
+\end{definition}
+
+Next, we introduce $k$-graph homomorphisms, embeddings and isomorphisms, which allow us
+to relate $k$-graphs (with the same value of $k$) to each other:
 
 \begin{definition}
     Let $G = (V, E)$ and $H = (W, F)$ be $k$-graphs.
@@ -51,6 +62,11 @@ In this section we introduce some basic definitions and results that will be use
     the vertices of a $k$-graph.
 \end{remark}
 
+Now we can state the \emph{forbidden subgraph problem} for $k$-graphs.
+Informally, given a $k$-graph $G$, and an integer $n \geq |V(G)|$,
+we want to find the largest $m$ such that all $k$-graphs with $n$ vertices and $m$ edges
+contain $G$ as a subgraph.
+
 \begin{proposition} \label{prop:extremal}
     Let $G = (V, E)$ be a $k$-graph with nonempty edge set and $n \geq |V|$ be an integer.
     Then there exists an integer $M_0 = ex(n, G) \in \left[ 0, \binom{n}{k}\right)$ such that
@@ -81,9 +97,12 @@ In this section we introduce some basic definitions and results that will be use
 
 \end{proposition}
 
+\begin {definition}
+    The integer $ex(n, G)$ is called the \emph{extremal number} of $G$.
+\end{definition}
+
 \begin{remark}
-    We call $ex(n, G)$ the \emph{extremal number} of $G$.
-    It is clearly invariant under isomorphism.
+    The extremal number is clearly invariant under isomorphism of $G$.
 \end{remark}
 
 \begin{definition}
@@ -93,6 +112,7 @@ In this section we introduce some basic definitions and results that will be use
     We may write $G = (V_1, \dots, V_p; E)$ and say that
     $G$ is a partite $k$-graph on $V_1, \dots, V_p$.
 \end{definition}
+
 
 \begin{remark}
     If $p=k$, every edge intersects every part in exactly one vertex,

@@ -1,3 +1,5 @@
+import colorsys
+
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import colormaps
@@ -14,6 +16,31 @@ DOT_COLORS = {
 }
 
 BOX_BG_COLOR = "gray!20"  # Background color for group boxes
+
+from typing import Tuple
+
+
+def dim_rgb(color: Tuple[float, float, float], target_brightness: float) -> Tuple[float, float, float]:
+    """
+    Dim an RGB color (with values in range [0,1]) to a specified brightness level.
+
+    Parameters:
+        color (Tuple[float, float, float]): The original RGB color (values 0-1).
+        target_brightness (float): The desired brightness level (0-1).
+
+    Returns:
+        Tuple[float, float, float]: The dimmed RGB color.
+    """
+    if not (0 <= target_brightness <= 1):
+        raise ValueError("Brightness factor must be between 0 and 1.")
+
+    # Convert RGB to HLS
+    h, l, s = colorsys.rgb_to_hls(*color)
+
+    # Adjust lightness to match target brightness
+    new_rgb = colorsys.hls_to_rgb(h, min(l, target_brightness), s)
+
+    return new_rgb
 
 # --- Define your groups (adjust coordinates as needed) ---
 group_A = [(2, 0), (0, 2)]
@@ -78,14 +105,17 @@ for i, a in enumerate(group_A):
                 root_y += coef * y
             root_y /= sum(coefs_y)
 
-            """# Compute a color from the viridis colormap
-            f = (edge_index) / (total_hyperedges)  # f in [0,1)
+            # Compute a color from the viridis colormap
+            f = (edge_index ) / (total_hyperedges)  # f in [0,1)
             #candidates = ['viridis', 'plasma', 'magma', Set2', 'prism']
-            rgba = colormaps['brg'](f)
-            r_val, g_val, b_val = rgba[:3]  # ignore alpha"""
+            rgba = colormaps['prism'](f)
+            r_val, g_val, b_val = rgba[:3]  # ignore alpha
+            # Dim the color to a specified brightness level
+            r_val, g_val, b_val = dim_rgb((r_val, g_val, b_val), 0.45)
+            print(r_val, g_val, b_val)
 
-            c = plt.get_cmap('Dark2_r').colors[edge_index]
-            r_val, g_val, b_val = c
+            """c = plt.get_cmap('Dark2_r').colors[edge_index]
+            r_val, g_val, b_val = c"""
 
             # Define a unique color using the rgb model
             lines.append(

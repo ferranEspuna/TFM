@@ -1,7 +1,7 @@
 \section{Preliminaries}\label{sec:preliminaries}
 In this section we introduce some basic definitions and results that will be used throughout this thesis.
+We start by defining $k$-graphs, which generalize the usual notion of a graph.
 
-% todo change embeddings from f to \varphi
 \begin{definition}
 
     For an integer $k \geq 2$ a finite \emph{$k$-graph}
@@ -12,10 +12,20 @@ In this section we introduce some basic definitions and results that will be use
 \end{definition}
 
 \begin{remark}
-    If we let $k=2$ we recover the usual definition of a graph.
+    If we let $k=2$ we recover the usual definition of an undirected graph with no loops.
 \end{remark}
 
-% TODO define degrees, complete graph, etc.
+\begin{definition}
+    Let $G = (V, E)$ be a $k$-graph and $v \in V$.
+    The \emph{degree} $d_G(v)$ of $v$ in $G$
+    is the number of edges containing $v$, that is
+    \[
+        d_G(v) \coloneqq |\{e \in E \mid v \in e\}|
+    \]
+\end{definition}
+
+Next, we introduce $k$-graph homomorphisms, embeddings and isomorphisms, which allow us
+to relate $k$-graphs (with the same value of $k$) to each other:
 
 \begin{definition}
     Let $G = (V, E)$ and $H = (W, F)$ be $k$-graphs.
@@ -52,6 +62,11 @@ In this section we introduce some basic definitions and results that will be use
     the vertices of a $k$-graph.
 \end{remark}
 
+Now we can state the \emph{forbidden subgraph problem} for $k$-graphs.
+Informally, given a $k$-graph $G$, and an integer $n \geq |V(G)|$,
+we want to find the largest $m$ such that all $k$-graphs with $n$ vertices and $m$ edges
+contain $G$ as a subgraph.
+
 \begin{proposition} \label{prop:extremal}
     Let $G = (V, E)$ be a $k$-graph with nonempty edge set and $n \geq |V|$ be an integer.
     Then there exists an integer $M_0 = ex(n, G) \in \left[ 0, \binom{n}{k}\right)$ such that
@@ -65,7 +80,7 @@ In this section we introduce some basic definitions and results that will be use
         Note that, if $M_0$ exists, clearly it is unique.
         Also, the condition is clearly false for $m = 0$ and
         true for $m = \binom{n}{k}$
-        (the only graph $H$ with vertex set $W$, $|W|=n$ and $\binom{|V|}{k}$ vertices
+        (the only graph $H$ with vertex set $W$, $|W|=n$ and $\binom{|V|}{k}$ edges
         is the one having all $k$-sets of vertices so any injective map $f: V \to W$
         is an embedding of $G$ in $H$).
         We only need to show that if the condition is true for $m$ then it is true for
@@ -82,9 +97,12 @@ In this section we introduce some basic definitions and results that will be use
 
 \end{proposition}
 
+\begin {definition}
+    The integer $ex(n, G)$ is called the \emph{extremal number} of $G$.
+\end{definition}
+
 \begin{remark}
-    We call $ex(n, G)$ the \emph{extremal number} of $G$.
-    It is clearly invariant under isomorphism.
+    The extremal number is clearly invariant under isomorphism of $G$.
 \end{remark}
 
 \begin{definition}
@@ -95,16 +113,19 @@ In this section we introduce some basic definitions and results that will be use
     $G$ is a partite $k$-graph on $V_1, \dots, V_p$.
 \end{definition}
 
-\begin{remark}
+
+\begin{remark}\label{rem:ordered}
     If $p=k$, every edge intersects every part in exactly one vertex,
     so we can identify the edges with a subset of $ V_1 \times \dots \times V_k$.
+    If it is clear from context, we may slightly abuse notation when talking about ordered and
+    unordered sets of vertices, as in the definition below.
 \end{remark}
 
 \begin{definition}
     A $k$-partite $k$-graph $G = (V_1, \dots, V_k; E)$ is \emph{complete}
-    if every $k$-set of vertices $(v_1, \dots, v_k)$ with $v_i \in V_i$
-    satisfies $\{v_1, \dots, v_k\} \in E$.
-    We write $G = K(V_1, \dots, V_k)$.
+    if $E = V_1 \times \dots \times V_k$.
+    That is, if all $(v_1, \dots, v_k) \in V_1 \times \dots \times V_k$
+    satisfy $\{v_1, \dots, v_k\} \in E$.
 \end{definition}
 
 \begin{remark}
@@ -118,6 +139,15 @@ In this section we introduce some basic definitions and results that will be use
     $a_1, \dots, a_k$ vertices, which we denote by $K(a_1, \dots, a_k)$.
 \end{remark}
 
+\begin{figure}[H]
+    \centering
+    \input{figures/222}
+    \caption{The complete 3-partite 3-graph $K(2, 2, 2)$, with parts $V_1, V_2, V_3$.
+    Each vertex is represented as a black dot while
+    each edge is represented as one of the colored dots, and connected by a line to the vertices it contains.}
+    \label{fig:222}
+\end{figure}
+
 \begin{remark}
     All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$
     are contained in $K(a_1, \dots, a_k)$ as subgraphs.
@@ -126,23 +156,23 @@ In this section we introduce some basic definitions and results that will be use
 \end{remark}
 
 \begin{definition}\label{def:zarankiewicz}
-    let $0 < t_1 \leq v_1, \dots, 0 < t_k \leq v_k$ be integers.
+    Let $0 < t_1 \leq v_1, \dots, 0 < t_k \leq v_k$ be integers.
     Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
-    is the largest integer $0 \leq z < v_1  \dots v_k$ for which there exists $k$-partite $k$-graph
+    is the largest integer $0 \leq z < \prod_i{ v_i}$ for which there exists $k$-partite $k$-graph
     $H$ with part sizes $ |V_1| = v_1, \dots, |V_k| = v_k$ and $z$ edges
     such that no embedding $f$ of $K(T_1, \dots, T_k)$ with $|T_i| = t_i$ in it exists
     satisfying $f(T_i) \subseteq V_i$ for all $i$.
 \end{definition}
 
 From now on, every time we talk about embeddings from one $k$-partite $k$-graph
-onto another we will assume that condition $f(T_i) \subset V_i$.
+onto another we will assume the condition $f(T_i) \subset V_i$.
 
 \begin{remark}\label{rem:zar_vs_turan}
     Finding this number can help us upper bound the extremal number of $K(t_1, \dots, t_k)$ asymptotically:
     Assume that G is a $K(t_1, \dots, t_k)$-free $n$-vertex $k$-graph with $m$ edges.
     pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
     (For example $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$)
-    Let $V_1, \dots, V_k$ be a random partition of $V(G)$ with $|V_i| = n_i$.
+    Let $V_1, \dots, V_k$ be a random partition of $V(G)$ with $|V_i| = v_i$.
     for an edge $e \in E(G)$, the probability that $e$ is an edge in $K(V_1, \dots, V_k)$ is
     greater than
     \[k! \prod_i n_i \sim k! (1/k)^k\]
@@ -163,10 +193,9 @@ partite 2-graphs by C. Hyltén-Cavallius in~\cite{Hylten1958}
 in 1958.
 The result is stated and proved here for completeness:
 
-% m, n --> u, w
 % TODO: replace \leq with < ??
 \begin{theorem}\label{thm:kst}
-    Let $0 < m \leq s$ and $0 < n \leq t$ be integers. 
+    Let $0 < u \leq s$ and $0 < w \leq t$ be integers.
     Then 
     \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
     \begin{proof}
@@ -181,20 +210,20 @@ The result is stated and proved here for completeness:
         \[
             |P|
             = \nsum_{x \in U} \binom{d_G(x)}{t}
-            = \nsum_{x \in U} f(d_G(x))
-            \geq u  \nsum_{x \in U} f(z/u)
+            = \nsum_{x \in U} \varphi(d_G(x))
+            \geq u  \nsum_{x \in U} \varphi(z/u)
             = u \binom{z / u}{t}
         \]
         Where we define
         \[
-            f(x) \coloneqq
+            \varphi(x) \coloneqq
             \begin{cases}
                 \binom{x}{t}, & \text{if } x \geq t - 1 \\
                 0, & \text{otherwise}
             \end{cases}
         \]
         Which is convex, meaning we get the inequality as Jensen's inequality.
-        The other equalities come from the fact that $f(d)$ agrees
+        The other equalities come from the fact that $\varphi(d)$ agrees
         with $\binom{d}{t}$ for all integers $d \geq 0$;
         and that by our bound on $z$, $z \geq (t-1)u \implies z/u \geq t - 1$.
 

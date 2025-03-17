@@ -1,8 +1,9 @@
+import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.cm as cm
+from matplotlib import colormaps
 
 # --- Adjustable parameters ---
-LINE_THICKNESS = 1.0  # Thickness of hyperedge lines
+LINE_THICKNESS = 1.5  # Thickness of hyperedge lines
 DOT_THICKNESS = 4.0  # Thickness of the main dots
 ROOT_THICKNESS = 2.5  # Thickness of hyperedge root dots
 
@@ -77,10 +78,14 @@ for i, a in enumerate(group_A):
                 root_y += coef * y
             root_y /= sum(coefs_y)
 
-            # Compute a color from the viridis colormap
-            f = edge_index / total_hyperedges  # f in [0,1)
-            rgba = cm.viridis(f)
-            r_val, g_val, b_val = rgba[:3]  # ignore alpha
+            """# Compute a color from the viridis colormap
+            f = (edge_index) / (total_hyperedges)  # f in [0,1)
+            #candidates = ['viridis', 'plasma', 'magma', Set2', 'prism']
+            rgba = colormaps['brg'](f)
+            r_val, g_val, b_val = rgba[:3]  # ignore alpha"""
+
+            c = plt.get_cmap('Dark2_r').colors[edge_index]
+            r_val, g_val, b_val = c
 
             # Define a unique color using the rgb model
             lines.append(

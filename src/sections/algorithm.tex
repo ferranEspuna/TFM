@@ -18,27 +18,25 @@ More precisely, we show the following:
     Furthermore, the algorithm's runtime is polynomial in $n$.
 \end{theorem}
 
-\begin{remark}
-    This gives a constructive proof of Theorem~\ref{thm:erdos64}.
-    Indeed, suppose we have a fixed value for $t$.
-    For $n$ large enough, we may choose $d$ such that $t(n, d, k) \geq t$.
-    By our definition of $t$, we only need that
-    \[
-        d \geq 2^{k} {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}},
-    \]
-    which is satisfied for
-    \[
-        m =
-        \left\lceil
-        n^k 2^{k} {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}}
-        \right\rceil =
-        O\left(n^{k - \frac{1}{t^{k-1}}}\right).
-    \]
-    The construction in Theorem~\ref{thm:kpartite} then proves
-    \[
-        ex(n, K(t, \overset{k}{\cdots}, t)) < m =  O\left(n^{k - \frac{1}{t^{k-1}}}\right).
-    \]
-\end{remark}
+This gives a constructive proof of Theorem~\ref{thm:erdos64}.
+Indeed, suppose we have a fixed value for $t$.
+For $n$ large enough, we may choose $d$ such that $t(n, d, k) \geq t$.
+By our definition of $t$, we only need that
+\[
+    d \geq 2^{k} {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}},
+\]
+which is satisfied for
+\[
+    m =
+    \left\lceil
+    n^k 2^{k} {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}}
+    \right\rceil =
+    O\left(n^{k - \frac{1}{t^{k-1}}}\right).
+\]
+The construction in Theorem~\ref{thm:kpartite} then proves
+\[
+    ex(n, K(t, \overset{k}{\cdots}, t)) < m =  O\left(n^{k - \frac{1}{t^{k-1}}}\right).
+\]
 
 % TODO discussion of constant density case. Is it optimal?
 

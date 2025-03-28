@@ -6,9 +6,9 @@ sizes
 \begin{equation}
      t = t (n, d, k) = \left\lfloor
         \left(  \frac{\log (n/2^{k-1})}{\log (2^{k}/d)} \right)
-        ^{\frac{1}{k-1}} \right\rfloor \label{eq:t}
+        ^{\frac{1}{k-1}} \right\rfloor \label{eq:t},
 \end{equation}
-with the only assumption that $t \geq 2$ (otherwise, we may just return a set of $k$ vertices forming an edge in~$G$).
+with the only assumption that $t \geq 2$ (otherwise, we may just select a set of $k$ vertices forming an edge in~$G$).
 More precisely, we show the following:
 \begin{theorem}\label{thm:kpartite}
     There is an algorithm that, given a $k$-graph $G$ satisfying the conditions above,
@@ -17,6 +17,14 @@ More precisely, we show the following:
     $|V_i| = t$ for all $i$ and $V_1 \times \cdots \times V_k \subset E$.
     Furthermore, the algorithm's runtime is polynomial in $n$.
 \end{theorem}
+
+\begin{remark}
+    The stated condition implies that the sets $V_1, \dots V_k$ are disjoint:
+    If, for example, $v \in V_1 \cap V_2$ and for $3 \leq i \leq k$ $v_i \in V_i$ then
+    $(v, v, v_3, \dots, v_k) \in V_1 \times \cdots \times V_k$ has size $k-1$ as an unordered set so it cannot
+    be an edge in $G$.
+    This means that the inclusion map from $K(V_1, \dots, V_k)$ to $V$ defines an embedding, as desired.
+\end{remark}
 
 This gives a constructive proof of Theorem~\ref{thm:erdos64}.
 Indeed, suppose we have a fixed value for $t$.
@@ -45,7 +53,7 @@ which we present here (Algorithm~\ref{alg:bipartite}) for context and clarity.
 A slightly different value for $t$ is used because of different estimates in their proof of correctness.
 Specifically, $t$ is set to
 \[
-    t_2(n, d) = \left\lfloor \frac{\log (n/2) }{\log (2e/d)}\right\rfloor
+    t_2(n, d) = \left\lfloor \frac{\log (n/2) }{\log (2e/d)}\right\rfloor,
 \]
 whereas we get
 \[
@@ -58,8 +66,8 @@ and the size of $W$ is logarithmic in $n$.
 This is achieved by selecting $W$ to be a set of vertices of highest degree
 (this is, no vertex in $U$ has more neighbors than any vertex in $W$).
 Then, by iterating over all $t$-subsets of $W$, such a set $T$
-is found satisfying that the set $S$ of common neighbors of $T$ in $U$ has size at least $t$,
-so $S, T \subset V$ are disjoint, of size $t$ and satisfy $S \times T \subset E$.
+is found satisfying that the set $S$ of common neighbors of $T$ in $U$ has size at least $t$.
+In other words, $S \times T \subset E$ for $S, T \subset V$ of size at least $t$.
 \begin{algorithm}[H]
     \caption{Finding a balanced bipartite graph in a $2$-graph}
     \label{alg:bipartite}
@@ -81,7 +89,7 @@ so $S, T \subset V$ are disjoint, of size $t$ and satisfy $S \times T \subset E$
         \EndFor
         \end{algorithmic}
 \end{algorithm}
-The minimum density $d \geq 3n^{-1/2}$ in~\ref{line:bipartite_min_d} is required
+The minimum density $d \geq 3n^{-1/2}$ in line~\ref{line:bipartite_min_d} is required
 because if $d = o\left(n^{-1/2}\right)$ then
 there may not even be a $K(2, 2)$ in $G$. % TODO: Explain this better in preliminaries
 If the set $S$ is too large, a subset of it of size $t$ can be returned instead.
@@ -114,7 +122,7 @@ The main idea is to select a set $W \subset V$ of vertices of highest degree wit
     \label{eq:w}
     |W| = w = w(n, d, k) = \left\lceil \frac{2t(n, d, k)}{d} \right\rceil.
 \end{equation}
-Then, for every $t$-subset $T$ of $W$, we find the set $S$ of $(k-1)$-subsets of $V \setminus W$
+Then, for every $t$-subset $T$ of $W$, we compute the set $S$ of $(k-1)$-subsets of $V \setminus W$
 that form an edge with every vertex in $T$.
 For a specific $T$, the set $S$ satisfies
 \begin{equation}
@@ -125,18 +133,22 @@ We define a new $(k-1)$-graph $G'$ with vertex set $V \setminus W$ and edge set 
 As it turns out, $S$ is large enough~\eqref{eq:s}
 that applying the algorithm recursively to $G'$
 yields a $K(t', \overset{k-1}{\cdots}, t')$ in $G'$ with $t' \geq t$.
-This is, a tuple of pairwise disjoint sets
-$P' = (X_1, X_2, \ldots, X_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that:
-\begin{itemize}
-    \item $|X_i| = t'$
-    \item $X_1 \times \dots \times X_{k-1} \subset E(G') = S =
-    \left\{x \in \binom{V \setminus W}{k-1} : \{x\} \cup y \in E \text{ for all } y \in T\right\}$
-\end{itemize}
-If we now concatenate $P'$ with $T$ (choosing a subset of $X_i$ of size $t$ for each $i$ if necessary), we get
-a $k$-tuple of disjoint sets
+This is, a tuple
+$P' = (V_1, V_2, \ldots, V_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that $|V_i| = t'$ and
+$V_1 \times \cdots \times V_{k-1}\subset S$.
+If we now concatenate $P'$ with $T$ (choosing a subset of $X_i \subset V_i$ of size $t$ for each $i$ if necessary), we get
+a $k$-tuple of $t-sets$ of $V$
 \[P = X \circ (T) = (X_1, \ldots, X_{k-1}, T),\]
-which satisfies $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$
+which by the definition of $S$ satisfies
+$X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$
 so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
+The implementation of the algorithm and its proof of correctness is less cumbersome if we assume
+a $1$-graph to be just a subset of a set and use it as the base case.
+We also make the simplification of not including in Algorithm~\ref{alg:kpartite}
+the size reduction of the sets obtained from the recursive call.
+The algorithm as stated can be thought of returning a complete $k$-partite
+subgraph with part sizes \emph{at least} $t$, which can easily be post-processed
+afterwards if desired to be balanced of part sizes $t$.
 
 \begin{algorithm}
     \caption{Finding a balanced partite $k$-graph in a $k$-graph}
@@ -166,7 +178,6 @@ so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
 \end{algorithm}
 
 % TODO 1-graph is a subset of a set
-% TODO explain what \circ means
 
 The aim of the rest of this section is to prove that this algorithm is correct
 (as long as the  condition $t \geq 2$ in line~\ref{line:min_t} is met on the first call)

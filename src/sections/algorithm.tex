@@ -40,15 +40,14 @@ The construction in Theorem~\ref{thm:kpartite} then proves
 
 % TODO discussion of constant density case. Is it optimal?
 
-For $k = 2$, this algorithmic problem was already solved by Mubayi and Turán~\cite{MUBAYI2010174}.
-Their algorithm follows very closely the structure of the proof of Theorem~\ref{thm:kst}.
+For $k = 2$, this problem was already solved by an algorithm of Mubayi and Turán~\cite{MUBAYI2010174},
+which we present here (Algorithm~\ref{alg:bipartite}) for context and clarity.
 It partitions $V(G)$ into two sets $U$ and $W$ such that there are many edges between them
 and the size of $W$ is logarithmic in $n$.
-This is achieved by selecting a set of vertices of highest degree, that
-is, no vertex in $U$ has more neighbors than any vertex in $W$.
+This is achieved by selecting a set of vertices of highest degree
+(this is, no vertex in $U$ has more neighbors than any vertex in $W$).
 Then, by iterating over all $t$-subsets of $W$ it finds such a set $T$ and an appropriate $t$-set $S \subset U$,
 for which $S \times T \subset E$.
-We present Mubayi and Turán's algorithm (Algorithm~\ref{alg:bipartite}) here for context and clarity.
 
 \begin{algorithm}[H]
     \caption{Finding a balanced bipartite graph in a $2$-graph}
@@ -75,7 +74,7 @@ We present Mubayi and Turán's algorithm (Algorithm~\ref{alg:bipartite}) here fo
 We require that $d \geq 3n^{-1/2}$ in~\ref{line:bipartite_min_d} because if $d = o\left(n^{-1/2}\right)$ then
 there may not even be a $K(2, 2)$ in $G$. % TODO: Explain this better
 If the set $S$ is too large, we can simply take a subset of it of size $t$.
-To see that the algorithm returns a pair of sets $(S, T)$, one first shows that
+To see that the algorithm returns a pair of sets $(S, T)$, one uses the fact that
 there is large number of edges between $U$ and $W$ (proportional to the size of $W$).
 Then, a direct application of Theorem~\ref{thm:kst}
 with $u = |U| = n - w$ and $s = t$ shows that

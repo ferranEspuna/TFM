@@ -143,8 +143,7 @@ $P' = (V_1, V_2, \ldots, V_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such tha
 $V_1 \times \cdots \times V_{k-1}\subset S$.
 
 If we now concatenate $P'$ with $T$ (choosing a subset of $X_i \subset V_i$ of size $t$ for each $i$ if necessary), we get
-a $k$-tuple of $t-sets$ of $V$
-\[P = X \circ (T) = (X_1, \ldots, X_{k-1}, T),\]
+a $k$-tuple $(X_1, \ldots, X_{k-1}, T)$, of $t-sets$ of $V$
 which by the definition of $S$ satisfies
 $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$
 so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
@@ -168,8 +167,9 @@ so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
             \ForAll{$T \in \binom{W}{t}$} \label{line:for}
                 \State $S \gets \{\,y \in U \colon \{x\} \cup y \in E \text{ for all } x \in T\,\}$
                 \If{$|S| \geq s$}
-                    \State \Return \Call{FIND\_PARTITE}
-                    {$G' \coloneqq (V \setminus W,\, S),\, k-1$} $\circ \, (T)$\label{line:return}
+                    \State $G' \gets (V \setminus W, S)$ \label{line:rec_call}
+                    \State $V_1, \ldots, V_{k-1} \gets$ \Call{FIND\_PARTITE}{$G', k-1$}
+                    \State \Return $(V_1, \ldots, V_{k-1}, T)$ \label{line:return}
                 \EndIf
             \EndFor
         \EndFunction
@@ -182,7 +182,7 @@ We also make the simplification of not including in Algorithm~\ref{alg:kpartite}
 the size reduction of the sets obtained from the recursive call.
 The algorithm as stated can be thought of returning a complete $k$-partite
 subgraph with part sizes \emph{at least} $t$, which can easily be post-processed
-afterwards if desired to be balanced of part sizes $t$.
+afterward if desired to be balanced of part sizes $t$.
 
 The aim of the rest of this section is to prove that this algorithm is correct
 (as long as the  condition $t \geq 2$ in line~\ref{line:min_t} is met on the first call)
@@ -335,7 +335,7 @@ $t \geq 2$.
 \end{lemma}
 
 \begin{lemma}\label{lm:return}
-    Line~\ref{line:return} of Algorithm~\ref{alg:kpartite} is reached at some point in the for
+    Line~\ref{line:rec_call} of Algorithm~\ref{alg:kpartite} is reached at some point in the for
     loop in line~\ref{line:for}.
     \begin{proof}
         We apply Theorem~\ref{thm:kst} to the $2$-partite $2$-graph
@@ -398,7 +398,7 @@ Now, for the base case, we need:
 For the recursive step, we need:
 
 \begin{lemma}\label{lm:d_t}
-    For $k \geq 3$, in the recursive call in line~\ref{line:return} of Algorithm~\ref{alg:kpartite},
+    For $k \geq 3$, in the recursive call in line~\ref{line:rec_call} of Algorithm~\ref{alg:kpartite},
     we have
     \[
         d' \coloneqq \frac{s}{(n-w)^{k-1}} \geq \frac{d^t}{2}
@@ -431,7 +431,7 @@ For the recursive step, we need:
 \end{lemma}
 
 \begin{lemma}\label{lm:t_prime}
-    For $k \geq 3$, in the recursive call in line~\ref{line:return} of Algorithm~\ref{alg:kpartite},
+    For $k \geq 3$, in the recursive call in line~\ref{line:rec_call} of Algorithm~\ref{alg:kpartite},
     the resulting part size $t'$ satisfies
     \[
         t' \coloneqq t(n - w, d', k - 1) \geq t
@@ -527,8 +527,8 @@ All in all, we can now state the following theorem:
         To prove the correctness of the algorithm, we proceed by induction on $k$:
         If $k=2$, it follows from Lemmas~\ref{lm:return} and~\ref{lm:base_case}.
         Likewise, if $k \geq 3$, Lemma~\ref{lm:return} tells us that the algorithm
-        reaches line~\ref{line:return} at some point.
-        Furthermore, Lemma~\ref{lm:t_prime} tells us that the recursive call in line~\ref{line:return}
+        reaches line~\ref{line:rec_call} at some point.
+        Furthermore, Lemma~\ref{lm:t_prime} tells us that the recursive call in line~\ref{line:rec_call}
         has a part size $t'$ that is at least $t$.
         In particular, this means that $t' \geq 2$.
         Using the induction hypothesis for $k-1$, this recursive call is successful and
@@ -545,7 +545,7 @@ All in all, we can now state the following theorem:
         satisfies $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$, making the algorithm correct.
 
         For the time complexity, note that all operations in the algorithm are in polynomial time, % TODO: check this
-        except for perhaps the for loop in line~\ref{line:for} and the recursive call in line~\ref{line:return}.
+        except for perhaps the for loop in line~\ref{line:for} and the recursive call in line~\ref{line:rec_call}.
         Because there is only one recursive call, we can prove that it runs in polynomial time
         by induction on $k$.
         The only thing left to show is that the for loop runs in polynomial time.

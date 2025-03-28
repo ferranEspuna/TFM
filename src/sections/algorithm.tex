@@ -68,7 +68,8 @@ This is achieved by selecting $W$ to be a set of vertices of highest degree
 Then, by iterating over all $t$-subsets of $W$, such a set $T$
 is found satisfying that the set $S$ of common neighbors of $T$ in $U$ has size at least $t$.
 In other words, $S \times T \subset E$ for $S, T \subset V$ of size at least $t$.
-\begin{algorithm}[H]
+
+\begin{algorithm}
     \caption{Finding a balanced bipartite graph in a $2$-graph}
     \label{alg:bipartite}
         \begin{algorithmic}[1]
@@ -89,6 +90,7 @@ In other words, $S \times T \subset E$ for $S, T \subset V$ of size at least $t$
         \EndFor
         \end{algorithmic}
 \end{algorithm}
+
 The minimum density $d \geq 3n^{-1/2}$ in line~\ref{line:bipartite_min_d} is required
 because if $d = o\left(n^{-1/2}\right)$ then
 there may not even be a $K(2, 2)$ in $G$. % TODO: Explain this better in preliminaries
@@ -122,13 +124,16 @@ The main idea is to select a set $W \subset V$ of vertices of highest degree wit
     \label{eq:w}
     |W| = w = w(n, d, k) = \left\lceil \frac{2t(n, d, k)}{d} \right\rceil.
 \end{equation}
+
 Then, for every $t$-subset $T$ of $W$, we compute the set $S$ of $(k-1)$-subsets of $V \setminus W$
 that form an edge with every vertex in $T$.
 For a specific $T$, the set $S$ satisfies
+
 \begin{equation}
     \label{eq:s}
     |S| \geq s = s(n, d, k) = \left\lfloor d^{t(n, d, k)} n^{k-1} \right\rfloor.
 \end{equation}
+
 We define a new $(k-1)$-graph $G'$ with vertex set $V \setminus W$ and edge set $S$.
 As it turns out, $S$ is large enough~\eqref{eq:s}
 that applying the algorithm recursively to $G'$
@@ -136,19 +141,13 @@ yields a $K(t', \overset{k-1}{\cdots}, t')$ in $G'$ with $t' \geq t$.
 This is, a tuple
 $P' = (V_1, V_2, \ldots, V_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that $|V_i| = t'$ and
 $V_1 \times \cdots \times V_{k-1}\subset S$.
+
 If we now concatenate $P'$ with $T$ (choosing a subset of $X_i \subset V_i$ of size $t$ for each $i$ if necessary), we get
 a $k$-tuple of $t-sets$ of $V$
 \[P = X \circ (T) = (X_1, \ldots, X_{k-1}, T),\]
 which by the definition of $S$ satisfies
 $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$
 so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
-The implementation of the algorithm and its proof of correctness is less cumbersome if we assume
-a $1$-graph to be just a subset of a set and use it as the base case.
-We also make the simplification of not including in Algorithm~\ref{alg:kpartite}
-the size reduction of the sets obtained from the recursive call.
-The algorithm as stated can be thought of returning a complete $k$-partite
-subgraph with part sizes \emph{at least} $t$, which can easily be post-processed
-afterwards if desired to be balanced of part sizes $t$.
 
 \begin{algorithm}
     \caption{Finding a balanced partite $k$-graph in a $k$-graph}
@@ -177,7 +176,13 @@ afterwards if desired to be balanced of part sizes $t$.
     \end{algorithmic}
 \end{algorithm}
 
-% TODO 1-graph is a subset of a set
+The implementation of the algorithm and its proof of correctness is less cumbersome if we assume
+a $1$-graph to be just a subset of a set and use it as the base case.
+We also make the simplification of not including in Algorithm~\ref{alg:kpartite}
+the size reduction of the sets obtained from the recursive call.
+The algorithm as stated can be thought of returning a complete $k$-partite
+subgraph with part sizes \emph{at least} $t$, which can easily be post-processed
+afterwards if desired to be balanced of part sizes $t$.
 
 The aim of the rest of this section is to prove that this algorithm is correct
 (as long as the  condition $t \geq 2$ in line~\ref{line:min_t} is met on the first call)

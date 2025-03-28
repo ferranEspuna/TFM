@@ -42,13 +42,24 @@ The construction in Theorem~\ref{thm:kpartite} then proves
 
 For $k = 2$, this problem was already solved by an algorithm of Mubayi and Turán~\cite{MUBAYI2010174},
 which we present here (Algorithm~\ref{alg:bipartite}) for context and clarity.
-It partitions $V(G)$ into two sets $U$ and $W$ such that there are many edges between them
+A slightly different value for $t$ is used because of different estimates in their proof of correctness.
+Specifically, $t$ is set to
+\[
+    t_2(n, d) = \left\lfloor \frac{\log (n/2) }{\log (2e/d)}\right\rfloor
+\]
+whereas we get
+\[
+    t(n, d, 2) = \left\lfloor
+        \left(  \frac{\log (n/2)}{\log (4/d)} \right)
+       \right\rfloor.
+\]
+The vertex set $V(G)$ is partitioned into two sets $U$ and $W$ such that there are many edges between them
 and the size of $W$ is logarithmic in $n$.
-This is achieved by selecting a set of vertices of highest degree
+This is achieved by selecting $W$ to be a set of vertices of highest degree
 (this is, no vertex in $U$ has more neighbors than any vertex in $W$).
-Then, by iterating over all $t$-subsets of $W$ it finds such a set $T$ and an appropriate $t$-set $S \subset U$,
-for which $S \times T \subset E$.
-
+Then, by iterating over all $t$-subsets of $W$, such a set $T$
+is found satisfying that the set $S$ of common neighbors of $T$ in $U$ has size at least $t$,
+so $S, T \subset V$ are disjoint, of size $t$ and satisfy $S \times T \subset E$.
 \begin{algorithm}[H]
     \caption{Finding a balanced bipartite graph in a $2$-graph}
     \label{alg:bipartite}
@@ -62,7 +73,7 @@ for which $S \times T \subset E$.
 
         \State $W \gets $ a set of $w$ vertices with highest degree in $G$
         \State $U \gets V \setminus W$
-        \ForAll{$T \in \binom{W}{t} $}
+        \ForAll{$T \in \binom{W}{t} $} \label{line:2partite_for}
             \State $S \gets \{x \in U \colon \{x, y\} \in E \text{ for all } y \in T\}$
             \If{$|S| \geq t$}
                 \State \Return $(S, T)$
@@ -70,16 +81,17 @@ for which $S \times T \subset E$.
         \EndFor
         \end{algorithmic}
 \end{algorithm}
-
-We require that $d \geq 3n^{-1/2}$ in~\ref{line:bipartite_min_d} because if $d = o\left(n^{-1/2}\right)$ then
-there may not even be a $K(2, 2)$ in $G$. % TODO: Explain this better
-If the set $S$ is too large, we can simply take a subset of it of size $t$.
+The minimum density $d \geq 3n^{-1/2}$ in~\ref{line:bipartite_min_d} is required
+because if $d = o\left(n^{-1/2}\right)$ then
+there may not even be a $K(2, 2)$ in $G$. % TODO: Explain this better in preliminaries
+If the set $S$ is too large, a subset of it of size $t$ can be returned instead.
 To see that the algorithm returns a pair of sets $(S, T)$, one uses the fact that
 there is large number of edges between $U$ and $W$ (proportional to the size of $W$).
 Then, a direct application of Theorem~\ref{thm:kst}
 with $u = |U| = n - w$ and $s = t$ shows that
-there is a $K(t, t)$ in the bipartite graph $(U, W; E \cap U \times W)$.
-This in turn means that for some iteration of the loop, the size of $S$ is at least $t$
+there is a $K(t, t)$ in the bipartite graph $(U, W; E \cap (U \times W))$.
+This in turn means that for some $T$,
+the size of $S$ is at least $t$
 and the algorithm returns $(S, T)$.
 Finally, the algorithm runs in polynomial time because 
 the  number of iterations of the loop is
@@ -87,7 +99,7 @@ the  number of iterations of the loop is
     \binom{w}{t} \leq
     \left(\frac{ew}{t}\right)^t \leq
     \left(\frac{1}{d}\right)^t e^t < e^{t \log (1/d) + \log n} <
-    e^{2\log n} = n^2
+    e^{2\log n} = n^2.
 \]
 
 We now present Algorithm~\ref{alg:kpartite}, which is
@@ -100,28 +112,30 @@ and the main contribution of this work.
 The main idea is to select a set $W \subset V$ of vertices of highest degree with
 \begin{equation}
     \label{eq:w}
-    |W| = w = w(n, d, k) = \left\lceil \frac{2t(n, d, k)}{d} \right\rceil
+    |W| = w = w(n, d, k) = \left\lceil \frac{2t(n, d, k)}{d} \right\rceil.
 \end{equation}
 Then, for every $t$-subset $T$ of $W$, we find the set $S$ of $(k-1)$-subsets of $V \setminus W$
 that form an edge with every vertex in $T$.
-For a specific $T$, it will be true that
+For a specific $T$, the set $S$ satisfies
 \begin{equation}
     \label{eq:s}
-    |S| \geq s = s(n, d, k) = \left\lfloor d^{t(n, d, k)} n^{k-1} \right\rfloor
+    |S| \geq s = s(n, d, k) = \left\lfloor d^{t(n, d, k)} n^{k-1} \right\rfloor.
 \end{equation}
-This will allow us to define a new $(k-1)$-graph $G'$ with vertex set $V \setminus W$ and edge set $S$.
-As it turns out, applying the algorithm recursively to $G'$
-will yield a $K(t, \overset{k-1}{\cdots}, t)$ in $G'$.
+We define a new $(k-1)$-graph $G'$ with vertex set $V \setminus W$ and edge set $S$.
+As it turns out, $S$ is large enough~\eqref{eq:s}
+that applying the algorithm recursively to $G'$
+yields a $K(t', \overset{k-1}{\cdots}, t')$ in $G'$ with $t' \geq t$.
 This is, a tuple of pairwise disjoint sets
-$(X_1, X_2, \ldots, X_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that:
+$P' = (X_1, X_2, \ldots, X_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that:
 \begin{itemize}
-    \item $|X_i| = t$
+    \item $|X_i| = t'$
     \item $X_1 \times \dots \times X_{k-1} \subset E(G') = S =
     \left\{x \in \binom{V \setminus W}{k-1} : \{x\} \cup y \in E \text{ for all } y \in T\right\}$
 \end{itemize}
-
-That is, the returned tuple $(X_1, \dots, X_{k-1}, T)$
-satisfies $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$
+If we now concatenate $P'$ with $T$ (choosing a subset of $X_i$ of size $t$ for each $i$ if necessary), we get
+a $k$-tuple of disjoint sets
+\[P = X \circ (T) = (X_1, \ldots, X_{k-1}, T),\]
+which satisfies $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$
 so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
 
 \begin{algorithm}
@@ -179,7 +193,7 @@ $t \geq 2$.
     $t  \leq w \leq n$, $k - 1 \leq n - w$ and $s \leq \binom{n - w}{k - 1}$.
     \begin{proof}
         $t \leq w$ is clear.
-        We will in fact show that $w < \frac{n}{2}$.
+        We in fact show that $w < \frac{n}{2}$.
         If not,
         \[
             \frac{n}{2} \leq
@@ -308,7 +322,7 @@ $t \geq 2$.
     Line~\ref{line:return} of Algorithm~\ref{alg:kpartite} is reached at some point in the for
     loop in line~\ref{line:for}.
     \begin{proof}
-        We will apply Theorem~\ref{thm:kst} to the $2$-partite $2$-graph
+        We apply Theorem~\ref{thm:kst} to the $2$-partite $2$-graph
         \[
             \mathcal{P} = (U, W, \{(x, y) \in U \times W | \{x\} \cup y \in E \})
         \]
@@ -494,15 +508,15 @@ All in all, we can now state the following theorem:
     Algorithm~\ref{alg:kpartite} finds a balanced partite $k$-graph in a $k$-graph $G$ with
     $n$ vertices and $m = d n^k$ with part size $t(n, d, k)$ in polynomial time.
     \begin{proof}
-        To prove the correctness of the algorithm, we will proceed by induction on $k$:
+        To prove the correctness of the algorithm, we proceed by induction on $k$:
         If $k=2$, it follows from Lemmas~\ref{lm:return} and~\ref{lm:base_case}.
-        Likewise, if $k \geq 3$, Lemma~\ref{lm:return} tells us that the algorithm will
-        reach line~\ref{line:return} at some point.
+        Likewise, if $k \geq 3$, Lemma~\ref{lm:return} tells us that the algorithm
+        reaches line~\ref{line:return} at some point.
         Furthermore, Lemma~\ref{lm:t_prime} tells us that the recursive call in line~\ref{line:return}
-        will have a part size $t'$ that is at least $t$.
+        has a part size $t'$ that is at least $t$.
         In particular, this means that $t' \geq 2$.
-        Using the induction hypothesis for $k-1$, this recursive call will be successful and
-        return a tuple of pairwise disjoint sets
+        Using the induction hypothesis for $k-1$, this recursive call is successful and
+        returns a tuple of pairwise disjoint sets
         $(X_1, X_2, \ldots, X_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that:
         \begin{itemize}
             \item $|X_i| \geq t(n-w, d', k-1) \geq t$

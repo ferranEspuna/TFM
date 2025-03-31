@@ -188,20 +188,23 @@ The aim of the rest of this section is to prove that this algorithm is correct
 (as long as the  condition $t \geq 2$ in line~\ref{line:min_t} is met on the first call)
 and runs in polynomial time.
 That is, to prove it meets the requirements of Theorem~\ref{thm:kpartite}.
-The following lemmas are stated assuming that $k \geq 2$ and
-$t \geq 2$.
+From now on, we assume $k \geq 2$ and
+$t \geq 2$, unless stated otherwise.
+The following observation is useful for some of the bounds we have to prove.
 
 \begin{remark}\label{rm:min_d}
-    The $t=1$ case is trivial, as we can simply select one edge of $G$.
     The requirement $t \geq 2$ is met whenever
     \[
-        d \geq 3 \cdot 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}}
+        d \geq 3^{k} 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}}.
     \]
-    Note that this implies that
+    However, $d$ satisfies
     \[
-        \frac{1}{2!} \geq d \geq \frac{3\sqrt{2}}{\sqrt{n}}
+        d = \frac{m}{n^k} \leq \frac{\binom{n}{k}}{n^k} < \frac{1}{k!},
     \]
-    and in particular $n \geq 72$.
+    so we get a minimum value of $n$:
+    \[
+        n \geq \left( k!\, \times 3 \times 2^{\frac{k-1}{2^{k-1}}} \right)^{2^{k-1}} \geq 72.
+    \]
 \end{remark}
 
 \begin{lemma}\label{lm:sound}

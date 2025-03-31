@@ -37,7 +37,7 @@ which is satisfied for
 \[
     m =
     \left\lceil
-    n^k 3 {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}}
+    3 n^k {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}}
     \right\rceil =
     O\left(n^{k - \frac{1}{t^{k-1}}}\right).
 \]
@@ -159,7 +159,7 @@ so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
             \EndIf
 
             \State $V \gets V(G), E \gets E(G), n \gets |V|,\, m \gets |E|,\, d \gets m/n^k$
-            \State $t \gets t(n, d, k),\, w \gets \lceil 2t/d \rceil,\, s \gets \lfloor d^t n^{k-1} \rfloor$ \label{line:tws}
+            \State $t \gets t(n, d, k),\, w \gets w(n, d, k),\, s \gets s(n, d, k)$ \label{line:tws}
             \State \textbf{assert} $t \geq 2$ \label{line:min_t}
             \State $W \gets$ a set of $w$ vertices with highest degree in $G$ \label{line:W}
             \State $U \gets \binom{V\setminus W}{k-1}$

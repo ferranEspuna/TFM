@@ -195,7 +195,11 @@ The following observation is useful for some of the bounds we have to prove.
 \begin{remark}\label{rm:min_d}
     The requirement $t \geq 2$ is met whenever
     \[
-        d \geq 3^{k} 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}}.
+        d \geq 3 \cdot 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}},
+    \]
+    which implies
+    \[
+        d \geq \frac{3}{\sqrt{n}}.
     \]
     However, $d$ satisfies
     \[
@@ -203,7 +207,7 @@ The following observation is useful for some of the bounds we have to prove.
     \]
     so we get a minimum value of $n$:
     \[
-        n \geq \left( k!\, \times 3 \times 2^{\frac{k-1}{2^{k-1}}} \right)^{2^{k-1}} \geq 72.
+        n > \left( k!\, \cdot 3 \cdot 2^{\frac{k-1}{2^{k-1}}} \right)^{2^{k-1}} \geq 72.
     \]
 \end{remark}
 
@@ -217,12 +221,14 @@ The following observation is useful for some of the bounds we have to prove.
         \[
             \frac{n}{2} \leq
             w \leq 1 + \frac{2t}{d} <
-            1 + \frac{2 \log (n/2) \sqrt{n}}{4\sqrt{2}} =
-            1 + \frac{\log(n/2) \sqrt{n}}{2\sqrt{2}} <
+            1 + \frac{2 \log (n/2) \sqrt{n}}{3} = % todo one more step
             1 + \frac{n}{4}
         \]
 
         This implies that $n < 4$, in contradiction with Remark~\ref{rm:min_d}.
+
+% todo correctness stops here
+
 
         We also show that $k < \frac{n}{2}$.
         If not,

@@ -5,7 +5,7 @@ We describe a polynomial-time algorithm that finds a complete balanced $k$-parti
 sizes
 \begin{equation}
      t = t (n, d, k) = \left\lfloor
-        \left(  \frac{\log (n/2^{k-1})}{\log (2^{k}/d)} \right)
+        \left(  \frac{\log (n/2^{k-1})}{\log (3/d)} \right)
         ^{\frac{1}{k-1}} \right\rfloor \label{eq:t},
 \end{equation}
 with the only assumption that $t \geq 2$ (otherwise, we may just select a set of $k$ vertices forming an edge in~$G$).
@@ -31,13 +31,13 @@ Indeed, suppose we have a fixed value for $t$.
 For $n$ large enough, we may choose $d$ such that $t(n, d, k) \geq t$.
 By our definition of $t$, we only need that
 \[
-    d \geq 2^{k} {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}},
+    d \geq 3 {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}},
 \]
 which is satisfied for
 \[
     m =
     \left\lceil
-    n^k 2^{k} {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}}
+    n^k 3 {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}}
     \right\rceil =
     O\left(n^{k - \frac{1}{t^{k-1}}}\right).
 \]
@@ -58,7 +58,7 @@ Specifically, $t$ is set to
 whereas we get
 \[
     t(n, d, 2) = \left\lfloor
-        \left(  \frac{\log (n/2)}{\log (4/d)} \right)
+        \left(  \frac{\log (n/2)}{\log (3/d)} \right)
        \right\rfloor.
 \]
 The vertex set $V(G)$ is partitioned into two sets $U$ and $W$ such that there are many edges between them
@@ -131,7 +131,7 @@ For a specific $T$, the set $S$ satisfies
 
 \begin{equation}
     \label{eq:s}
-    |S| \geq s = s(n, d, k) = \left\lfloor d^{t(n, d, k)} n^{k-1} \right\rfloor.
+    |S| \geq s = s(n, d, k) = \left\lceil d^{t(n, d, k)} n^{k-1} \right\rceil.
 \end{equation}
 
 We define a new $(k-1)$-graph $G'$ with vertex set $V \setminus W$ and edge set $S$.
@@ -195,13 +195,13 @@ $t \geq 2$.
     The $t=1$ case is trivial, as we can simply select one edge of $G$.
     The requirement $t \geq 2$ is met whenever
     \[
-        d \geq 2^{k} 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}}
+        d \geq 3 \cdot 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}}
     \]
     Note that this implies that
     \[
-        1 \geq d \geq \frac{4\sqrt{2}}{\sqrt{n}}
+        \frac{1}{2!} \geq d \geq \frac{3\sqrt{2}}{\sqrt{n}}
     \]
-    and in particular $n \geq 32$.
+    and in particular $n \geq 72$.
 \end{remark}
 
 \begin{lemma}\label{lm:sound}

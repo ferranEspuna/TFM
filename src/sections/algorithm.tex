@@ -331,8 +331,6 @@ More precisely, we have the following.
     \end{proof}
 \end{lemma}
 
-% TODO correctness stops here
-
 We use this fact to show that for some $T \subset W$,
 there is a large number of $(k-1)$-subsets of $V \setminus W$
 that form an edge with every vertex in $T$.
@@ -359,17 +357,27 @@ that form an edge with every vertex in $T$.
         this implies that
         % TODO: check the math works, just copied
 
-        \begin{align*}
+        \[
             \frac{3}{2}dwn^{k-1} \leq &
             \, z \left(\binom{n - w}{k-1}; w, s, t  \right) \leq
-            (s-1)^{1/t}(w-t+1)\binom{n-w}{k-1}^{1-1/t} + (t-1)\binom{n-w}{k-1} < \\
-            \leq & \, dn^{\frac{k-1}{t}} w \binom{n}{k-1}^{1-1/t} + t \binom{n}{k-1} \leq
-             dn^{\frac{k-1}{t}} wn^{(k-1)(1-1/t)} + tn^{k-1} \leq \\
-            \leq & \, dn^{\frac{k-1}{t}} wn^{(k-1)(1-1/t)} + \frac{1}{2} dwn^{k-1} =
+            (s-1)^{1/t}(w-t+1)\binom{n-w}{k-1}^{1-1/t} + (t-1)\binom{n-w}{k-1}.
+        \]
+        We now substitute into the above expression $(s-1) \leq d^t n^{k-1}$ (which
+        follows from $s = \lceil d^t n^{k-1} \rceil$) and $w > 0$:
+        \[
+             \frac{3}{2}dwn^{k-1} <
+             \, dn^{\frac{k-1}{t}} w \binom{n}{k-1}^{1-1/t} + t \binom{n}{k-1} \leq
+             dn^{\frac{k-1}{t}} wn^{(k-1)(1-1/t)} + tn^{k-1}.
+        \]
+        Finally, we substitute $t \leq \frac{1}{2}dw$, which follows from
+        $w = \left\lceil \frac{2t}{d} \right\rceil$:
+        \[
+            \frac{3}{2}dwn^{k-1} <
+            dn^{\frac{k-1}{t}} wn^{(k-1)(1-1/t)} + \frac{1}{2} dwn^{k-1} =
             \frac{3}{2} dwn^{k-1},
-        \end{align*}
-        where the last inequality follows from $w = \lceil 2t/d \rceil$.
-        This is a contradiction.
+        \]
+
+        which is a contradiction.
     \end{proof}
 \end{lemma}
 
@@ -377,6 +385,8 @@ This shows that we reach the recursive call in line~\ref{line:rec_call} of Algor
 at some iteration of the loop in line~\ref{line:for}.
 The next step will be to show that this recursive call finds a $k-1$-partite $k-1$-graph in $G'$ of
 part sizes at least $t$.
+
+% TODO correctness stops here
 
 \begin{lemma}\label{lm:base_case}
     For $k=2$, Algorithm~\ref{alg:kpartite} finds $s \geq t$.

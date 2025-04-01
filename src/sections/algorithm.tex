@@ -165,7 +165,7 @@ so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
             \State $U \gets \binom{V\setminus W}{k-1}$
 
             \ForAll{$T \in \binom{W}{t}$} \label{line:for}
-                \State $S \gets \{\,y \in U \colon \{x\} \cup y \in E \text{ for all } x \in T\,\}$
+                \State $S \gets \{\,y \in U \colon \{x\} \cup y \in E \text{ for all } x \in T\,\}$ \label{line:S}
                 \If{$|S| \geq s$}
                     \State $G' \gets (V \setminus W, S)$ \label{line:rec_call}
                     \State $V_1, \ldots, V_{k-1} \gets$ \Call{FIND\_PARTITE}{$G', k-1$}
@@ -268,7 +268,8 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
     \end{proof}
 \end{lemma}
 
-% TODO correctness stops here
+The next step is to show that there are many edges with exactly one vertex in $W$.
+More precisely, we have the following.
 
 \begin{lemma}\label{lm:many_edges}
     Given $W  \subset V$ as defined in line~\ref{line:W} of Algorithm~\ref{alg:kpartite},
@@ -309,79 +310,73 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
         \]
         We now closely follow the steps of Mubayi and Turán~\cite{MUBAYI2010174}.
 
-        If $\frac{3}{\sqrt{n}} \leq d \leq 3 \sqrt{\frac{\log n}{n}}$, we get
+        If $\frac{3}{\sqrt{n}} \leq d \leq 3 \sqrt{\frac{\log n}{n}}$,
+        by Remark~\ref{rm:min_d},
+        we get
         \[
-            32 \leq nd^2
+            18 \leq nd^2
             < 6t \leq
-            6 \frac{\log (n/2)}{\log(2/d) } \leq
+            6 \frac{\log (n/2)}{\log(3/d) } <
             6 \frac{\log n}{\log\left(\sqrt{\frac{n}{\log n}}\right)} =
             12 \frac{\log n}{{\log \left( \frac{n}{\log n} \right)}} <
             12 \frac{\log n}{{\log \left( \frac{n}{\log n} \right)}} <
             12 \frac{\log n}{{\log \left( n^{2/3} \right)}} =
-            18
+            18,
         \]
-        \begin{itemize}
-            \item If $4 \sqrt{\frac{2}{n}} \leq d < 2 \sqrt{\frac{\log n}{n}}$, we get
+        which is a contradiction.
 
-            where last inequality follows from $\log n < n^{1/3}$.
-            This is a contradiction.
-
-            \item If $2 \sqrt{\frac{\log n}{n}} \leq d \leq \frac{1}{2}$, then
-            \[
-                4 \, \frac{\log n}{n} \leq nd^2 < 6t \leq 6 \log n
-            \]
-            so that
-            \[
-                n < 4 n \leq 6
-            \]
-            in to with Remark~\ref{rm:min_d}. \qedhere
-        \end{itemize}
+        Otherwise, we have $d > 3 \sqrt{\frac{\log n}{n}}$.
+        This yields $9 \log n \leq nd^2 < 6t < 6 \log n$,
+        again, a contradiction.
     \end{proof}
 \end{lemma}
 
+% TODO correctness stops here
+
+We use this fact to show that for some $T \subset W$,
+there is a large number of $(k-1)$-subsets of $V \setminus W$
+that form an edge with every vertex in $T$.
+
 \begin{lemma}\label{lm:return}
-    Line~\ref{line:rec_call} of Algorithm~\ref{alg:kpartite} is reached at some point in the for
-    loop in line~\ref{line:for}.
+    For some $T \in \binom{W}{t}$, the corresponding set $S$ defined
+    in line~\ref{line:S} of Algorithm~\ref{alg:kpartite} has size at least $s$.
     \begin{proof}
         We apply Theorem~\ref{thm:kst} to the $2$-partite $2$-graph
         \[
-            \mathcal{P} = (U, W, \{(x, y) \in U \times W | \{x\} \cup y \in E \})
+            \mathcal{P} = (U, W; F),
+        \]
+        where $F$ is defined as
+        \[
+            F = \{(x, y) \in U \times W | \{x\} \cup y \in E \}.
         \]
         By Lemma~\ref{lm:many_edges}, $\mathcal{P}$ has at least
         $\frac{3}{2}dwn^{k-1}$ edges.
-
-        Suppose that what we want to show is false.
-        This means that for no sets $S \in \binom{U}{s}, T \in \binom{W}{t}$
+        By way of contradiction, suppose that the lemma is false.
+        There are no sets $S \in \binom{U}{s}, T \in \binom{W}{t}$
         such that $(x, y) \in E (\mathcal{P})$ for all $x \in S, y \in T $.
-        In other words, there is no embedding of $K(s, t)$ on $\mathcal{P}$.
-        This means that
-
+        In other words, there is no embedding of $K(s, t)$ in $\mathcal{P}$.
+        By Theorem~\ref{thm:kst} applied with $u = \binom{n-w}{k-1}$,
+        this implies that
         % TODO: check the math works, just copied
 
         \begin{align*}
             \frac{3}{2}dwn^{k-1} \leq &
-            \, z \left(\binom{n - w}{k-1}, w, s, t  \right) \leq
-            (s-1)^{1/t}(w-t+1)\binom{n-w}{k-1}^{1-1/t} + (t-1)\binom{n-w}{k-1} \leq \\
-            \leq & \, s^{1/t} w \binom{n}{k-1}^{1-1/t} + t \binom{n}{k-1} \leq
-             s^{1/t} wn^{(k-1)(1-1/t)} + tn^{k-1} \leq \\
-            \leq & \, s^{1/t} wn^{(k-1)(1-1/t)} + \frac{1}{2} dwn^{k-1}
+            \, z \left(\binom{n - w}{k-1}; w, s, t  \right) \leq
+            (s-1)^{1/t}(w-t+1)\binom{n-w}{k-1}^{1-1/t} + (t-1)\binom{n-w}{k-1} < \\
+            \leq & \, dn^{\frac{k-1}{t}} w \binom{n}{k-1}^{1-1/t} + t \binom{n}{k-1} \leq
+             dn^{\frac{k-1}{t}} wn^{(k-1)(1-1/t)} + tn^{k-1} \leq \\
+            \leq & \, dn^{\frac{k-1}{t}} wn^{(k-1)(1-1/t)} + \frac{1}{2} dwn^{k-1} =
+            \frac{3}{2} dwn^{k-1},
         \end{align*}
-
-        Where the last inequality follows from our definition of $w$.
-        Rearranging, we get
-
-        \[
-            dwn^{k-1} \leq s^{1/t} wn^{(k-1)(1-1/t)}
-        \]
-        which implies
-        \[
-            d \leq \left(\frac{s}{n^{k-1}}\right)^{1/t}
-        \]
-        which is false by the definition of $s$.
+        where the last inequality follows from $w = \lceil 2t/d \rceil$.
+        This is a contradiction.
     \end{proof}
 \end{lemma}
 
-Now, for the base case, we need:
+This shows that we reach the recursive call in line~\ref{line:rec_call} of Algorithm~\ref{alg:kpartite}
+at some iteration of the loop in line~\ref{line:for}.
+The next step will be to show that this recursive call finds a $k-1$-partite $k-1$-graph in $G'$ of
+part sizes at least $t$.
 
 \begin{lemma}\label{lm:base_case}
     For $k=2$, Algorithm~\ref{alg:kpartite} finds $s \geq t$.

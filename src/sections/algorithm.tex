@@ -197,10 +197,6 @@ The following observation is useful for some of the bounds we have to prove.
     \[
         d \geq 3 \cdot 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}},
     \]
-    which implies
-    \[
-        d \geq \frac{3}{\sqrt{n}}.
-    \]
     However, $d$ satisfies
     \[
         d = \frac{m}{n^k} \leq \frac{\binom{n}{k}}{n^k} < \frac{1}{k!},
@@ -209,6 +205,18 @@ The following observation is useful for some of the bounds we have to prove.
     \[
         n > \left( k!\, \cdot 3 \cdot 2^{\frac{k-1}{2^{k-1}}} \right)^{2^{k-1}} \geq 72.
     \]
+    This also lets us prove the bound
+    \[
+        d \geq 3 \sqrt{\frac{2}{n}}
+    \]
+    for all $k \geq 2$.
+    We have already seen that this is the case for $k=2$.
+    For $k > 2$, suppose that the bound is not met.
+    Then,
+    \[
+       3 n^{-\frac{1}{4}} \leq 3 n^{-\frac{1}{2^{k-1}}} < d < 3 \sqrt{\frac{2}{n}},
+    \]
+    which by algebraic manipulation implies $n < 4$.
 \end{remark}
 
 We start by proving that the selection of $t, w, s$ in line~\ref{line:tws} of Algorithm~\ref{alg:kpartite}
@@ -216,7 +224,7 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
 % todo a bit clunky
 
 \begin{lemma}\label{lm:sound}
-    For $t, w, s$ as selected in line~\ref{line:tws} of Algorithm~\ref{alg:kpartite}
+    For $t, w, s$ as selected in line~\ref{line:tws} of Algorithm~\ref{alg:kpartite},
     we have that
     $t  \leq w \leq n$, $k - 1 \leq n - w$ and $s \leq \binom{n - w}{k - 1}$.
     \begin{proof}
@@ -263,11 +271,11 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
 % TODO correctness stops here
 
 \begin{lemma}\label{lm:many_edges}
-    With $W  \subset V$ as defined in line~\ref{line:W},
+    Given $W  \subset V$ as defined in line~\ref{line:W} of Algorithm~\ref{alg:kpartite},
     There are at least $\frac{3}{2}dwn^{k-1}$ edges of $G$ with exactly one vertex in $W$.
     \begin{proof}
         The degree sum over $V$ is $kdn^{k}$.
-        Thus, by the pigeonhole principle, the degree sum over $W$ is at least
+        By averaging, the degree sum over $W$ is at least
         $\frac{w}{n}kdn^{k} = wkdn^{k-1}$.
         For $2 \leq j \leq n$,
         consider the contribution to this sum by edges with exactly $j$ vertices in $W$.
@@ -279,7 +287,7 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
         The number of edges with only one vertex in $W$ is then at least
 
         \[
-            wkdn^{k-1} - (k-1)w^{2}n^{k-2} = dwn^{k-1} \left( k - \frac{(k-1)w}{nd}\right)
+            wkdn^{k-1} - (k-1)w^{2}n^{k-2} = dwn^{k-1} \left( k - \frac{(k-1)w}{nd}\right).
         \]
 
         Suppose, by way of contradiction,
@@ -287,42 +295,34 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
         Using that $\frac{k-1}{k-3/2} \leq 2$
         for $k \geq 2$, we arrive at
         \[
-             2 \geq  \frac{nd}{w}
+             2 \geq  \frac{nd}{w},
         \]
         which implies
         \[
             d \leq \frac{2w}{n} = \frac{2 \left\lceil\frac{2t}{d} \right\rceil}{n}
-            < \frac{6t}{dn}
+            < \frac{6t}{dn},
         \]
-
-        Where the last inequality follows from the fact that $t > 1$ and $d \leq 1$.
-        Rearranging:
+        where the last inequality follows from the fact that $t > 1$ and $d \leq 1$.
+        Algebraic manipulation then yields
         \[
-            nd^2 < 6t
+            nd^2 < 6t.
         \]
+        We now closely follow the steps of Mubayi and Turán~\cite{MUBAYI2010174}.
 
-        If $k \geq 3$, applying the minimum density requirement from Remark~\ref{rm:min_d} yields:
+        If $\frac{3}{\sqrt{n}} \leq d \leq 3 \sqrt{\frac{\log n}{n}}$, we get
         \[
-            128 \sqrt {n} \leq
-            4^{k-1 + \frac{k-1}{2^{k-1}}} n \cdot n^{-\frac{2}{2^{k-1}}} \leq
-            nd^2 < 6t < 6 \log n
+            32 \leq nd^2
+            < 6t \leq
+            6 \frac{\log (n/2)}{\log(2/d) } \leq
+            6 \frac{\log n}{\log\left(\sqrt{\frac{n}{\log n}}\right)} =
+            12 \frac{\log n}{{\log \left( \frac{n}{\log n} \right)}} <
+            12 \frac{\log n}{{\log \left( \frac{n}{\log n} \right)}} <
+            12 \frac{\log n}{{\log \left( n^{2/3} \right)}} =
+            18
         \]
-        Which is false for all $n$.
-
-        We have to be more careful in the $k = 2$ case.
-        We closely follow the steps of~\cite{MUBAYI2010174}:
         \begin{itemize}
             \item If $4 \sqrt{\frac{2}{n}} \leq d < 2 \sqrt{\frac{\log n}{n}}$, we get
-            \[
-                32 \leq nd^2
-                < 6t \leq
-                6 \frac{\log (n/2)}{\log(2/d) } \leq
-                6 \frac{\log n}{\log\left(\sqrt{\frac{n}{\log n}}\right)} =
-                12 \frac{\log n}{{\log \left( \frac{n}{\log n} \right)}} <
-                12 \frac{\log n}{{\log \left( \frac{n}{\log n} \right)}} <
-                12 \frac{\log n}{{\log \left( n^{2/3} \right)}} =
-                18
-            \]
+
             where last inequality follows from $\log n < n^{1/3}$.
             This is a contradiction.
 

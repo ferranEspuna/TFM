@@ -358,7 +358,7 @@ that form an edge with every vertex in $T$.
         % TODO: check the math works, just copied
 
         \[
-            \frac{3}{2}dwn^{k-1} \leq &
+            \frac{3}{2}dwn^{k-1} \leq
             \, z \left(\binom{n - w}{k-1}; w, s, t  \right) \leq
             (s-1)^{1/t}(w-t+1)\binom{n-w}{k-1}^{1-1/t} + (t-1)\binom{n-w}{k-1}.
         \]
@@ -385,147 +385,112 @@ This shows that we reach the recursive call in line~\ref{line:rec_call} of Algor
 at some iteration of the loop in line~\ref{line:for}.
 The next step will be to show that this recursive call finds a $k-1$-partite $k-1$-graph in $G'$ of
 part sizes at least $t$.
-
-% TODO correctness stops here
-
-\begin{lemma}\label{lm:base_case}
-    For $k=2$, Algorithm~\ref{alg:kpartite} finds $s \geq t$.
-    \begin{proof}
-        Suppose $t < s$.
-        Substituting $k=2$, we get $t > \left\lfloor d^t n \right\rfloor$ which implies
-        \[
-            t >
-            d^t n \geq
-            d^{\frac{\log n}{\log (2/d)}} n =
-            2^{\frac{\log n}{\log (2/d)}}(d/2)^{\frac{\log n}{\log (2/d)}} n \geq
-            \frac{2^t}{n} n =
-            2^t
-        \]
-        Which is false for all $t \geq 0$.
-    \end{proof} % TODO review
-\end{lemma}
-
-For the recursive step, we need:
-
-\begin{lemma}\label{lm:d_t}
-    For $k \geq 3$, in the recursive call in line~\ref{line:rec_call} of Algorithm~\ref{alg:kpartite},
-    we have
-    \[
-        d' \coloneqq \frac{s}{(n-w)^{k-1}} \geq \frac{d^t}{2}
-    \]
-
-    \begin{proof}
-        By the definition of $s$,
-        \[
-            d' =
-            \frac{s}{(n-w)^{k-1}} \geq
-            \frac{s}{n^{k-1}} \geq
-            \frac{d^t n^{k-1} - 1 }{n^{k-1}} =
-            d^t - n^{1-k}
-        \]
-        so in fact we only need to show that $n^{1-k} \leq d^t/2$.
-        However,
-        \[
-            d^t \geq
-            d^{\left( \frac{\log \left(\frac{n}{2^{k-1}}\right)}{\log \left(\frac{2^{k-1}}{d}\right)} \right)^{1/(k-1)}}
-        \]
-        where the right hand side is increasing in $d$.
-        Therefore, we may substitute the minimum density requirement from Remark~\ref{rm:min_d}.
-        That is, our statement is true if
-        \[
-            n^{1-k} \leq \left(2^{k} 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}}\right)^2
-        \]
-        which is clearly true for all $n > 0$.
-    \end{proof}
-
-\end{lemma}
+For this, we bound the density $d'$ of $G'$:
+\[
+    d' \geq \frac{s}{(n-w)^{k-1}} \geq \frac{d^t n^{k-1}}{n^{k-1}} = d^t,
+\]
+and ensure that the associated part size
+\[
+    t' = t(n - w, d', k - 1)
+\]
+satisfies $t' \geq t$.
 
 \begin{lemma}\label{lm:t_prime}
-    For $k \geq 3$, in the recursive call in line~\ref{line:rec_call} of Algorithm~\ref{alg:kpartite},
-    the resulting part size $t'$ satisfies
-    \[
-        t' \coloneqq t(n - w, d', k - 1) \geq t
-    \]
-    
+    For all $k \geq 3$, $t' \geq t$.
+
     \begin{proof}
 
-        Substituting the new parameters into the definition of $t$, we get
+        Substituting the new parameters into the definition, we get
         \[
-            t' = \left\lfloor \left(  \frac{\log ((n-w)/2^{k-2})}{\log (2 \cdot 2^{k-1}/d')} \right)^
-            {\frac{1}{k-2}} \right\rfloor
+            t' = \left\lfloor \left(\frac{\log ((n-w)/2^{k-2})}{\log (3/d')} \right)^
+            {\frac{1}{k-2}} \right\rfloor.
         \]
 
-        We start by using Lemma~\ref{lm:d_t} and the fact that $w \leq n/2$:
+        We start by using that $d' \geq d^t$ and that $w \leq n/2$:
 
         \[
             t' \geq
             %
-            \left\lfloor \left(  \frac{\log ((n-w)/2^{k-2})}{\log (2 \cdot 2^{k-1}/d^t)} \right)^
+            \left\lfloor \left(  \frac{\log ((n-w)/2^{k-2})}{\log (3/d^t)} \right)^
             {\frac{1}{k-2}} \right\rfloor \geq
             %
-            \left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (2^{k}/d^t)} \right)^{\frac{1}{k-2}} \right\rfloor =
+            \left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (3/d^t)} \right)^{\frac{1}{k-2}} \right\rfloor =
             %
-            \left\lfloor \left(  \frac{\log (n / 2^{k-1})}{k \log 2 - t \log d} \right)^
-            {\frac{1}{k-2}} \right\rfloor
+            \left\lfloor \left(  \frac{\log (n / 2^{k-1})}{\log 3 - t \log d} \right)^
+            {\frac{1}{k-2}} \right\rfloor.
         \]
         Then, we substitute the definition of $t$, where removing the floor function
         maintains the inequality because the right hand side is decreasing in $t$ (recall $d \leq 1$):
 
-        \[
+        \begin{equation} \label{eq:t_prime}
             t' \geq
             %
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})}
-            {k \log 2 - \left(  \frac{\log (n / 2^{k-1})}{\log (2^{k}/d)} \right)^{\frac{1}{k-1}}  \log d} \right)^
+            {\log 3 - \left(  \frac{\log (n / 2^{k-1})}{\log (3/d)} \right)^{\frac{1}{k-1}}  \log d} \right)^
             {\frac{1}{k-2}} \right\rfloor
             =
             %
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
-            {\frac{k \log 2}{\log(n / 2^{k-1})^{\frac{1}{k-1}}} - \frac{\log d}{\log (2^{k}/d)^{\frac{1}{k-1}}} }
-            \right)^{\frac{1}{k-2}} \right\rfloor \\
-        \]
+            {\frac{\log 3}{\log(n / 2^{k-1})^{\frac{1}{k-1}}} - \frac{\log d}{\log (3/d)^{\frac{1}{k-1}}} }
+            \right)^{\frac{1}{k-2}} \right\rfloor.
+        \end{equation}
 
-        Now we argue that $n/2^{k-1} \geq 2^{k}/d$.
-        Otherwise,
+        Now we argue that $n/2^{k-1} \geq 3/d$.
+        Otherwise, by Remark~\ref{rm:min_d}, we would have
         \[
-            2^{k} 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}} \leq d < \frac{2^{2k-1}}{n}
+            \frac{3}{n^{\frac{1}{2^{k-1}}}} \leq d < \frac{3 \cdot 2^{k-1}}{n},
         \]
         which implies
         \[
-            n^{1 - \frac{1}{2^{k-1}}} \leq 2^{k-1}
+            \sqrt{n} < n^{1 - \frac{1}{2^{k-1}}} \leq 2^{k-1} < k!,
         \]
         so that
         \[
-            n \leq 2^{\frac{k-1}{1-\frac{1}{2^{k-1}}}}
+            n < k!^2,
         \]
-        Substituting this expression into the minimum density requirement, we get
-        \[
-            d >
-            2^{k} \left( 2^{\frac{k-1}{1-\frac{1}{2^{k-1}}}} \right)^{-\frac{1}{2^{k-1}}}  \geq
-            2^{k-(k-1)} = 2
-        \]
-        which is a contradiction as $d \leq 1$.
+        against the minimum value of $n$ in Remark~\ref{rm:min_d}.
+
         This allows us to find a common denominator on the
-        right hand side of the previous inequality:
+        right side of~\eqref{eq:t_prime}:
         \[
             t' \geq
+            \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
+            {\frac{\log 3 - \log d}{\log(3 / d)^{\frac{1}{k-1}}} } \right)^
+            {\frac{1}{k-2}} \right\rfloor =
             %
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
-            {\frac{\log (2^{k} / d)}{\log(2^{k} / d)^{\frac{1}{k-1}}} } \right)^
+            {\frac{\log (3 / d)}{\log(3 / d)^{\frac{1}{k-1}}} } \right)^
             {\frac{1}{k-2}} \right\rfloor =
             %
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})}
-            {\log (2^{k} / d)} \right)^
-            {\frac{1}{k-2}\left( 1 - \frac{1}{k-1} \right)} \right\rfloor =
-            %
-            \left\lfloor \left(  \frac{\log (n / 2^{k-1})}
-            {\log (2^{k} / d)} \right)^
+            {\log (3 / d)} \right)^
             {\frac{1}{k-1}} \right\rfloor =
             %
-            t \qedhere
+            t. \qedhere
         \]
     \end{proof}
-    
+\end{lemma}
 
+Finally, we need to show that the algorithm returns a balanced $k$-partite $k$-subgraph
+for our base case, that is, the case that does not make any recursive calls.
+This is when $k=2$.
+
+\begin{lemma}\label{lm:base_case}
+    For $k=2$, Algorithm~\ref{alg:kpartite} finds $s \geq t$.
+    \begin{proof}
+        By way of contradiction, suppose that $t > s$.
+        Substituting $k=2$ into $s = \lceil d^t n^{k-1} \rceil$, we get
+        $t > \left\lceil d^t n \right\rceil$ which implies
+        \[
+            t >
+            d^t n \geq
+            d^{\frac{\log n}{\log (3/d)}} n =
+            3^{\frac{\log n}{\log (3/d)}}(d/3)^{\frac{\log n}{\log (3/d)}} n \geq
+            \frac{3^t}{n} n =
+            3^t.
+        \]
+        which is false for all $t \geq 0$.
+    \end{proof}
 \end{lemma}
 
 All in all, we can now state the following theorem:
@@ -537,7 +502,7 @@ All in all, we can now state the following theorem:
         To prove the correctness of the algorithm, we proceed by induction on $k$:
         If $k=2$, it follows from Lemmas~\ref{lm:return} and~\ref{lm:base_case}.
         Likewise, if $k \geq 3$, Lemma~\ref{lm:return} tells us that the algorithm
-        reaches line~\ref{line:rec_call} at some point.
+        reaches line~\ref{line:rec_call} at some iteration of the loop.
         Furthermore, Lemma~\ref{lm:t_prime} tells us that the recursive call in line~\ref{line:rec_call}
         has a part size $t'$ that is at least $t$.
         In particular, this means that $t' \geq 2$.

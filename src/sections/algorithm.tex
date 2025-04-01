@@ -231,13 +231,14 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
             1 + \frac{2 \log (n/2) \sqrt{n}}{3} = % todo one more step
             1 + \frac{n}{4}.
         \]
-        This implies that $n < 4$, in contradiction with Remark~\ref{rm:min_d}.
+        This implies that $n < 4$, in contradiction to Remark~\ref{rm:min_d}.
         It is also clear from Remark~\ref{rm:min_d} that $n > 2k$
         so we also have $k < n/2$.
         Therefore, $ k + w < n/2 + n/2 = n$, which implies $k - 1 < n - w$,
         as we wanted to show.
 
-        Finally, suppose $s > \binom{n - w}{k - 1}$.
+        Finally, for sake of contradiction,
+        suppose $s > \binom{n - w}{k - 1}$.
         By the definition of $s$~\eqref{eq:s}
         and the fact that $\binom{n-w}{k-1}$ is an integer, we have that
         $d^t n^{k-1} > \binom{n - w}{k - 1}$.
@@ -250,9 +251,9 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
         which implies
         \[
             \left( \frac{1}{2k} \right)^{k-1} < d^t \leq
-            \left( \frac{1}{k!} \right)^2
+            \left( \frac{1}{k!} \right)^2.
         \]
-        Where in the last inequality we use that $t \geq 2$ and $d \leq \frac{1}{k!}$.
+        In the last inequality, we have used that $t \geq 2$ and that $d \leq \frac{1}{k!}$.
         Since $k!^2 \geq (2k)^{k-1}$ for all $k$,
         we have reached a contradiction. \qedhere
 
@@ -333,7 +334,7 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
             \[
                 n < 4 n \leq 6
             \]
-            in contradiction with Remark~\ref{rm:min_d}. \qedhere
+            in to with Remark~\ref{rm:min_d}. \qedhere
         \end{itemize}
     \end{proof}
 \end{lemma}

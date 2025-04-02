@@ -19,7 +19,7 @@ More precisely, we show the following:
 \end{theorem}
 
 \begin{remark}
-    The stated condition implies that the sets $V_1, \dots V_k$ are disjoint:
+    The stated condition implies that the sets $V_1, \dots, V_k$ are disjoint:
     If, for example, $v \in V_1 \cap V_2$ and for $3 \leq i \leq k$ $v_i \in V_i$ then
     $(v, v, v_3, \dots, v_k) \in V_1 \times \cdots \times V_k$ has size $k-1$ as an unordered set so it cannot
     be an edge in $G$.
@@ -69,7 +69,7 @@ Then, by iterating over all $t$-subsets of $W$, such a set $T$
 is found satisfying that the set $S$ of common neighbors of $T$ in $U$ has size at least $t$.
 In other words, $S \times T \subset E$ for $S, T \subset V$ of size at least $t$.
 
-\begin{algorithm}
+\begin{algorithm}[H]
     \caption{Finding a balanced bipartite graph in a $2$-graph}
     \label{alg:bipartite}
         \begin{algorithmic}[1]
@@ -148,7 +148,7 @@ which by the definition of $S$ satisfies
 $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$
 so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
 
-\begin{algorithm}
+\begin{algorithm}[H]
     \caption{Finding a balanced partite $k$-graph in a $k$-graph}
     \label{alg:kpartite}
     \begin{algorithmic}[1]
@@ -487,7 +487,7 @@ This is when $k=2$.
             d^{\frac{\log n}{\log (3/d)}} n =
             3^{\frac{\log n}{\log (3/d)}}(d/3)^{\frac{\log n}{\log (3/d)}} n \geq
             \frac{3^t}{n} n =
-            3^t.
+            3^t,
         \]
         which is false for all $t \geq 0$.
     \end{proof}

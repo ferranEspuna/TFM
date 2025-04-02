@@ -139,7 +139,7 @@ contain $G$ as a subgraph.
     $a_1, \dots, a_k$ vertices, which we denote by $K(a_1, \dots, a_k)$.
 \end{remark}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \input{figures/222}
     \caption{The complete 3-partite 3-graph $K(2, 2, 2)$, with parts $V_1, V_2, V_3$.
@@ -158,7 +158,7 @@ contain $G$ as a subgraph.
 \begin{definition}\label{def:zarankiewicz}
     Let $0 < t_1 \leq v_1, \dots, 0 < t_k \leq v_k$ be integers.
     Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
-    is the largest integer $0 \leq z < \prod_i{ v_i}$ for which there exists $k$-partite $k$-graph
+    is the largest integer $0 \leq z < \prod_i{ v_i}$ for which there exists a $k$-partite $k$-graph
     $H$ with part sizes $ |V_1| = v_1, \dots, |V_k| = v_k$ and $z$ edges
     such that no embedding $f$ of $K(T_1, \dots, T_k)$ with $|T_i| = t_i$ in it exists
     satisfying $f(T_i) \subset V_i$ for all $i$.
@@ -175,7 +175,7 @@ onto another we will assume the condition $f(T_i) \subset V_i$.
     Let $V_1, \dots, V_k$ be a random partition of $V(G)$ with $|V_i| = v_i$.
     for an edge $e \in E(G)$, the probability that $e$ is an edge in $K(V_1, \dots, V_k)$ is
     greater than
-    \[k! \prod_i n_i \sim k! (1/k)^k\]
+    \[k! \prod_i v_i / n \sim k! (1/k)^k\]
     which is independent of $n$.
     Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
     Applying the first moment method, we can conclude that
@@ -195,7 +195,7 @@ The result is stated and proved here for completeness:
 
 % TODO: replace \leq with < ??
 \begin{theorem}\label{thm:kst}
-    Let $0 < u \leq s$ and $0 < w \leq t$ be integers.
+    Let $0 < s \leq u$ and $0 < t \leq w$ be integers.
     Then 
     \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
     \begin{proof}
@@ -274,7 +274,7 @@ The result is stated and proved here for completeness:
 In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete partite $k$-graphs in the following theorem:
 
 \begin{theorem}\label{thm:erdos64}
-    ex$(n, K(t, \overset{k}{\cdots}, t)) = O\left(n^{k - \frac{1}{t^{k-1}}}\right)$
+    $ex(n, K(t, \overset{k}{\cdots}, t)) = O\left(n^{k - \frac{1}{t^{k-1}}}\right)$
 \end{theorem}
 
 A more modern proof of this result can be found in~\cite{carvajal2024canonical},

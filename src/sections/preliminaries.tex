@@ -6,7 +6,7 @@ We start by defining $k$-graphs, which generalize the usual notion of a graph.
 
     For an integer $k \geq 2$ a finite \emph{$k$-graph}
     is a tuple $G = (V, E)$ where $V$ is a finite set
-    and $E \subseteq \binom{V}{k}$.
+    and $E \subset \binom{V}{k}$.
     We call the elements of $V \eqqcolon V(G)$ its \emph{vertices}
     and those of $E \eqqcolon E(G)$ its \emph{edges}.
 \end{definition}
@@ -37,7 +37,7 @@ to relate $k$-graphs (with the same value of $k$) to each other:
     If, furthermore, $f^{-1}: \text{Im}(f) \to V$ is a homomorphism, we say that $f$
     is an \emph{induced} embedding and that $H$ contains $G$ as an \emph{induced}
     subgraph.
-    We write $G \subseteq H$.
+    We write $G \subset H$.
     If, in addition, $f$ is a bijection, we say that $f$ is an \emph{isomorphism}
     and that $G$ is \emph{isomorphic} to $H$.
     We write $G \cong H$.
@@ -87,11 +87,11 @@ contain $G$ as a subgraph.
         all $m' \geq m$.
         Suppose it is true for $m$ and let $m' \geq m$.
         Let $H = (W, F)$ be a $k$-graph with $n$ vertices and $m'$ edges.
-        We can just take $F' \subseteq F$ with $|F'| = m$.
+        We can just take $F' \subset F$ with $|F'| = m$.
         By hypothesis, the graph $H' = (W, F')$ contains $G$ as a subgraph,
         and the identity map in $W$ is an embedding of $H'$ in $H$:
         \[
-            G \subseteq H' \subseteq H \implies G \subseteq H \qedhere
+            G \subset H' \subset H \implies G \subset H \qedhere
         \]
     \end{proof}
 
@@ -161,7 +161,7 @@ contain $G$ as a subgraph.
     is the largest integer $0 \leq z < \prod_i{ v_i}$ for which there exists $k$-partite $k$-graph
     $H$ with part sizes $ |V_1| = v_1, \dots, |V_k| = v_k$ and $z$ edges
     such that no embedding $f$ of $K(T_1, \dots, T_k)$ with $|T_i| = t_i$ in it exists
-    satisfying $f(T_i) \subseteq V_i$ for all $i$.
+    satisfying $f(T_i) \subset V_i$ for all $i$.
 \end{definition}
 
 From now on, every time we talk about embeddings from one $k$-partite $k$-graph

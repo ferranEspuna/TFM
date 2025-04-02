@@ -1,60 +1,89 @@
 \section{Our Algorithm}\label{sec:algorithm}
-
-In this section we present a polynomial-time algorithm to find a balanced $k$-partite
-$k$-graph in a given $k$-graph $G$
-with $n$ vertices and $m$ edges with part size in the same order of magnitude as stated in
-Theorem~\ref{thm:erdos64}.
-In fact, we will prove the following:
-
+Let $G = (V, E)$ be a $k$-graph with $n$ vertices and $m$ edges.
+We define $d = m/n^k$ as the \emph{density} of $G$.
+We describe a polynomial-time algorithm that finds a complete balanced $k$-partite $k$-graph in $G$ with part
+sizes
+\begin{equation}
+     t = t (n, d, k) = \left\lfloor
+        \left(  \frac{\log (n/2^{k-1})}{\log (3/d)} \right)
+        ^{\frac{1}{k-1}} \right\rfloor \label{eq:t},
+\end{equation}
+with the only assumption that $t \geq 2$ (otherwise, we may just select a set of $k$ vertices forming an edge in~$G$).
+More precisely, we show the following:
 \begin{theorem}\label{thm:kpartite}
-    Let $G$ be a $k$-graph with $n$ vertices and $m = dn^k$ edges.
-    There is a polynomial-time algorithm
-    to find a balanced partite $k$-graph embedded in $G$ with part size
-    \[
-        t (n, d, k) \coloneqq \left\lfloor
-        \left(  \frac{\log (n/2^{k-1})}{\log (2^{k}/d)} \right)
-        ^{\frac{1}{k-1}} \right\rfloor
-    \]
-    as long as $t \geq 2$.
+    There is an algorithm that, given a $k$-graph $G$ satisfying the conditions above,
+    finds a complete balanced $k$-partite $k$-graph in $G$ with part sizes $t = t(n, d, k)$.
+    That is, the algorithm returns a tuple of sets $(V_1, \ldots, V_k) \subset V^k$ such that
+    $|V_i| = t$ for all $i$ and $V_1 \times \cdots \times V_k \subset E$.
+    Furthermore, the algorithm's runtime is polynomial in $n$.
 \end{theorem}
 
 \begin{remark}
-    If we let $t$ be the size of each part in the partite $k$-graph we are looking for, we need
-    \[
-        m \geq ex(n, K(t, \overset{k}{\cdots}, t)) = O\left(n^{k - \frac{1}{t^{k-1}}}\right)
-    \]
-    Defining $d = \frac{m}{n^k}$, and taking logarithms, this is true when
-    \[
-        \log d \geq - \frac{\log n}{t^{k-1}} + O(1)
-    \]
-    which implies
-    \[
-        t = O\left(\left(\frac{\log n}{\log (1/d)}\right)^{\frac{1}{k-1}}\right)
-    \]
-    Therefore, Theorem~\ref{thm:kpartite} gives a part size in the same order of magnitude as the bound
-    given by Theorem~\ref{thm:erdos64}.
+    The stated condition implies that the sets $V_1, \dots V_k$ are disjoint:
+    If, for example, $v \in V_1 \cap V_2$ and for $3 \leq i \leq k$ $v_i \in V_i$ then
+    $(v, v, v_3, \dots, v_k) \in V_1 \times \cdots \times V_k$ has size $k-1$ as an unordered set so it cannot
+    be an edge in $G$.
+    This means that the inclusion map from $K(V_1, \dots, V_k)$ to $V$ defines an embedding, as desired.
 \end{remark}
 
-This algorithmic problem has already been solved for $k = 2$ by Mubayi and Turán~\cite{MUBAYI2010174}.
-The algorithm in that case follows very closely the structure of the proof of Theorem~\ref{thm:kst}.
-We outline the algorithm for $k = 2$ here for context and clarity.
-The variable names have been altered to match the notation used in this thesis.
+This gives a constructive proof of Theorem~\ref{thm:erdos64}.
+Indeed, suppose we have a fixed value for $t$.
+For $n$ large enough, we may choose $d$ such that $t(n, d, k) \geq t$.
+By our definition of $t$, we only need that
+\[
+    d \geq 3 {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}},
+\]
+which is satisfied for
+\[
+    m =
+    \left\lceil
+    3 n^k {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}}
+    \right\rceil =
+    O\left(n^{k - \frac{1}{t^{k-1}}}\right).
+\]
+The construction in Theorem~\ref{thm:kpartite} then proves
+\[
+    ex(n, K(t, \overset{k}{\cdots}, t)) < m =  O\left(n^{k - \frac{1}{t^{k-1}}}\right).
+\]
 
-\begin{algorithm}[H]
+% TODO discussion of constant density case. Is it optimal?
+
+For $k = 2$, this problem was already solved by an algorithm of Mubayi and Turán~\cite{MUBAYI2010174},
+which we present here (Algorithm~\ref{alg:bipartite}) for context and clarity.
+A slightly different value for $t$ is used because of different estimates in their proof of correctness.
+Specifically, $t$ is set to
+\[
+    t_2(n, d) = \left\lfloor \frac{\log (n/2) }{\log (2e/d)}\right\rfloor,
+\]
+whereas we get
+\[
+    t(n, d, 2) = \left\lfloor
+        \left(  \frac{\log (n/2)}{\log (3/d)} \right)
+       \right\rfloor.
+\]
+The vertex set $V(G)$ is partitioned into two sets $U$ and $W$ such that there are many edges between them
+and the size of $W$ is logarithmic in $n$.
+This is achieved by selecting $W$ to be a set of vertices of highest degree
+(this is, no vertex in $U$ has more neighbors than any vertex in $W$).
+Then, by iterating over all $t$-subsets of $W$, such a set $T$
+is found satisfying that the set $S$ of common neighbors of $T$ in $U$ has size at least $t$.
+In other words, $S \times T \subset E$ for $S, T \subset V$ of size at least $t$.
+
+\begin{algorithm}
     \caption{Finding a balanced bipartite graph in a $2$-graph}
     \label{alg:bipartite}
         \begin{algorithmic}[1]
         \Require A graph G = $(V, E)$ with $|V| = n$, $E = m$
         \State $d \gets m / n^2 $
-        \State \textbf{assert} $d \geq 3 n^{-\frac{1}{2}}$
+        \State \textbf{assert} $d \geq 3 n^{-1/2}$ \label{line:bipartite_min_d}
 
         \State $t \gets \left\lfloor\frac{\log (n/2) }
         {\log (2e/d)}\right\rfloor,\, w \gets \lfloor t/d \rfloor$
 
-        \State $W \gets $ The set of $w$ vertices with highest degree in $G$
+        \State $W \gets $ a set of $w$ vertices with highest degree in $G$
         \State $U \gets V \setminus W$
-        \ForAll{$T \in \binom{W}{t} $}
-            \State $S \gets \{x \in U : {x, y} \in E \text{ for all } y \in T\}$
+        \ForAll{$T \in \binom{W}{t} $} \label{line:2partite_for}
+            \State $S \gets \{x \in U \colon \{x, y\} \in E \text{ for all } y \in T\}$
             \If{$|S| \geq t$}
                 \State \Return $(S, T)$
             \EndIf
@@ -62,28 +91,62 @@ The variable names have been altered to match the notation used in this thesis.
         \end{algorithmic}
 \end{algorithm}
 
-If the set $S$ is too large we can simply take a subset of it of size $t$.
-The algorithm is correct if at some point it returns a pair of sets $(S, T)$.
-The argument of why this is the case boils down to showing that there is a
-large number of edges between $U$ and $W$ and then applying Theorem~\ref{thm:kst}
-with $u = |U| = n - w$ and $s = t$ .
+The minimum density $d \geq 3n^{-1/2}$ in line~\ref{line:bipartite_min_d} is required
+because if $d = o\left(n^{-1/2}\right)$ then
+there may not even be a $K(2, 2)$ in $G$. % TODO: Explain this better in preliminaries
+If the set $S$ is too large, a subset of it of size $t$ can be returned instead.
+To see that the algorithm returns a pair of sets $(S, T)$, one uses the fact that
+there is large number of edges between $U$ and $W$ (proportional to the size of $W$).
+Then, a direct application of Theorem~\ref{thm:kst}
+with $u = |U| = n - w$ and $s = t$ shows that
+there is a $K(t, t)$ in the bipartite graph $(U, W; E \cap (U \times W))$.
+This in turn means that for some $T$,
+the size of $S$ is at least $t$
+and the algorithm returns $(S, T)$.
 Finally, the algorithm runs in polynomial time because 
 the  number of iterations of the loop is
 \[
     \binom{w}{t} \leq
     \left(\frac{ew}{t}\right)^t \leq
     \left(\frac{1}{d}\right)^t e^t < e^{t \log (1/d) + \log n} <
-    e^{2\log n} = n^2
+    e^{2\log n} = n^2.
 \]
 
-\begin{remark}
-    The requirement for a minimum density is because if $d = o\left(n^{-1/2}\right)$ then
-    there may not even be a $K(2, 2)$ embedded in $G$. % TODO: Explain this better
-\end{remark}
-
-We now present the algorithm for the general case mentioned in Theorem~\ref{thm:kpartite}.
+We now present Algorithm~\ref{alg:kpartite}, which is
+a generalization of Algorithm~\ref{alg:bipartite} to $k$-graphs.
 It follows the same structure as Algorithm~\ref{alg:bipartite},
 but it is defined recursively.
+This is the algorithm mentioned in Theorem~\ref{thm:kpartite},
+and the main contribution of this work.
+
+The main idea is to select a set $W \subset V$ of vertices of highest degree with
+\begin{equation}
+    \label{eq:w}
+    |W| = w = w(n, d, k) = \left\lceil \frac{2t(n, d, k)}{d} \right\rceil.
+\end{equation}
+
+Then, for every $t$-subset $T$ of $W$, we compute the set $S$ of $(k-1)$-subsets of $V \setminus W$
+that form an edge with every vertex in $T$.
+For a specific $T$, the set $S$ satisfies
+
+\begin{equation}
+    \label{eq:s}
+    |S| \geq s = s(n, d, k) = \left\lceil d^{t(n, d, k)} n^{k-1} \right\rceil.
+\end{equation}
+
+We define a new $(k-1)$-graph $G'$ with vertex set $V \setminus W$ and edge set $S$.
+As it turns out, $S$ is large enough~\eqref{eq:s}
+that applying the algorithm recursively to $G'$
+yields a $K(t', \overset{k-1}{\cdots}, t')$ in $G'$ with $t' \geq t$.
+This is, a tuple
+$P' = (V_1, V_2, \ldots, V_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that $|V_i| = t'$ and
+$V_1 \times \cdots \times V_{k-1}\subset S$.
+
+If we now concatenate $P'$ with $T$ (choosing a subset of $X_i \subset V_i$ of size $t$ for each $i$ if necessary), we get
+a $k$-tuple $(X_1, \ldots, X_{k-1}, T)$, of $t-sets$ of $V$ % todo k-tuple is split
+which by the definition of $S$ satisfies
+$X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$
+so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
 
 \begin{algorithm}
     \caption{Finding a balanced partite $k$-graph in a $k$-graph}
@@ -96,103 +159,124 @@ but it is defined recursively.
             \EndIf
 
             \State $V \gets V(G), E \gets E(G), n \gets |V|,\, m \gets |E|,\, d \gets m/n^k$
-            \State $t \gets t(n, d, k),\, w \gets \lceil 2t/d \rceil,\, s \gets \lfloor d^t n^{k-1} \rfloor$ \label{line:tws}
+            \State $t \gets t(n, d, k),\, w \gets w(n, d, k),\, s \gets s(n, d, k)$ \label{line:tws}
             \State \textbf{assert} $t \geq 2$ \label{line:min_t}
-            \State $W \gets$ the set of $w$ vertices with highest degree in $G$ \label{line:W}
+            \State $W \gets$ a set of $w$ vertices with highest degree in $G$ \label{line:W}
             \State $U \gets \binom{V\setminus W}{k-1}$
 
             \ForAll{$T \in \binom{W}{t}$} \label{line:for}
-                \State $S \gets \{\,y \in U : \{x\} \cup y \in E \text{ for all } x \in T\,\}$
+                \State $S \gets \{\,y \in U \colon \{x\} \cup y \in E \text{ for all } x \in T\,\}$ \label{line:S}
                 \If{$|S| \geq s$}
-                    \State \Return \Call{FIND\_PARTITE}
-                    {$G' \coloneqq (V \setminus W,\, S),\, k-1$} $\circ \, (T)$\label{line:return}
+                    \State $G' \gets (V \setminus W, S)$ \label{line:rec_call}
+                    \State $V_1, \ldots, V_{k-1} \gets$ \Call{FIND\_PARTITE}{$G', k-1$}
+                    \State \Return $(V_1, \ldots, V_{k-1}, T)$ \label{line:return}
                 \EndIf
             \EndFor
         \EndFunction
     \end{algorithmic}
 \end{algorithm}
 
-Where the operator $\circ$ denotes the concatenation of tuples, and we
-understand a $1$-graph to be a subset of a set.
+The implementation of the algorithm and its proof of correctness are less cumbersome if we assume
+a $1$-graph to be just a subset of a set and use it as the base case.
+We also make the simplification of not including in Algorithm~\ref{alg:kpartite}
+the size reduction of the sets obtained from the recursive call.
+The algorithm as stated in fact returns a complete $k$-partite
+subgraph with part sizes \emph{at least} $t$, which can easily be post-processed
+if desired to get a complete \emph{balanced} subgraph with part sizes $t$.
+
 The aim of the rest of this section is to prove that this algorithm is correct
 (as long as the  condition $t \geq 2$ in line~\ref{line:min_t} is met on the first call)
 and runs in polynomial time.
 That is, to prove it meets the requirements of Theorem~\ref{thm:kpartite}.
-The following lemmas are stated assuming that $k \geq 2$ and
-$t \geq 2$.
+From now on, we assume $k \geq 2$ and
+$t \geq 2$, unless stated otherwise.
+The following observation is useful for some of the bounds we have to prove.
 
 \begin{remark}\label{rm:min_d}
-    The $t=1$ case is trivial, as we can simply select one edge of $G$.
     The requirement $t \geq 2$ is met whenever
     \[
-        d \geq 2^{k} 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}}
+        d \geq 3 \cdot 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}},
     \]
-    Note that this implies that
+    However, $d$ satisfies
     \[
-        1 \geq d \geq \frac{4\sqrt{2}}{\sqrt{n}}
+        d = \frac{m}{n^k} \leq \frac{\binom{n}{k}}{n^k} < \frac{1}{k!},
     \]
-    and in particular $n \geq 32$.
+    so we get a minimum value of $n$:
+    \[
+        n > \left( k!\, \cdot 3 \cdot 2^{\frac{k-1}{2^{k-1}}} \right)^{2^{k-1}} \geq 72.
+    \]
+    This also lets us prove the bound
+    \[
+        d \geq 3 \sqrt{\frac{2}{n}}
+    \]
+    for all $k \geq 2$.
+    We have already seen that this is the case for $k=2$.
+    For $k > 2$, suppose that the bound is not met.
+    Then,
+    \[
+       3 n^{-\frac{1}{4}} \leq 3 n^{-\frac{1}{2^{k-1}}} < d < 3 \sqrt{\frac{2}{n}},
+    \]
+    which by algebraic manipulation implies $n < 4$.
 \end{remark}
 
+We start by proving that the selection of $t, w, s$ in line~\ref{line:tws} of Algorithm~\ref{alg:kpartite}
+is sound, in the sense that we only consider subsets of sizes smaller than the corresponding supersets.
+% todo a bit clunky
+
 \begin{lemma}\label{lm:sound}
-    The selection of $t, w, s$ in line~\ref{line:tws} is sound in the sense that
+    For $t, w, s$ as selected in line~\ref{line:tws} of Algorithm~\ref{alg:kpartite},
+    we have that
     $t  \leq w \leq n$, $k - 1 \leq n - w$ and $s \leq \binom{n - w}{k - 1}$.
     \begin{proof}
-        $t \leq w$ is clear.
-        We will in fact show that $w < \frac{n}{2}$.
-        If not,
+        It is clear from the definitions that $w \geq t$.
+        To see that $w \leq n$, we in fact show that $w < \frac{n}{2}$.
+        If not, then
         \[
             \frac{n}{2} \leq
-            w \leq 1 + \frac{2t}{d} <
-            1 + \frac{2 \log (n/2) \sqrt{n}}{4\sqrt{2}} =
-            1 + \frac{\log(n/2) \sqrt{n}}{2\sqrt{2}} <
-            1 + \frac{n}{4}
+            w =
+            \left\lceil \frac{2t}{d} \right\rceil \leq
+            1 + \frac{2t}{d} <
+            1 + \frac{2 \log (n/2) \sqrt{n}}{3} = % todo one more step
+            1 + \frac{n}{4}.
         \]
-
-        This implies that $n < 4$, in contradiction with Remark~\ref{rm:min_d}.
-
-        We also show that $k < \frac{n}{2}$.
-        If not,
-        \[
-            1 \geq
-            d >
-            2^{\frac{n}{2}} n^{-\frac{1}{2^{n/2-1}}} \geq
-            e^{\frac{n}{2} \log 2 - \frac{\log n}{2^{n/2-1}}}
-        \]
-        which implies
-        \[
-            \frac{n}{2} \log 2 < \frac{\log n}{2^{n/2-1}}
-        \]
-        This is false for all $n \geq 2$, and in particular for $n \geq 32$.
-        Therefore, $ k + w < n$, which implies $k - 1 < n - w$,
+        This implies that $n < 4$, in contradiction to Remark~\ref{rm:min_d}.
+        It is also clear from Remark~\ref{rm:min_d} that $n > 2k$
+        so we also have $k < n/2$.
+        Therefore, $ k + w < n/2 + n/2 = n$, which implies $k - 1 < n - w$,
         as we wanted to show.
 
-        Finally, suppose $s > \binom{n - w}{k - 1}$.
+        Finally, for sake of contradiction,
+        suppose $s > \binom{n - w}{k - 1}$.
+        By the definition of $s$~\eqref{eq:s}
+        and the fact that $\binom{n-w}{k-1}$ is an integer, we have that
+        $d^t n^{k-1} > \binom{n - w}{k - 1}$.
         Then, using the fact that $w < \frac{n}{2}$,
         \[
             \left( \frac{n}{2k} \right)^{k-1} \leq
             \left( \frac{n-w}{k-1} \right)^{k-1} \leq
-            \binom{n - w}{k - 1} < s \leq d^t n^{k-1}
+            \binom{n - w}{k - 1} < d^t n^{k-1},
         \]
         which implies
         \[
             \left( \frac{1}{2k} \right)^{k-1} < d^t \leq
-            \left( \frac{1}{k!} \right)^2
+            \left( \frac{1}{k!} \right)^2.
         \]
-        Where in the last inequality we use that $t \geq 2$ and there are at most
-        $\binom{n}{k} \leq \frac{n^k}{k!}$ edges in $G$.
+        In the last inequality, we have used that $t \geq 2$ and that $d \leq \frac{1}{k!}$.
         Since $k!^2 \geq (2k)^{k-1}$ for all $k$,
         we have reached a contradiction. \qedhere
 
     \end{proof}
 \end{lemma}
 
+The next step is to show that there are many edges with exactly one vertex in $W$.
+More precisely, we have the following.
+
 \begin{lemma}\label{lm:many_edges}
-    With $W  \subset V$ as defined in line~\ref{line:W},
+    Given $W  \subset V$ as defined in line~\ref{line:W} of Algorithm~\ref{alg:kpartite},
     There are at least $\frac{3}{2}dwn^{k-1}$ edges of $G$ with exactly one vertex in $W$.
     \begin{proof}
         The degree sum over $V$ is $kdn^{k}$.
-        Thus, by the pigeonhole principle, the degree sum over $W$ is at least
+        By averaging, the degree sum over $W$ is at least
         $\frac{w}{n}kdn^{k} = wkdn^{k-1}$.
         For $2 \leq j \leq n$,
         consider the contribution to this sum by edges with exactly $j$ vertices in $W$.
@@ -204,7 +288,7 @@ $t \geq 2$.
         The number of edges with only one vertex in $W$ is then at least
 
         \[
-            wkdn^{k-1} - (k-1)w^{2}n^{k-2} = dwn^{k-1} \left( k - \frac{(k-1)w}{nd}\right)
+            wkdn^{k-1} - (k-1)w^{2}n^{k-2} = dwn^{k-1} \left( k - \frac{(k-1)w}{nd}\right).
         \]
 
         Suppose, by way of contradiction,
@@ -212,240 +296,201 @@ $t \geq 2$.
         Using that $\frac{k-1}{k-3/2} \leq 2$
         for $k \geq 2$, we arrive at
         \[
-             2 \geq  \frac{nd}{w}
+             2 \geq  \frac{nd}{w},
         \]
         which implies
         \[
             d \leq \frac{2w}{n} = \frac{2 \left\lceil\frac{2t}{d} \right\rceil}{n}
-            < \frac{6t}{dn}
+            < \frac{6t}{dn},
         \]
-
-        Where the last inequality follows from the fact that $t > 1$ and $d \leq 1$.
-        Rearranging:
+        where the last inequality follows from the fact that $t > 1$ and $d \leq 1$.
+        Algebraic manipulation then yields
         \[
-            nd^2 < 6t
+            nd^2 < 6t.
         \]
+        We now closely follow the steps of Mubayi and Turán~\cite{MUBAYI2010174}.
 
-        If $k \geq 3$, applying the minimum density requirement from Remark~\ref{rm:min_d} yields:
+        If $\frac{3}{\sqrt{n}} \leq d \leq 3 \sqrt{\frac{\log n}{n}}$,
+        by Remark~\ref{rm:min_d},
+        we get
         \[
-            128 \sqrt {n} \leq
-            4^{k-1 + \frac{k-1}{2^{k-1}}} n \cdot n^{-\frac{2}{2^{k-1}}} \leq
-            nd^2 < 6t < 6 \log n
+            18 \leq nd^2
+            < 6t \leq
+            6 \frac{\log (n/2)}{\log(3/d) } <
+            6 \frac{\log n}{\log\left(\sqrt{\frac{n}{\log n}}\right)} =
+            12 \frac{\log n}{{\log \left( \frac{n}{\log n} \right)}} <
+            12 \frac{\log n}{{\log \left( \frac{n}{\log n} \right)}} <
+            12 \frac{\log n}{{\log \left( n^{2/3} \right)}} =
+            18,
         \]
-        Which is false for all $n$.
+        which is a contradiction.
 
-        We have to be more careful in the $k = 2$ case.
-        We closely follow the steps of~\cite{MUBAYI2010174}:
-        \begin{itemize}
-            \item If $4 \sqrt{\frac{2}{n}} \leq d < 2 \sqrt{\frac{\log n}{n}}$, we get
-            \[
-                32 \leq nd^2
-                < 6t \leq
-                6 \frac{\log (n/2)}{\log(2/d) } \leq
-                6 \frac{\log n}{\log\left(\sqrt{\frac{n}{\log n}}\right)} =
-                12 \frac{\log n}{{\log \left( \frac{n}{\log n} \right)}} <
-                12 \frac{\log n}{{\log \left( \frac{n}{\log n} \right)}} <
-                12 \frac{\log n}{{\log \left( n^{2/3} \right)}} =
-                18
-            \]
-            where last inequality follows from $\log n < n^{1/3}$.
-            This is a contradiction.
-
-            \item If $2 \sqrt{\frac{\log n}{n}} \leq d \leq \frac{1}{2}$, then
-            \[
-                4 \, \frac{\log n}{n} \leq nd^2 < 6t \leq 6 \log n
-            \]
-            so that
-            \[
-                n < 4 n \leq 6
-            \]
-            in contradiction with Remark~\ref{rm:min_d}. \qedhere
-        \end{itemize}
+        Otherwise, we have $d > 3 \sqrt{\frac{\log n}{n}}$.
+        This yields $9 \log n \leq nd^2 < 6t < 6 \log n$,
+        again, a contradiction.
     \end{proof}
 \end{lemma}
 
+We use this fact to show that for some $T \subset W$,
+there is a large number of $(k-1)$-subsets of $V \setminus W$
+that form an edge with every vertex in $T$.
+
 \begin{lemma}\label{lm:return}
-    Line~\ref{line:return} of Algorithm~\ref{alg:kpartite} is reached at some point in the for
-    loop in line~\ref{line:for}.
+    For some $T \in \binom{W}{t}$, the corresponding set $S$ defined
+    in line~\ref{line:S} of Algorithm~\ref{alg:kpartite} has size at least $s$.
     \begin{proof}
-        We will apply Theorem~\ref{thm:kst} to the $2$-partite $2$-graph
+        We apply Theorem~\ref{thm:kst} to the $2$-partite $2$-graph
         \[
-            \mathcal{P} = (U, W, \{(x, y) \in U \times W | \{x\} \cup y \in E \})
+            \mathcal{P} = (U, W; F),
+        \]
+        where $F$ is defined as
+        \[
+            F = \{(x, y) \in U \times W | \{x\} \cup y \in E \}.
         \]
         By Lemma~\ref{lm:many_edges}, $\mathcal{P}$ has at least
         $\frac{3}{2}dwn^{k-1}$ edges.
-
-        Suppose that what we want to show is false.
-        This means that for no sets $S \in \binom{U}{s}, T \in \binom{W}{t}$
+        By way of contradiction, suppose that the lemma is false.
+        There are no sets $S \in \binom{U}{s}, T \in \binom{W}{t}$
         such that $(x, y) \in E (\mathcal{P})$ for all $x \in S, y \in T $.
-        In other words, there is no embedding of $K(s, t)$ on $\mathcal{P}$.
-        This means that
-
+        In other words, there is no embedding of $K(s, t)$ in $\mathcal{P}$.
+        By Theorem~\ref{thm:kst} applied with $u = \binom{n-w}{k-1}$,
+        this implies that
         % TODO: check the math works, just copied
 
-        \begin{align*}
-            \frac{3}{2}dwn^{k-1} \leq &
-            \, z \left(\binom{n - w}{k-1}, w, s, t  \right) \leq
-            (s-1)^{1/t}(w-t+1)\binom{n-w}{k-1}^{1-1/t} + (t-1)\binom{n-w}{k-1} \leq \\
-            \leq & \, s^{1/t} w \binom{n}{k-1}^{1-1/t} + t \binom{n}{k-1} \leq
-             s^{1/t} wn^{(k-1)(1-1/t)} + tn^{k-1} \leq \\
-            \leq & \, s^{1/t} wn^{(k-1)(1-1/t)} + \frac{1}{2} dwn^{k-1}
-        \end{align*}
-
-        Where the last inequality follows from our definition of $w$.
-        Rearranging, we get
-
         \[
-            dwn^{k-1} \leq s^{1/t} wn^{(k-1)(1-1/t)}
+            \frac{3}{2}dwn^{k-1} \leq
+            \, z \left(\binom{n - w}{k-1}; w, s, t  \right) \leq
+            (s-1)^{1/t}(w-t+1)\binom{n-w}{k-1}^{1-1/t} + (t-1)\binom{n-w}{k-1}.
         \]
-        which implies
+        We now substitute into the above expression $(s-1) \leq d^t n^{k-1}$ (which
+        follows from $s = \lceil d^t n^{k-1} \rceil$) and $w > 0$:
         \[
-            d \leq \left(\frac{s}{n^{k-1}}\right)^{1/t}
+             \frac{3}{2}dwn^{k-1} <
+             \, dn^{\frac{k-1}{t}} w \binom{n}{k-1}^{1-1/t} + t \binom{n}{k-1} \leq
+             dn^{\frac{k-1}{t}} wn^{(k-1)(1-1/t)} + tn^{k-1}.
         \]
-        which is false by the definition of $s$.
+        Finally, we substitute $t \leq \frac{1}{2}dw$, which follows from
+        $w = \left\lceil \frac{2t}{d} \right\rceil$:
+        \[
+            \frac{3}{2}dwn^{k-1} <
+            dn^{\frac{k-1}{t}} wn^{(k-1)(1-1/t)} + \frac{1}{2} dwn^{k-1} =
+            \frac{3}{2} dwn^{k-1},
+        \]
+
+        which is a contradiction.
     \end{proof}
 \end{lemma}
 
-Now, for the base case, we need:
-
-\begin{lemma}\label{lm:base_case}
-    For $k=2$, Algorithm~\ref{alg:kpartite} finds $s \geq t$.
-    \begin{proof}
-        Suppose $t < s$.
-        Substituting $k=2$, we get $t > \left\lfloor d^t n \right\rfloor$ which implies
-        \[
-            t >
-            d^t n \geq
-            d^{\frac{\log n}{\log (2/d)}} n =
-            2^{\frac{\log n}{\log (2/d)}}(d/2)^{\frac{\log n}{\log (2/d)}} n \geq
-            \frac{2^t}{n} n =
-            2^t
-        \]
-        Which is false for all $t \geq 0$.
-    \end{proof} % TODO review
-\end{lemma}
-
-For the recursive step, we need:
-
-\begin{lemma}\label{lm:d_t}
-    For $k \geq 3$, in the recursive call in line~\ref{line:return} of Algorithm~\ref{alg:kpartite},
-    we have
-    \[
-        d' \coloneqq \frac{s}{(n-w)^{k-1}} \geq \frac{d^t}{2}
-    \]
-
-    \begin{proof}
-        By the definition of $s$,
-        \[
-            d' =
-            \frac{s}{(n-w)^{k-1}} \geq
-            \frac{s}{n^{k-1}} \geq
-            \frac{d^t n^{k-1} - 1 }{n^{k-1}} =
-            d^t - n^{1-k}
-        \]
-        so in fact we only need to show that $n^{1-k} \leq d^t/2$.
-        However,
-        \[
-            d^t \geq
-            d^{\left( \frac{\log \left(\frac{n}{2^{k-1}}\right)}{\log \left(\frac{2^{k-1}}{d}\right)} \right)^{1/(k-1)}}
-        \]
-        where the right hand side is increasing in $d$.
-        Therefore, we may substitute the minimum density requirement from Remark~\ref{rm:min_d}.
-        That is, our statement is true if
-        \[
-            n^{1-k} \leq \left(2^{k} 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}}\right)^2
-        \]
-        which is clearly true for all $n > 0$.
-    \end{proof}
-
-\end{lemma}
+This shows that we reach the recursive call in line~\ref{line:rec_call} of Algorithm~\ref{alg:kpartite}
+at some iteration of the loop in line~\ref{line:for}.
+The next step will be to show that this recursive call finds a $k-1$-partite $k-1$-graph in $G'$ of
+part sizes at least $t$.
+For this, we bound the density $d'$ of $G'$:
+\[
+    d' \geq \frac{s}{(n-w)^{k-1}} \geq \frac{d^t n^{k-1}}{n^{k-1}} = d^t,
+\]
+and ensure that the associated part size
+\[
+    t' = t(n - w, d', k - 1)
+\]
+satisfies $t' \geq t$.
 
 \begin{lemma}\label{lm:t_prime}
-    For $k \geq 3$, in the recursive call in line~\ref{line:return} of Algorithm~\ref{alg:kpartite},
-    the resulting part size $t'$ satisfies
-    \[
-        t' \coloneqq t(n - w, d', k - 1) \geq t
-    \]
-    
+    For all $k \geq 3$, $t' \geq t$.
+
     \begin{proof}
 
-        Substituting the new parameters into the definition of $t$, we get
+        Substituting the new parameters into the definition, we get
         \[
-            t' = \left\lfloor \left(  \frac{\log ((n-w)/2^{k-2})}{\log (2 \cdot 2^{k-1}/d')} \right)^
-            {\frac{1}{k-2}} \right\rfloor
+            t' = \left\lfloor \left(\frac{\log ((n-w)/2^{k-2})}{\log (3/d')} \right)^
+            {\frac{1}{k-2}} \right\rfloor.
         \]
 
-        We start by using Lemma~\ref{lm:d_t} and the fact that $w \leq n/2$:
+        We start by using that $d' \geq d^t$ and that $w \leq n/2$:
 
         \[
             t' \geq
             %
-            \left\lfloor \left(  \frac{\log ((n-w)/2^{k-2})}{\log (2 \cdot 2^{k-1}/d^t)} \right)^
+            \left\lfloor \left(  \frac{\log ((n-w)/2^{k-2})}{\log (3/d^t)} \right)^
             {\frac{1}{k-2}} \right\rfloor \geq
             %
-            \left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (2^{k}/d^t)} \right)^{\frac{1}{k-2}} \right\rfloor =
+            \left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (3/d^t)} \right)^{\frac{1}{k-2}} \right\rfloor =
             %
-            \left\lfloor \left(  \frac{\log (n / 2^{k-1})}{k \log 2 - t \log d} \right)^
-            {\frac{1}{k-2}} \right\rfloor
+            \left\lfloor \left(  \frac{\log (n / 2^{k-1})}{\log 3 - t \log d} \right)^
+            {\frac{1}{k-2}} \right\rfloor.
         \]
         Then, we substitute the definition of $t$, where removing the floor function
         maintains the inequality because the right hand side is decreasing in $t$ (recall $d \leq 1$):
 
-        \[
+        \begin{equation} \label{eq:t_prime}
             t' \geq
             %
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})}
-            {k \log 2 - \left(  \frac{\log (n / 2^{k-1})}{\log (2^{k}/d)} \right)^{\frac{1}{k-1}}  \log d} \right)^
+            {\log 3 - \left(  \frac{\log (n / 2^{k-1})}{\log (3/d)} \right)^{\frac{1}{k-1}}  \log d} \right)^
             {\frac{1}{k-2}} \right\rfloor
             =
             %
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
-            {\frac{k \log 2}{\log(n / 2^{k-1})^{\frac{1}{k-1}}} - \frac{\log d}{\log (2^{k}/d)^{\frac{1}{k-1}}} }
-            \right)^{\frac{1}{k-2}} \right\rfloor \\
-        \]
+            {\frac{\log 3}{\log(n / 2^{k-1})^{\frac{1}{k-1}}} - \frac{\log d}{\log (3/d)^{\frac{1}{k-1}}} }
+            \right)^{\frac{1}{k-2}} \right\rfloor.
+        \end{equation}
 
-        Now we argue that $n/2^{k-1} \geq 2^{k}/d$.
-        Otherwise,
+        Now we argue that $n/2^{k-1} \geq 3/d$.
+        Otherwise, by Remark~\ref{rm:min_d}, we would have
         \[
-            2^{k} 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}} \leq d < \frac{2^{2k-1}}{n}
+            \frac{3}{n^{\frac{1}{2^{k-1}}}} \leq d < \frac{3 \cdot 2^{k-1}}{n},
         \]
         which implies
         \[
-            n^{1 - \frac{1}{2^{k-1}}} \leq 2^{k-1}
+            \sqrt{n} < n^{1 - \frac{1}{2^{k-1}}} \leq 2^{k-1} < k!,
         \]
         so that
         \[
-            n \leq 2^{\frac{k-1}{1-\frac{1}{2^{k-1}}}}
+            n < k!^2,
         \]
-        Substituting this expression into the minimum density requirement, we get
-        \[
-            d >
-            2^{k} \left( 2^{\frac{k-1}{1-\frac{1}{2^{k-1}}}} \right)^{-\frac{1}{2^{k-1}}}  \geq
-            2^{k-(k-1)} = 2
-        \]
-        which is a contradiction as $d \leq 1$.
+        against the minimum value of $n$ in Remark~\ref{rm:min_d}.
+
         This allows us to find a common denominator on the
-        right hand side of the previous inequality:
+        right side of~\eqref{eq:t_prime}:
         \[
             t' \geq
+            \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
+            {\frac{\log 3 - \log d}{\log(3 / d)^{\frac{1}{k-1}}} } \right)^
+            {\frac{1}{k-2}} \right\rfloor =
             %
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
-            {\frac{\log (2^{k} / d)}{\log(2^{k} / d)^{\frac{1}{k-1}}} } \right)^
+            {\frac{\log (3 / d)}{\log(3 / d)^{\frac{1}{k-1}}} } \right)^
             {\frac{1}{k-2}} \right\rfloor =
             %
             \left\lfloor \left(  \frac{\log (n / 2^{k-1})}
-            {\log (2^{k} / d)} \right)^
-            {\frac{1}{k-2}\left( 1 - \frac{1}{k-1} \right)} \right\rfloor =
-            %
-            \left\lfloor \left(  \frac{\log (n / 2^{k-1})}
-            {\log (2^{k} / d)} \right)^
+            {\log (3 / d)} \right)^
             {\frac{1}{k-1}} \right\rfloor =
             %
-            t \qedhere
+            t. \qedhere
         \]
     \end{proof}
-    
+\end{lemma}
 
+Finally, we need to show that the algorithm returns a balanced $k$-partite $k$-subgraph
+for our base case, that is, the case that does not make any recursive calls.
+This is when $k=2$.
+
+\begin{lemma}\label{lm:base_case}
+    For $k=2$, Algorithm~\ref{alg:kpartite} finds $s \geq t$.
+    \begin{proof}
+        By way of contradiction, suppose that $t > s$.
+        Substituting $k=2$ into $s = \lceil d^t n^{k-1} \rceil$, we get
+        $t > \left\lceil d^t n \right\rceil$ which implies
+        \[
+            t >
+            d^t n \geq
+            d^{\frac{\log n}{\log (3/d)}} n =
+            3^{\frac{\log n}{\log (3/d)}}(d/3)^{\frac{\log n}{\log (3/d)}} n \geq
+            \frac{3^t}{n} n =
+            3^t.
+        \]
+        which is false for all $t \geq 0$.
+    \end{proof}
 \end{lemma}
 
 All in all, we can now state the following theorem:
@@ -454,28 +499,28 @@ All in all, we can now state the following theorem:
     Algorithm~\ref{alg:kpartite} finds a balanced partite $k$-graph in a $k$-graph $G$ with
     $n$ vertices and $m = d n^k$ with part size $t(n, d, k)$ in polynomial time.
     \begin{proof}
-        To prove the correctness of the algorithm, we will proceed by induction on $k$:
+        To prove the correctness of the algorithm, we proceed by induction on $k$:
         If $k=2$, it follows from Lemmas~\ref{lm:return} and~\ref{lm:base_case}.
-        Likewise, if $k \geq 3$, Lemma~\ref{lm:return} tells us that the algorithm will
-        reach line~\ref{line:return} at some point.
-        Furthermore, Lemma~\ref{lm:t_prime} tells us that the recursive call in line~\ref{line:return}
-        will have a part size $t'$ that is at least $t$.
+        Likewise, if $k \geq 3$, Lemma~\ref{lm:return} tells us that the algorithm
+        reaches line~\ref{line:rec_call} at some iteration of the loop.
+        Furthermore, Lemma~\ref{lm:t_prime} tells us that the recursive call in line~\ref{line:rec_call}
+        has a part size $t'$ that is at least $t$.
         In particular, this means that $t' \geq 2$.
-        Using the induction hypothesis for $k-1$, this recursive call will be successful and
-        return a tuple of pairwise disjoint sets
+        Using the induction hypothesis for $k-1$, this recursive call is successful and
+        returns a tuple of pairwise disjoint sets
         $(X_1, X_2, \ldots, X_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that:
         \begin{itemize}
             \item $|X_i| \geq t(n-w, d', k-1) \geq t$
 
-            \item $X_1 \times \dots \times X_{k-1} \subseteq E(G') = S =
+            \item $X_1 \times \dots \times X_{k-1} \subset E(G') = S =
             \left\{x \in \binom{V \setminus W}{k-1} : \{x\} \cup y \in E \text{ for all } y \in T\right\}$
         \end{itemize}
 
         That is, (making the sizes of the $X_i$ smaller if necessary) the returned tuple $(X_1, \dots, X_{k-1}, T)$
-        satisfies $X_1 \times \dots \times X_{k-1} \times T \subseteq E = E(G)$, making the algorithm correct.
+        satisfies $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$, making the algorithm correct.
 
         For the time complexity, note that all operations in the algorithm are in polynomial time, % TODO: check this
-        except for perhaps the for loop in line~\ref{line:for} and the recursive call in line~\ref{line:return}.
+        except for perhaps the for loop in line~\ref{line:for} and the recursive call in line~\ref{line:rec_call}.
         Because there is only one recursive call, we can prove that it runs in polynomial time
         by induction on $k$.
         The only thing left to show is that the for loop runs in polynomial time.

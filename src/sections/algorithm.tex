@@ -154,8 +154,8 @@ so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
     \begin{algorithmic}[1]
         \Function{FIND\_PARTITE}{$G, k$}
             \State \textbf{assert} G is a $k$-graph
-            \If {$k = 1$}
-                \State \Return $\{x : \{x\} \in E(G)\}$
+            \If {$k = 1$} \label{line:base_case}
+                \State \Return $(\{x : \{x\} \in E(G)\})$
             \EndIf
 
             \State $V \gets V(G), E \gets E(G), n \gets |V|,\, m \gets |E|,\, d \gets m/n^k$
@@ -168,7 +168,7 @@ so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
                 \State $S \gets \{\,y \in U \colon \{x\} \cup y \in E \text{ for all } x \in T\,\}$ \label{line:S}
                 \If{$|S| \geq s$}
                     \State $G' \gets (V \setminus W, S)$ \label{line:rec_call}
-                    \State $V_1, \ldots, V_{k-1} \gets$ \Call{FIND\_PARTITE}{$G', k-1$}
+                    \State $(V_1, \ldots, V_{k-1}) \gets$ \Call{FIND\_PARTITE}{$G', k-1$}
                     \State \Return $(V_1, \ldots, V_{k-1}, T)$ \label{line:return}
                 \EndIf
             \EndFor
@@ -310,9 +310,7 @@ More precisely, we have the following.
         \]
         We now closely follow the steps of Mubayi and Turán~\cite{MUBAYI2010174}.
 
-        If $\frac{3}{\sqrt{n}} \leq d \leq 3 \sqrt{\frac{\log n}{n}}$,
-        by Remark~\ref{rm:min_d},
-        we get
+        If $3\sqrt {\frac{2}{n}} \leq d \leq 3 \sqrt{\frac{\log n}{n}}$, we get
         \[
             18 \leq nd^2
             < 6t \leq
@@ -471,9 +469,15 @@ satisfies $t' \geq t$.
     \end{proof}
 \end{lemma}
 
-Finally, we need to show that the algorithm returns a balanced $k$-partite $k$-subgraph
-for our base case, that is, the case that does not make any recursive calls.
-This is when $k=2$.
+This means that, assuming that the algorithm finds a $K(t', \overset{k-1}{\cdots}, t')$ in $G'$ in the recursive call,
+it finds a $K(t, \overset{k}{\cdots}, t)$ in $G$.
+This argument only works if $k \geq 3$.
+For $k=2$, the recursive call is handled by the base case in
+line~\ref{line:base_case} of Algorithm~\ref{alg:kpartite}.
+Therefore, the part size of the (singleton) tuple returned by the recursive call
+is the number of (single-vertex) edges in $G'$, which is at least $s$.
+To ensure that the algorithm returns a $K(t, t)$ in this case,
+it suffices to show the following.
 
 \begin{lemma}\label{lm:base_case}
     For $k=2$, Algorithm~\ref{alg:kpartite} finds $s \geq t$.
@@ -493,37 +497,43 @@ This is when $k=2$.
     \end{proof}
 \end{lemma}
 
-All in all, we can now state the following theorem:
+All in all, we can now state our main theorem.
 
 \begin{theorem}
     Algorithm~\ref{alg:kpartite} finds a balanced partite $k$-graph in a $k$-graph $G$ with
-    $n$ vertices and $m = d n^k$ with part size $t(n, d, k)$ in polynomial time.
+    $n$ vertices and $m = d n^k$ with part size $t(n, d, k)$ in polynomial time,
+    as long as $t(n, d, k) \geq 2$.
     \begin{proof}
-        To prove the correctness of the algorithm, we proceed by induction on $k$:
+        To prove the correctness of the algorithm, we proceed by induction on $k$.
         If $k=2$, it follows from Lemmas~\ref{lm:return} and~\ref{lm:base_case}.
-        Likewise, if $k \geq 3$, Lemma~\ref{lm:return} tells us that the algorithm
+        Indeed, the algorithm finds $(V_1, T)$ with $|T| = t$ and $|V_1| \geq s \geq t$.
+        Furthermore, $V_1$ is the set of vertices $x \in V \setminus W$ such that
+        $\{x, y\} = \{x\} \cup \{y\} \in E$ for all $y \in T$.
+        This means that $V_1 \times T \subset E(G)$.
+
+        If $k \geq 3$,
+        Lemma~\ref{lm:return} tells us that the algorithm
         reaches line~\ref{line:rec_call} at some iteration of the loop.
         Furthermore, Lemma~\ref{lm:t_prime} tells us that the recursive call in line~\ref{line:rec_call}
-        has a part size $t'$ that is at least $t$.
+        has a part size $t' \geq t$.
         In particular, this means that $t' \geq 2$.
-        Using the induction hypothesis for $k-1$, this recursive call is successful and
-        returns a tuple of pairwise disjoint sets
-        $(X_1, X_2, \ldots, X_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that:
-        \begin{itemize}
-            \item $|X_i| \geq t(n-w, d', k-1) \geq t$
+        Using the induction hypothesis for $k-1$,
+        this recursive call is successful and
+        returns a tuple of sets
+        $(X_1, X_2, \ldots, X_{k-1}) \in \mathcal{P}(V)^{k-1}$ such that $|X_i| \geq t(n-w, d', k-1) \geq t$
+        for all $i$ and $X_1 \times \dots \times X_{k-1} \subset E(G')$.
+        However, by construction of $G'$,
+         \[
+             E(G') = S = \left\{x \in \binom{V \setminus W}{k-1} : \{x\} \cup y \in E \text{ for all } y \in T\right\}.
+         \]
 
-            \item $X_1 \times \dots \times X_{k-1} \subset E(G') = S =
-            \left\{x \in \binom{V \setminus W}{k-1} : \{x\} \cup y \in E \text{ for all } y \in T\right\}$
-        \end{itemize}
-
-        That is, (making the sizes of the $X_i$ smaller if necessary) the returned tuple $(X_1, \dots, X_{k-1}, T)$
+        That is, the tuple $(X_1, \dots, X_{k-1}, T)$ returned in line~\ref{line:return}
         satisfies $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$, making the algorithm correct.
 
         For the time complexity, note that all operations in the algorithm are in polynomial time, % TODO: check this
         except for perhaps the for loop in line~\ref{line:for} and the recursive call in line~\ref{line:rec_call}.
-        Because there is only one recursive call, we can prove that it runs in polynomial time
-        by induction on $k$.
-        The only thing left to show is that the for loop runs in polynomial time.
+
+        We first argue that the for loop in line~\ref{line:for} runs in polynomial time.
         This is argued in~\cite{MUBAYI2010174}, but we reproduce the argument here for completeness:
         As seen in~\cite{reingold1977combinatorial}, the $t$-sets of $W$ can be enumerated in
         $O\left( \binom{w}{t} \right)$ steps.
@@ -534,8 +544,15 @@ All in all, we can now state the following theorem:
             \left( \frac{3et/d}{t} \right)^{t} =
             \left( \frac{3e}{d} \right)^{t} <
             e^{3 t + t \log (1/d)} <
-            e^{4 \log n} = n^4 \qedhere
+            e^{4 \log n} = n^4.
         \]
+
+        Because there is only one recursive call, we can prove that it runs in polynomial time
+        by induction on $k$.
+        Clearly, if the algorithm runs in polynomial time for $k-1$,
+        it also runs in polynomial time for $k$.
+        We can take as a base case $k=1$, which has no recursive calls so
+        it runs in polynomial time.
 
     \end{proof}
 \end{theorem}

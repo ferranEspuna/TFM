@@ -1,5 +1,5 @@
 \section{Preliminaries}\label{sec:preliminaries}
-In this section we introduce some basic definitions and results that will be used throughout this thesis.
+In this section we introduce some basic definitions and results that are used throughout this thesis.
 We start by defining $k$-graphs, which generalize the usual notion of a graph.
 
 \begin{definition}
@@ -7,8 +7,8 @@ We start by defining $k$-graphs, which generalize the usual notion of a graph.
     For an integer $k \geq 2$ a finite \emph{$k$-graph}
     is a tuple $G = (V, E)$ where $V$ is a finite set
     and $E \subset \binom{V}{k}$.
-    We call the elements of $V \eqqcolon V(G)$ its \emph{vertices}
-    and those of $E \eqqcolon E(G)$ its \emph{edges}.
+    We call the elements of $V(G) = V$ its \emph{vertices}
+    and those of $E(G) = E$ its \emph{edges}.
 \end{definition}
 
 \begin{remark}
@@ -20,7 +20,7 @@ We start by defining $k$-graphs, which generalize the usual notion of a graph.
     The \emph{degree} $d_G(v)$ of $v$ in $G$
     is the number of edges containing $v$, that is
     \[
-        d_G(v) \coloneqq |\{e \in E \mid v \in e\}|.
+        d_G(v) = |\{e \in E \mid v \in e\}|.
     \]
 \end{definition}
 
@@ -30,7 +30,7 @@ to relate $k$-graphs (with the same value of $k$) to each other:
 \begin{definition}
     Let $G = (V, E)$ and $H = (W, F)$ be $k$-graphs.
     A \emph{homomorphism} from $G$ to $H$ is a map $f: V \to W$
-    such that for every edge $e \in E$ the set $f(e) \coloneqq \{f(v) \mid v \in e\}$
+    such that for every edge $e \in E$ the set $f(e) = \{f(v) \mid v \in e\}$
     is an edge in $H$ (that is, $f(e) \in F$). If such a homomorphism exists
     and is injective, we say that $f$ is an embedding of $G$ on $H$
     and that $H$ contains $G$ as a subgraph.
@@ -43,28 +43,17 @@ to relate $k$-graphs (with the same value of $k$) to each other:
     We write $G \cong H$.
 \end{definition}
 
-\begin{remark} % TODO maybe turn into proposition + proof?
-
-    It is elementary to check that
-    (induced) inclusion is an order relation and that
-    isomorphism is an equivalence relation.
-    Furthermore, isomorphism preserves (induced) inclusion.
-    Therefore, we can talk about the (induced) subgraph
-    condition up to isomorphism, both in the \emph{host} $k$-graph
-    ($H$) and in the \emph{guest} $k$-graph ($G$).
-\end{remark}
-
-\begin{remark} \label{rem:change_vertices}
-    Given a $k$-graph $G = (V, E)$ and a set $W$ satisfying $|V| = |W|$,
-    we can define an edge set $E'$ on $W$ such that $G \cong (W, E')$
-    by taking any bijection $f: V \to W$ and setting $E' = \{f(e) \mid e \in E\}$.
-    This frees us, up to isomorphism, to change or reorder
-    the vertices of a $k$-graph.
-\end{remark}
+It is elementary to check that
+(induced) inclusion is an order relation and that
+isomorphism is an equivalence relation.
+Furthermore, isomorphism preserves (induced) inclusion.
+Therefore, we can talk about the (induced) subgraph
+condition up to isomorphism, both in the \emph{host} $k$-graph
+($H$) and in the \emph{guest} $k$-graph ($G$).
 
 Now we can state the \emph{forbidden subgraph problem} for $k$-graphs.
 Informally, given a $k$-graph $G$, and an integer $n \geq |V(G)|$,
-we want to find the largest $m$ such that all $k$-graphs with $n$ vertices and $m$ edges
+we want to find the smallest $M_0$ such that all $k$-graphs with $n$ vertices and $m > M_0$ edges
 contain $G$ as a subgraph.
 
 \begin{proposition} \label{prop:extremal}
@@ -97,8 +86,9 @@ contain $G$ as a subgraph.
 
 \end{proposition}
 
-\begin {definition}
-    The integer $ex(n, G)$ is called the \emph{extremal number} of $G$.
+\begin{definition}
+    The integer $ex(n, G)$ defined in Proposition~\ref{prop:extremal}
+    is called the \emph{extremal number} of $G$.
 \end{definition}
 
 \begin{remark}
@@ -129,14 +119,22 @@ contain $G$ as a subgraph.
 \end{definition}
 
 \begin{remark}
-    $V_1, \dots, V_k, W_1, \dots, W_k$ are disjoint sets,
-    and $|V_i| = |W_i| \eqqcolon a_i$ for all $i$ then it is elementary to check that
+    If $V_1, \dots, V_k, W_1, \dots, W_k$ are disjoint sets
+    and $|V_i| = |W_i| = a_i$ for all $i$,
     \[
         K(V_1, \dots, V_k) \cong K(W_1, \dots, W_k),
     \]
-    by a construction very similar to the one in Remark~\ref{rem:change_vertices}.
-    This allows us to talk about \emph{the} complete $k$-partite $k$-graph on
-    $a_1, \dots, a_k$ vertices, which we denote by $K(a_1, \dots, a_k)$.
+    where the isomorphism is given by any bijection
+    \[
+        f: V_1 \times \dots \times V_k \to W_1 \times \dots \times W_k
+    \]
+    such that $f(V_i) = W_i$ for all $i$.
+    This allows us to talk, up to isomorphism, about \emph{the} complete $k$-partite $k$-graph
+    with part sizes $a_1, \dots, a_k$, which we denote by
+    \[
+        K(a_1, \dots, a_k).
+    \]
+
 \end{remark}
 
 \begin{figure}[htbp]
@@ -196,7 +194,7 @@ $V_1, \dots, V_{k-1}$) is complete.
 \end{definition}
 
 From now on, every time we talk about embeddings from one $k$-partite $k$-graph
-onto another we will assume the condition $f(T_i) \subset V_i$.
+onto another we assume the condition $f(T_i) \subset V_i$.
 
 \begin{remark}\label{rem:zar_vs_turan}
     Finding this number can help us upper bound the extremal number of $K(t_1, \dots, t_k)$ asymptotically:
@@ -361,7 +359,7 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
         \begin{equation} \label{eq:erdos64_contradiction}
             \frac{1}{2}Kw^{1 - \frac{1}{t^{k-1}}} < (t - 1).
         \end{equation}
-        This is a contradiction because the right side of inequality~\eqref{eq:erdos64_contradiction}
+        This is a contradiction, because the right side of inequality~\eqref{eq:erdos64_contradiction}
         is constant in $w$, while the left side grows to infinity as $w$ increases.
     \end{proof}
 \end{theorem}

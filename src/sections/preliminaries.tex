@@ -20,7 +20,7 @@ We start by defining $k$-graphs, which generalize the usual notion of a graph.
     The \emph{degree} $d_G(v)$ of $v$ in $G$
     is the number of edges containing $v$, that is
     \[
-        d_G(v) \coloneqq |\{e \in E \mid v \in e\}|
+        d_G(v) \coloneqq |\{e \in E \mid v \in e\}|.
     \]
 \end{definition}
 
@@ -91,7 +91,7 @@ contain $G$ as a subgraph.
         By hypothesis, the graph $H' = (W, F')$ contains $G$ as a subgraph,
         and the identity map in $W$ is an embedding of $H'$ in $H$:
         \[
-            G \subset H' \subset H \implies G \subset H \qedhere
+            G \subset H' \subset H \implies G \subset H. \qedhere
         \]
     \end{proof}
 
@@ -132,7 +132,7 @@ contain $G$ as a subgraph.
     $V_1, \dots, V_k, W_1, \dots, W_k$ are disjoint sets,
     and $|V_i| = |W_i| \eqqcolon a_i$ for all $i$ then it is elementary to check that
     \[
-        K(V_1, \dots, V_k) \cong K(W_1, \dots, W_k)
+        K(V_1, \dots, V_k) \cong K(W_1, \dots, W_k),
     \]
     by a construction very similar to the one in Remark~\ref{rem:change_vertices}.
     This allows us to talk about \emph{the} complete $k$-partite $k$-graph on
@@ -148,11 +148,42 @@ contain $G$ as a subgraph.
     \label{fig:222}
 \end{figure}
 
+A different but equivalent way to view completeness is to talk about \emph{common neighbors}:
+\begin{definition}
+    Let $G = (V, E)$ be a 2-graph.
+    The \emph{common neighborhood} of a set $S \subset V$ is
+    \[
+        N_G(S) = \{y \in V \mid \forall x \in S: \{x, y\} \in E\}.
+    \]
+\end{definition}
+
+That is, the common neighborhood of a set $S \subset U$ is the maximal set $T \subset W$ such that
+$S \times T \subset E$.
+Then, a $2$-partite 2-graph $G = (U, W; E)$ is complete if and only if $N_G(U) = W$.
+This might seem trivial when dealing with $2$-graphs, but it can be generalized to $k$-graphs
+in the following way.
+
+\begin{definition}
+    Let $G = (V, E)$ be a $k$-graph.
+    Let $S \subset V$ be a set of vertices.
+    The \emph{joint link} of $S$ is the $(k-1)$-graph $G_S = (V \setminus S, E')$, where
+    \[
+        E' = \left\{Y \in \binom{V}{k-1}\middle\vert \, \forall x \in S : \{x\} \cup Y \in E \right\}.
+    \]
+\end{definition}
+
+Then, we can define completeness of $k$-partite $k$-graphs recursively: If $G = (V_1, \dots, V_k; E)$
+is a $k$-partite $k$-graph with $k \geq 3$,
+$G$ is complete if and only if the graph $G_{V_k}$ (which is a $(k-1)$-graph, partite on the sets
+$V_1, \dots, V_{k-1}$) is complete.
+
+
+
 \begin{remark}
     All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$
     are contained in $K(a_1, \dots, a_k)$ as subgraphs.
-    This lets us follow the exact same argument as in Proposition~\ref{prop:extremal}
-    to define the following:
+    This lets us follow the same argument as in Proposition~\ref{prop:extremal}
+    to define the following.
 \end{remark}
 
 \begin{definition}\label{def:zarankiewicz}
@@ -179,7 +210,7 @@ onto another we will assume the condition $f(T_i) \subset V_i$.
     which is independent of $n$.
     Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
     Applying the first moment method, we can conclude that
-    \[ex(n, K(t_1, \dots, t_k)) = O(z(\lceil n / k \rceil , \overset{k}{\cdots}, \lceil n / k \rceil; t_1, \dots, t_k))\]
+    \[ex(n, K(t_1, \overset{k}{\cdots}, t_k)) = O_n(z(\lceil n / k \rceil , \overset{k}{\cdots}, \lceil n / k \rceil; t_1, \dots, t_k)).\]
 
 \end{remark}
 
@@ -204,25 +235,26 @@ The result is stated and proved here for completeness:
         Let us consider the set
         \[
             P = \left\{ (x, Y) \in U \times \binom{W}{t}
-            \Big| \forall y \in Y: \{x, y\} \in E \right\}
+            \middle\vert\, x \in N_G(Y) \right\}.
         \]
-        Counting on the first coordinate, and using Jensen's inequality, we get
-        \[
+        Counting on the first coordinate, we get
+        \begin{equation} \label{eq:kst_p_lower}
             |P|
             = \nsum_{x \in U} \binom{d_G(x)}{t}
             = \nsum_{x \in U} \varphi(d_G(x))
             \geq u  \nsum_{x \in U} \varphi(z/u)
-            = u \binom{z / u}{t}
-        \]
-        Where we define
+            = u \binom{z / u}{t},
+        \end{equation}
+        where we define
         \[
-            \varphi(x) \coloneqq
+            \varphi(x) =
             \begin{cases}
-                \binom{x}{t}, & \text{if } x \geq t - 1 \\
-                0, & \text{otherwise}
+                \binom{x}{t}, & \text{if } x \geq t - 1. \\
+                0, & \text{otherwise.}
             \end{cases}
         \]
-        Which is convex, meaning we get the inequality as Jensen's inequality.
+        The function $\varphi$ is convex, so we get the inequality in~\eqref{eq:kst_p_lower}
+        as a consequence of Jensen's inequality.
         The other equalities come from the fact that $\varphi(d)$ agrees
         with $\binom{d}{t}$ for all integers $d \geq 0$;
         and that by our bound on $z$, $z \geq (t-1)u \implies z/u \geq t - 1$.
@@ -233,28 +265,29 @@ The result is stated and proved here for completeness:
         But now, by definition of $P$, for all $a \in S, b \in T$, we have $\{a, b\} \in E$.
         This would mean that the inclusion map from $ S \cup T$ to $U \cup W$ is an embedding of
         $K(s, t)$ in $G$, as described in Definition~\ref{def:zarankiewicz}.
-        Supposing that this is not the case, by the pigeonhole principle, we have:
-        \[
-            |P| \leq (s - 1) \binom{w}{t}
-        \]
-        Putting the two inequalities together, we get:
-        \[
-            u \binom{z / u}{t} \leq (s - 1) \binom{w}{t}
-        \]
+        Supposing that this is not the case, by the averaging we get
+        \begin{equation} \label{eq:kst_p_upper}
+            |P| \leq (s - 1) \binom{w}{t}.
+        \end{equation}
+        Putting inequalities~\eqref{eq:kst_p_lower} and~\eqref{eq:kst_p_upper}
+        together, we get
+        \begin{equation} \label{eq:kst_chained}
+            u \binom{z / u}{t} \leq (s - 1) \binom{w}{t}.
+        \end{equation}
         Now, because we can see $E$ as a subset of $U \times W$,
         we get $z \leq uw \implies z/u \leq w$.
-        In particular, we have:
-        \[
-            \frac{(z/u - (t - 1))^t}{\binom{z/u}{t}} \leq \frac{(w - (t - 1))^t}{\binom{w}{t}}
-        \]
+        In particular, we have
+        \begin{equation} \label{eq:kst_binom}
+            \frac{(z/u - (t - 1))^t}{\binom{z/u}{t}} \leq \frac{(w - (t - 1))^t}{\binom{w}{t}},
+        \end{equation}
         which is true for each factor when expanding the denominators.
-        Multiplying the two inequalities, we get:
+        Multiplying inequalities~\eqref{eq:kst_chained} and~\eqref{eq:kst_binom} yields
         \[
-            u \, (z/u - (t - 1))^t \leq (s - 1)(w - (t - 1))^t
+            u \, (z/u - (t - 1))^t \leq (s - 1)(w - (t - 1))^t.
         \]
-        which, by algebraic manipulation, gives
+        Algebraic manipulation then gives
         \[
-            z \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u
+            z \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u,
         \]
         In contradiction with our assumption. \qedhere
 
@@ -266,15 +299,53 @@ The result is stated and proved here for completeness:
 \begin{remark}
     Following Remark~\ref{rem:zar_vs_turan}, we can use this bound to get an upper bound on the extremal number of $K(s, t)$:
     \[
-        ex(n, K(s, t)) = O\left((s - 1)^{1 / t}(n - t + 1)n^{1 - 1 / t} + (t - 1)n\right) = O\left(n^{2 - 1 / t}\right)
+        ex(n, K(s, t)) =
+        O_n\left((s - 1)^{1 / t}\left(\left\lceil\frac{n}{2}\right\rceil - t + 1\right)n^{1 - 1 / t} + (t - 1)\left\lceil\frac{n}{2}\right\rceil\right) =
+        O_n\left(n^{2 - 1 / t}\right).
     \]
-    Note that if $s < t$, we get the better bound $O\left(n^{2 - 1 / s}\right)$ by interchanging the roles of $s$ and $t$.
+    Note that if $s < t$, we get the better bound $O_n\left(n^{2 - 1 / s}\right)$ by interchanging the roles of $s$ and $t$.
 \end{remark}
 
-In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete partite $k$-graphs in the following theorem:
+In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete partite $k$-graphs in the following theorem.
 
 \begin{theorem}\label{thm:erdos64}
-    $ex(n, K(t, \overset{k}{\cdots}, t)) = O\left(n^{k - \frac{1}{t^{k-1}}}\right)$
+    $ex(n, K(t, \overset{k}{\cdots}, t)) = O_n\left(n^{k - \frac{1}{t^{k-1}}}\right)$.
+    \begin{proof}
+        By Remark~\ref{rem:zar_vs_turan}, it suffices to show that
+        \[
+            z = z(w, \overset{k}{\cdots}, w; t, \overset{k}{\cdots}, t) = O_w\left(w^{k - \frac{1}{t^{k-1}}}\right).
+        \]
+        We prove this by induction on $k$.
+        For $k=2$, this is obtained by setting $u = w$ and $s = t$ in Theorem~\ref{thm:kst}.
+        For $k > 2$, suppose by way of contradiction that the theorem is false.
+        For all ${w_0 \in \N}$, ${K \in \mathbb{R}^+}$, there exists a $k$-partite $k$-graph $G = (W_1, \dots, W_k; E)$ with part sizes
+        $|W_i| = w \geq w_0$ and ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$ such that no embedding of $K(t, \overset{k}{\cdots}, t)$ in it exists.
+        Consider, for each set $T \in \binom{W_k}{t}$, the associated joint link $G_T$.
+        By our assumption, $G_T$ does not contain $K(t, \overset{k-1}{\cdots}, t)$ as a subgraph.
+        If we let
+        \[
+            z' = z(w, \overset{k-1}{\cdots}, w; t, \overset{k-1}{\cdots}, t),
+        \]
+        this means that $G_T$ has at most $z'$ edges.
+
+        Now, consider the bipartite graph $G' = (U, W; E')$, where
+        \begin{align*}
+            U &= W_1 \times \dots \times W_{k-1}, \\
+            W &= W_k, \\
+            E' &= \{(X, y) \in V \times W \mid X \cup \{y\} \in E\}.
+        \end{align*}
+        Clearly, $G'$ has the same number of edges as $G$.
+        Furthermore, $G'$ does not contain $K(z' + 1, t)$ as a subgraph.
+        Finally, we invoke Theorem~\ref{thm:kst} with
+        ${u = |U| = w^{k-1}}$ and
+        ${s = z' + 1}$ to get
+        \[
+            K w^{k - \frac{1}{t^{k-1}}} \leq |E| = |E'| \leq (z')^{1 / t}(w - t + 1)w^{(k-1)(1 - 1 / t)} + (t - 1)w^{k-1}.
+        \]
+        % TODO
+
+
+    \end{proof}
 \end{theorem}
 
 A more modern proof of this result can be found in~\cite{carvajal2024canonical},

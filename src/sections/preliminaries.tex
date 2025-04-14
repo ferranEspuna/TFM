@@ -146,7 +146,7 @@ contain $G$ as a subgraph.
     \label{fig:222}
 \end{figure}
 
-A different but equivalent way to view completeness is to talk about \emph{common neighbors}:
+A different but equivalent way to view completeness is to talk about \emph{common neighbors}.
 \begin{definition}
     Let $G = (V, E)$ be a 2-graph.
     The \emph{common neighborhood} of a set $S \subset V$ is
@@ -208,7 +208,7 @@ onto another we assume the condition $f(T_i) \subset V_i$.
     which is independent of $n$.
     Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
     Applying the first moment method, we can conclude that
-    \[ex(n, K(t_1, \overset{k}{\dots}, t_k)) = O_n(z(\lceil n / k \rceil , \overset{k}{\dots}, \lceil n / k \rceil; t_1, \dots, t_k)).\]
+    \[ex(n, K(t_1, \overset{k}{\dots}, t_k)) = O(z(\lceil n / k \rceil , \overset{k}{\dots}, \lceil n / k \rceil; t_1, \dots, t_k)).\]
 
 \end{remark}
 
@@ -220,9 +220,8 @@ An upper bound for it in the case $u=w, s=t$ was found by Kővari, Sós and Tur�
 This was generalized to arbitrary complete
 bipartite 2-graphs by C. Hyltén-Cavallius in~\cite{Hylten1958}
 in 1958.
-The result is stated and proved here for completeness:
+The result is stated and proved here for completeness.
 
-% TODO: replace \leq with < ??
 \begin{theorem}\label{thm:kst}
     Let $0 < s \leq u$ and $0 < t \leq w$ be integers.
     Then 
@@ -298,21 +297,21 @@ The result is stated and proved here for completeness:
     Following Remark~\ref{rem:zar_vs_turan}, we can use this bound to get an upper bound on the extremal number of $K(s, t)$:
     \[
         ex(n, K(s, t)) =
-        O_n\left((s - 1)^{1 / t}\left(\left\lceil\frac{n}{2}\right\rceil - t + 1\right)n^{1 - 1 / t} + (t - 1)\left\lceil\frac{n}{2}\right\rceil\right) =
-        O_n\left(n^{2 - 1 / t}\right).
+        O\left((s - 1)^{1 / t}\left(\left\lceil\frac{n}{2}\right\rceil - t + 1\right)n^{1 - 1 / t} + (t - 1)\left\lceil\frac{n}{2}\right\rceil\right) =
+        O\left(n^{2 - 1 / t}\right).
     \]
-    Note that if $s < t$, we get the better bound $O_n\left(n^{2 - 1 / s}\right)$ by interchanging the roles of $s$ and $t$.
+    Note that if $s < t$, we get the better bound $O\left(n^{2 - 1 / s}\right)$ by interchanging the roles of $s$ and $t$.
 \end{remark}
 
 In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete partite $k$-graphs in the following theorem.
 
 \begin{theorem}\label{thm:erdos64}
     For $k \geq 2$ and $2 \leq t \leq \frac{n}{k}$,
-    $ex(n, K(t, \overset{k}{\dots}, t)) = O_n\left(n^{k - \frac{1}{t^{k-1}}}\right)$.
+    $ex(n, K(t, \overset{k}{\dots}, t)) = O\left(n^{k - \frac{1}{t^{k-1}}}\right)$.
     \begin{proof}
         By Remark~\ref{rem:zar_vs_turan}, it suffices to show that
         \[
-            z = z(w, \overset{k}{\dots}, w; t, \overset{k}{\dots}, t) = O_w\left(w^{k - \frac{1}{t^{k-1}}}\right).
+            z = z(w, \overset{k}{\dots}, w; t, \overset{k}{\dots}, t) = O\left(w^{k - \frac{1}{t^{k-1}}}\right).
         \]
         We prove this by induction on $k$.
         For $k=2$, this is obtained by setting $u = w$ and $s = t$ in Theorem~\ref{thm:kst}.

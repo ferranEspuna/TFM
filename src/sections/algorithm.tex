@@ -43,7 +43,7 @@ which is satisfied for
 \]
 The construction in Theorem~\ref{thm:kpartite} then proves
 \[
-    ex(n, K(t, \overset{k}{\cdots}, t)) < m =  O\left(n^{k - \frac{1}{t^{k-1}}}\right).
+    ex(n, K(t, \overset{k}{\dots}, t)) < m =  O\left(n^{k - \frac{1}{t^{k-1}}}\right).
 \]
 
 % TODO discussion of constant density case. Is it optimal?
@@ -137,7 +137,7 @@ For a specific $T$, the set $S$ satisfies
 We define a new $(k-1)$-graph $G'$ with vertex set $V \setminus W$ and edge set $S$.
 As it turns out, $S$ is large enough~\eqref{eq:s}
 that applying the algorithm recursively to $G'$
-yields a $K(t', \overset{k-1}{\cdots}, t')$ in $G'$ with $t' \geq t$.
+yields a $K(t', \overset{k-1}{\dots}, t')$ in $G'$ with $t' \geq t$.
 That is, a tuple
 $P' = (V_1, V_2, \ldots, V_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that $|V_i| = t'$ and
 $V_1 \times \cdots \times V_{k-1}\subset S$.
@@ -146,7 +146,7 @@ If we now concatenate $P'$ with $T$ (choosing a subset of $X_i \subset V_i$ of s
 a $k$-tuple $(X_1, \ldots, X_{k-1}, T)$, of $t-sets$ of $V$ % todo k-tuple is split
 which by the definition of $S$ satisfies
 $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$
-so it forms a $K(t, \overset{k}{\cdots}, t)$ in $G$.
+so it forms a $K(t, \overset{k}{\dots}, t)$ in $G$.
 
 \begin{algorithm}[H]
     \caption{Finding a balanced partite $k$-graph in a $k$-graph}
@@ -469,8 +469,8 @@ satisfies $t' \geq t$.
     \end{proof}
 \end{lemma}
 
-This means that, assuming that the algorithm finds a $K(t', \overset{k-1}{\cdots}, t')$ in $G'$ in the recursive call,
-it finds a $K(t, \overset{k}{\cdots}, t)$ in $G$.
+This means that, assuming that the algorithm finds a $K(t', \overset{k-1}{\dots}, t')$ in $G'$ in the recursive call,
+it finds a $K(t, \overset{k}{\dots}, t)$ in $G$.
 This argument only works if $k \geq 3$.
 For $k=2$, the recursive call is handled by the base case in
 line~\ref{line:base_case} of Algorithm~\ref{alg:kpartite}.

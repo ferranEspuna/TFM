@@ -210,7 +210,7 @@ onto another we will assume the condition $f(T_i) \subset V_i$.
     which is independent of $n$.
     Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
     Applying the first moment method, we can conclude that
-    \[ex(n, K(t_1, \overset{k}{\cdots}, t_k)) = O_n(z(\lceil n / k \rceil , \overset{k}{\cdots}, \lceil n / k \rceil; t_1, \dots, t_k)).\]
+    \[ex(n, K(t_1, \overset{k}{\dots}, t_k)) = O_n(z(\lceil n / k \rceil , \overset{k}{\dots}, \lceil n / k \rceil; t_1, \dots, t_k)).\]
 
 \end{remark}
 
@@ -309,22 +309,23 @@ The result is stated and proved here for completeness:
 In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete partite $k$-graphs in the following theorem.
 
 \begin{theorem}\label{thm:erdos64}
-    $ex(n, K(t, \overset{k}{\cdots}, t)) = O_n\left(n^{k - \frac{1}{t^{k-1}}}\right)$.
+    For $k \geq 2$ and $2 \leq t \leq \frac{n}{k}$,
+    $ex(n, K(t, \overset{k}{\dots}, t)) = O_n\left(n^{k - \frac{1}{t^{k-1}}}\right)$.
     \begin{proof}
         By Remark~\ref{rem:zar_vs_turan}, it suffices to show that
         \[
-            z = z(w, \overset{k}{\cdots}, w; t, \overset{k}{\cdots}, t) = O_w\left(w^{k - \frac{1}{t^{k-1}}}\right).
+            z = z(w, \overset{k}{\dots}, w; t, \overset{k}{\dots}, t) = O_w\left(w^{k - \frac{1}{t^{k-1}}}\right).
         \]
         We prove this by induction on $k$.
         For $k=2$, this is obtained by setting $u = w$ and $s = t$ in Theorem~\ref{thm:kst}.
         For $k > 2$, suppose by way of contradiction that the theorem is false.
         For all ${w_0 \in \N}$, ${K \in \mathbb{R}^+}$, there exists a $k$-partite $k$-graph $G = (W_1, \dots, W_k; E)$ with part sizes
-        $|W_i| = w \geq w_0$ and ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$ such that no embedding of $K(t, \overset{k}{\cdots}, t)$ in it exists.
+        $|W_i| = w \geq w_0$ and ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$ such that no embedding of $K(t, \overset{k}{\dots}, t)$ in it exists.
         Consider, for each set $T \in \binom{W_k}{t}$, the associated joint link $G_T$.
-        By our assumption, $G_T$ does not contain $K(t, \overset{k-1}{\cdots}, t)$ as a subgraph.
+        By our assumption, $G_T$ does not contain $K(t, \overset{k-1}{\dots}, t)$ as a subgraph.
         If we let
         \[
-            z' = z(w, \overset{k-1}{\cdots}, w; t, \overset{k-1}{\cdots}, t),
+            z' = z(w, \overset{k-1}{\dots}, w; t, \overset{k-1}{\dots}, t),
         \]
         this means that $G_T$ has at most $z'$ edges.
 
@@ -339,21 +340,35 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
         Finally, we invoke Theorem~\ref{thm:kst} with
         ${u = |U| = w^{k-1}}$ and
         ${s = z' + 1}$ to get
+        \begin{equation} \label{eq:erdos64_induction}
+            K w^{k - \frac{1}{t^{k-1}}} \leq
+            |E| = |E'| \leq
+            (z')^{1 / t}(w - t + 1)w^{(k-1)(1 - 1 / t)} + (t - 1)w^{k-1}.
+        \end{equation}
+        By the inductive hypothesis, for $w_0$ and $K'$ large enough, we can bound
         \[
-            K w^{k - \frac{1}{t^{k-1}}} \leq |E| = |E'| \leq (z')^{1 / t}(w - t + 1)w^{(k-1)(1 - 1 / t)} + (t - 1)w^{k-1}.
+            z' \leq K' w^{(k - 1) - \frac{1}{t^{k-2}}}.
         \]
-        % TODO
-
-
+        Substituting this into inequality~\eqref{eq:erdos64_induction} and approximating yields
+        \[
+            K w^{k - \frac{1}{t^{k-1}}} \leq (K')^{1 / t} w^{k-\frac{1}{t^{k-1}}} + (t - 1)w^{k-1}.
+        \]
+        Combining like terms and picking $K > 2 (K')^{1 / t}$ gives
+        \[
+            \frac{1}{2}K w^{k - \frac{1}{t^{k-1}}} < (t - 1)w^{k-1},
+        \]
+        which we can rewrite as
+        \begin{equation} \label{eq:erdos64_contradiction}
+            \frac{1}{2}Kw^{1 - \frac{1}{t^{k-1}}} < (t - 1).
+        \end{equation}
+        This is a contradiction because the right side of inequality~\eqref{eq:erdos64_contradiction}
+        is constant in $w$, while the left side grows to infinity as $w$ increases.
     \end{proof}
 \end{theorem}
 
-A more modern proof of this result can be found in~\cite{carvajal2024canonical},
-which also generalizes it to arbitrary complete
-$k$-partite $k$-graphs (not necessarily with equal part sizes).
-They in fact prove a bound for the generalized Zarankiewicz number
-in a similar way we proved the bound for the Zarankiewicz number in Theorem~\ref{thm:kst},
-which then following Remark~\ref{rem:zar_vs_turan} gives the result in Theorem~\ref{thm:erdos64}.
-
+This approach can be generalized to give a lower bound on the number of
+copies of $K(t_1, \dots, t_k)$ in a $k$-partite $k$-graph $G$
+with different part sizes~\cite{carvajal2024canonical},
+therefore upper bounding all generalized Zarankiewicz numbers.
 
 

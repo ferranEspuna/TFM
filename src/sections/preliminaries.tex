@@ -198,13 +198,13 @@ onto another we assume the condition $f(T_i) \subset V_i$.
 
 \begin{remark}\label{rem:zar_vs_turan}
     Finding this number can help us upper bound the extremal number of $K(t_1, \dots, t_k)$ asymptotically:
-    Assume that G is a $K(t_1, \dots, t_k)$-free $n$-vertex $k$-graph with $m$ edges.
+    Assume that $H$ is a $K(t_1, \dots, t_k)$-free $n$-vertex $k$-graph with $m$ edges.
     pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
     (For example $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$)
-    Let $V_1, \dots, V_k$ be a random partition of $V(G)$ with $|V_i| = v_i$.
-    for an edge $e \in E(G)$, the probability that $e$ is an edge in $K(V_1, \dots, V_k)$ is
+    Let $V_1, \dots, V_k$ be a random partition of $V(H)$ with $|V_i| = v_i$.
+    for an edge $e \in E(H)$, the probability that $e$ is an edge in $K(V_1, \dots, V_k)$ is
     greater than
-    \[k! \prod_i v_i / n \sim k! (1/k)^k\]
+    \[k! \prod_i \frac{v_i}{n} \sim \frac{k!}{k^k},\]
     which is independent of $n$.
     Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
     Applying the first moment method, we can conclude that
@@ -215,8 +215,8 @@ onto another we assume the condition $f(T_i) \subset V_i$.
 
 The problem on finding the Zarankiewicz number was first posed by K. Zarankiewicz in 1951 for the
 case of bipartite 2-graphs (that is, finding $z(u, w; s, t)$),
-in terms of finding all-1 minors in a $0-1$ matrix.
-An upper bound for it in the case $m=n, s=t$ was found by Kővari, Sós and Turán in~\cite{Kovari1954} in 1954.
+in terms of finding all-1 sub-matrices in a $0-1$ matrix.
+An upper bound for it in the case $u=w, s=t$ was found by Kővari, Sós and Turán in~\cite{Kovari1954} in 1954.
 This was generalized to arbitrary complete
 bipartite 2-graphs by C. Hyltén-Cavallius in~\cite{Hylten1958}
 in 1958.

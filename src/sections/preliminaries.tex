@@ -1,10 +1,12 @@
-\section{Preliminaries}\label{sec:preliminaries}
+\section{Basic Definitions and Results}\label{sec:preliminaries}
 In this section we introduce some basic definitions and results that are used throughout this thesis.
-We start by defining $k$-graphs, which generalize the usual notion of a graph.
+We start with some preliminaries on hypergraphs, which are the main objects of study in this thesis.
+
+\subsection{Hypergraphs}\label{subsec:hypergraphs}
 
 \begin{definition}
 
-    For an integer $k \geq 2$ a finite \emph{$k$-graph}
+    For an integer $k \geq 1$ a finite \emph{$k$-uniform hypergraph} (or \emph{$k$-graph}, for short)
     is a tuple $G = (V, E)$ where $V$ is a finite set
     and $E \subset \binom{V}{k}$.
     We call the elements of $V(G) = V$ its \emph{vertices}
@@ -12,6 +14,8 @@ We start by defining $k$-graphs, which generalize the usual notion of a graph.
 \end{definition}
 
 \begin{remark}
+    In the definition above, if we let $k=1$ we just get a set of $1$-sets of the vertex set $V$,
+    which we can identify with a subset of $V$.
     If we let $k=2$ we recover the usual definition of an undirected graph with no loops.
 \end{remark}
 
@@ -50,6 +54,8 @@ Furthermore, isomorphism preserves (induced) inclusion.
 Therefore, we can talk about the (induced) subgraph
 condition up to isomorphism, both in the \emph{host} $k$-graph
 ($H$) and in the \emph{guest} $k$-graph ($G$).
+
+\subsection{Turán Problem for k-graphs}\label{subsec:turan}
 
 Now we can state the \emph{forbidden subgraph problem} for $k$-graphs.
 Informally, given a $k$-graph $G$, and an integer $n \geq |V(G)|$,
@@ -95,6 +101,8 @@ contain $G$ as a subgraph.
     The extremal number is clearly invariant under isomorphism of $G$.
 \end{remark}
 
+\subsection{Partite k-graphs}\label{subsec:partite}
+
 \begin{definition}
     for an integer $p \geq k$, a $k$-graph $G = (V, E)$ is \emph{$p$-partite}
     if there exists a partition $V = V_1 \cup \dots \cup V_p$
@@ -111,7 +119,7 @@ contain $G$ as a subgraph.
     unordered sets of vertices, as in the definition below.
 \end{remark}
 
-\begin{definition}
+\begin{definition} \label{def:complete_kpartite}
     A $k$-partite $k$-graph $G = (V_1, \dots, V_k; E)$ is \emph{complete}
     if $E = V_1 \times \dots \times V_k$.
     That is, if all $(v_1, \dots, v_k) \in V_1 \times \dots \times V_k$
@@ -163,19 +171,20 @@ in the following way.
 
 \begin{definition}
     Let $G = (V, E)$ be a $k$-graph.
-    Let $S \subset V$ be a set of vertices.
-    The \emph{joint link} of $S$ is the $(k-1)$-graph $G_S = (V \setminus S, E')$, where
+    Let $S \subset V$ be a set of vertices and let $1 \leq j \leq k - 1$.
+    The \emph{common $j$-link} of $S$ is the $j$-graph $G_S^j = (V \setminus S, E')$, where
     \[
-        E' = \left\{Y \in \binom{V}{k-1}\middle\vert \, \forall x \in S : \{x\} \cup Y \in E \right\}.
+        E' = \left\{Y \in \binom{V \setminus S}{j}\middle\vert \, X \cup Y \in E \text{ for all } X \in \binom{S}{k-j}\right\}.
     \]
 \end{definition}
 
-Then, we can define completeness of $k$-partite $k$-graphs recursively: If $G = (V_1, \dots, V_k; E)$
-is a $k$-partite $k$-graph with $k \geq 3$,
-$G$ is complete if and only if the graph $G_{V_k}$ (which is a $(k-1)$-graph, partite on the sets
-$V_1, \dots, V_{k-1}$) is complete.
+Then, we can define completeness of $k$-partite $k$-graphs recursively: Let $G = (V_1, \dots, V_k; E)$
+be a $k$-partite $k$-graph.
+If $k=1$, $G$ is complete if and only if $E = V_1$ (as in Definition~\ref{def:complete_kpartite}).
+Otherwise, $G$ is complete if and only if $G_{V_k}^{k-1}$ (which is a $k-1$-partite $k-1$-graph
+on $V_1, \dots, V_{k-1}$) is complete.
 
-
+\subsection{Degenerate Turán Problems}\label{subsec:degenerate}
 
 \begin{remark}
     All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$

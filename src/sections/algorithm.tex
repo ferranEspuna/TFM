@@ -10,7 +10,8 @@ with all part sizes at least
 where
 \begin{equation} \label{eq:d}
     d = m/n^k
-\end{equation} is the ``un-normalized'' density of $G$,
+\end{equation}
+is the ``un-normalized'' density of $G$,
 which is easier to work with for the arguments that follow.
 For the remainder of the section, we assume that
 $t \geq 2$ (otherwise, we may just select a set of $k$ vertices forming an edge in~$G$).
@@ -18,15 +19,15 @@ More precisely, we show the following:
 \begin{theorem}\label{thm:kpartite}
     There is an algorithm that, given a $k$-graph $G$ satisfying the conditions above,
     finds a complete balanced $k$-partite $k$-graph in $G$ with part sizes $t = t(n, d, k)$.
-    That is, the algorithm returns a tuple of sets $(V_1, \ldots, V_k) \subset \binom{V}{t}^k$ such that
-    $V_1 \times \cdots \times V_k \subset E$.
+    That is, the algorithm returns a tuple of sets $(V_1, \dots, V_k) \subset \binom{V}{t}^k$ such that
+    $V_1 \times \dots \times V_k \subset E$.
     Furthermore, the algorithm's runtime is polynomial in $n$.
 \end{theorem}
 
 \begin{remark}
     The stated condition implies that the sets $V_1, \dots, V_k$ are disjoint:
     If, for example, $v \in V_1 \cap V_2$ and for $3 \leq i \leq k$ $v_i \in V_i$ then
-    $(v, v, v_3, \dots, v_k) \in V_1 \times \cdots \times V_k$ has size $k-1$ as an unordered set so it cannot
+    $(v, v, v_3, \dots, v_k) \in V_1 \times \dots \times V_k$ has size $k-1$ as an unordered set so it cannot
     be an edge in $G$.
     This means that the inclusion map from $\compdots{V_1}{V_k}$ to $V$ defines an embedding, as desired.
 \end{remark}
@@ -44,11 +45,11 @@ which is satisfied for
     \left\lceil
     3 n^k {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}}
     \right\rceil =
-    O\left(n^{k - \frac{1}{t^{k-1}}}\right).
+    \bigO{n^{k - \frac{1}{t^{k-1}}}}.
 \]
 The construction in Theorem~\ref{thm:kpartite} then proves
 \[
-    ex(n, K(t, \overset{k}{\dots}, t)) < m =  O\left(n^{k - \frac{1}{t^{k-1}}}\right).
+    \ex{n}{\compoverset{k}{t}} < m = \bigO{n^{k - \frac{1}{t^{k-1}}}}.
 \]
 
 % TODO discussion of constant density case. Is it optimal?
@@ -142,16 +143,16 @@ For a specific $T$, the set $S$ satisfies
 We define a new $(k-1)$-graph $G'$ with vertex set $V \setminus W$ and edge set $S$.
 As it turns out, $S$ is large enough~\eqref{eq:s}
 that applying the algorithm recursively to $G'$
-yields a $K(t', \overset{k-1}{\dots}, t')$ in $G'$ with $t' \geq t$.
+yields a $\compoverset{k-1}{t'}$ in $G'$ with $t' \geq t$.
 That is, a tuple
-$P' = (V_1, V_2, \ldots, V_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that $|V_i| = t'$ and
-$V_1 \times \cdots \times V_{k-1}\subset S$.
+$P' = (V_1, V_2, \dots, V_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that $|V_i| = t'$ and
+$V_1 \times \dots \times V_{k-1}\subset S$.
 
 If we now concatenate $P'$ with $T$ (choosing a subset of $X_i \subset V_i$ of size $t$ for each $i$ if necessary), we get
-a $k$-tuple $(X_1, \ldots, X_{k-1}, T)$, of $t-sets$ of $V$ % todo k-tuple is split
+a $k$-tuple $(X_1, \dots, X_{k-1}, T)$, of $t-sets$ of $V$ % todo k-tuple is split
 which by the definition of $S$ satisfies
 $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$
-so it forms a $K(t, \overset{k}{\dots}, t)$ in $G$.
+so it forms a $\compoverset{k}{t}$ in $G$.
 
 \begin{algorithm}[H]
     \caption{Finding a balanced partite $k$-graph in a $k$-graph}
@@ -173,8 +174,8 @@ so it forms a $K(t, \overset{k}{\dots}, t)$ in $G$.
                 \State $S \gets \{\,y \in U \colon \{x\} \cup y \in E \text{ for all } x \in T\,\}$ \label{line:S}
                 \If{$|S| \geq s$}
                     \State $G' \gets (V \setminus W, S)$ \label{line:rec_call}
-                    \State $(V_1, \ldots, V_{k-1}) \gets$ \Call{FIND\_PARTITE}{$G', k-1$}
-                    \State \Return $(V_1, \ldots, V_{k-1}, T)$ \label{line:return}
+                    \State $(V_1, \dots, V_{k-1}) \gets$ \Call{FIND\_PARTITE}{$G', k-1$}
+                    \State \Return $(V_1, \dots, V_{k-1}, T)$ \label{line:return}
                 \EndIf
             \EndFor
         \EndFunction
@@ -474,8 +475,8 @@ satisfies $t' \geq t$.
     \end{proof}
 \end{lemma}
 
-This means that, assuming that the algorithm finds a $K(t', \overset{k-1}{\dots}, t')$ in $G'$ in the recursive call,
-it finds a $K(t, \overset{k}{\dots}, t)$ in $G$.
+This means that, assuming that the algorithm finds a $\compoverset{k-1}{t'}$ in $G'$ in the recursive call,
+it finds a $\compoverset{k}{t}$ in $G$.
 This argument only works if $k \geq 3$.
 For $k=2$, the recursive call is handled by the base case in
 line~\ref{line:base_case} of Algorithm~\ref{alg:kpartite}.
@@ -525,7 +526,7 @@ All in all, we can now state our main theorem.
         Using the induction hypothesis for $k-1$,
         this recursive call is successful and
         returns a tuple of sets
-        $(X_1, X_2, \ldots, X_{k-1}) \in \mathcal{P}(V)^{k-1}$ such that $|X_i| \geq t(n-w, d', k-1) \geq t$
+        $(X_1, X_2, \dots, X_{k-1}) \in \mathcal{P}(V)^{k-1}$ such that $|X_i| \geq t(n-w, d', k-1) \geq t$
         for all $i$ and $X_1 \times \dots \times X_{k-1} \subset E(G')$.
         However, by construction of $G'$,
          \[

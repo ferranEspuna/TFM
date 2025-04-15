@@ -322,29 +322,34 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
     \begin{proof}
         By Remark~\ref{rem:zar_vs_turan}, it suffices to show that
         \[
-            z = \zaroverset{k}{w}{t} = \bigO{w^{k - \frac{1}{t^{k-1}}}}.
+            z = \zaroverset{k}{w}{t} = \bigO{w^{k - \frac{1}{t^{k-1}}}}
         \]
+        as $w \to \infty$.
         We prove this by induction on $k$.
         For $k=2$, this is obtained by setting $u = w$ and $s = t$ in Theorem~\ref{thm:kst}.
         For $k > 2$, suppose by way of contradiction that the theorem is false.
         For all ${w_0 \in \N}$, ${K \in \mathbb{R}^+}$, there exists a $k$-partite $k$-graph $G = (W_1, \dots, W_k; E)$ with part sizes
         $|W_i| = w \geq w_0$ and ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$ such that no embedding of $\compoverset{k}{t}$ in it exists.
-        Consider, for each set $T \in \binom{W_k}{t}$, the associated $(k-1)$-link $G_T$.
-        By our assumption, $G_T$ does not contain $\compoverset{k-1}{t}$ as a subgraph.
-        If we let
+        Consider, for each set $T \in \binom{W_k}{t}$, the associated \text{$(k-1)$-link}
+        \link{G}{T}{k-1}.
+        By our assumption, it can not contain $\compoverset{k-1}{t}$ as a subgraph.
+        This means that
+        \begin{equation} \label{eq:conditionlink}
+            \link{G}{T}{k-1} \text{ has at most $z'$ edges for all } T \in \binom{W_k}{t},
+        \end{equation}
+        where
         \[
-            z' = \zaroverset{k-1}{w}{t},
+            z' = \zaroverset{k-1}{w}{t}.
         \]
-        this means that $G_T$ has at most $z'$ edges.
-
         Now, consider the bipartite graph $G' = (U, W; E')$, where
         \begin{align*}
             U &= W_1 \times \dots \times W_{k-1}, \\
             W &= W_k, \\
             E' &= \{(X, y) \in V \times W \mid X \cup \{y\} \in E\}.
         \end{align*}
-        Clearly, $G'$ has the same number of edges as $G$.
-        Furthermore, $G'$ does not contain $K(z' + 1, t)$ as a subgraph.
+        Condition~\eqref{eq:conditionlink} is equivalent to saying that
+        there is no embedding of $K(z' + 1, t)$ onto $G'$ respecting the respective partitions.
+        Furthermore, $G'$ has the same number of edges as $G$.
         Finally, we invoke Theorem~\ref{thm:kst} with
         ${u = |U| = w^{k-1}}$ and
         ${s = z' + 1}$ to get
@@ -354,10 +359,10 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
             (z')^{1 / t}(w - t + 1)w^{(k-1)(1 - 1 / t)} + (t - 1)w^{k-1}.
         \end{equation}
         By the inductive hypothesis, for $w_0$ and $K'$ large enough, we can bound
-        \[
+        \begin{equation} \label{eq:erdos64prime}
             z' \leq K' w^{(k - 1) - \frac{1}{t^{k-2}}}.
-        \]
-        Substituting this into inequality~\eqref{eq:erdos64_induction} and approximating yields
+        \end{equation}
+        Substituting inequality~\eqref{eq:erdos64prime} into~\eqref{eq:erdos64_induction} and approximating yields
         \[
             K w^{k - \frac{1}{t^{k-1}}} \leq (K')^{1 / t} w^{k-\frac{1}{t^{k-1}}} + (t - 1)w^{k-1}.
         \]

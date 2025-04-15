@@ -1,3 +1,7 @@
+% TODO refactor dots stuff
+% TODO refactor (k-1)-link
+% TODO what if we do not restrict the edges to have exactly one vertex in W?
+
 \section{Our Algorithm}\label{sec:algorithm}
 Let $G = (V, E)$ be a $k$-graph with $n$ vertices and $m$ edges.
 We describe a polynomial-time algorithm that finds a complete $k$-partite $k$-graph in $G$
@@ -121,7 +125,7 @@ the  number of iterations of the loop is
 We now present Algorithm~\ref{alg:kpartite}, which is
 a generalization of Algorithm~\ref{alg:bipartite} to $k$-graphs.
 It follows the same structure as Algorithm~\ref{alg:bipartite},
-but it is defined recursively.
+but it is defined recursively, resembling the induction step of Theorem~\ref{thm:erdos64}.
 This is the algorithm mentioned in Theorem~\ref{thm:kpartite},
 and the main contribution of this work.
 

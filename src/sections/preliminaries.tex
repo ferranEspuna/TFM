@@ -130,7 +130,7 @@ contain $G$ as a subgraph.
     If $V_1, \dots, V_k, W_1, \dots, W_k$ are disjoint sets
     and $|V_i| = |W_i| = a_i$ for all $i$,
     \[
-        K(V_1, \dots, V_k) \cong K(W_1, \dots, W_k),
+        \compdots{V_1}{V_k} \cong \compdots{W_1}{W_k}
     \]
     where the isomorphism is given by any bijection
     \[
@@ -140,7 +140,7 @@ contain $G$ as a subgraph.
     This allows us to talk, up to isomorphism, about \emph{the} complete $k$-partite $k$-graph
     with part sizes $a_1, \dots, a_k$, which we denote by
     \[
-        K(a_1, \dots, a_k).
+        \compdots{a_1}{a_k}.
     \]
 
 \end{remark}
@@ -172,7 +172,7 @@ in the following way.
 \begin{definition}
     Let $G = (V, E)$ be a $k$-graph.
     Let $S \subset V$ be a set of vertices and let $1 \leq j \leq k - 1$.
-    The \emph{common $j$-link} of $S$ is the $j$-graph $G_S^j = (V \setminus S, E')$, where
+    The \emph{common $j$-link graph} of $S$ is the $j$-graph $\link{G}{S}{j} = (V \setminus S, E')$, where
     \[
         E' = \left\{Y \in \binom{V \setminus S}{j}\middle\vert \, X \cup Y \in E \text{ for all } X \in \binom{S}{k-j}\right\}.
     \]
@@ -181,14 +181,14 @@ in the following way.
 Then, we can define completeness of $k$-partite $k$-graphs recursively: Let $G = (V_1, \dots, V_k; E)$
 be a $k$-partite $k$-graph.
 If $k=1$, $G$ is complete if and only if $E = V_1$ (as in Definition~\ref{def:complete_kpartite}).
-Otherwise, $G$ is complete if and only if $G_{V_k}^{k-1}$ (which is a $k-1$-partite $k-1$-graph
+Otherwise, $G$ is complete if and only if $\link{G}{V_k}{k-1}$ (which is a $(k-1)$-partite $(k-1)$-graph
 on $V_1, \dots, V_{k-1}$) is complete.
 
 \subsection{Degenerate Turán Problems}\label{subsec:degenerate}
 
 \begin{remark}
     All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$
-    are contained in $K(a_1, \dots, a_k)$ as subgraphs.
+    are contained in $\compdots{a_1}{a_k}$ as subgraphs.
     This lets us follow the same argument as in Proposition~\ref{prop:extremal}
     to define the following.
 \end{remark}
@@ -198,7 +198,7 @@ on $V_1, \dots, V_{k-1}$) is complete.
     Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
     is the largest integer $0 \leq z < \prod_i{ v_i}$ for which there exists a $k$-partite $k$-graph
     $H$ with part sizes $ |V_1| = v_1, \dots, |V_k| = v_k$ and $z$ edges
-    such that no embedding $f$ of $K(T_1, \dots, T_k)$ with $|T_i| = t_i$ in it exists
+    such that no embedding $f$ of $\compdots{T_1}{T_k}$ with $|T_i| = t_i$ in it exists
     satisfying $f(T_i) \subset V_i$ for all $i$.
 \end{definition}
 
@@ -206,12 +206,12 @@ From now on, every time we talk about embeddings from one $k$-partite $k$-graph
 onto another we assume the condition $f(T_i) \subset V_i$.
 
 \begin{remark}\label{rem:zar_vs_turan}
-    Finding this number can help us upper bound the extremal number of $K(t_1, \dots, t_k)$ asymptotically:
-    Assume that $H$ is a $K(t_1, \dots, t_k)$-free $n$-vertex $k$-graph with $m$ edges.
+    Finding this number can help us upper bound the extremal number of $\compdots{t_1}{t_k}$ asymptotically:
+    Assume that $H$ is a $\compdots{t_1}{t_k}$-free $n$-vertex $k$-graph with $m$ edges.
     pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
     (For example $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$)
     Let $V_1, \dots, V_k$ be a random partition of $V(H)$ with $|V_i| = v_i$.
-    for an edge $e \in E(H)$, the probability that $e$ is an edge in $K(V_1, \dots, V_k)$ is
+    for an edge $e \in E(H)$, the probability that $e$ is an edge in $\compdots{V_1}{V_k}$ is
     greater than
     \[k! \prod_i \frac{v_i}{n} \sim \frac{k!}{k^k},\]
     which is independent of $n$.
@@ -247,11 +247,11 @@ The result is stated and proved here for completeness.
         \]
         Counting on the first coordinate, we get
         \begin{equation} \label{eq:kst_p_lower}
-            |P|
-            = \nsum_{x \in U} \binom{d_G(x)}{t}
-            = \nsum_{x \in U} \varphi(d_G(x))
-            \geq u  \nsum_{x \in U} \varphi(z/u)
-            = u \binom{z / u}{t},
+            |P| =
+            \mathlarger{\mathlarger{\sum}}_{x \in U} \binom{d_G(x)}{t} =
+            \mathlarger{\mathlarger{\sum}}_{x \in U} \varphi(d_G(x)) \geq
+            u  \mathlarger{\mathlarger{\sum}}_{x \in U} \varphi(z/u) =
+            u \binom{z / u}{t},
         \end{equation}
         where we define
         \[
@@ -322,18 +322,18 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
     \begin{proof}
         By Remark~\ref{rem:zar_vs_turan}, it suffices to show that
         \[
-            z = z(w, \overset{k}{\dots}, w; t, \overset{k}{\dots}, t) = O\left(w^{k - \frac{1}{t^{k-1}}}\right).
+            z = \zaroverset{k}{w}{t} = \bigO{w^{k - \frac{1}{t^{k-1}}}}.
         \]
         We prove this by induction on $k$.
         For $k=2$, this is obtained by setting $u = w$ and $s = t$ in Theorem~\ref{thm:kst}.
         For $k > 2$, suppose by way of contradiction that the theorem is false.
         For all ${w_0 \in \N}$, ${K \in \mathbb{R}^+}$, there exists a $k$-partite $k$-graph $G = (W_1, \dots, W_k; E)$ with part sizes
-        $|W_i| = w \geq w_0$ and ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$ such that no embedding of $K(t, \overset{k}{\dots}, t)$ in it exists.
-        Consider, for each set $T \in \binom{W_k}{t}$, the associated joint link $G_T$.
-        By our assumption, $G_T$ does not contain $K(t, \overset{k-1}{\dots}, t)$ as a subgraph.
+        $|W_i| = w \geq w_0$ and ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$ such that no embedding of $\compoverset{k}{t}$ in it exists.
+        Consider, for each set $T \in \binom{W_k}{t}$, the associated $(k-1)$-link $G_T$.
+        By our assumption, $G_T$ does not contain $\compoverset{k-1}{t}$ as a subgraph.
         If we let
         \[
-            z' = z(w, \overset{k-1}{\dots}, w; t, \overset{k-1}{\dots}, t),
+            z' = \zaroverset{k-1}{w}{t},
         \]
         this means that $G_T$ has at most $z'$ edges.
 
@@ -375,7 +375,7 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
 \end{theorem}
 
 This approach can be generalized to give a lower bound on the number of
-copies of $K(t_1, \dots, t_k)$ in a $k$-partite $k$-graph $G$
+copies of $\compdots{t_1}{t_k}$ in a $k$-partite $k$-graph $G$
 with different part sizes~\cite{carvajal2024canonical},
 therefore upper bounding all generalized Zarankiewicz numbers.
 

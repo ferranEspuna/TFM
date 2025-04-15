@@ -64,7 +64,7 @@ contain $G$ as a subgraph.
 
 \begin{proposition} \label{prop:extremal}
     Let $G = (V, E)$ be a $k$-graph with nonempty edge set and $n \geq |V|$ be an integer.
-    Then there exists an integer $M_0 = ex(n, G) \in \left[ 0, \binom{n}{k}\right)$ such that
+    Then there exists an integer $M_0 = \ex{n}{G} \in \left[ 0, \binom{n}{k}\right)$ such that
     the condition
     \[
         \text{``All $k$-graphs with $n$ vertices and $m$ edges contain $G$ as a subgraph''}
@@ -93,7 +93,7 @@ contain $G$ as a subgraph.
 \end{proposition}
 
 \begin{definition}
-    The integer $ex(n, G)$ defined in Proposition~\ref{prop:extremal}
+    The integer $\ex{n}{G}$ defined in Proposition~\ref{prop:extremal}
     is called the \emph{extremal number} of $G$.
 \end{definition}
 
@@ -217,7 +217,9 @@ onto another we assume the condition $f(T_i) \subset V_i$.
     which is independent of $n$.
     Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
     Applying the first moment method, we can conclude that
-    \[ex(n, K(t_1, \overset{k}{\dots}, t_k)) = O(z(\lceil n / k \rceil , \overset{k}{\dots}, \lceil n / k \rceil; t_1, \dots, t_k)).\]
+    \[
+        \ex{n}{\compdots{t_1}{t_k}} = \bigO{\zaroversetdots{k}{\lceil n / k \rceil}{t_1}{t_k}}.
+    \]
 
 \end{remark}
 
@@ -305,18 +307,18 @@ The result is stated and proved here for completeness.
 \begin{remark}
     Following Remark~\ref{rem:zar_vs_turan}, we can use this bound to get an upper bound on the extremal number of $K(s, t)$:
     \[
-        ex(n, K(s, t)) =
-        O\left((s - 1)^{1 / t}\left(\left\lceil\frac{n}{2}\right\rceil - t + 1\right)n^{1 - 1 / t} + (t - 1)\left\lceil\frac{n}{2}\right\rceil\right) =
-        O\left(n^{2 - 1 / t}\right).
+        \ex{n}{K(s, t)} =
+        \bigO{(s - 1)^{1 / t}\left(\left\lceil\frac{n}{2}\right\rceil - t + 1\right)n^{1 - 1 / t} + (t - 1)\left\lceil\frac{n}{2}\right\rceil} =
+        \bigO{n^{2 - 1 / t}}.
     \]
-    Note that if $s < t$, we get the better bound $O\left(n^{2 - 1 / s}\right)$ by interchanging the roles of $s$ and $t$.
+    Note that if $s < t$, we get the better bound $\bigO{n^{2 - 1 / s}}$ by interchanging the roles of $s$ and $t$.
 \end{remark}
 
 In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete partite $k$-graphs in the following theorem.
 
 \begin{theorem}\label{thm:erdos64}
     For $k \geq 2$ and $2 \leq t \leq \frac{n}{k}$,
-    $ex(n, K(t, \overset{k}{\dots}, t)) = O\left(n^{k - \frac{1}{t^{k-1}}}\right)$.
+    $\ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{k-1}}}}$.
     \begin{proof}
         By Remark~\ref{rem:zar_vs_turan}, it suffices to show that
         \[

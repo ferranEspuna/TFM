@@ -55,7 +55,13 @@
 %%%%%%%%%%%%%%%%%%
 
 \newcommand{\N}{\ensuremath{\mathbb{N}}}
-
+\newcommand{\ex}[2]{\ensuremath{\text{ex} \left( #1, #2 \right)}}
+\newcommand{\compoverset}[2]{\ensuremath{K\left(#2, \overset{#1}{\dots}, #2\right)}}
+\newcommand{\compdots}[2]{\ensuremath{K\left(#1, \dots, #2\right)}}
+\newcommand{\zaroverset}[3]{\ensuremath{z\left(#2, \overset{#1}{\dots}, #2; #3, \overset{#1}{\dots}, #3\right)}}
+\newcommand{\zaroversetdots}[4]{\ensuremath{z\left(#2, \overset{#1}{\dots}, #2; #3, \dots, #4\right)}}
+\newcommand{\zardots}[4]{\ensuremath{z\left(#1, \dots, #2; #3, \dots, #4\right)}}
+\newcommand{\bigO}[1]{\ensuremath{\mathcal{O}\left(#1\right)}}
 % Body of document
 
 \titol{Finding Partite Hypergraphs Efficiently}

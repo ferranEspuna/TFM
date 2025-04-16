@@ -1,5 +1,6 @@
 import itertools
 import os
+import math  # For ceiling function
 
 # --- Adjustable parameters ---
 
@@ -9,28 +10,41 @@ V_MINUS_T_DOT_COLOR = "black"
 DOT_THICKNESS = 4.0
 ADD_VERTEX_LABELS = True
 
-# Link edge styling (Common Link Graph Edges Y)
-LINK_EDGE_COLORS = ["magenta", "teal", "blue", "cyan", "violet", "teal", "red"]
-LINK_EDGE_THICKNESS = "very thick"  # Make link edges stand out
+# Link edge styling (Common Link Graph Edges Y - TRUE links)
+LINK_EDGE_COLORS = ["magenta", "teal", "blue", "violet", "red"]
+LINK_EDGE_THICKNESS = "very thick"
+LINK_EDGE_STYLE = "solid"  # True link edges are solid
 
-# Contributing Hyperedge styling (Edges X u Y, |X|=1, Y is a link edge)
-CONTRIBUTING_HYPEREDGE_BRIGHTNESS_FACTOR = 50  # TikZ factor (e.g., 70 = color!70!black)
+# Contributing Hyperedge styling (Edges X u Y, where Y is a TRUE link edge)
+CONTRIBUTING_HYPEREDGE_BRIGHTNESS_FACTOR = 65  # TikZ factor (e.g., 70 = color!70!white)
 CONTRIBUTING_HYPEREDGE_LINE_THICKNESS = 1.0
 CONTRIBUTING_HYPEREDGE_ROOT_THICKNESS = 2.5
-CONTRIBUTING_HYPEREDGE_STYLE = "solid"  # Style for lines from root
-
-# Non-Contributing Hyperedge styling (Involving T, |H n T| != k-j)
-# Specifically for |H n T| > k-j as requested
-OTHER_T_HYPEREDGE_COLOR = "gray"
-OTHER_T_HYPEREDGE_BRIGHTNESS_FACTOR = 50  # Dimmer gray: gray!40!black
-OTHER_T_HYPEREDGE_LINE_THICKNESS = 1.0
-OTHER_T_HYPEREDGE_ROOT_THICKNESS = 2.5
-OTHER_T_HYPEREDGE_STYLE = "solid"  # Dotted style for these
+CONTRIBUTING_HYPEREDGE_STYLE = "solid"  # Contributors to TRUE links are solid
 
 # "Almost" Link Edge styling (Y connected to *some* but not *all* X in T)
-ALMOST_LINK_EDGE_COLOR = "gray"
+# Uses the LINK_EDGE_COLORS pool after the true links
 ALMOST_LINK_EDGE_THICKNESS = "very thick"
-ALMOST_LINK_EDGE_STYLE = "dashed"
+ALMOST_LINK_EDGE_STYLE = "dashed"  # Almost link edges are dashed
+
+# Contributing Hyperedge styling (Edges X u Y, where Y is an ALMOST link edge)
+ALMOST_CONTRIB_HYPEREDGE_BRIGHTNESS_FACTOR = 75  # Slightly more faded
+ALMOST_CONTRIB_HYPEREDGE_LINE_THICKNESS = 1.0
+ALMOST_CONTRIB_HYPEREDGE_ROOT_THICKNESS = 2.5
+ALMOST_CONTRIB_HYPEREDGE_STYLE = "solid"  # Contributors to ALMOST links are dashed
+
+# Invalid T-Intersection Hyperedge styling (|H n T| > k-j)
+INVALID_T_INTERSECT_HYPEREDGE_COLOR = "gray"
+INVALID_T_INTERSECT_HYPEREDGE_BRIGHTNESS_FACTOR = 50  # Dim gray
+INVALID_T_INTERSECT_HYPEREDGE_LINE_THICKNESS = 1.0
+INVALID_T_INTERSECT_HYPEREDGE_ROOT_THICKNESS = 2.5
+INVALID_T_INTERSECT_HYPEREDGE_STYLE = "solid"  # Dashed style for these
+
+# Other/Generic Hyperedge styling (Not contributing, |H n T| <= k-j)
+OTHER_GENERIC_HYPEREDGE_COLOR = "gray"
+OTHER_GENERIC_HYPEREDGE_BRIGHTNESS_FACTOR = 40  # Even dimmer gray
+OTHER_GENERIC_HYPEREDGE_LINE_THICKNESS = 0.8  # Thinner
+OTHER_GENERIC_HYPEREDGE_ROOT_THICKNESS = 2.0
+OTHER_GENERIC_HYPEREDGE_STYLE = "solid"  # Solid for these? Or dashed? Let's keep solid for now.
 
 # General Hyperedge Settings
 DRAW_ORIGINAL_HYPEREDGES = True  # Master switch
@@ -41,22 +55,18 @@ V_MINUS_T_BOX_BG_COLOR = "gray!10"
 BOX_MARGIN = 0.7
 DRAW_BOXES = True
 
-# --- Utility Functions ---
-# No changes needed for dim_rgb, but we'll use TikZ dimming instead for simplicity
-
 # --- Define the graph G = (V, E) and set T ---
 
 vertices = {
     'A': (0, 2), 'B': (0, 7), 'C': (1, 4.5),
     'X': (8, 9), 'Y': (10, 6),
-    'Z': (8, 0), 'W': (10, 3)  # Changed T to W for clarity
+    'Z': (8, 0), 'W': (10, 3)
 }
 
 T = ['A', 'B', 'C']
 V_minus_T = [v for v in vertices if v not in T]
 
 # Define the hyperedges E of the 3-uniform graph G
-# Using frozenset for easier comparison
 hyperedges_G_list = [('A', 'X', 'Y'),
                      ('A', 'Y', 'T'),
                      ('B', 'X', 'Y'),
@@ -70,24 +80,27 @@ hyperedges_G_list = [('A', 'X', 'Y'),
                      ('C', 'X', 'Y'),
                      ('C', 'Z', 'W'),
                      ]
+
 hyperedges_G_set = {frozenset(h) for h in hyperedges_G_list}
-# Add original list indices for reference
 hyperedges_G_indexed = {frozenset(h): idx for idx, h in enumerate(hyperedges_G_list)}
 
 k = 3
 j = 2
-required_X_size = k - j  # Should be 1 in this example
+required_X_size = k - j  # Should be 1
 
-# --- Calculate Link Edges, Contributing Hyperedges, and Almost Links ---
+# --- Calculate Link Edges, Almost Links, and Categorize Hyperedges ---
 
-link_edges_data = {}  # Stores { frozenset(Y): {"color": color, "contributors": [hedge_id1, hedge_id2]} }
-almost_link_edges = []  # Stores frozenset(Y) for almost links
+link_edges_data = {}  # Stores { frozenset(Y): {"color": color, "contributors": [hedge_id1,...], "nodes": tuple(Y)} }
+almost_link_edges_data = {}  # Stores { frozenset(Y): {"color": color, "contributors": [hedge_id1,...], "nodes": tuple(Y)} }
+
 potential_Y_sets = list(itertools.combinations(V_minus_T, j))
 T_combinations = list(itertools.combinations(T, required_X_size))
 num_required_X = len(T_combinations)
 
 link_color_index = 0
+almost_link_color_start_index = 0  # We'll determine this after finding true links
 
+# Find True Link Edges first
 for Y_tuple in potential_Y_sets:
     Y = frozenset(Y_tuple)
     contributing_hyperedges_ids = []
@@ -106,22 +119,47 @@ for Y_tuple in potential_Y_sets:
         link_edges_data[Y] = {
             "color": color,
             "contributors": contributing_hyperedges_ids,
-            "nodes": Y_tuple  # Keep tuple for drawing order
+            "nodes": Y_tuple
         }
         link_color_index += 1
-    elif 0 < found_X_count < num_required_X:
+
+# Now find Almost Link Edges (and assign colors from the remaining pool)
+almost_link_color_start_index = link_color_index
+almost_link_color_index = almost_link_color_start_index
+
+for Y_tuple in potential_Y_sets:
+    Y = frozenset(Y_tuple)
+    if Y in link_edges_data:  # Skip if it's already a true link
+        continue
+
+    contributing_hyperedges_ids = []
+    found_X_count = 0
+    for X_tuple in T_combinations:
+        X = frozenset(X_tuple)
+        hyperedge_candidate = X.union(Y)
+        if hyperedge_candidate in hyperedges_G_set:
+            found_X_count += 1
+            contributing_hyperedges_ids.append(hyperedges_G_indexed[hyperedge_candidate])
+
+    if 0 < found_X_count < num_required_X:
         # This is an "almost" link edge Y
-        almost_link_edges.append(Y_tuple)
+        color = LINK_EDGE_COLORS[almost_link_color_index % len(LINK_EDGE_COLORS)]
+        almost_link_edges_data[Y] = {
+            "color": color,
+            "contributors": contributing_hyperedges_ids,
+            "nodes": Y_tuple
+        }
+        almost_link_color_index += 1
 
 # --- Prepare data for drawing original hyperedges ---
 hyperedge_drawing_data = []
 if DRAW_ORIGINAL_HYPEREDGES:
     for idx, hedge_nodes_tuple in enumerate(hyperedges_G_list):
         hedge_nodes = frozenset(hedge_nodes_tuple)
-        v_labels = list(hedge_nodes_tuple)  # Keep original order for consistency if needed
+        v_labels = list(hedge_nodes_tuple)
         coords = [vertices[v] for v in v_labels if v in vertices]
         if len(coords) != k:
-            print(f"Warning: Skipping hyperedge {hedge_nodes_tuple} due to missing vertex coordinates.")
+            print(f"Warning: Skipping hyperedge {hedge_nodes_tuple} due to missing vertex coords.")
             continue
 
         root_x = sum(c[0] for c in coords) / k
@@ -130,59 +168,74 @@ if DRAW_ORIGINAL_HYPEREDGES:
         # Determine category and style
         intersect_T = hedge_nodes.intersection(T)
         intersect_T_size = len(intersect_T)
-        Y_part = hedge_nodes.difference(T)
+        Y_part = hedge_nodes.difference(T)  # Potential Y component
 
         style_info = {}
-        is_contributor = False
+        category = "other_generic"  # Default category
 
-        if intersect_T_size == required_X_size:
-            # Potential contributor? Check if Y_part is a confirmed link edge
-            if Y_part in link_edges_data and idx in link_edges_data[Y_part]["contributors"]:
-                # Yes, it's a contributor
+        # Priority 1: True Contributors
+        is_contributor = False
+        if intersect_T_size == required_X_size and Y_part in link_edges_data:
+            if idx in link_edges_data[Y_part]["contributors"]:
                 link_color = link_edges_data[Y_part]["color"]
                 style_info = {
-                    "category": "contributor",
                     "color": f"{link_color}!{CONTRIBUTING_HYPEREDGE_BRIGHTNESS_FACTOR}!white",
                     "line_thickness": CONTRIBUTING_HYPEREDGE_LINE_THICKNESS,
                     "root_thickness": CONTRIBUTING_HYPEREDGE_ROOT_THICKNESS,
                     "line_style": CONTRIBUTING_HYPEREDGE_STYLE
                 }
+                category = "true_contributor"
                 is_contributor = True
 
+        # Priority 2: Almost Contributors
+        if not is_contributor and intersect_T_size == required_X_size and Y_part in almost_link_edges_data:
+            if idx in almost_link_edges_data[Y_part]["contributors"]:
+                almost_link_color = almost_link_edges_data[Y_part]["color"]
+                style_info = {
+                    "color": f"{almost_link_color}!{ALMOST_CONTRIB_HYPEREDGE_BRIGHTNESS_FACTOR}!white",
+                    "line_thickness": ALMOST_CONTRIB_HYPEREDGE_LINE_THICKNESS,
+                    "root_thickness": ALMOST_CONTRIB_HYPEREDGE_ROOT_THICKNESS,
+                    "line_style": ALMOST_CONTRIB_HYPEREDGE_STYLE  # Dashed
+                }
+                category = "almost_contributor"
+                is_contributor = True  # Mark as 'processed'
+
+        # Priority 3: Invalid T Intersection (|H n T| > k-j)
+        if not is_contributor and intersect_T_size > required_X_size:
+            style_info = {
+                "color": f"{INVALID_T_INTERSECT_HYPEREDGE_COLOR}!{INVALID_T_INTERSECT_HYPEREDGE_BRIGHTNESS_FACTOR}!white",
+                "line_thickness": INVALID_T_INTERSECT_HYPEREDGE_LINE_THICKNESS,
+                "root_thickness": INVALID_T_INTERSECT_HYPEREDGE_ROOT_THICKNESS,
+                "line_style": INVALID_T_INTERSECT_HYPEREDGE_STYLE  # Dashed
+            }
+            category = "invalid_T_intersect"
+            is_contributor = True  # Mark as 'processed'
+
+        # Priority 4: Other/Generic (Default if not caught above)
         if not is_contributor:
-            # Check if it's the other type requested (|H n T| > k-j)
-            if intersect_T_size > required_X_size:
-                style_info = {
-                    "category": "other_T",
-                    "color": f"{OTHER_T_HYPEREDGE_COLOR}!{OTHER_T_HYPEREDGE_BRIGHTNESS_FACTOR}!white",
-                    "line_thickness": OTHER_T_HYPEREDGE_LINE_THICKNESS,
-                    "root_thickness": OTHER_T_HYPEREDGE_ROOT_THICKNESS,
-                    "line_style": OTHER_T_HYPEREDGE_STYLE
-                }
-            else:
-                style_info = {
-                    "category": "other_generic",  # Or could reuse "other_T" if style is identical
-                    "color": f"{OTHER_T_HYPEREDGE_COLOR}!{OTHER_T_HYPEREDGE_BRIGHTNESS_FACTOR}!white",
-                    "line_thickness": OTHER_T_HYPEREDGE_LINE_THICKNESS,
-                    "root_thickness": OTHER_T_HYPEREDGE_ROOT_THICKNESS,
-                    "line_style": OTHER_T_HYPEREDGE_STYLE  # Using dotted as requested for non-contributing involving T
-                }
+            style_info = {
+                "color": f"{OTHER_GENERIC_HYPEREDGE_COLOR}!{OTHER_GENERIC_HYPEREDGE_BRIGHTNESS_FACTOR}!white",
+                "line_thickness": OTHER_GENERIC_HYPEREDGE_LINE_THICKNESS,
+                "root_thickness": OTHER_GENERIC_HYPEREDGE_ROOT_THICKNESS,
+                "line_style": OTHER_GENERIC_HYPEREDGE_STYLE  # Solid gray
+            }
+            # Category remains "other_generic"
 
         hyperedge_drawing_data.append({
             "id": idx,
-            "nodes": v_labels,  # Use original tuple order
+            "nodes": v_labels,
             "root": (root_x, root_y),
-            "style": style_info
+            "style": style_info,
+            "category": category  # Store category for sorting draw order
         })
 
 # --- Prepare TikZ code lines ---
 lines = [r"% TikZ code generated by Python script for Common Link Graph visualization",
          r"\begin{tikzpicture}[scale=0.8]", r"% Vertex coordinates"]
 
-# Define needed colors explicitly if not standard TikZ names (optional here as we use named colors + dimming)
-# Example: \definecolor{brightpink}{rgb}{1.0, 0.0, 0.5}
+# Define needed colors explicitly if not standard TikZ names (optional)
 
-# -- 2. Define Coordinates for Vertices AND Hyperedge Roots --
+# -- Define Coordinates for Vertices AND Hyperedge Roots --
 for label, (x, y) in vertices.items():
     lines.append(r"\coordinate ({}) at ({:.2f}, {:.2f});".format(label, x, y))
 
@@ -193,17 +246,21 @@ if DRAW_ORIGINAL_HYPEREDGES:
         lines.append(r"\coordinate (R{}) at ({:.3f}, {:.3f});".format(data['id'], rx, ry))
 
 
-# Function to compute bounding box (needed for boxes)
+# Function to compute bounding box
 def bounding_box(points_coords, margin=0.5):
+    # (same as before)
     if not points_coords:
         return 0, 0, 0, 0
     x_vals, y_vals = zip(*points_coords)
     return min(x_vals) - margin, max(x_vals) + margin, min(y_vals) - margin, max(y_vals) + margin
 
 
-# -- 3. Draw Boxes (Optional) --
+# --- Drawing Order ---
+
+# -- 1. Draw Boxes (Background) --
 if DRAW_BOXES:
     lines.append(r"% Draw background boxes for T and V \ T")
+    # (same as before)
     t_points_coords = [vertices[v] for v in T if v in vertices]
     if t_points_coords:
         x_min, x_max, y_min, y_max = bounding_box(t_points_coords, BOX_MARGIN)
@@ -222,47 +279,77 @@ if DRAW_BOXES:
                      r":.2f}, {:.2f});".format(V_MINUS_T_BOX_BG_COLOR, x_min, y_min, x_max, y_max))
         lines.append(
             r"\node at ({:.2f}, {:.2f}) [anchor=south east, inner sep=1pt, text=gray] {{$V \setminus T$}};".format(
-                x_max, y_max))  # Adjusted position
+                x_max, y_max))
 
-# -- 4. Draw Original Hyperedges --
+
+# Utility function to draw a hyperedge based on its data
+def draw_hyperedge(data):
+    draw_lines = []
+    style = data['style']
+    edge_id = data['id']
+    root_coord = f"R{edge_id}"
+    line_options = f"line width={style['line_thickness']:.1f}pt, color={style['color']}, {style['line_style']}"
+    # Draw the tree edges from root to nodes
+    for node_label in data['nodes']:
+        draw_lines.append(r"\draw[{}] ({}) -- ({});".format(line_options, root_coord, node_label))
+    # Draw the hyperedge root dot
+    draw_lines.append(r"\fill[{}] ({}) circle ({:.1f}pt);".format(style['color'], root_coord, style['root_thickness']))
+    return draw_lines
+
+
+# -- 2. Draw Invalid T-Intersection Hyperedges (Dashed Gray - Background) --
 if DRAW_ORIGINAL_HYPEREDGES:
-    lines.append(r"% Draw original hyperedges (styled by category)")
+    lines.append(r"% Draw hyperedges with |H n T| > k-j (dashed gray, background)")
     for data in hyperedge_drawing_data:
-        style = data['style']
-        edge_id = data['id']
-        root_coord = f"R{edge_id}"
-        line_options = f"line width={style['line_thickness']:.1f}pt, color={style['color']}, {style['line_style']}"
+        if data['category'] == "invalid_T_intersect":
+            lines.extend(draw_hyperedge(data))
 
-        # Draw the tree edges from root to nodes
-        for node_label in data['nodes']:
-            lines.append(r"\draw[{}] ({}) -- ({});".format(line_options, root_coord, node_label))
+# -- 3. Draw Hyperedges Contributing to Almost Links (Dashed Colored) --
+if DRAW_ORIGINAL_HYPEREDGES:
+    lines.append(r"% Draw hyperedges contributing to 'almost' links (dashed colored)")
+    for data in hyperedge_drawing_data:
+        if data['category'] == "almost_contributor":
+            lines.extend(draw_hyperedge(data))
 
-        # Draw the hyperedge root dot
-        lines.append(r"\fill[{}] ({}) circle ({:.1f}pt);".format(style['color'], root_coord, style['root_thickness']))
-
-# -- 5. Draw "Almost" Link Edges --
-if almost_link_edges:
-    lines.append(r"% Draw 'almost' link edges (faintly, dotted)")
-    almost_style = f"color={ALMOST_LINK_EDGE_COLOR}, {ALMOST_LINK_EDGE_THICKNESS}, {ALMOST_LINK_EDGE_STYLE}"
-    for u, v in almost_link_edges:  # Assuming j=2
-        if u in vertices and v in vertices:
-            lines.append(r"\draw[{}] ({}) -- ({});".format(almost_style, u, v))
-        else:
-            print(f"Warning: Could not draw almost link edge between {u} and {v} - missing vertex.")
-
-# -- 6. Draw Confirmed Link Edges --
-if link_edges_data:
-    lines.append(r"% Edges of the common {}-link graph of T (brightly colored)".format(j))
-    for Y_fset, data in link_edges_data.items():
+# -- 4. Draw "Almost" Link Edges (Dashed Colored) --
+if almost_link_edges_data:
+    lines.append(r"% Draw 'almost' link edges (dashed colored)")
+    for Y_fset, data in almost_link_edges_data.items():
         u, v = data['nodes']  # Assumes j=2
         color = data['color']
-        style = f"{LINK_EDGE_THICKNESS}, color={color}"
+        style = f"color={color}, {ALMOST_LINK_EDGE_THICKNESS}, {ALMOST_LINK_EDGE_STYLE}"
         if u in vertices and v in vertices:
             lines.append(r"\draw[{}] ({}) -- ({});".format(style, u, v))
         else:
-            print(f"Warning: Could not draw link edge between {u} and {v} - missing vertex.")
+            print(f"Warning: Could not draw almost link edge {data['nodes']} - missing vertex.")
 
-# -- 7. Draw Vertices (Foreground) --
+# -- 5. Draw Hyperedges Contributing to TRUE Links (Solid Colored) --
+if DRAW_ORIGINAL_HYPEREDGES:
+    lines.append(r"% Draw hyperedges contributing to TRUE links (solid colored)")
+    for data in hyperedge_drawing_data:
+        if data['category'] == "true_contributor":
+            lines.extend(draw_hyperedge(data))
+
+# -- 6. Draw Confirmed TRUE Link Edges (Solid Colored) --
+if link_edges_data:
+    lines.append(r"% Draw TRUE common {}-link graph edges (solid colored)".format(j))
+    for Y_fset, data in link_edges_data.items():
+        u, v = data['nodes']  # Assumes j=2
+        color = data['color']
+        style = f"color={color}, {LINK_EDGE_THICKNESS}, {LINK_EDGE_STYLE}"
+        if u in vertices and v in vertices:
+            lines.append(r"\draw[{}] ({}) -- ({});".format(style, u, v))
+        else:
+            print(f"Warning: Could not draw link edge {data['nodes']} - missing vertex.")
+
+# -- 7. Draw Other/Generic Hyperedges (Solid Gray - Default) --
+if DRAW_ORIGINAL_HYPEREDGES:
+    lines.append(r"% Draw other/generic hyperedges (solid gray)")
+    for data in hyperedge_drawing_data:
+        if data['category'] == "other_generic":
+            lines.extend(draw_hyperedge(data))
+
+# -- 8. Draw Vertices (Foreground) --
 lines.append(r"% Draw vertices (foreground layer)")
 # Vertices in T
 for v_label in T:
@@ -281,31 +368,51 @@ for v_label in V_minus_T:
 lines.append(r"\end{tikzpicture}")
 
 # --- Write TikZ code to a file ---
-filename = "common_link.tex"
-output_dir = "src/figures"  # Define output directory (optional)
+filename = "common_link.tex"  # Changed filename
+output_dir = "src/figures"
 
-# Ensure the output directory exists
 if output_dir:
     os.makedirs(output_dir, exist_ok=True)
     full_path = os.path.join(output_dir, filename)
 else:
     full_path = filename
 
-# Write the TikZ code to the file
 try:
     with open(full_path, "w") as f:
         f.write("\n".join(lines))
+
+    # --- Summary Output ---
     print(f"\nDetailed TikZ code for the common link graph has been written to '{full_path}'")
     print(f" - T: {T}")
-    print(f" - Confirmed {j}-link edges found: {len(link_edges_data)}")
+    print(f" - k={k}, j={j}, required |H n T| = {required_X_size}")
+
+    print(f"\n - Confirmed {j}-link edges found: {len(link_edges_data)}")
     for Y_fset, data in link_edges_data.items():
-        print(f"   - {set(Y_fset)}: color={data['color']}")
-    print(f" - 'Almost' {j}-link edges found: {len(almost_link_edges)}")
-    for Y_tuple in almost_link_edges:
-        print(f"   - {set(Y_tuple)}")
-    print(f" - Original hyperedges styled by contribution:")
-    print(f"   - Contributing: Dimmed version of link color, style '{CONTRIBUTING_HYPEREDGE_STYLE}'")
-    print(f"   - Involving |T|>1: Color '{OTHER_T_HYPEREDGE_COLOR}' (dimmed), style '{OTHER_T_HYPEREDGE_STYLE}'")
-    print(f"   - Others involving T: Styled similarly to |T|>1 case.")
+        print(
+            f"   - {set(data['nodes'])}: color={data['color']}, style='{LINK_EDGE_STYLE}', contributors={data['contributors']}")
+
+    print(f"\n - 'Almost' {j}-link edges found: {len(almost_link_edges_data)}")
+    for Y_fset, data in almost_link_edges_data.items():
+        print(
+            f"   - {set(data['nodes'])}: color={data['color']}, style='{ALMOST_LINK_EDGE_STYLE}', contributors={data['contributors']}")
+
+    print("\n - Original hyperedges styled by category:")
+    categories_summary = {}
+    for data in hyperedge_drawing_data:
+        cat = data['category']
+        style_desc = f"color={data['style']['color']}, style='{data['style']['line_style']}'"
+        if cat not in categories_summary:
+            categories_summary[cat] = {"count": 0, "example_style": style_desc}
+        categories_summary[cat]["count"] += 1
+
+    print(
+        f"   - true_contributor ({categories_summary.get('true_contributor', {}).get('count', 0)}): Contributors to TRUE links. Style: {categories_summary.get('true_contributor', {}).get('example_style', 'N/A')}")
+    print(
+        f"   - almost_contributor ({categories_summary.get('almost_contributor', {}).get('count', 0)}): Contributors to ALMOST links. Style: {categories_summary.get('almost_contributor', {}).get('example_style', 'N/A')}")
+    print(
+        f"   - invalid_T_intersect ({categories_summary.get('invalid_T_intersect', {}).get('count', 0)}): |H n T| > {required_X_size}. Style: {categories_summary.get('invalid_T_intersect', {}).get('example_style', 'N/A')}")
+    print(
+        f"   - other_generic ({categories_summary.get('other_generic', {}).get('count', 0)}): Other hyperedges. Style: {categories_summary.get('other_generic', {}).get('example_style', 'N/A')}")
+
 except IOError as e:
     print(f"Error writing file '{full_path}': {e}")

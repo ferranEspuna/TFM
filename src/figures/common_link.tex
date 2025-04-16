@@ -25,57 +25,60 @@
 \node at (1.70, 7.70) [anchor=south east, inner sep=1pt, text=gray] {$T$};
 \draw[fill=gray!10, rounded corners, line width=0.5pt, draw=gray!50] (7.30, -0.70) rectangle (10.70, 9.70);
 \node at (10.70, 9.70) [anchor=south east, inner sep=1pt, text=gray] {$V \setminus T$};
-% Draw original hyperedges (styled by category)
-\draw[line width=1.0pt, color=magenta!50!white, solid] (R0) -- (A);
-\draw[line width=1.0pt, color=magenta!50!white, solid] (R0) -- (X);
-\draw[line width=1.0pt, color=magenta!50!white, solid] (R0) -- (Y);
-\fill[magenta!50!white] (R0) circle (2.5pt);
-\draw[line width=1.0pt, color=magenta!50!white, solid] (R2) -- (B);
-\draw[line width=1.0pt, color=magenta!50!white, solid] (R2) -- (X);
-\draw[line width=1.0pt, color=magenta!50!white, solid] (R2) -- (Y);
-\fill[magenta!50!white] (R2) circle (2.5pt);
-\draw[line width=1.0pt, color=gray!50!white, solid] (R3) -- (B);
-\draw[line width=1.0pt, color=gray!50!white, solid] (R3) -- (Y);
-\draw[line width=1.0pt, color=gray!50!white, solid] (R3) -- (W);
-\fill[gray!50!white] (R3) circle (2.5pt);
-\draw[line width=1.0pt, color=teal!50!white, solid] (R4) -- (A);
-\draw[line width=1.0pt, color=teal!50!white, solid] (R4) -- (Z);
-\draw[line width=1.0pt, color=teal!50!white, solid] (R4) -- (W);
-\fill[teal!50!white] (R4) circle (2.5pt);
-\draw[line width=1.0pt, color=teal!50!white, solid] (R5) -- (B);
-\draw[line width=1.0pt, color=teal!50!white, solid] (R5) -- (Z);
-\draw[line width=1.0pt, color=teal!50!white, solid] (R5) -- (W);
-\fill[teal!50!white] (R5) circle (2.5pt);
+% Draw hyperedges with |H n T| > k-j (dashed gray, background)
 \draw[line width=1.0pt, color=gray!50!white, solid] (R6) -- (A);
 \draw[line width=1.0pt, color=gray!50!white, solid] (R6) -- (B);
 \draw[line width=1.0pt, color=gray!50!white, solid] (R6) -- (X);
 \fill[gray!50!white] (R6) circle (2.5pt);
-\draw[line width=1.0pt, color=gray!50!white, solid] (R7) -- (A);
-\draw[line width=1.0pt, color=gray!50!white, solid] (R7) -- (Y);
-\draw[line width=1.0pt, color=gray!50!white, solid] (R7) -- (W);
-\fill[gray!50!white] (R7) circle (2.5pt);
-\draw[line width=1.0pt, color=gray!50!white, solid] (R8) -- (B);
-\draw[line width=1.0pt, color=gray!50!white, solid] (R8) -- (Y);
-\draw[line width=1.0pt, color=gray!50!white, solid] (R8) -- (Z);
-\fill[gray!50!white] (R8) circle (2.5pt);
 \draw[line width=1.0pt, color=gray!50!white, solid] (R9) -- (A);
 \draw[line width=1.0pt, color=gray!50!white, solid] (R9) -- (B);
 \draw[line width=1.0pt, color=gray!50!white, solid] (R9) -- (C);
 \fill[gray!50!white] (R9) circle (2.5pt);
-\draw[line width=1.0pt, color=magenta!50!white, solid] (R10) -- (C);
-\draw[line width=1.0pt, color=magenta!50!white, solid] (R10) -- (X);
-\draw[line width=1.0pt, color=magenta!50!white, solid] (R10) -- (Y);
-\fill[magenta!50!white] (R10) circle (2.5pt);
-\draw[line width=1.0pt, color=teal!50!white, solid] (R11) -- (C);
-\draw[line width=1.0pt, color=teal!50!white, solid] (R11) -- (Z);
-\draw[line width=1.0pt, color=teal!50!white, solid] (R11) -- (W);
-\fill[teal!50!white] (R11) circle (2.5pt);
-% Draw 'almost' link edges (faintly, dotted)
-\draw[color=gray, very thick, dashed] (Y) -- (Z);
-\draw[color=gray, very thick, dashed] (Y) -- (W);
-% Edges of the common 2-link graph of T (brightly colored)
-\draw[very thick, color=magenta] (X) -- (Y);
-\draw[very thick, color=teal] (Z) -- (W);
+% Draw hyperedges contributing to 'almost' links (dashed colored)
+\draw[line width=1.0pt, color=violet!75!white, solid] (R3) -- (B);
+\draw[line width=1.0pt, color=violet!75!white, solid] (R3) -- (Y);
+\draw[line width=1.0pt, color=violet!75!white, solid] (R3) -- (W);
+\fill[violet!75!white] (R3) circle (2.5pt);
+\draw[line width=1.0pt, color=violet!75!white, solid] (R7) -- (A);
+\draw[line width=1.0pt, color=violet!75!white, solid] (R7) -- (Y);
+\draw[line width=1.0pt, color=violet!75!white, solid] (R7) -- (W);
+\fill[violet!75!white] (R7) circle (2.5pt);
+\draw[line width=1.0pt, color=blue!75!white, solid] (R8) -- (B);
+\draw[line width=1.0pt, color=blue!75!white, solid] (R8) -- (Y);
+\draw[line width=1.0pt, color=blue!75!white, solid] (R8) -- (Z);
+\fill[blue!75!white] (R8) circle (2.5pt);
+% Draw 'almost' link edges (dashed colored)
+\draw[color=blue, very thick, dashed] (Y) -- (Z);
+\draw[color=violet, very thick, dashed] (Y) -- (W);
+% Draw hyperedges contributing to TRUE links (solid colored)
+\draw[line width=1.0pt, color=magenta!65!white, solid] (R0) -- (A);
+\draw[line width=1.0pt, color=magenta!65!white, solid] (R0) -- (X);
+\draw[line width=1.0pt, color=magenta!65!white, solid] (R0) -- (Y);
+\fill[magenta!65!white] (R0) circle (2.5pt);
+\draw[line width=1.0pt, color=magenta!65!white, solid] (R2) -- (B);
+\draw[line width=1.0pt, color=magenta!65!white, solid] (R2) -- (X);
+\draw[line width=1.0pt, color=magenta!65!white, solid] (R2) -- (Y);
+\fill[magenta!65!white] (R2) circle (2.5pt);
+\draw[line width=1.0pt, color=teal!65!white, solid] (R4) -- (A);
+\draw[line width=1.0pt, color=teal!65!white, solid] (R4) -- (Z);
+\draw[line width=1.0pt, color=teal!65!white, solid] (R4) -- (W);
+\fill[teal!65!white] (R4) circle (2.5pt);
+\draw[line width=1.0pt, color=teal!65!white, solid] (R5) -- (B);
+\draw[line width=1.0pt, color=teal!65!white, solid] (R5) -- (Z);
+\draw[line width=1.0pt, color=teal!65!white, solid] (R5) -- (W);
+\fill[teal!65!white] (R5) circle (2.5pt);
+\draw[line width=1.0pt, color=magenta!65!white, solid] (R10) -- (C);
+\draw[line width=1.0pt, color=magenta!65!white, solid] (R10) -- (X);
+\draw[line width=1.0pt, color=magenta!65!white, solid] (R10) -- (Y);
+\fill[magenta!65!white] (R10) circle (2.5pt);
+\draw[line width=1.0pt, color=teal!65!white, solid] (R11) -- (C);
+\draw[line width=1.0pt, color=teal!65!white, solid] (R11) -- (Z);
+\draw[line width=1.0pt, color=teal!65!white, solid] (R11) -- (W);
+\fill[teal!65!white] (R11) circle (2.5pt);
+% Draw TRUE common 2-link graph edges (solid colored)
+\draw[color=magenta, very thick, solid] (X) -- (Y);
+\draw[color=teal, very thick, solid] (Z) -- (W);
+% Draw other/generic hyperedges (solid gray)
 % Draw vertices (foreground layer)
 \fill[black] (A) circle (4.0pt);
 \node[above right=1pt, color=black] at (A) {$A$};

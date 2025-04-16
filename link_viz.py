@@ -4,7 +4,7 @@ import os
 # --- Adjustable parameters ---
 
 # Vertex styling
-T_DOT_COLOR = "blue"
+T_DOT_COLOR = "black"
 V_MINUS_T_DOT_COLOR = "black"
 DOT_THICKNESS = 4.0
 ADD_VERTEX_LABELS = True
@@ -20,16 +20,16 @@ CONTRIBUTING_HYPEREDGE_ROOT_THICKNESS = 2.5
 CONTRIBUTING_HYPEREDGE_STYLE = "solid"  # Style for lines from root
 
 # Non-Contributing Hyperedge styling (Involving T, |H n T| != k-j)
-# Specifically for |H n T| > k-j as requested (dimmer, dotted)
+# Specifically for |H n T| > k-j as requested
 OTHER_T_HYPEREDGE_COLOR = "gray"
 OTHER_T_HYPEREDGE_BRIGHTNESS_FACTOR = 50  # Dimmer gray: gray!40!black
-OTHER_T_HYPEREDGE_LINE_THICKNESS = 1.5
+OTHER_T_HYPEREDGE_LINE_THICKNESS = 1.0
 OTHER_T_HYPEREDGE_ROOT_THICKNESS = 2.5
 OTHER_T_HYPEREDGE_STYLE = "solid"  # Dotted style for these
 
 # "Almost" Link Edge styling (Y connected to *some* but not *all* X in T)
 ALMOST_LINK_EDGE_COLOR = "gray"
-ALMOST_LINK_EDGE_THICKNESS = "thin"
+ALMOST_LINK_EDGE_THICKNESS = "very thick"
 ALMOST_LINK_EDGE_STYLE = "dashed"
 
 # General Hyperedge Settings
@@ -47,25 +47,28 @@ DRAW_BOXES = True
 # --- Define the graph G = (V, E) and set T ---
 
 vertices = {
-    'A': (0, 2), 'B': (0, 7),
+    'A': (0, 2), 'B': (0, 7), 'C': (1, 4.5),
     'X': (8, 9), 'Y': (10, 6),
     'Z': (8, 0), 'W': (10, 3)  # Changed T to W for clarity
 }
 
-T = ['A', 'B']
+T = ['A', 'B', 'C']
 V_minus_T = [v for v in vertices if v not in T]
 
 # Define the hyperedges E of the 3-uniform graph G
 # Using frozenset for easier comparison
-hyperedges_G_list = [('A', 'X', 'Y'),  # Hyperedge 1
-                     ('A', 'Y', 'T'),  # Hyperedge 2
-                     ('B', 'X', 'Y'),  # Hyperedge 3
-                     ('B', 'Y', 'W'),  # Hyperedge 4
-                     ('A', 'Z', 'W'),  # Hyperedge 5
-                     ('B', 'Z', 'W'),  # Hyperedge 6
-                     ('A', 'B', 'X'),  # Hyperedge 7
+hyperedges_G_list = [('A', 'X', 'Y'),
+                     ('A', 'Y', 'T'),
+                     ('B', 'X', 'Y'),
+                     ('B', 'Y', 'W'),
+                     ('A', 'Z', 'W'),
+                     ('B', 'Z', 'W'),
+                     ('A', 'B', 'X'),
                      ('A', 'Y', 'W'),
                      ('B', 'Y', 'Z'),
+                     ('A', 'B', 'C'),
+                     ('C', 'X', 'Y'),
+                     ('C', 'Z', 'W'),
                      ]
 hyperedges_G_set = {frozenset(h) for h in hyperedges_G_list}
 # Add original list indices for reference

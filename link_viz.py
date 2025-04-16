@@ -16,7 +16,7 @@ LINK_EDGE_THICKNESS = "very thick"
 LINK_EDGE_STYLE = "solid"  # True link edges are solid
 
 # Contributing Hyperedge styling (Edges X u Y, where Y is a TRUE link edge)
-CONTRIBUTING_HYPEREDGE_BRIGHTNESS_FACTOR = 65  # TikZ factor (e.g., 70 = color!70!white)
+CONTRIBUTING_HYPEREDGE_BRIGHTNESS_FACTOR = 55  # TikZ factor (e.g., 70 = color!70!white)
 CONTRIBUTING_HYPEREDGE_LINE_THICKNESS = 1.0
 CONTRIBUTING_HYPEREDGE_ROOT_THICKNESS = 2.5
 CONTRIBUTING_HYPEREDGE_STYLE = "solid"  # Contributors to TRUE links are solid
@@ -27,21 +27,21 @@ ALMOST_LINK_EDGE_THICKNESS = "very thick"
 ALMOST_LINK_EDGE_STYLE = "dashed"  # Almost link edges are dashed
 
 # Contributing Hyperedge styling (Edges X u Y, where Y is an ALMOST link edge)
-ALMOST_CONTRIB_HYPEREDGE_BRIGHTNESS_FACTOR = 75  # Slightly more faded
+ALMOST_CONTRIB_HYPEREDGE_BRIGHTNESS_FACTOR = 55  # Slightly more faded
 ALMOST_CONTRIB_HYPEREDGE_LINE_THICKNESS = 1.0
 ALMOST_CONTRIB_HYPEREDGE_ROOT_THICKNESS = 2.5
 ALMOST_CONTRIB_HYPEREDGE_STYLE = "solid"  # Contributors to ALMOST links are dashed
 
 # Invalid T-Intersection Hyperedge styling (|H n T| > k-j)
 INVALID_T_INTERSECT_HYPEREDGE_COLOR = "gray"
-INVALID_T_INTERSECT_HYPEREDGE_BRIGHTNESS_FACTOR = 50  # Dim gray
+INVALID_T_INTERSECT_HYPEREDGE_BRIGHTNESS_FACTOR = 80  # Dim gray
 INVALID_T_INTERSECT_HYPEREDGE_LINE_THICKNESS = 1.0
 INVALID_T_INTERSECT_HYPEREDGE_ROOT_THICKNESS = 2.5
 INVALID_T_INTERSECT_HYPEREDGE_STYLE = "solid"  # Dashed style for these
 
 # Other/Generic Hyperedge styling (Not contributing, |H n T| <= k-j)
 OTHER_GENERIC_HYPEREDGE_COLOR = "gray"
-OTHER_GENERIC_HYPEREDGE_BRIGHTNESS_FACTOR = 40  # Even dimmer gray
+OTHER_GENERIC_HYPEREDGE_BRIGHTNESS_FACTOR = 80  # Even dimmer gray
 OTHER_GENERIC_HYPEREDGE_LINE_THICKNESS = 0.8  # Thinner
 OTHER_GENERIC_HYPEREDGE_ROOT_THICKNESS = 2.0
 OTHER_GENERIC_HYPEREDGE_STYLE = "solid"  # Solid for these? Or dashed? Let's keep solid for now.
@@ -50,9 +50,9 @@ OTHER_GENERIC_HYPEREDGE_STYLE = "solid"  # Solid for these? Or dashed? Let's kee
 DRAW_ORIGINAL_HYPEREDGES = True  # Master switch
 
 # Box styling
-T_BOX_BG_COLOR = "blue!10"
+T_BOX_BG_COLOR = "green!10"
 V_MINUS_T_BOX_BG_COLOR = "gray!10"
-BOX_MARGIN = 0.7
+BOX_MARGIN = 0.8
 DRAW_BOXES = True
 
 # --- Define the graph G = (V, E) and set T ---
@@ -62,13 +62,21 @@ vertices = {
     'X': (8, 9), 'Y': (10, 6),
     'Z': (8, 0), 'W': (10, 3)
 }
+vertex_label_position = {
+    'A': 'left',
+    'B': 'left',
+    'C': 'above',
+    'X': 'right',
+    'Y': 'right',
+    'Z': 'right',
+    'W': 'right'
+}
 
 T = ['A', 'B', 'C']
 V_minus_T = [v for v in vertices if v not in T]
 
 # Define the hyperedges E of the 3-uniform graph G
 hyperedges_G_list = [('A', 'X', 'Y'),
-                     ('A', 'Y', 'T'),
                      ('B', 'X', 'Y'),
                      ('B', 'Y', 'W'),
                      ('A', 'Z', 'W'),
@@ -278,7 +286,7 @@ if DRAW_BOXES:
                      r" line width=0.5pt, draw=gray!50] ({:.2f}, {:.2f}) rectangle ({"
                      r":.2f}, {:.2f});".format(V_MINUS_T_BOX_BG_COLOR, x_min, y_min, x_max, y_max))
         lines.append(
-            r"\node at ({:.2f}, {:.2f}) [anchor=south east, inner sep=1pt, text=gray] {{$V \setminus T$}};".format(
+            r"\node at ({:.2f}, {:.2f}) [anchor=south east, inner sep=1pt, text=gray] {{$L_G(S; 2)$}};".format(
                 x_max, y_max))
 
 
@@ -353,17 +361,18 @@ if DRAW_ORIGINAL_HYPEREDGES:
 lines.append(r"% Draw vertices (foreground layer)")
 # Vertices in T
 for v_label in T:
+
     if v_label in vertices:
         lines.append(r"\fill[{}] ({}) circle ({:.1f}pt);".format(T_DOT_COLOR, v_label, DOT_THICKNESS))
         if ADD_VERTEX_LABELS:
-            lines.append(r"\node[above right=1pt, color={}] at ({}) {{${}$}};".format(T_DOT_COLOR, v_label, v_label))
+            lines.append(r"\node[{}=1pt, color={}] at ({}) {{${}$}};".format(vertex_label_position[v_label], T_DOT_COLOR, v_label, v_label))
 # Vertices in V \ T
 for v_label in V_minus_T:
     if v_label in vertices:
         lines.append(r"\fill[{}] ({}) circle ({:.1f}pt);".format(V_MINUS_T_DOT_COLOR, v_label, DOT_THICKNESS))
         if ADD_VERTEX_LABELS:
             lines.append(
-                r"\node[above right=1pt, color={}] at ({}) {{${}$}};".format(V_MINUS_T_DOT_COLOR, v_label, v_label))
+                r"\node[{}=1pt, color={}] at ({}) {{${}$}};".format(vertex_label_position[v_label], V_MINUS_T_DOT_COLOR, v_label, v_label))
 
 lines.append(r"\end{tikzpicture}")
 

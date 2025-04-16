@@ -11,7 +11,7 @@ DOT_THICKNESS = 4.0
 ADD_VERTEX_LABELS = True
 
 # Link edge styling (Common Link Graph Edges Y - TRUE links)
-LINK_EDGE_COLORS = ["magenta", "teal", "blue", "violet", "red"]
+LINK_EDGE_COLORS = ["magenta", "teal", "blue", "orange",]
 LINK_EDGE_THICKNESS = "very thick"
 LINK_EDGE_STYLE = "solid"  # True link edges are solid
 
@@ -50,18 +50,30 @@ OTHER_GENERIC_HYPEREDGE_STYLE = "solid"  # Solid for these? Or dashed? Let's kee
 DRAW_ORIGINAL_HYPEREDGES = True  # Master switch
 
 # Box styling
-T_BOX_BG_COLOR = "green!10"
-V_MINUS_T_BOX_BG_COLOR = "gray!10"
+T_BOX_BG_COLOR = "pink!20"
+V_MINUS_T_BOX_BG_COLOR = "gray!20"
 BOX_MARGIN = 0.8
 DRAW_BOXES = True
+
+# *** NEW: Overall Frame Styling ***
+ADD_OVERALL_FRAME = True  # Master switch to add the frame
+FRAME_MARGIN = 1.0  # Margin around the picture contents (in TikZ units)
+FRAME_COLOR = "black!80"  # Color of the frame
+FRAME_THICKNESS = "thin"  # TikZ style: thin, thick, line width=1pt, etc.
+FRAME_LABEL = "G"  # The label text (use $G$ for math italics)
+# Position relative to bounding box: south, north, north west, etc.
+FRAME_LABEL_POSITION = "north"
+# TikZ node options for the label (positioning, font, etc.)
+FRAME_LABEL_OPTIONS = "anchor=north, yshift=-5pt, font=\Large"
 
 # --- Define the graph G = (V, E) and set T ---
 
 vertices = {
-    'A': (0, 2), 'B': (0, 7), 'C': (1, 4.5),
-    'X': (8, 9), 'Y': (10, 6),
-    'Z': (8, 0), 'W': (10, 3)
+    'A': (0, 1.6), 'B': (0, 5.6), 'C': (1.2, 3.6),
+    'X': (9, 7.2), 'Y': (11, 4.8),
+    'Z': (9, 0.0), 'W': (11, 2.4)
 }
+
 vertex_label_position = {
     'A': 'left',
     'B': 'left',
@@ -87,6 +99,7 @@ hyperedges_G_list = [('A', 'X', 'Y'),
                      ('A', 'B', 'C'),
                      ('C', 'X', 'Y'),
                      ('C', 'Z', 'W'),
+                     ('X', 'Z', 'W'),
                      ]
 
 hyperedges_G_set = {frozenset(h) for h in hyperedges_G_list}
@@ -209,7 +222,7 @@ if DRAW_ORIGINAL_HYPEREDGES:
                 is_contributor = True  # Mark as 'processed'
 
         # Priority 3: Invalid T Intersection (|H n T| > k-j)
-        if not is_contributor and intersect_T_size > required_X_size:
+        if not is_contributor and intersect_T_size != required_X_size:
             style_info = {
                 "color": f"{INVALID_T_INTERSECT_HYPEREDGE_COLOR}!{INVALID_T_INTERSECT_HYPEREDGE_BRIGHTNESS_FACTOR}!white",
                 "line_thickness": INVALID_T_INTERSECT_HYPEREDGE_LINE_THICKNESS,
@@ -272,22 +285,26 @@ if DRAW_BOXES:
     t_points_coords = [vertices[v] for v in T if v in vertices]
     if t_points_coords:
         x_min, x_max, y_min, y_max = bounding_box(t_points_coords, BOX_MARGIN)
+        x_mid = (x_min + x_max) / 2
+        y_mid = (y_min + y_max) / 2
         lines.append(
             r"\draw[fill={}, rounded corners, line width=0.5pt, draw=gray!50] "
             r"({:.2f}, {:.2f}) rectangle ({:.2f}, {:.2f});".format(
                 T_BOX_BG_COLOR, x_min, y_min, x_max, y_max))
         lines.append(r"\node at ({:.2f}, {:.2f}) "
-                     r"[anchor=south east, inner sep=1pt, text=gray] {{$T$}};".format(x_max, y_max))
+                     r"[anchor=south, inner sep=1pt, text=gray] {{$T$}};".format(x_mid, y_max))
 
     v_minus_t_coords = [vertices[v] for v in V_minus_T if v in vertices]
     if v_minus_t_coords:
         x_min, x_max, y_min, y_max = bounding_box(v_minus_t_coords, BOX_MARGIN)
+        x_mid = (x_min + x_max) / 2
+        y_mid = (y_min + y_max) / 2
         lines.append(r"\draw[fill={}, rounded corners,"
                      r" line width=0.5pt, draw=gray!50] ({:.2f}, {:.2f}) rectangle ({"
                      r":.2f}, {:.2f});".format(V_MINUS_T_BOX_BG_COLOR, x_min, y_min, x_max, y_max))
         lines.append(
-            r"\node at ({:.2f}, {:.2f}) [anchor=south east, inner sep=1pt, text=gray] {{$L_G(S; 2)$}};".format(
-                x_max, y_max))
+            r"\node at ({:.2f}, {:.2f}) [anchor=south, inner sep=1pt, text=gray] {{$\link{{G}}{{T}}{{2}}$}};".format(
+                x_mid, y_max))
 
 
 # Utility function to draw a hyperedge based on its data
@@ -365,15 +382,23 @@ for v_label in T:
     if v_label in vertices:
         lines.append(r"\fill[{}] ({}) circle ({:.1f}pt);".format(T_DOT_COLOR, v_label, DOT_THICKNESS))
         if ADD_VERTEX_LABELS:
-            lines.append(r"\node[{}=1pt, color={}] at ({}) {{${}$}};".format(vertex_label_position[v_label], T_DOT_COLOR, v_label, v_label))
+            lines.append(
+                r"\node[{}=1pt, color={}] at ({}) {{${}$}};".format(vertex_label_position[v_label], T_DOT_COLOR,
+                                                                    v_label, v_label))
 # Vertices in V \ T
 for v_label in V_minus_T:
     if v_label in vertices:
         lines.append(r"\fill[{}] ({}) circle ({:.1f}pt);".format(V_MINUS_T_DOT_COLOR, v_label, DOT_THICKNESS))
         if ADD_VERTEX_LABELS:
             lines.append(
-                r"\node[{}=1pt, color={}] at ({}) {{${}$}};".format(vertex_label_position[v_label], V_MINUS_T_DOT_COLOR, v_label, v_label))
+                r"\node[{}=1pt, color={}] at ({}) {{${}$}};".format(vertex_label_position[v_label], V_MINUS_T_DOT_COLOR,
+                                                                    v_label, v_label))
 
+# ... (End of vertex drawing loops) ...
+
+
+
+# This should be the VERY LAST line added to the list before writing the file
 lines.append(r"\end{tikzpicture}")
 
 # --- Write TikZ code to a file ---

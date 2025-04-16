@@ -181,9 +181,17 @@ in the following way.
 \begin{figure}[htbp]
     \centering
     \input{figures/common_link}
-    \caption{The complete 3-partite 3-graph $K(2, 2, 2)$, with parts $V_1, V_2, V_3$.
-    Each vertex is represented as a black dot while
-    each edge is represented as one of the colored dots, and connected by a line to the vertices it contains.}
+    \caption{A $3$-graph $G$ and the common $2$-link graph $\link{G}{T}{2}$ of the set $T = \{A, B\}$.
+        Vertices are represented as black dots, and $3$-edges of $G$ are represented as colored or gray small dots,
+        connected by a line to the vertices they contain. Colored dots correspond to $3$-edges with exactly
+        $k - j = 3 - 2 = 1$ vertices in $T$, which are the only ones that can contribute to the common $2$-link graph.
+        Edges in the common $2$-link graph are represented as solid lines connecting the corresponding vertices,
+        in the same color that the $3$-edges they come from. Dashed lines correspond to edge pairs
+        in $V \setminus T$ that have some of the required $3$-edges in $G$, but not all of them.
+        In conclusion, the link graph has vertex set $\{X, Y, Z, W\}$ and edge set
+        $\{\{X, Y\}, \{Z, W\}\}$.
+
+    }
     \label{fig:link}
 \end{figure}
 

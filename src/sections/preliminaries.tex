@@ -157,26 +157,37 @@ contain $G$ as a subgraph.
 A different but equivalent way to view completeness is to talk about \emph{common neighbors}.
 \begin{definition}
     Let $G = (V, E)$ be a 2-graph.
-    The \emph{common neighborhood} of a set $S \subset V$ is
+    The \emph{common neighborhood} of a set $T \subset V$ is
     \[
-        N_G(S) = \{y \in V \mid \forall x \in S: \{x, y\} \in E\}.
+        N_G(T) = \{y \in V \mid \forall x \in T: \{x, y\} \in E\}.
     \]
 \end{definition}
 
-That is, the common neighborhood of a set $S \subset U$ is the maximal set $T \subset W$ such that
-$S \times T \subset E$.
+That is, the common neighborhood of a set $T \subset V$ is the maximal set $S \subset V \setminus T$ such that
+$T \times S \subset E$.
 Then, a $2$-partite 2-graph $G = (U, W; E)$ is complete if and only if $N_G(U) = W$.
 This might seem trivial when dealing with $2$-graphs, but it can be generalized to $k$-graphs
 in the following way.
 
 \begin{definition}
     Let $G = (V, E)$ be a $k$-graph.
-    Let $S \subset V$ be a set of vertices and let $1 \leq j \leq k - 1$.
-    The \emph{common $j$-link graph} of $S$ is the $j$-graph $\link{G}{S}{j} = (V \setminus S, E')$, where
+    Let $T \subset V$ be a set of vertices and let $1 \leq j \leq k - 1$.
+    The \emph{common $j$-link graph} of $T$ is the $j$-graph $\link{G}{T}{j} = (V \setminus T, E')$, where
     \[
-        E' = \left\{Y \in \binom{V \setminus S}{j}\middle\vert \, X \cup Y \in E \text{ for all } X \in \binom{S}{k-j}\right\}.
+        E' = \left\{Y \in \binom{V \setminus T}{j}\middle\vert \, X \cup Y \in E \text{ for all } X \in \binom{T}{k-j}\right\}.
     \]
 \end{definition}
+
+\begin{figure}[htbp]
+    \centering
+    \input{figures/common_link}
+    \caption{The complete 3-partite 3-graph $K(2, 2, 2)$, with parts $V_1, V_2, V_3$.
+    Each vertex is represented as a black dot while
+    each edge is represented as one of the colored dots, and connected by a line to the vertices it contains.}
+    \label{fig:link}
+\end{figure}
+
+
 
 Then, we can define completeness of $k$-partite $k$-graphs recursively: Let $G = (V_1, \dots, V_k; E)$
 be a $k$-partite $k$-graph.

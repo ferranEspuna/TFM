@@ -42,6 +42,7 @@ def dim_rgb(color: Tuple[float, float, float], target_brightness: float) -> Tupl
 
     return new_rgb
 
+
 # --- Define your groups (adjust coordinates as needed) ---
 group_A = [(2, 0), (0, 2)]
 group_B = [(8, 0), (10, 2)]
@@ -79,7 +80,6 @@ for label, group, group_name in zip(["A", "B", "C"], [group_A, group_B, group_C]
     )
     lines.append(r"\node at ({}, {}) [align=center] {{{}}};".format(center_x, center_y, group_name))
 
-
 # Define coordinates for points in each group
 for idx, (x, y) in enumerate(group_A, start=1):
     lines.append(r"\coordinate (A{}) at ({}, {});".format(idx, x, y))
@@ -106,8 +106,8 @@ for i, a in enumerate(group_A):
             root_y /= sum(coefs_y)
 
             # Compute a color from the viridis colormap
-            f = (edge_index ) / (total_hyperedges)  # f in [0,1)
-            #candidates = ['viridis', 'plasma', 'magma', Set2', 'prism']
+            f = (edge_index) / (total_hyperedges)  # f in [0,1)
+            # candidates = ['viridis', 'plasma', 'magma', Set2', 'prism']
             rgba = colormaps['prism'](f)
             r_val, g_val, b_val = rgba[:3]  # ignore alpha
             # Dim the color to a specified brightness level

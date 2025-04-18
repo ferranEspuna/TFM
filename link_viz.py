@@ -16,7 +16,7 @@ LINK_EDGE_THICKNESS = "very thick"
 LINK_EDGE_STYLE = "solid"  # True link edges are solid
 
 # Contributing Hyperedge styling (Edges X u Y, where Y is a TRUE link edge)
-CONTRIBUTING_HYPEREDGE_BRIGHTNESS_FACTOR = 55  # TikZ factor (e.g., 70 = color!70!white)
+CONTRIBUTING_HYPEREDGE_BRIGHTNESS_FACTOR = 60  # TikZ factor (e.g., 70 = color!70!white)
 CONTRIBUTING_HYPEREDGE_LINE_THICKNESS = 1.0
 CONTRIBUTING_HYPEREDGE_ROOT_THICKNESS = 2.5
 CONTRIBUTING_HYPEREDGE_STYLE = "solid"  # Contributors to TRUE links are solid
@@ -27,7 +27,7 @@ ALMOST_LINK_EDGE_THICKNESS = "very thick"
 ALMOST_LINK_EDGE_STYLE = "dashed"  # Almost link edges are dashed
 
 # Contributing Hyperedge styling (Edges X u Y, where Y is an ALMOST link edge)
-ALMOST_CONTRIB_HYPEREDGE_BRIGHTNESS_FACTOR = 55  # Slightly more faded
+ALMOST_CONTRIB_HYPEREDGE_BRIGHTNESS_FACTOR = 60  # Slightly more faded
 ALMOST_CONTRIB_HYPEREDGE_LINE_THICKNESS = 1.0
 ALMOST_CONTRIB_HYPEREDGE_ROOT_THICKNESS = 2.5
 ALMOST_CONTRIB_HYPEREDGE_STYLE = "solid"  # Contributors to ALMOST links are dashed

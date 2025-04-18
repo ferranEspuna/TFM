@@ -1,3 +1,5 @@
+% !TEX root = ../thesis.tex
+
 \section{Basic Definitions and Results}\label{sec:preliminaries}
 In this section we introduce some basic definitions and results that are used throughout this thesis.
 We start with some preliminaries on hypergraphs, which are the main objects of study in this thesis.
@@ -11,6 +13,7 @@ We start with some preliminaries on hypergraphs, which are the main objects of s
     and $E \subset \binom{V}{k}$.
     We call the elements of $V(G) = V$ its \emph{vertices}
     and those of $E(G) = E$ its \emph{edges}.
+    The value $k$ is called the \emph{uniformity} of $G$.
 \end{definition}
 
 \begin{remark}
@@ -18,6 +21,9 @@ We start with some preliminaries on hypergraphs, which are the main objects of s
     which we can identify with a subset of $V$.
     If we let $k=2$ we recover the usual definition of an undirected graph with no loops.
 \end{remark}
+
+The following definition is a generalization of the notion of degree
+of a vertex in a graph.
 
 \begin{definition}
     Let $G = (V, E)$ be a $k$-graph and $v \in V$.
@@ -28,32 +34,171 @@ We start with some preliminaries on hypergraphs, which are the main objects of s
     \]
 \end{definition}
 
-Next, we introduce $k$-graph homomorphisms, embeddings and isomorphisms, which allow us
-to relate $k$-graphs (with the same value of $k$) to each other:
+A useful operation on $k$-graphs is restriction to a subset of vertices,
+which given a vertex subset of a graph gives a graph on that subset of vertices
+with the same uniformity as the original graph.
 
 \begin{definition}
-    Let $G = (V, E)$ and $H = (W, F)$ be $k$-graphs.
-    A \emph{homomorphism} from $G$ to $H$ is a map $f: V \to W$
-    such that for every edge $e \in E$ the set $f(e) = \{f(v) \mid v \in e\}$
-    is an edge in $H$ (that is, $f(e) \in F$). If such a homomorphism exists
-    and is injective, we say that $f$ is an embedding of $G$ on $H$
-    and that $H$ contains $G$ as a subgraph.
-    If, furthermore, $f^{-1}: \text{Im}(f) \to V$ is a homomorphism, we say that $f$
-    is an \emph{induced} embedding and that $H$ contains $G$ as an \emph{induced}
-    subgraph.
+
+    \label{def:restriction}
+    Let $G = (V, E)$ be a $k$-graph and $T \subset V$.
+    The \emph{restriction} of $G$ to $T$ is the $k$-graph
+    \[
+        G[T] = (T, E_T),
+    \]
+    where
+    \[E_T = \{e \in E \mid e \subset T\}.\]
+\end{definition}
+
+The following operation also lets us obtain graphs of a
+different uniformity from a subset of vertices of a $k$-graph.
+
+\begin{definition} \label{def:link}
+    Let $G = (V, E)$ be a $k$-graph.
+    Let $1 \leq j \leq k - 1$ be an integer and let
+    $T \subset V$ be a set of vertices satisfying $k - j \leq |T|$.
+    The \emph{common $j$-link graph} of $T$ is the $j$-graph $\link{G}{T}{j} = (V \setminus T, E')$, where
+    \[
+        E' = \left\{Y \in \binom{V}{j}\middle\vert \, X \cup Y \in E \text{ for all } X \in \binom{T}{k-j}\right\}.
+    \]
+\end{definition}
+
+\begin{figure}[htbp]
+    \centering
+    \input{figures/common_link}
+    \caption{A $3$-graph $G$ and the common $2$-link graph $\link{G}{T}{2}$ of the set $T = \{A, B, C\}$.
+        the link graph has vertex set $\{X, Y, Z, W\}$ and edge set
+        $\{\{X, Y\}, \{W, Z\}\}$.
+    }
+    \label{fig:link}
+\end{figure}
+
+Figure~\ref{fig:link} exemplifies how to construct
+a common $j$-link graph from a $k$-graph $G$ in the case $k=3$ and $j=2$.
+Vertices are represented as black dots, and $3$-edges of $G$ are represented as colored or gray small dots,
+connected by a line to the vertices they contain.
+Colored dots correspond to $3$-edges with exactly
+$k - j = 3 - 2 = 1$ vertices in $T$, which are the only ones that can contribute to the common $2$-link graph.
+Edges in the common $2$-link graph are represented as solid lines connecting the corresponding vertices,
+in the same color that the $3$-edges they come from.
+Dashed lines correspond to edge pairs
+in $V \setminus T$ that have some of the required $3$-edges in $G$, but not all of them.
+
+\begin{remark}
+    Definition~\ref{def:link} might apppear confusing because $E'$ is defined
+    as a set of subsets of $V$, while the link graph has vertex set $V \setminus T$.
+    In fact, it is impossible for an element $Y \in E'$ to contain a vertex $v \in T$.
+    To see this, suppose that $v \in Y$.
+    We can pick a $(k-j)$-set $X \in \binom{T}{k-j}$ such that $v \in X$.
+    Then $v \in X \cup Y$ and
+    $| X \cup Y | < j + (k-j) = k$, contradicting the fact that $X \cup Y$ is an edge in $G$.
+\end{remark}
+
+Next, we introduce $k$-graph homomorphisms, embeddings and isomorphisms, which allow us
+to relate $k$-graphs of the same uniformity to each other.
+
+\begin{definition} \label{def:embedding}
+    Let $G = (V, E)$ and $H = (W, F)$ be $k$-graphs and let $f: V \to W$ be a map
+    between their vertex sets.
+    If $A \subset E$ is a set of edges in $G$, we denote
+    \[
+        f(A) = \{f(e) \mid e \in A\} = \{\{f(v) \mid v \in e\} \mid e \in A\}.
+    \]
+    Then, $f$ is a \emph{homomorphism} from $G$ to $H$ if
+    \begin{equation}
+        \label{eq:homomorphism}
+        f(E) \subset E(H[f(V)]).
+    \end{equation}
+    If such a homomorphism exists
+    and is injective, we say that $f$ is an \emph{embedding} of $G$ on $H$
+    and that $H$ \emph{contains} $G$ as a subgraph.
     We write $G \subset H$.
+    If, furthermore,
+    \begin{equation}
+        \label{eq:induced_embedding}
+        f(E) = E(H[f(V)]),
+    \end{equation}
+    we say that $f$is an \emph{induced} embedding
+    and that $H$ contains $G$ as an \emph{induced} subgraph.
+    We write $G \subset_{\text{ind}} H$.
     If, in addition, $f$ is a bijection, we say that $f$ is an \emph{isomorphism}
     and that $G$ is \emph{isomorphic} to $H$.
     We write $G \cong H$.
 \end{definition}
 
-It is elementary to check that
-(induced) inclusion is an order relation and that
-isomorphism is an equivalence relation.
-Furthermore, isomorphism preserves (induced) inclusion.
-Therefore, we can talk about the (induced) subgraph
-condition up to isomorphism, both in the \emph{host} $k$-graph
-($H$) and in the \emph{guest} $k$-graph ($G$).
+\begin{remark}
+    Condition~\eqref{eq:homomorphism} of definition~\ref{def:embedding}
+    implies that $f$ is injective
+    when restricted to vertices in $E$, because $G$ and $H$ have the same uniformity.
+    However, it does not necessairily imply that $f$ is injective on all of $V$.
+\end{remark}
+
+\begin{remark}
+    In Definition~\ref{def:embedding}, given that a map $f: V \to W$ is an embedding,
+    a different way to state that it is an induced embedding is to say that
+    $f^{-1}: H[f(V)] \to G$ is also an embedding.
+\end{remark}
+
+For the notions that we have introduced to be useful,
+we need to show some basic properties.
+
+\begin{proposition}\label{prop:embedding_properties}
+    Graph inclusion $(\subset)$ and induced graph inclusion $\left(\subset_{\text{ind}}\right)$
+    are preorder relations on $k$-graphs.
+    \begin{proof}
+        We need to show that the relations are reflexive and transitive.
+        Reflexivity is clear, as the identity map is an induced embedding of a $k$-graph in itself.
+        Let $G, H,$ and $K$ be $k$-graphs with vertex sets $X, Y,$ and $Z$ respectively.
+        If $G \subset H$ via $f: X \to Y$ and $H \subset K$ via $g: Y \to Z$,
+        then $g \circ f: X \to Z$ is injective and satisfies that for each edge $e \in E(G)$,
+        \[
+            g \circ f(e) =
+            \{g(f(x))\mid x \in e\} =
+            \{g(y) \mid y \in f(e)\} \in E(K),
+        \]
+        because $f(e) \in E(H)$.
+        Therefore, $G \subset K$ via $g \circ f$.
+        If the embeddings are induced,
+        and $e$ is an edge in
+        $E(K[g \circ f(X)])$,
+        then $e$ is also an edge in $E(K[g (Y)]) = g(E(H))$.
+        Therefore, $e' = g^{-1}(e)$ is an edge in $H$.
+        Furthermore, because $e = g(e') \subset g \circ f(X)$,
+        we have that $e' \in E(H[f(X)]) = f(E(G))$,
+        so $e \in g(f(E(G)))$.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}\label{prop:isomorphism_equivalence}
+    The relation of isomorphism $(\cong)$ is an equivalence relation on $k$-graphs.
+    \begin{proof}
+        The relation is reflexive via the identity map.
+        If $f: G \to H$ is an isomorphism, then $f^{-1}: H \to G$ is also an isomorphism,
+        so the relation is symmetric.
+        Finally, if $f: G \to H$ and $g: H \to K$ are isomorphisms,
+        then $g \circ f: G \to K$ is also an isomorphism, because it is bijective,
+        and by Proposition~\ref{prop:embedding_properties},
+        it is an embedding
+        and $(g \circ f)^{-1} = f^{-1} \circ g^{-1}$ is also an embedding.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}[Compatibility of Isomorphism and Embeddings]
+\label{prop:isomorphism_preserves_embedding}
+Let $G, G', H, H'$ be $k$-graphs such that $G \cong G'$ and $H \cong H'$.
+Then,
+\begin{enumerate}
+    \item $G \subseteq H$ if and only if $G' \subseteq H'$.
+    \item $G \subseteq_{\text{ind}} H$ if and only if $G' \subseteq_{\text{ind}} H'$.
+\end{enumerate}
+\end{proposition}
+
+Propositions~\ref{prop:isomorphism_equivalence},~\ref{prop:embedding_properties},
+and~\ref{prop:isomorphism_preserves_embedding}
+establish that the properties of containing a $k$-graph $G$ as a (induced)
+subgraph within a $k$-graph $H$ depend only on the isomorphism classes of $G$ and $H$.
+Therefore, discussions of (induced) subgraph containment can be conducted up to isomorphism.
+
 
 \subsection{Turán Problem for k-graphs}\label{subsec:turan}
 
@@ -154,50 +299,7 @@ contain $G$ as a subgraph.
     \label{fig:222}
 \end{figure}
 
-A different but equivalent way to view completeness is to talk about \emph{common neighbors}.
-\begin{definition}
-    Let $G = (V, E)$ be a 2-graph.
-    The \emph{common neighborhood} of a set $T \subset V$ is
-    \[
-        N_G(T) = \{y \in V \mid \forall x \in T: \{x, y\} \in E\}.
-    \]
-\end{definition}
-
-That is, the common neighborhood of a set $T \subset V$ is the maximal set $S \subset V \setminus T$ such that
-$T \times S \subset E$.
-Then, a $2$-partite 2-graph $G = (U, W; E)$ is complete if and only if $N_G(U) = W$.
-This might seem trivial when dealing with $2$-graphs, but it can be generalized to $k$-graphs
-in the following way.
-
-\begin{definition}
-    Let $G = (V, E)$ be a $k$-graph.
-    Let $T \subset V$ be a set of vertices and let $1 \leq j \leq k - 1$.
-    The \emph{common $j$-link graph} of $T$ is the $j$-graph $\link{G}{T}{j} = (V \setminus T, E')$, where
-    \[
-        E' = \left\{Y \in \binom{V \setminus T}{j}\middle\vert \, X \cup Y \in E \text{ for all } X \in \binom{T}{k-j}\right\}.
-    \]
-\end{definition}
-
-\begin{figure}[htbp]
-    \centering
-    \input{figures/common_link}
-    \caption{A $3$-graph $G$ and the common $2$-link graph $\link{G}{T}{2}$ of the set $T = \{A, B\}$.
-        Vertices are represented as black dots, and $3$-edges of $G$ are represented as colored or gray small dots,
-        connected by a line to the vertices they contain. Colored dots correspond to $3$-edges with exactly
-        $k - j = 3 - 2 = 1$ vertices in $T$, which are the only ones that can contribute to the common $2$-link graph.
-        Edges in the common $2$-link graph are represented as solid lines connecting the corresponding vertices,
-        in the same color that the $3$-edges they come from. Dashed lines correspond to edge pairs
-        in $V \setminus T$ that have some of the required $3$-edges in $G$, but not all of them.
-        In conclusion, the link graph has vertex set $\{X, Y, Z, W\}$ and edge set
-        $\{\{X, Y\}, \{Z, W\}\}$.
-
-    }
-    \label{fig:link}
-\end{figure}
-
-
-
-Then, we can define completeness of $k$-partite $k$-graphs recursively: Let $G = (V_1, \dots, V_k; E)$
+We can define completeness of $k$-partite $k$-graphs recursively: Let $G = (V_1, \dots, V_k; E)$
 be a $k$-partite $k$-graph.
 If $k=1$, $G$ is complete if and only if $E = V_1$ (as in Definition~\ref{def:complete_kpartite}).
 Otherwise, $G$ is complete if and only if $\link{G}{V_k}{k-1}$ (which is a $(k-1)$-partite $(k-1)$-graph

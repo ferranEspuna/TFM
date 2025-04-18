@@ -272,22 +272,18 @@ contain $G$ as a subgraph.
 \end{definition}
 
 \begin{remark}
-    If $V_1, \dots, V_k, W_1, \dots, W_k$ are disjoint sets
-    and $|V_i| = |W_i| = a_i$ for all $i$,
+    If $V_1, \dots, V_k$ and $W_1, \dots, W_k$ are disjoint sets
+    and $|V_i| = |W_i| = a_i$ for all $i$, then
     \[
-        \compdots{V_1}{V_k} \cong \compdots{W_1}{W_k}
+        \compdots{V_1}{V_k} \cong \compdots{W_1}{W_k}.
     \]
-    where the isomorphism is given by any bijection
-    \[
-        f: V_1 \times \dots \times V_k \to W_1 \times \dots \times W_k
-    \]
+    An isomorphism is given by any bijection $f: V \to W$ (where $V=\cup_i V_i, W=\cup_i W_i$)
     such that $f(V_i) = W_i$ for all $i$.
     This allows us to talk, up to isomorphism, about \emph{the} complete $k$-partite $k$-graph
     with part sizes $a_1, \dots, a_k$, which we denote by
     \[
         \compdots{a_1}{a_k}.
     \]
-
 \end{remark}
 
 \begin{figure}[htbp]

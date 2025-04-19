@@ -50,7 +50,7 @@ OTHER_GENERIC_HYPEREDGE_STYLE = "solid"  # Solid for these? Or dashed? Let's kee
 DRAW_ORIGINAL_HYPEREDGES = True  # Master switch
 
 # Box styling
-T_BOX_BG_COLOR = "pink!20"
+T_BOX_BG_COLOR = "gray!20"
 V_MINUS_T_BOX_BG_COLOR = "gray!20"
 BOX_MARGIN = 0.8
 DRAW_BOXES = True

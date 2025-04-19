@@ -191,9 +191,54 @@ we need to show some basic properties.
         \item $G \subseteq H$ if and only if $G' \subseteq H'$.
         \item $G \subseteq_{\text{ind}} H$ if and only if $G' \subseteq_{\text{ind}} H'$.
     \end{enumerate}
-    \begin{proof}
-        TODO
-    \end{proof}
+    \begin{proof} % TODO REVIEW
+    Let $\phi: V(G) \to V(G')$ and $\psi: V(H) \to V(H')$ be isomorphisms.
+    Since isomorphisms are bijections and induced embeddings, their inverses $\phi^{-1}: V(G') \to V(G)$ and $\psi^{-1}: V(H') \to V(H)$ are also isomorphisms.
+
+    \begin{enumerate}
+        \item Assume $G \subseteq H$. Let $f: V(G) \to V(H)$ be an embedding.
+        We need to show that $G' \subseteq H'$.
+        Define the map $f': V(G') \to V(H')$ by $f' = \psi \circ f \circ \phi^{-1}$.
+        Since $\psi$, $f$, and $\phi^{-1}$ are injective maps, their composition $f'$ is also injective.
+        Now, let $e' \in E(G')$. Since $\phi^{-1}$ is an isomorphism (and thus an induced embedding), $e = \phi^{-1}(e')$ is an edge in $E(G)$.
+        Since $f$ is an embedding, $f(e) \in E(H[f(V(G))])$. Let $e_H = f(e)$. This means $e_H \in E(H)$ and $e_H \subseteq f(V(G))$.
+        Since $\psi$ is an isomorphism, $\psi(e_H) \in E(H'[ \psi(f(V(G))) ])$. Let $e'_{H'} = \psi(e_H)$.
+        We have $f'(e') = (\psi \circ f \circ \phi^{-1})(e') = \psi(f(\phi^{-1}(e'))) = \psi(f(e)) = \psi(e_H) = e'_{H'}$.
+        Also, the image of $f'$ is $f'(V(G')) = (\psi \circ f \circ \phi^{-1})(V(G')) = \psi(f(V(G)))$.
+        Thus, $e'_{H'} \in E(H')$ and $e'_{H'} \subseteq f'(V(G'))$.
+        This implies $f'(e') = e'_{H'} \in E(H'[f'(V(G'))])$.
+        Therefore, $f'$ satisfies the condition for being an embedding, and $G' \subseteq H'$.
+
+        Conversely, assume $G' \subseteq H'$. Let $f': V(G') \to V(H')$ be an embedding.
+        Define the map $f: V(G) \to V(H)$ by $f = \psi^{-1} \circ f' \circ \phi$.
+        By symmetry (replacing $G, H, G', H', \phi, \psi, f$ with $G', H', G, H, \phi^{-1}, \psi^{-1}, f'$ respectively in the argument above), $f$ is an embedding.
+        Thus, $G \subseteq H$.
+        Therefore, $G \subseteq H$ if and only if $G' \subseteq H'$.
+
+        \item Assume $G \subseteq_{\text{ind}} H$. Let $f: V(G) \to V(H)$ be an induced embedding.
+        We need to show that $G' \subseteq_{\text{ind}} H'$.
+        From part (1), we know that $f' = \psi \circ f \circ \phi^{-1}$ is an embedding, so $f'(E(G')) \subseteq E(H'[f'(V(G'))])$.
+        We need to show the reverse inclusion: $E(H'[f'(V(G'))]) \subseteq f'(E(G'))$.
+        Let $e'_{H'} \in E(H'[f'(V(G'))])$. This means $e'_{H'} \in E(H')$ and $e'_{H'} \subseteq f'(V(G'))$.
+        Since $\psi$ is an isomorphism, $e_H = \psi^{-1}(e'_{H'})$ is an edge in $E(H)$.
+        Also, $f'(V(G')) = \psi(f(V(G)))$, so $e'_{H'} \subseteq \psi(f(V(G)))$. Applying $\psi^{-1}$ gives $e_H \subseteq f(V(G))$.
+        Thus, $e_H \in E(H[f(V(G))])$.
+        Since $f$ is an *induced* embedding, $E(H[f(V(G))]) = f(E(G))$.
+        Therefore, $e_H \in f(E(G))$, which means there exists an edge $e \in E(G)$ such that $e_H = f(e)$.
+        Since $\phi$ is an isomorphism, $e' = \phi(e)$ is an edge in $E(G')$.
+        Now, consider $f'(e') = (\psi \circ f \circ \phi^{-1})(\phi(e)) = \psi(f(e)) = \psi(e_H) = \psi(\psi^{-1}(e'_{H'})) = e'_{H'}$.
+        So, we have shown that any edge $e'_{H'}$ in $E(H'[f'(V(G'))])$ is the image under $f'$ of an edge $e' \in E(G')$. That is, $e'_{H'} \in f'(E(G'))$.
+        Thus, $E(H'[f'(V(G'))]) \subseteq f'(E(G'))$.
+        Combined with the embedding property, we have $f'(E(G')) = E(H'[f'(V(G'))])$, so $f'$ is an induced embedding.
+        Therefore, $G' \subseteq_{\text{ind}} H'$.
+
+        Conversely, assume $G' \subseteq_{\text{ind}} H'$. Let $f': V(G') \to V(H')$ be an induced embedding.
+        Define the map $f: V(G) \to V(H)$ by $f = \psi^{-1} \circ f' \circ \phi$.
+        By symmetry (as argued in part 1, swapping roles and using inverse isomorphisms), $f$ is an induced embedding.
+        Thus, $G \subseteq_{\text{ind}} H$.
+        Therefore, $G \subseteq_{\text{ind}} H$ if and only if $G' \subseteq_{\text{ind}} H'$.
+    \end{enumerate}
+\end{proof}
 \end{proposition}
 
 Propositions~\ref{prop:isomorphism_equivalence},~\ref{prop:embedding_properties},

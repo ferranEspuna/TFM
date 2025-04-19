@@ -67,7 +67,7 @@ different uniformity from a subset of vertices of a $k$-graph.
     \centering
     \input{figures/common_link}
     \caption{A $3$-graph $G$ and the common $2$-link graph $\link{G}{T}{2}$ of the set $T = \{A, B, C\}$.
-        the link graph has vertex set $\{X, Y, Z, W\}$ and edge set
+        The link graph has vertex set $\{X, Y, Z, W\}$ and edge set
         $\{\{X, Y\}, \{W, Z\}\}$.
     }
     \label{fig:link}
@@ -130,11 +130,12 @@ to relate $k$-graphs of the same uniformity to each other.
     Condition~\eqref{eq:homomorphism} of definition~\ref{def:embedding}
     implies that $f$ is injective
     when restricted to vertices in $E$, because $G$ and $H$ have the same uniformity.
-    However, it does not necessairily imply that $f$ is injective on all of $V$.
+    However, it does not necessarily imply that $f$ is injective on all of $V$.
 \end{remark}
 
 \begin{remark}
-    In Definition~\ref{def:embedding}, given that a map $f: V \to W$ is an embedding,
+    In Definition~\ref{def:embedding}, given that a map $f: V \to W$ is an embedding
+    (and therefore injective),
     a different way to state that it is an induced embedding is to say that
     $f^{-1}: H[f(V)] \to G$ is also an embedding.
 \end{remark}
@@ -202,7 +203,7 @@ subgraph within a $k$-graph $H$ depend only on the isomorphism classes of $G$ an
 Therefore, discussions of (induced) subgraph containment can be conducted up to isomorphism.
 
 
-\subsection{Turán Problem for k-graphs}\label{subsec:turan}
+\subsection{Turán Problem for $k$-graphs}\label{subsec:turan}
 
 Now we can state the \emph{forbidden subgraph problem} for $k$-graphs.
 Informally, given a $k$-graph $G$, and an integer $n \geq |V(G)|$,
@@ -248,7 +249,7 @@ contain $G$ as a subgraph.
     The extremal number is clearly invariant under isomorphism of $G$.
 \end{remark}
 
-\subsection{Partite k-graphs}\label{subsec:partite}
+\subsection{Partite $k$-graphs}\label{subsec:partite}
 
 \begin{definition}
     for an integer $p \geq k$, a $k$-graph $G = (V, E)$ is \emph{$p$-partite}
@@ -405,16 +406,26 @@ The result is stated and proved here for completeness.
         \end{equation}
         Now, because we can see $E$ as a subset of $U \times W$,
         we get $z \leq uw \implies z/u \leq w$.
-        In particular, we have
+        We claim that this implies that
         \begin{equation} \label{eq:kst_binom}
             \frac{(z/u - (t - 1))^t}{\binom{z/u}{t}} \leq \frac{(w - (t - 1))^t}{\binom{w}{t}},
         \end{equation}
-        which is true for each factor when expanding the denominators.
+        because the function
+        \[
+            g(x) = \frac{(x - (t - 1))^t}{\binom{x}{t}}
+        \]
+        is increasing for $x \geq t - 1$.
+        To see this, we expand the denominator into a product and absorb the $(x - (t - 1))^t$ factor.
+        \begin{equation} \label{eq:g_expansion}
+            g(x) = \prod_{i=0}^{t-1} (x-(t-1)) \frac{i+1}{x-i} = t! \prod_{i=0}^{t-1} \frac{x-(t-1)}{x-i}.
+        \end{equation}
+        Every factor in the product on the right side of~\eqref{eq:g_expansion} is increasing
+        in $x$ for $x \geq t - 1 \geq i$, proving the claim.
         Multiplying inequalities~\eqref{eq:kst_chained} and~\eqref{eq:kst_binom} yields
         \[
             u \, (z/u - (t - 1))^t \leq (s - 1)(w - (t - 1))^t.
         \]
-        Algebraic manipulation then gives
+        Then, algebraic manipulation then gives
         \[
             z \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u,
         \]

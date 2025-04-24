@@ -312,12 +312,6 @@ unordered sets of vertices, as in the definition below.
     We denote $G = \compdots{V_1}{V_k}$.
 \end{definition}
 
-We can define completeness of $k$-partite $k$-graphs recursively: Let $G = (V_1, \dots, V_k; E)$
-be a $k$-partite $k$-graph.
-If $k=1$, $G$ is complete if and only if $E = V_1$ (as in Definition~\ref{def:complete_kpartite}).
-Otherwise, $G$ is complete if and only if $\link{G}{V_k}{k-1}$ (which is a $(k-1)$-partite $(k-1)$-graph
-on $V_1, \dots, V_{k-1}$) is complete.
-
 In some cases, it is useful to generalize this notation to partite $k$-graphs
 where the number of parts is different from $k$.
 
@@ -596,7 +590,10 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
         $|W_i| = w \geq w_0$ and ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$ such that no embedding of $\compoverset{k}{t}$ in it exists.
         Consider, for each set $T \in \binom{W_k}{t}$, the associated \text{$(k-1)$-link}
         \link{G}{T}{k-1}.
-        By our assumption, it can not contain $\compoverset{k-1}{t}$ as a subgraph.
+        We claim that it does not contain $\compoverset{k-1}{t}$ as a subgraph.
+        If it did (say, $T_1 \times \dots \times T_{k-1} \in E(\link{G}{T}{k-1})$),
+        then $T_1 \times \dots \times T_{k-1} \times T \in E$
+        would contradict the assumption that $G$ does not contain $\compoverset{k}{t}$ as a subgraph.
         This means that
         \begin{equation} \label{eq:conditionlink}
             \link{G}{T}{k-1} \text{ has at most $z'$ edges for all } T \in \binom{W_k}{t},

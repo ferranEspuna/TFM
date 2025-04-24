@@ -230,6 +230,19 @@ establish that the properties of containing a $k$-graph $G$ as a (induced)
 subgraph within a $k$-graph $H$ depend only on the isomorphism classes of $G$ and $H$.
 Therefore, discussions of (induced) subgraph containment can be conducted up to isomorphism.
 
+So far, we have not seen any concrete examples of $k$-graphs or their isomorphism classes.
+We now introduce an important family of them.
+
+\begin{definition} \label{def:complete}
+    A $k$-graph $G = (V, E)$ is \emph{complete} if $E = \binom{V}{k}$.
+\end{definition}
+
+If $K$ and $K'$ are complete $k$-graphs with the same number of vertices $r$,
+any bijection $f: V(K) \to V(K')$ is clearly an isomorphism between $K$ and $K'$.
+This lets us talk, up to isomorphism, about \emph{the} complete $k$-graph on $r$ vertices $K_n^{(r)}$.
+
+% TODO picture of a complete 3-graph (for example, on 4 vertices).
+
 \subsection{Partite $k$-graphs and the chromatic number}\label{subsec:partite}
 
 We now introduce the notion of partite $k$-graphs.
@@ -291,27 +304,28 @@ unordered sets of vertices, as in the definition below.
     satisfy $\{v_1, \dots, v_k\} \in E$.
 \end{definition}
 
-\begin{remark}
-    If $V_1, \dots, V_k$ and $W_1, \dots, W_k$ are disjoint sets
-    and $|V_i| = |W_i| = a_i$ for all $i$, then
-    \[
-        \compdots{V_1}{V_k} \cong \compdots{W_1}{W_k}.
-    \]
-    An isomorphism is given by any bijection $f: V \to W$ (where $V=\cup_i V_i, W=\cup_i W_i$)
-    such that $f(V_i) = W_i$ for all $i$.
-    This allows us to talk, up to isomorphism, about \emph{the} complete $k$-partite $k$-graph
-    with part sizes $a_1, \dots, a_k$, which we denote by
-    \[
-        \compdots{a_1}{a_k}.
-    \]
-\end{remark}
+If $V_1, \dots, V_k$ and $W_1, \dots, W_k$ are disjoint sets
+and $|V_i| = |W_i| = a_i$ for all $i$, then
+\[
+    \compdots{V_1}{V_k} \cong \compdots{W_1}{W_k}.
+\]
+An isomorphism is given by any bijection $f: V \to W$ (where $V=\cup_i V_i, W=\cup_i W_i$)
+such that $f(V_i) = W_i$ for all $i$.
+This allows us to talk, up to isomorphism, about \emph{the} complete $k$-partite $k$-graph
+with part sizes $a_1, \dots, a_k$, which we denote by
+\[
+    \compdots{a_1}{a_k}.
+\]
+
+Figure~\ref{fig:222} shows the complete $3$-partite $3$-graph
+with $2$ vertices in each part, $K(2, 2, 2)$.
+Each vertex is represented as a black dot while
+each edge is represented as one of the colored dots, and connected by a line to the vertices it contains.
 
 \begin{figure}[htbp]
     \centering
     \input{figures/222}
-    \caption{The complete 3-partite 3-graph $K(2, 2, 2)$, with parts $V_1, V_2, V_3$.
-    Each vertex is represented as a black dot while
-    each edge is represented as one of the colored dots, and connected by a line to the vertices it contains.}
+    \caption{The complete 3-partite 3-graph $K(2, 2, 2)$, with parts $V_1, V_2, V_3$.}
     \label{fig:222}
 \end{figure}
 
@@ -320,8 +334,6 @@ be a $k$-partite $k$-graph.
 If $k=1$, $G$ is complete if and only if $E = V_1$ (as in Definition~\ref{def:complete_kpartite}).
 Otherwise, $G$ is complete if and only if $\link{G}{V_k}{k-1}$ (which is a $(k-1)$-partite $(k-1)$-graph
 on $V_1, \dots, V_{k-1}$) is complete.
-
-% TODO Turán theorem, Erdős-Stone theorem, Erdos-Stone-Simonovits theorem, conjectures for uniformity 3
 
 
 \subsection{Turán Problem for $k$-graphs}\label{subsec:turan}
@@ -367,8 +379,19 @@ contain $G$ as a subgraph.
 \end{definition}
 
 \begin{remark}
-    The extremal number is clearly invariant under isomorphism of $G$.
+    The extremal number $\ex{n}{G}$ is clearly invariant under isomorphism of $G$.
 \end{remark}
+
+There are very few $k$-graphs $G$ for which an exact formula for $\ex{n}{G}$ is known.
+Of these, the most famous family of examples are the complete $2$-graphs $K_r^{(2)}$,
+for which extremal numbers were first studied by Turán~\cite{Turan1941} in 1941.
+The result is the following.
+
+\begin{theorem}
+\end{theorem}
+
+% TODO Turán theorem, Erdős-Stone theorem, Erdos-Stone-Simonovits theorem, conjectures for uniformity 3
+
 
 \subsection{Degenerate Turán Problems}\label{subsec:degenerate}
 
@@ -413,10 +436,9 @@ onto another we assume the condition $f(T_i) \subset V_i$.
 The problem on finding the Zarankiewicz number was first posed by K. Zarankiewicz in 1951 for the
 case of bipartite 2-graphs (that is, finding $z(u, w; s, t)$),
 in terms of finding all-1 sub-matrices in a $0-1$ matrix.
-An upper bound for it in the case $u=w, s=t$ was found by Kővari, Sós and Turán in~\cite{Kovari1954} in 1954.
+An upper bound for it in the case $u=w, s=t$ was found by Kővari, Sós and Turán~\cite{Kovari1954} in 1954.
 This was generalized to arbitrary complete
-bipartite 2-graphs by C. Hyltén-Cavallius in~\cite{Hylten1958}
-in 1958.
+bipartite 2-graphs by C. Hyltén-Cavallius~\cite{Hylten1958} in 1958.
 The result is stated and proved here for completeness.
 
 \begin{theorem}\label{thm:kst}

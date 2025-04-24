@@ -235,11 +235,12 @@ We now introduce an important family of them.
 
 \begin{definition} \label{def:complete}
     A $k$-graph $G = (V, E)$ is \emph{complete} if $E = \binom{V}{k}$.
+    We denote $G = \completesuperindex{k}{V}$
 \end{definition}
 
 If $K$ and $K'$ are complete $k$-graphs with the same number of vertices $r$,
 any bijection $f: V(K) \to V(K')$ is clearly an isomorphism between $K$ and $K'$.
-This lets us talk, up to isomorphism, about \emph{the} complete $k$-graph on $r$ vertices $K_n^{(r)}$.
+This lets us talk, up to isomorphism, about \emph{the} complete $k$-graph on $r$ vertices $\completesuperindex{k}{r}$.
 
 % TODO picture of a complete 3-graph (for example, on 4 vertices).
 
@@ -353,9 +354,6 @@ with $2$ vertices in each part, $K(2, 2, 2) = K^{(3)}(2, 2, 2)$.
 Each vertex is represented as a black dot while
 each edge is represented as one of the colored dots, and connected by a line to the vertices it contains.
 
-
-
-
 \subsection{Turán Problem for $k$-graphs}\label{subsec:turan}
 
 Now we can state the \emph{forbidden subgraph problem} for $k$-graphs.
@@ -403,7 +401,7 @@ contain $G$ as a subgraph.
 \end{remark}
 
 There are very few $k$-graphs $G$ for which an exact formula for $\ex{n}{G}$ is known.
-Of these, the most famous family of examples are the complete $2$-graphs $K_r^{(2)}$,
+Of these, the most famous family of examples are the complete $2$-graphs $\completesuperindex{2}{r}$,
 for which extremal numbers were first studied by Turán~\cite{Turan1941} in 1941.
 The result is the following.
 
@@ -414,9 +412,9 @@ The result is the following.
     and $\lfloor n / (r-1) \rfloor \leq a_i \leq \lceil n / (r-1) \rceil$ for all $i$.
     Then
     \[
-        \ex{n}{K_r^{(2)}} = \prod_{i=1}^{r-1} a_i.
+        \ex{n}{\completesuperindex{2}{r}} = \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y
     \]
-    Furthermore, if $G$ is a $2$-graph with $\ex{n}{K_r^{(2)}}$ edges
+    Furthermore, if $G$ is a $2$-graph with $\ex{n}{\completesuperindex{2}{r}}$ edges
     and $G$ does not contain $K_r^{(2)}$ as a subgraph,
     then $G$ is a complete $(r-1)$-partite graph with part sizes $a_1, \dots, a_{r-1}$,
     that is,

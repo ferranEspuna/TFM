@@ -241,8 +241,14 @@ We now introduce an important family of them.
 If $K$ and $K'$ are complete $k$-graphs with the same number of vertices $r$,
 any bijection $f: V(K) \to V(K')$ is clearly an isomorphism between $K$ and $K'$.
 This lets us talk, up to isomorphism, about \emph{the} complete $k$-graph on $r$ vertices $\completesuperindex{k}{r}$.
+For example, in Figure~\ref{fig:complete_kgraph} we show the complete graph $\completesuperindex{3}{4}$.
 
-% TODO picture of a complete 3-graph (for example, on 4 vertices).
+\begin{figure}[htbp]
+    \centering
+    \input{figures/k3_4}
+    \caption{A complete $3$-graph on $4$ vertices.}
+    \label{fig:complete_kgraph}
+\end{figure}
 
 \subsection{Partite $k$-graphs and the chromatic number}\label{subsec:partite}
 
@@ -344,15 +350,22 @@ or, in the $k$-partite case, by
 
 \begin{figure}[htbp]
     \centering
-    \input{figures/222}
+    \input{figures/k3_222}
     \caption{The complete 3-partite 3-graph $K(2, 2, 2)$, with parts $V_1, V_2, V_3$.}
     \label{fig:222}
 \end{figure}
 
+\begin{figure}[htbp]
+    \centering
+    \input{figures/k2_222}
+    \caption{The complete 3-partite 2-graph $K^{(2)}(2, 2, 2)$, with parts $V_1, V_2, V_3$.}
+    \label{fig:k2_222}
+\end{figure}
+
 Figure~\ref{fig:222} shows the complete $3$-partite $3$-graph
 with $2$ vertices in each part, $K(2, 2, 2) = K^{(3)}(2, 2, 2)$.
-Each vertex is represented as a black dot while
-each edge is represented as one of the colored dots, and connected by a line to the vertices it contains.
+In contrast, Figure~\ref{fig:k2_222} shows the complete $3$-partite $2$-graph
+$K^{(3)}(2, 2, 2)$.
 
 \subsection{Turán Problem for $k$-graphs}\label{subsec:turan}
 

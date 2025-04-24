@@ -416,8 +416,15 @@ The result is the following.
     \[
         \ex{n}{K_r^{(2)}} = \prod_{i=1}^{r-1} a_i.
     \]
-    Furthermore, if $G$ is a $2$-graph with $\ex{n}{K_r^{(2)}}$ edges,
-    then $G\cong \compdots{a_1}{a_{r-1}}$.
+    Furthermore, if $G$ is a $2$-graph with $\ex{n}{K_r^{(2)}}$ edges
+    and $G$ does not contain $K_r^{(2)}$ as a subgraph,
+    then $G$ is a complete $(r-1)$-partite graph with part sizes $a_1, \dots, a_{r-1}$,
+    that is,
+    $G\cong \compdotssuperindex{2}{a_1}{a_{r-1}}$.
+    
+    \begin{proof}
+        % TODO
+    \end{proof}
 \end{theorem}
 
 % TODO Turán theorem, Erdős-Stone theorem, Erdos-Stone-Simonovits theorem, conjectures for uniformity 3

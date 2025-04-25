@@ -297,6 +297,19 @@ To measure how easily colorable a $k$-graph is, we define the following.
     $G$ is p-colorable (or, equivalently $p$-partite).
 \end{definition}
 
+\begin{remark}
+    The chromatic number is increasing with respect to inclusion.
+    This is because if
+    \[f: V(G) \to V(H)\]
+    is an embedding of $G$ in $H$,
+    and
+    \[\chi: V(H) \to [p]\]
+    is a proper vertex coloring of $H$, then
+    \[\chi \circ f: V(G) \to [p]\]
+    is a proper vertex coloring of $G$.
+    Therefore, if $H$ is $p$-colorable, so is $G$, and $\chi(G) \leq \chi(H)$.
+\end{remark}
+
 If $G = (V_1, \dots, V_k; E)$ is a $k$-partite $k$-graph,
 every edge intersects every part in exactly one vertex.
 This means that we can identify the edges with a subset of $ V_1 \times \dots \times V_k$.
@@ -422,13 +435,18 @@ The result is the following.
         \ex{n}{\completesuperindex{2}{r}} = \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y
     \]
     Furthermore, if $G$ is a $2$-graph with $\ex{n}{\completesuperindex{2}{r}}$ edges
-    and $G$ does not contain $K_r^{(2)}$ as a subgraph,
-    then $G$ is a complete $(r-1)$-partite graph with part sizes $a_1, \dots, a_{r-1}$,
-    that is,
-    $G\cong \compdotssuperindex{2}{a_1}{a_{r-1}}$.
+    and $G$ does not contain $K_r^{(2)}$ as a subgraph, then
+    \[
+        G\cong \compdotssuperindex{2}{a_1}{a_{r-1}}.
+    \]
     
     \begin{proof}
-        % TODO
+        We first note that $\compdotssuperindex{2}{a_1}{a_{r-1}}$ is a $K_r^{(2)}$-free $2$-graph.
+        This is because the first is $(r-1)$-colorable, while the second is not. % TODO colorable skips the line
+
+        Next, we claim that if $G$ is a $K_r^{(2)}$-free $2$-graph which is maximal with respect to inclusion
+        (which is implied by it having the maximum number of edges),
+        then $G$ is $(r-1)$-partite.
     \end{proof}
 \end{theorem}
 

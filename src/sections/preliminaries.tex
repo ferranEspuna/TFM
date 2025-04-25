@@ -390,10 +390,10 @@ contain $G$ as a subgraph.
         Let $H = (W, F)$ be a $k$-graph with $n$ vertices and $m'$ edges.
         We can take $F' \subset F$ with $|F'| = m$.
         By hypothesis, the graph $H' = (W, F')$ contains $G$ as a subgraph,
-        and the identity map in $W$ is an embedding of $H'$ in $H$:
-        \[
-            G \subset H' \subset H \implies G \subset H. \qedhere
-        \]
+        and the identity map in $W$ is an embedding of $H'$ in $H$.
+        Then, $G \subset H' \subset H$ implies $G \subset H$ by transitivity of the embedding
+        relation (Proposition~\ref{prop:embedding_properties}).
+
     \end{proof}
 
 \end{proposition}

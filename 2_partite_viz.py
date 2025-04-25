@@ -65,7 +65,7 @@ for idx, (x, y) in enumerate(group_C, start=1):
 # Edges between A and B (4 edges)
 for i in range(len(group_A)):
     for j in range(len(group_B)):
-        current_color_name = 'magenta!60!white'  # Fixed color for edges between A and B
+        current_color_name = 'magenta!70!white'  # Fixed color for edges between A and B
         lines.append(r"\draw[line width={}pt, color={}] (A{}) -- (B{});".format(
             LINE_THICKNESS, current_color_name, i + 1, j + 1
         ))
@@ -73,7 +73,7 @@ for i in range(len(group_A)):
 # Edges between A and C (4 edges)
 for i in range(len(group_A)):
     for k in range(len(group_C)):
-        current_color_name = 'teal!60!white'  # Fixed color for edges between A and C
+        current_color_name = 'teal!70!white'  # Fixed color for edges between A and C
         lines.append(r"\draw[line width={}pt, color={}] (A{}) -- (C{});".format(
             LINE_THICKNESS, current_color_name, i + 1, k + 1
         ))
@@ -81,7 +81,7 @@ for i in range(len(group_A)):
 # Edges between B and C (4 edges)
 for j in range(len(group_B)):
     for k in range(len(group_C)):
-        current_color_name = 'orange!60!white'  # Fixed color for edges between B and C
+        current_color_name = 'orange!70!white'  # Fixed color for edges between B and C
         lines.append(r"\draw[line width={}pt, color={}] (B{}) -- (C{});".format(
             LINE_THICKNESS, current_color_name, j + 1, k + 1
         ))

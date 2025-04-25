@@ -21,8 +21,9 @@ BOX_BG_COLOR = "gray!20"  # Background color for group boxes
 # --- Define your list of TikZ color names for hyperedges ---
 # Customize with any valid TikZ color names/specifications.
 # The script will cycle through these colors for the 8 hyperedges in K(2,2,2).
-base_colors = ['blue', 'red', 'orange', 'teal', 'magenta', 'violet', 'yellow', 'cyan']
-tikz_edge_colors = [f'{color}!60!white' if color != 'yellow' else color for color in base_colors]
+# base_colors = ['blue', 'red', 'orange', 'teal', 'magenta', 'violet', 'brown', 'cyan']
+base_colors = ['blue']
+tikz_edge_colors = [f'{color}!70!white' if color != 'yellow' else color for color in base_colors]
 # Check if the list is empty to avoid errors
 if not tikz_edge_colors:
     raise ValueError("The tikz_edge_colors list cannot be empty.")

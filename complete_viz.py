@@ -11,8 +11,8 @@ VERTEX_COLOR = "black" # Color for all vertices
 # --- Define your list of TikZ color names for hyperedges ---
 # Customize with any valid TikZ color names/specifications.
 # There are 4 hyperedges in K_4^(3).
-tikz_edge_colors = ["magenta!70!white", "teal!70!white", "blue!70!white", "orange!70!white",] # Example list
-
+# tikz_edge_colors = ["magenta!70!white", "teal!70!white", "blue!70!white", "orange!70!white",] # Example list
+tikz_edge_colors = ['blue!70!white']
 # Check if the list is empty to avoid errors
 if not tikz_edge_colors:
     raise ValueError("The tikz_edge_colors list cannot be empty.")

@@ -15,9 +15,9 @@ BOX_BG_COLOR = "gray!20"  # Background color for group boxes
 
 # --- Define your groups (Partitions V1, V2, V3 each size 2) ---
 # Coordinates can be adjusted for better layout
-group_A = [(1, 1), (1, 3)]  # V1
-group_B = [(9, 1), (9, 3)]  # V2
-group_C = [(5, 6), (5, 8)]  # V3
+group_A = [(2, 0), (0, 2)] # V1
+group_B = [(8, 0), (10, 2)] # V2
+group_C = [(2, 6), (8, 6)] # V3
 
 # --- Prepare TikZ code lines ---
 lines = []

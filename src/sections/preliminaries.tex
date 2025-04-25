@@ -439,16 +439,49 @@ The result is the following.
     \[
         G\cong \compdotssuperindex{2}{a_1}{a_{r-1}}.
     \]
-    
-    \begin{proof}
-        We first note that $\compdotssuperindex{2}{a_1}{a_{r-1}}$ is a $K_r^{(2)}$-free $2$-graph.
-        This is because the first is $(r-1)$-colorable, while the second is not. % TODO colorable skips the line
 
-        Next, we claim that if $G$ is a $K_r^{(2)}$-free $2$-graph which is maximal with respect to inclusion
-        (which is implied by it having the maximum number of edges),
-        then $G$ is $(r-1)$-partite.
-    \end{proof}
 \end{theorem}
+
+To prove this theorem, we make use of the following lemma.
+
+\begin{lemma}
+    Let $G$ be a $K_r^{(2)}$-free $2$-graph with $\ex{n}{\completesuperindex{2}{r}}$ edges.
+    $G$ is $p$-partite for some $p \geq 2$.
+    \begin{proof}
+        Equivalently, we show that the relation defined by non-adjacency on $V(G)$ (that is, $x \sim y$ when
+        $\{x, y\} \notin E(G)$) is an equivalence relation, so we can divide $V(G)$ into equivalence classes
+        by this relation, which means that $\{x, y\} \in E$ if and only if they are in different parts.
+
+        The reflexivity and symmetry of the relation are clear.
+        Suppose, by way of contradiction, that there exist $x, y, z \in V(G)$ such that
+        $x \sim z$ and $y \sim z$, but $x \nsim y$.
+        We now construct a different graph $G'$ with the same number of vertices as $G$
+        that also does not contain $K_r^{(2)}$ as a subgraph, reaching a contradiction.
+        $G'$ is constructed from $G$ by removing the vertices
+        $x$ and $y$ (and all the associated edges) and adding the two new vertices
+        $z_1$ and $z_2$ and the edges $\{\{v, z_i\} | \{v, z\} \in E, i \in \{1, 2\}\}$.
+
+        First, we show that $G'$ contains no embedding of $K_r^{(2)}$.
+        Suppose it does.
+        Because $z$, $z_1$ and $z_2$ are all disconnected, only one of them can be
+        an image of a vertex in $K_r^{(2)}$.
+        However, $G'[V \setminus \{x, y\}] \subset G$ has no embedding of $K_r^{(2)}$,
+        so at least one of the vertices in $K_r^{(2)}$ must be mapped to $z_1$ or $z_2$.
+        Without loss of generality, $G'[\{z_1, x_2, x_3, \dots, x_r\}]$ is complete.
+        However, $\{z_1, x_i\}$ is an edge in $G'$ if an only if $\{z, x_i\}$ is an edge in $G$,
+        which means that $G[\{z, x_2, x_3 \dots, x_r\}]$ is complete, against our assumption.
+
+        Finally, we show that $G'$ has more edges than $G$.
+        TODO %TODO
+    \end{proof}
+\end{lemma}
+
+Now we are ready to prove Theorem~\ref{thm:turan}.
+\begin{proof}[Proof of Turán Theorem]
+     We first note that $\compdotssuperindex{2}{a_1}{a_{r-1}}$ is a $K_r^{(2)}$-free $2$-graph.
+     This is because the first is $(r-1)$-colorable, while the second is not. % TODO colorable skips the line
+     TODO % TODO
+\end{proof}
 
 % TODO Turán theorem, Erdős-Stone theorem, Erdos-Stone-Simonovits theorem, conjectures for uniformity 3
 

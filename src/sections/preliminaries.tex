@@ -532,8 +532,51 @@ Now we are ready to prove Theorem~\ref{thm:turan}.
         > \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y,
     \end{align*}
     in contradiction with the number of edges in $G$ being maximal.
-
 \end{proof}
+
+Because of the difficulty of finding exact extremal numbers for $k$-graphs,
+we usually look for asymptotic approximations of them.
+In particular, we are interested in how the expression
+$\ex{n}{G}$ grows with $n$ for any fixed $k$-graph $G$.
+For an example, we turn to the complete $2$-graph $\completesuperindex{2}{r}$,
+for which we already have an exact formula.
+In expression~\eqref{eq:turan}, we can see that
+$a_i = n/(r-1) + \bigO{1}$ for all $i$.
+Therefore,
+\begin{equation} \label{eq:turan_asymptotic}
+    \ex{n}{\completesuperindex{2}{r}} = \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y
+    = \binom{r-1}{2} \cdot \left( \frac{n}{r-1} + \mathcal{O}(1) \right)^2
+    = \frac{(r-2)}{2(r-1)} n^2 + \mathcal{O}(n).
+\end{equation}
+Note that the maximum number of edges in a $2$-graph on $n$ vertices is
+\[
+    \binom{n}{2} = \frac{1}{2} n^2 + \mathcal{O}(n).
+\]
+The two quantities are comparable as they are both quadratic in $n$.
+This lets us restate equation~\eqref{eq:turan_asymptotic} as
+\[
+    \ex{n}{\completesuperindex{2}{r}} =
+    \frac{r-2}{r-1} \binom{n}{2} + \mathcal{O}(n) =
+    \frac{r-2}{r-1} \binom{n}{2} + o\left(\binom{n}{2}\right),
+\]
+Which means that, asymptotically, the maximum \emph{edge density} of a $2$-graph on $n$ vertices
+without $K_r^{(2)}$ as a subgraph is $(r-2)/(r-1) < 1$, so we must exclude a nontrivial fraction of edges
+to avoid any particular complete $2$-graph.
+
+The following general theorem states that a similar result holds for all $k$-graphs.
+
+\begin{theorem}
+    Let $G = (V, E)$ be a $k$-graph.
+    The limit
+    \[
+        \alpha(G) = \lim_{n \to \infty} \frac{\ex{n}{G}}{\binom{n}{k}}
+    \]
+    exists and is between $0$ and $1$.
+    We call it the \emph{Turán density} of $G$.
+    \begin{proof}
+        TODO % TODO
+    \end{proof}
+\end{theorem}
 
 % TODO Erdős-Stone theorem, Erdos-Stone-Simonovits theorem, conjectures for uniformity 3
 

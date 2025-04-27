@@ -89,7 +89,7 @@ in $V \setminus T$ that have some of the required $3$-edges in $G$, but not all 
     In fact, it is impossible for an element $Y \in E'$ to contain a vertex $v \in T$.
     To see this, suppose that $v \in Y$.
     We can pick a $(k-j)$-set $X \in \binom{T}{k-j}$ such that $v \in X$.
-    Then $v \in X \cup Y$ and
+    Then $v \in X \cap Y$ so
     $| X \cup Y | < j + (k-j) = k$, contradicting the fact that $X \cup Y$ is an edge in $G$.
 \end{remark}
 
@@ -196,10 +196,12 @@ we need to show some basic properties.
         let $f: V(G) \to V(H)$ be an embedding of $G$ in $H$, and let
         $g: V(G) \to V(G')$ and $h: V(H) \to V(H')$ be isomorphisms between the respective graphs.
         We claim that the composition
-        \[f' = h \circ f \circ g^{-1}: V(G') \to V(H')\]
+        \[
+            f' = h \circ f \circ g^{-1}: V(G') \to V(H')
+        \]
         is an embedding of $G'$ in $H'$.
         Injectivity is given by the injectivity of $h, f$, and $g^{-1}$.
-        By Remark~\ref{prop:isomorphism_preserves_embedding}, we have that $g^{-1}$ is an isomorphism of $G'$ in $G$,
+        By Proposition~\ref{prop:isomorphism_equivalence}, we have that $g^{-1}$ is an isomorphism of $G'$ in $G$,
         and in particular an embedding.
         Therefore, by Proposition~\ref{prop:embedding_properties},
         $f'$ is an embedding of $G'$ in $H'$, proving part~\eqref{item:embedding}.
@@ -461,12 +463,15 @@ $\ex{n}{\completesuperindex{2}{r}}$edges, and use the following two lemmas.
         if and only if $\{x, v\} \in E$).
         Clearly, $|V'| = |V|$ and $|E'| = E - d_G(y) + d_G(x) > |E|$.
         To see that $G'$ does not contain $K_r^{(2)}$ as a subgraph,
-        suppose that $G'[T']$ contains is complete for some $T' \subset V'$ of size $r$.
+        suppose that $G'[T']$ is complete for some $T' \subset V'$ of size $r$.
         Because $\{x, x'\}$ is not an edge in $G'$, $T'$ cannot contain both $x$ and $x'$.
         Because the edges not containing $x'$ are the same as in $G$, which contains no $K_r^{(2)}$,
-        we can assume that $T$ contains $x'$ and not $x$.
+        we deduce that $T'$ contains $x'$ and therefore does not contain $x$.
         Now, let $T = (T' \setminus \{x'\}) \cup \{x\} \subset V$, also of size $r$.
-        Then, the graph $G[T] = G'[T]$ must be complete, reaching a contradiction.
+        We argue that the graph $G[T] = G'[T]$ must be complete, reaching a contradiction.
+        If it were not, then there would exist $v \in T, v \neq x$, such that $\{x, v\} \notin E$.
+        This implies that $\{x', v\} \notin E'$, but $v \in T' \setminus \{x'\}$,
+        against the completeness of $G'[T']$.
     \end{proof}
 \end{lemma}
 
@@ -487,14 +492,17 @@ $\ex{n}{\completesuperindex{2}{r}}$edges, and use the following two lemmas.
         $z_1$ and $z_2$ and the edges $\{\{v, z_i\} | \{v, z\} \in E, i \in \{1, 2\}\}$.
 
         First, we show that $G'$ contains no embedding of $K_r^{(2)}$.
-        Suppose it does.
-        Because $z$, $z_1$ and $z_2$ are all disconnected, only one of them can be
+        We make a similar argument as in the proof of Lemma~\ref{lem:same_degree}.
+        By way of contradiction, suppose that $G'[T']$ is complete for some $T' \subset V'$ of size $r$.
+        Because $z$, $z_1$ and $z_2$ pairwise non-edges of $G'$, only one of them can be
         an image of a vertex in $K_r^{(2)}$.
         However, $G'[V \setminus \{x, y\}] \subset G$ has no embedding of $K_r^{(2)}$,
         so at least one of the vertices in $K_r^{(2)}$ must be mapped to $z_1$ or $z_2$.
-        Without loss of generality, $G'[\{z_1, x_2, x_3, \dots, x_r\}]$ is complete.
+        Without loss of generality, we can write $T' = \{x_1, x_2, x_3, \dots, x_{r-1}, z_1\}$,
+        with $x_i \notin \{z_2, z\}$ for all $i$.
         However, $\{z_1, x_i\}$ is an edge in $G'$ if an only if $\{z, x_i\}$ is an edge in $G$,
-        which means that $G[\{z, x_2, x_3 \dots, x_r\}]$ is complete, against our assumption.
+        which means that $G'[\{x_1, x_2, x_3 \dots, x_{r-1}, z\}] = G[\{x_1, x_2, x_3 \dots, x_{r-1}, z\}]$ is complete,
+        against our assumption.
 
         Now, we show that $G'$ has more edges than $G$.
         By Lemma~\ref{lem:same_degree}, $d_G(x) = d_G(z)$ and $d_G(y) = d_G(z)$,
@@ -645,16 +653,16 @@ The result is stated and proved here for completeness.
         Counting on the first coordinate, we get
         \begin{equation} \label{eq:kst_p_lower}
             |P| =
-            \mathlarger{\mathlarger{\sum}}_{x \in U} \binom{d_G(x)}{t} =
-            \mathlarger{\mathlarger{\sum}}_{x \in U} \varphi(d_G(x)) \geq
-            u  \mathlarger{\mathlarger{\sum}}_{x \in U} \varphi(z/u) =
+            \sum_{x \in U} \binom{d_G(x)}{t} =
+            \sum_{x \in U} \varphi(d_G(x)) \geq
+            u  \sum_{x \in U} \varphi(z/u) =
             u \binom{z / u}{t},
         \end{equation}
         where we define
         \[
             \varphi(x) =
             \begin{cases}
-                \binom{x}{t}, & \text{if } x \geq t - 1. \\
+                \binom{x}{t}, & \text{if } x \geq t - 1; \\
                 0, & \text{otherwise.}
             \end{cases}
         \]

@@ -582,7 +582,43 @@ The following general theorem states that a similar result holds for all $k$-gra
     exists and is between $0$ and $1$.
     We call it the \emph{Turán density} of $G$.
     \begin{proof}
-        TODO % TODO
+        The sequence
+        \[
+            a_n = \frac{\ex{n}{G}}{\binom{n}{k}}
+        \]
+        Is bounded between $0$ and $1$ for all $n \geq |V(G)|$, by Proposition~\ref{prop:extremal}.
+        We show that it is non-increasing, so it converges to a value $0 \leq \alpha(G) < 1$.
+        Let $n \geq |V(G)|$.
+        There exists a graph $H = (W, F)$ with $n+1$ vertices and $\ex{n+1}{G}$ edges does not contain
+        $G$ as a subgraph.
+        For each vertex $w \in W$, the graph $H_w = H[W \setminus \{w\}]$ has $n$ vertices
+        and does not contain $G$ as a subgraph.
+        Therefore, it must contain at most $\ex{n}{G}$ edges.
+        Consider the set
+        \[
+            \mathcal{P} = \left\{ (w, e) | w \in W, e \in E(H_w) \right\}.
+        \]
+        Counting on the first coordinate, we get
+        \begin{equation} \label{eq:densityUpperBound}
+            |\mathcal{P}| = \sum_{w \in W} |E(H_w)| \leq (n+1)\, \ex{n}{G}.
+        \end{equation}
+        On the other hand, for every edge $e \in F$, $e \in E(H_w)$
+        for all $w \in W \setminus e$.
+        Therefore, counting on the second coordinate, we get
+        \begin{equation} \label{eq:densityLowerBound}
+            |\mathcal{P}| = (n + 1 - k) |F| = (n + 1 - k)\, \ex{n+1}{G}.
+        \end{equation}
+        Combining equations~\eqref{eq:densityUpperBound} and~\eqref{eq:densityLowerBound},
+        we get
+        \[
+            (n + 1 - k)\, \ex{n+1}{G} \leq (n + 1)\, \ex{n}{G}.
+        \]
+        Going back to the sequence $a_n$, we can write
+        \[
+            a_{n+1} = \frac{\ex{n+1}{G}}{\binom{n+1}{k}} \leq
+            \frac{(n + 1)\, \ex{n}{G}}{(n + 1 - k) \binom{n+1}{k}} =
+            \frac{\ex{n}{G}}{\binom{n}{k}} = a_n. \qedhere
+        \]
     \end{proof}
 \end{theorem}
 

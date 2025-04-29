@@ -546,6 +546,7 @@ Because of the difficulty of finding exact extremal numbers for $k$-graphs,
 we usually look for asymptotic approximations of them.
 In particular, we are interested in how the expression
 $\ex{n}{G}$ grows with $n$ for any fixed $k$-graph $G$.
+This is known as the \emph{Turán problem} for the graph $G$.
 For an example, we turn to the complete $2$-graph $\completesuperindex{2}{r}$,
 for which we already have an exact formula.
 In expression~\eqref{eq:turan}, we can see that
@@ -562,23 +563,23 @@ Note that the maximum number of edges in a $2$-graph on $n$ vertices is
 \]
 The two quantities are comparable as they are both quadratic in $n$.
 This lets us restate equation~\eqref{eq:turan_asymptotic} as
-\[
+\begin{equation} \label{eq:turan_asymptotic_density}
     \ex{n}{\completesuperindex{2}{r}} =
     \frac{r-2}{r-1} \binom{n}{2} + \mathcal{O}(n) =
     \frac{r-2}{r-1} \binom{n}{2} + o\left(\binom{n}{2}\right),
-\]
+\end{equation}
 Which means that, asymptotically, the maximum \emph{edge density} of a $2$-graph on $n$ vertices
 without $K_r^{(2)}$ as a subgraph is $(r-2)/(r-1) < 1$, so we must exclude a nontrivial fraction of edges
 to avoid any particular complete $2$-graph.
-
-The following general theorem states that a similar result holds for all $k$-graphs.
+The following general theorem greatly restricts the growth of Turán numbers
+for all $k$-graphs.
 
 \begin{theorem}
     Let $G = (V, E)$ be a $k$-graph.
     The limit
-    \[
-        \alpha(G) = \lim_{n \to \infty} \frac{\ex{n}{G}}{\binom{n}{k}}
-    \]
+    \begin{equation} \label{eq:turan_density}
+        \pi(G) = \lim_{n \to \infty} \frac{\ex{n}{G}}{\binom{n}{k}}
+    \end{equation}
     exists and is between $0$ and $1$.
     We call it the \emph{Turán density} of $G$.
     \begin{proof}
@@ -587,7 +588,14 @@ The following general theorem states that a similar result holds for all $k$-gra
             a_n = \frac{\ex{n}{G}}{\binom{n}{k}}
         \]
         Is bounded between $0$ and $1$ for all $n \geq |V(G)|$, by Proposition~\ref{prop:extremal}.
-        We show that it is non-increasing, so it converges to a value $0 \leq \alpha(G) < 1$.
+        Furthermore, it is less than $1$ for all $n \geq |V(G)| + 1$.
+        To see this, consider a graph $H = (W, F)$ with $n$ vertices and $\binom{n}{k} - 1$ edges.
+        Its edge density is less than $1$.
+        Without loss of generality, we can suppose that $F = \binom{W}{k} \setminus \{\{x, y\}\}$.
+        This means that $H[W \setminus \{x\}]$ is a complete $k$-graph on $n - 1$ vertices,
+        which must contain $G$ as a subgraph.
+
+        We show that the sequence $(a_n)$ it is non-increasing, so it must converge to a value $0 \leq \pi(G) < 1$.
         Let $n \geq |V(G)|$.
         There exists a graph $H = (W, F)$ with $n+1$ vertices and $\ex{n+1}{G}$ edges does not contain
         $G$ as a subgraph.
@@ -622,7 +630,57 @@ The following general theorem states that a similar result holds for all $k$-gra
     \end{proof}
 \end{theorem}
 
-% TODO Erdős-Stone theorem, Erdos-Stone-Simonovits theorem, conjectures for uniformity 3
+We can now summarize expression~\eqref{eq:turan_asymptotic_density} as follows.
+\begin{corollary} \label{cor:turan_density_kr}
+    The Turán density of the complete $2$-graph $\completesuperindex{2}{r}$ is
+    \[
+        \pi\left(\completesuperindex{2}{r}\right) = \frac{r-2}{r-1} = 1 - \frac{1}{r-1}.
+    \]
+\end{corollary}
+
+The first natural question that arises is for what graphs $G$ the Turán density $\pi(G)$ is positive
+(in which case, we call the corresponding Turán problem \emph{non-degenerate}
+and consider it solved if we can calculate $\pi(G)$).
+The following gives a complete characterization.
+
+\begin{proposition}
+    Let $G = (V, E)$ be a $k$-graph.
+    Then $\pi(G) = 0$ if and only if $G$ is $k$-partite.
+    \begin{proof}
+        If $G$ is not $k$-partite, a construction similar to the one in the proof of Theorem~\ref{thm:turan}
+        directly shows $\pi (G) > 0$.
+        Indeed, for all $m$the graph $\compoverset{k}{m}$ is $k$-partite so it cannot contain $G$ as a subgraph.
+        Furthermore, its edge density is
+        \[
+             \frac{m^k}{\binom{km}{k}} \geq \frac{1}{k^k}.
+        \]
+        Because we can make $km = |V\left( \compoverset{k}{m} \right)|$ as large as we want,
+        the limit~\eqref{eq:turan_density} bounded below by a positive constant.
+        We defer the proof of the other direction to subsection~\ref{subsec:degenerate},
+        where we study $k$-partite $k$-graph Turán problems
+        in more depth (in particular, see Theorem~\ref{thm:erdos64}).
+    \end{proof}
+\end{proposition}
+
+In fact, non-degenerate Turán problems for $2$-graphs are considered solved in this regard.
+The following theorem gives the Turán density of all $2$-graphs.
+
+\begin{theorem}[Erdős-Stone-Simonovits Theorem]
+    \label{thm:erdos_stone_simonovits}
+    Let $G = (V, E)$ be a $2$-graph and let $r = \chi(G)$.
+    Then,
+    \[
+        \pi(G) = 1 - \frac{1}{r - 1}.
+    \]
+\end{theorem}
+
+We defer the proof of this theorem to the end of this section,
+where we will have more powerful tools at our disposal.
+Note that letting $G = \completesuperindex{2}{r}$ we recover
+Corollary~\ref{cor:turan_density_kr} of Theorem~\ref{thm:turan}.
+
+% TODO Erdős-Stone theorem,
+% TODO examples of solved and unsolved non-degenerate Turán problems (cube, tetrahedron, fano plane, etc.)
 
 
 \subsection{Degenerate Turán Problems}\label{subsec:degenerate}
@@ -836,5 +894,10 @@ copies of $\compdots{t_1}{t_k}$ in a $k$-partite $k$-graph $G$
 with different part sizes~\cite{carvajal2024canonical},
 therefore upper bounding all generalized Zarankiewicz numbers.
 
-% TODO: probabilistic upper bound, algebraic upper bound, discussion
+Degenerate Turán problems are also of interest as tools to solve non-degenerate ones.
+A classic example is the following.
+
+\begin{proof}[Proof of the Erdős-Stone-Simonovits Theorem (Theorem~\ref{thm:erdos_stone_simonovits})]
+    TODO % TODO
+\end{proof}
 

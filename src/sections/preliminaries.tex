@@ -259,64 +259,35 @@ For example, in Figure~\ref{fig:complete_kgraph} we show the complete graph $\co
     Such an embedding is always induced, as it is given by the identity map on $T$.
 \end{remark}
 
-\subsection{Partite $k$-graphs and the chromatic number}\label{subsec:partite}
+\subsection{Partite $k$-graphs}\label{subsec:partite}
 
 We now introduce the notion of partite $k$-graphs.
 
 \begin{definition} \label{def:partite}
     for an integer $p \geq k$, a $k$-graph $G = (V, E)$ is \emph{$p$-partite}
+    (or $(p, 1)$-\emph{colorable})
     if there exists a partition $V = V_1 \cup \dots \cup V_p$
     such that every edge $e \in E$ intersects every part $V_i$ in at most one vertex.
     We may write $G = (V_1, \dots, V_p; E)$ and say that
     $G$ is a partite $k$-graph on $V_1, \dots, V_p$.
+    If $p$ is the minimum integer such that $G$ is $p$-partite,
+    we say that $p = \chi_{1}(G)$ is the \emph{partiteness} of $G$.
 \end{definition}
 
-A different view of $p$-partite $k$-graphs is to think of them as vertex colored $k$-graphs,
-in the following sense.
-
-\begin{definition}
-    A \emph{proper vertex coloring} of a $k$-graph $G = (V, E)$ in $p$ colors
-    is a map $\chi: V \to [p]$ such that $\chi$ is injective on every edge.
-    The elements $\chi^{-1}(i)$ for $1 \leq i \leq p$ are called the \emph{color classes} of $G$.
-    We say that $G$ is \emph{$p$-vertex-colorable} or \emph{$p$-colorable}.
-\end{definition}
-
-The two notions are equivalent in the following sense.
-
-\begin{proposition}
-    A $k$-graph $G = (V, E)$ is $p$-partite if and only if
-    there exists a vertex coloring of $G$ in $p$ colors.
-    \begin{proof}
-        Let $G = (V, E)$ be a $k$-graph.
-        if $G$ is $p$-partite (say, $G = (V_1, \dots, V_p; E)$),
-        then we can construct a vertex coloring of $G$ in $p$ colors
-        by assigning to the vertices in $V_i$ the color $i$.
-        The coloring is proper by Definition~\ref{def:partite}.
-        Conversely, let $\chi: V \to [p]$ be a proper vertex coloring of $G$ in $p$ colors.
-        Then the color classes form a partition of $V$ into $p$ sets where, by the injectivity of $\chi$ on edges,
-        every edge $e \in E$ intersects every color class in at most one vertex.
-    \end{proof}
-\end{proposition}
-
-To measure how easily colorable a $k$-graph is, we define the following.
-
-\begin{definition}
-    Let $G = (V, E)$ be a $k$-graph.
-    The \emph{chromatic number} $\chi(G)$ of $G$ is the smallest integer $p \geq k$ such that
-    $G$ is p-colorable (or, equivalently $p$-partite).
-\end{definition}
+The above definition is a special case of the family of chromatic numbers of hypergraphs $\chi_{\gamma}(G)$,
+where we impose that an edge of the hypergraph can intersect each part in at most $\gamma$ vertices
+(for example, see~\cite{krivelevich1998chromatic}).
+If we set $\gamma = k - 1$, we recover the usual notion of chromatic number $\chi(G)$,
+in which we impose that edges are not fully contained in any part.
+In general, this is much weaker, but the two notions are the same when $k = 2$.
 
 \begin{remark}
-    The chromatic number is increasing with respect to inclusion.
-    This is because if
-    \[f: V(G) \to V(H)\]
-    is an embedding of $G$ in $H$,
-    and
-    \[\chi: V(H) \to [p]\]
-    is a proper vertex coloring of $H$, then
-    \[\chi \circ f: V(G) \to [p]\]
-    is a proper vertex coloring of $G$.
-    Therefore, if $H$ is $p$-colorable, so is $G$, and $\chi(G) \leq \chi(H)$.
+    These chromatic numbers are increasing under the inclusion $k-graphs$.
+    Indeed, if $f: G \to H$ is an embedding of $k$-graphs,
+    and $H$ is $(p, \gamma)$-partite with parts $V_1, \dots, V_p$,
+    then $G$ is $(p, \gamma)$-partite with parts $f^{-1}(V_1), \dots, f^{-1}(V_p)$.
+    This is because $f$ is injective, so it preserves the number of vertices in each part for every edge.
+    This in turn means that $\chi_{\gamma}(G) \leq \chi_{\gamma}(H)$.
 \end{remark}
 
 If $G = (V_1, \dots, V_k; E)$ is a $k$-partite $k$-graph,
@@ -518,12 +489,12 @@ $\ex{n}{\completesuperindex{2}{r}}$edges, and use the following two lemmas.
 Now we are ready to prove Theorem~\ref{thm:turan}.
 \begin{proof}[Proof of Turán Theorem]
     We have shown in Lemma~\ref{lem:turan_complete_partite} that $G = (V_1, \dots V_p; E)$ is complete.
-    In fact, we can set $p = r - 1$.
+    In fact, we can set $p = r - 1$:
     If $p < r - 1$, we can always add empty parts to $G$; and if it has more than $r - 1$ nonempty parts
     (without loss of generality, $x_1 \in V_1, \dots, x_r \in V_r$), then $G[\{x_1, \dots, x_r\}]$ is complete,
     which is a contradiction.
     Furthermore, any complete $(r-1)$-partite $2$-graph is $\completesuperindex{2}{r}$-free,
-    because the first is $(r-1)$-colorable and the second is not.
+    because $\completesuperindex{2}{r}$ is not $(r-1)$-partite.
 
     This means that we only need to show that the choice of the part sizes $a_1, \dots, a_{r-1}$ summing to $n$
     in the statement maximizes the expression~\eqref{eq:turan}.
@@ -643,18 +614,18 @@ The first natural question that arises is for what graphs $G$ the Turán density
 and consider it solved if we can calculate $\pi(G)$).
 The following gives a complete characterization.
 
-\begin{proposition}
+\begin{proposition} \label{prop:degenerate}
     Let $G = (V, E)$ be a $k$-graph.
     Then $\pi(G) = 0$ if and only if $G$ is $k$-partite.
     \begin{proof}
         If $G$ is not $k$-partite, a construction similar to the one in the proof of Theorem~\ref{thm:turan}
         directly shows $\pi (G) > 0$.
-        Indeed, for all $m$the graph $\compoverset{k}{m}$ is $k$-partite so it cannot contain $G$ as a subgraph.
+        Indeed, for all $m$ the graph $\compoverset{k}{m}$ is $k$-partite so it cannot contain $G$ as a subgraph.
         Furthermore, its edge density is
         \[
              \frac{m^k}{\binom{km}{k}} \geq \frac{1}{k^k}.
         \]
-        Because we can make $km = |V\left( \compoverset{k}{m} \right)|$ as large as we want,
+        Because we can make $n = km = |V\left( \compoverset{k}{m} \right)|$ as large as we want,
         the limit~\eqref{eq:turan_density} bounded below by a positive constant.
         We defer the proof of the other direction to subsection~\ref{subsec:degenerate},
         where we study $k$-partite $k$-graph Turán problems
@@ -679,12 +650,10 @@ where we will have more powerful tools at our disposal.
 Note that letting $G = \completesuperindex{2}{r}$ we recover
 Corollary~\ref{cor:turan_density_kr} of Theorem~\ref{thm:turan}.
 
-% TODO Erdős-Stone theorem,
 % TODO examples of solved and unsolved non-degenerate Turán problems (cube, tetrahedron, fano plane, etc.)
-
+% TODO supersaturation
 
 \subsection{Degenerate Turán Problems}\label{subsec:degenerate}
-% TODO prove that degenerate (turan density is 0) iff the graph is p-partite.
 
 \begin{remark}
     All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$
@@ -694,7 +663,7 @@ Corollary~\ref{cor:turan_density_kr} of Theorem~\ref{thm:turan}.
 \end{remark}
 
 \begin{definition}\label{def:zarankiewicz}
-    Let $0 < t_1 \leq v_1, \dots, 0 < t_k \leq v_k$ be integers.
+    Let $1 < t_1 \leq v_1, \dots, 1 < t_k \leq v_k$ be integers.
     Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
     is the largest integer $0 \leq z < \prod_i{ v_i}$ for which there exists a $k$-partite $k$-graph
     $H$ with part sizes $ |V_1| = v_1, \dots, |V_k| = v_k$ and $z$ edges
@@ -703,14 +672,20 @@ Corollary~\ref{cor:turan_density_kr} of Theorem~\ref{thm:turan}.
 \end{definition}
 
 From now on, every time we talk about embeddings from one $k$-partite $k$-graph
-onto another we assume the condition $f(T_i) \subset V_i$.
+$G = (T_1, \dots, T_k; E)$ to another $k$-partite $k$-graph $H = (V_1, \dots, V_k; F)$,
+we assume the condition $f(T_i) \subset V_i$.
+Similarly to the case of complete graphs,
+$H$ contains $\compdots{t_1}{t_k}$ as a subgraph if and only if
+for some sets $S_i \subset V_i$ of size $t_i$ for all $i$,
+$H[S_1 \cup \dots \cup S_k]$ = $\compdots{S_1}{S_K}$,
+and such an embedding is always induced.
 
 \begin{remark}\label{rem:zar_vs_turan}
-    Finding this number can help us upper bound the extremal number of $\compdots{t_1}{t_k}$ asymptotically:
+    Finding Zarankiewicz numbers can help us upper bound the extremal number of $\compdots{t_1}{t_k}$ asymptotically.
     Assume that $H$ is a $\compdots{t_1}{t_k}$-free $n$-vertex $k$-graph with $m$ edges.
     pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
     (For example $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$)
-    Let $V_1, \dots, V_k$ be a random partition of $V(H)$ with $|V_i| = v_i$.
+    Let $V_1, \dots, V_k$ be a uniform random partition of $V(H)$ with $|V_i| = v_i$.
     for an edge $e \in E(H)$, the probability that $e$ is an edge in $\compdots{V_1}{V_k}$ is
     greater than
     \[k! \prod_i \frac{v_i}{n} \sim \frac{k!}{k^k},\]
@@ -732,12 +707,12 @@ This was generalized to arbitrary complete
 bipartite 2-graphs by C. Hyltén-Cavallius~\cite{Hylten1958} in 1958.
 The result is stated and proved here for completeness.
 
-\begin{theorem}\label{thm:kst}
+\begin{theorem}[Kővari-Sós-Turán Theorem] \label{thm:kst}
     Let $0 < s \leq u$ and $0 < t \leq w$ be integers.
     Then 
     \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
     \begin{proof}
-        Suppose that we have a bipartite graph $G = (U, W; E)$
+        Suppose, by way of contradiction, that we have a $K(s, t)$-free bipartite graph $G = (U, W; E)$
         with $|U| = u$, $|W| = w$ and $|E| = z$ exceeding the bound stated above.
         Let us consider the set
         \[
@@ -769,10 +744,9 @@ The result is stated and proved here for completeness.
         If we had $s$ different elements of $P$ with the same second coordinate $T$,
         they would all necessarily have different first coordinates
         (say $S = \{x_1, \dots, x_s\}$).
-        But now, by definition of $P$, for all $a \in S, b \in T$, we have $\{a, b\} \in E$.
-        This would mean that the inclusion map from $ S \cup T$ to $U \cup W$ is an embedding of
-        $K(s, t)$ in $G$, as described in Definition~\ref{def:zarankiewicz}.
-        Supposing that this is not the case, by the averaging we get
+        But now, by definition of $P$, for all $a \in S, b \in T$, we have $\{a, b\} \in E$,
+        so $G[S \cup T] = K(S, T)$, against the assumption that $G$ is $K(s, t)$-free.
+        Therefore, there are at most $s - 1$ different elements of $P$ for each $T \in \binom{W}{t}$:
         \begin{equation} \label{eq:kst_p_upper}
             |P| \leq (s - 1) \binom{w}{t}.
         \end{equation}
@@ -890,12 +864,79 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
 \end{theorem}
 
 This approach can be generalized to give a lower bound on the number of
-copies of $\compdots{t_1}{t_k}$ in a $k$-partite $k$-graph $G$
+copies (that is, embeddings with different image sets)
+of $\compdots{t_1}{t_k}$ in a $k$-partite $k$-graph $G$
 with different part sizes~\cite{carvajal2024canonical},
 therefore upper bounding all generalized Zarankiewicz numbers.
+Applying the same observations that we have made for the balanced case,
+we arrive at
+\begin{equation} \label{eq:general-partite-bound}
+    \ex{n}{\compdots{t_1}{t_k}} = \bigO{n^{k - \frac{1}{\prod_{i=1}^{k-1} t_i}}}.
+\end{equation}
+
+Because all $k$-partite $k$-graphs can be embedded in a $\compoverset{k}{t}$,
+Theorem~\ref{thm:erdos64} shows that the Turán density of all $k$-partite $k$-graphs is $0$,
+completing the proof of Proposition~\ref{prop:degenerate}.
+This gives little insight on how the Turán numbers of $k$-partite $k$-graphs grow.
+In this case, we are usually satisfied with determining the growth up to a constant factor.
+There are even fewer solved cases than in the non-degenerate case.
+Among them, it is known that, for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$, Theorem~\ref{thm:kst} is optimal in the sense that
+\begin{equation} \label{eq:k22-optimal}
+    \ex{n}{K(2, t)} = \Theta\left(n^{\frac{3}{2}}\right)~\cite{erdHos1966problem, furedi1996new},
+\end{equation}
+and also
+\begin{equation} \label{eq:k33-optimal}
+    \ex{n}{K(3, 3)} = \Theta\left(n^{\frac{5}{3}}\right)~\cite{brown1966graphs}.
+\end{equation}
+The theorem is also optimal for $K(s, t)$ when $s \geq t! + 1$~\cite{kollar1996norm}.
+The main difficulty for degenerate problems is that lower bounds for the Turán numbers
+often rely on specific geometric or algebraic constructions such as the ones
+cited for $K(2, 2)$ and $K(3, 3)$.
+General lower bounds are usually very weak and do not reach the correct order of magnitude.
+For example, see the following probabilistic construction.
+
+\begin{proposition}
+    $\zardots{w}{w}{t_1}{t_k} = \Omega \left(w^{k - \frac{\sum_i t_i}{\prod_i t_i}}\right)$ as $w \to \infty$.
+    \begin{proof}
+        Let $W_i$ be disjoint sets with $|W_i| = w \geq t_i$ for all $i$
+        and consider the following probability distribution on the set of $k$-partite $k$-graphs
+        with parts $W_1, \dots, W_k$.
+        Any edge $e \in W_1 \times \dots \times W_k$
+        is included in the edge set with probability
+        \[
+            p = \frac{1}{3}w^{-\frac{\sum_i t_i}{\prod_i t_i}}
+        \]
+        independently of the others.
+        The expected number of copies of $\compdots{t_1}{t_k}$ in the resulting graph is
+        \[
+           p^{\prod_i t_i} \prod_i \binom{w}{t_i}
+           \leq  p^{\prod_i t_i} \prod_i w^{t_i}
+           = p^{\prod_i t_i} w^{\sum_i t_i} \leq \frac{1}{3},
+        \]
+        which means that the resulting graph is $\compdots{t_1}{t_k}$-free with probability at least $2/3$.
+        On the other hand, the number of edges of the graph follows a binomial distribution with mean
+        \[
+            pw^k = \frac{1}{3}w^{k - \frac{\sum_i t_i}{\prod_i t_i}}.
+        \]
+        Therefore, the event that the graph has more than this number of edges happens with probability
+        at least $1/2$.
+        This means that the intersection of the two events has positive probability, so there
+        exists a $k$-partite $\compdots{t_1}{t_k}$-free $k$-graph with part sizes $w$ and more than $pw^k$ edges,
+        as desired.
+
+    \end{proof}
+\end{proposition}
+
+Note that this also implies that
+\[
+    \ex{n}{\compdots{t_1}{t_k}} = \Omega\left(n^{k - \frac{\sum_i t_i}{\prod_i t_i}}\right).
+\]
+This leaves a very large gap between the upper and lower bounds for the Turán numbers of degenerate $k$-graphs.
+
 
 Degenerate Turán problems are also of interest as tools to solve non-degenerate ones.
 A classic example is the following.
+% TODO Erdős-Stone theorem
 
 \begin{proof}[Proof of the Erdős-Stone-Simonovits Theorem (Theorem~\ref{thm:erdos_stone_simonovits})]
     TODO % TODO

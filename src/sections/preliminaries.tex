@@ -895,44 +895,87 @@ cited for $K(2, 2)$ and $K(3, 3)$.
 General lower bounds are usually very weak and do not reach the correct order of magnitude.
 For example, see the following probabilistic construction.
 
-\begin{proposition}
-    $\zardots{w}{w}{t_1}{t_k} = \Omega \left(w^{k - \frac{\sum_i t_i}{\prod_i t_i}}\right)$ as $w \to \infty$.
+\begin{proposition} \label{prop:probabilistic-lower-bound}
+    Let $G = (T_1, \dots, T_k; E)$ be a $k$-partite $k$-graph with
+    $t = \sum_{i=1}^{k} t_i = \sum_{i=1}^{k} |T_i|$ vertices
+    and $e = |E| > 1$ edges.
+    Then, $\ex{n}{G} = \Omega\left(n^{k - \frac{t - k}{e - 1}} \right)$, and the
+    constant factor depends only on the number of edges $e$.
     \begin{proof}
-        Let $W_i$ be disjoint sets with $|W_i| = w \geq t_i$ for all $i$
-        and consider the following probability distribution on the set of $k$-partite $k$-graphs
-        with parts $W_1, \dots, W_k$.
-        Any edge $e \in W_1 \times \dots \times W_k$
-        is included in the edge set with probability
+        Let $n \geq t$.
+        We use the so-called \emph{random alteration} method to construct a $k$-graph
+        $H_n$ with $n$ vertices that does not contain $G$ as a subgraph.
+        We first define $R_n = (V, E)$ to be a random $k$-graph on a vertex set $V$ of size $n$,
+        where each edge $e \in \binom{V}{k}$ is included in $E$ independently at random
+        with a certain probability $p \in (0, 1)$.
+        The expected number of edges in $R_n$ is
         \[
-            p = \frac{1}{3}w^{-\frac{\sum_i t_i}{\prod_i t_i}}
+            \mathbb{E}(|E|) = p \binom{n}{k} \geq p \left( \frac{n}{k} \right)^k.
         \]
-        independently of the others.
-        The expected number of copies of $\compdots{t_1}{t_k}$ in the resulting graph is
+        Let us now count the number of possible injective functions of $V(G)$ in $V$.
+        They are defined by the (ordered) choice of the image of each vertex, so there are
         \[
-           p^{\prod_i t_i} \prod_i \binom{w}{t_i}
-           \leq  p^{\prod_i t_i} \prod_i w^{t_i}
-           = p^{\prod_i t_i} w^{\sum_i t_i} \leq \frac{1}{3},
+            \prod_{j=1}{t} (n - j + 1) \leq n^t
         \]
-        which means that the resulting graph is $\compdots{t_1}{t_k}$-free with probability at least $2/3$.
-        On the other hand, the number of edges of the graph follows a binomial distribution with mean
+        of them.
+        The probability that any particular injective function $f$ of $V(G)$ in $V$ is an embedding of $G$ in $R_n$
+        is calculated as the product of the probabilities that each image of an edge is an edge in $R_n$,
+        because the presence of edges in $R_n$ is independent.
+        Therefore,
         \[
-            pw^k = \frac{1}{3}w^{k - \frac{\sum_i t_i}{\prod_i t_i}}.
+            \mathbb{P}(f \text{ is an embedding of } G) = p^{|E|} = p^{e}.
         \]
-        Therefore, the event that the graph has more than this number of edges happens with probability
-        at least $1/2$.
-        This means that the intersection of the two events has positive probability, so there
-        exists a $k$-partite $\compdots{t_1}{t_k}$-free $k$-graph with part sizes $w$ and more than $pw^k$ edges,
-        as desired.
+        If we define $X$ to be the number of embeddings of $G$ in $R_n$, by linearity of expectation we get
+        \[
+            \mathbb{E}(X) = \sum_{f} \mathbb{P}(f \text{ is an embedding of } G) \leq n^t p^{e}.
+        \]
+        We can now obtain a $G$-free $k$-graph $H_n$ by removing from $R_n$, for each embedding of $G$,
+        the image of an edge of $G$.
+        The expected number of edges in $H_n$ is
+        \[
+            \mathbb{E}(|E(H_n)|) = \mathbb{E}(|E|) - \mathbb{E}(X) \geq
+            p \left( \frac{n}{k} \right)^k - n^t p^{e}.
+        \]
+        This quantity is maximized by setting
+        \[
+            p = \left( \frac{1}{ek^k} n^{k-t} \right)^{\frac{1}{e-1}}.
+        \]
+        This yields
+        \[
+            \mathbb{E}(|E(H_n)|) \geq
+            m_0(n) =
+            k^{k \frac{e-2}{e-1}} e^{\frac{1}{e-1}}(e-1) n^{k - \frac{t-k}{e-1}}
+            = \Omega\left(n^{k - \frac{t-k}{e-1}} \right).
+        \]
+        Therefore, the event that $|E(H_n)| \geq m_0(n)$
+        must have positive probability, and in particular,
+        there exists one such graph $\widehat{H_n}$, which is $G$-free by construction.
+
+
+
 
     \end{proof}
+
 \end{proposition}
 
 Note that this also implies that
 \[
-    \ex{n}{\compdots{t_1}{t_k}} = \Omega\left(n^{k - \frac{\sum_i t_i}{\prod_i t_i}}\right).
+    \ex{n}{\compdots{t_1}{t_k}} = \Omega\left(n^{k - \frac{\sum_i t_i - k}{\prod_i t_i - 1}}\right).
 \]
 This leaves a very large gap between the upper and lower bounds for the Turán numbers of degenerate $k$-graphs.
-
+For example, in the balanced case, where all $t_i$ are equal, we get
+\begin{equation} \label{eq:balanced_upper_bound}
+    \ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}
+\end{equation}
+from Theorem~\ref{thm:erdos64}, but only
+\begin{equation} \label{eq:balanced_lower_bound}
+    \ex{n}{\compoverset{k}{t}} = \Omega\left(n^{k - \frac{k(t-1)}{t^k - 1}}\right)
+\end{equation}
+from Proposition~\ref{prop:probabilistic-lower-bound}.
+The exponent in~\eqref{eq:balanced_lower_bound} is always
+smaller than the one in~\eqref{eq:balanced_upper_bound},
+as long as $t \geq 2$ and $k \geq 2$.
+Some progress has been made in the case of $K(s, t)$ only for small values of $s \geq t \geq 4$.
 
 Degenerate Turán problems are also of interest as tools to solve non-degenerate ones.
 A classic example is the following.

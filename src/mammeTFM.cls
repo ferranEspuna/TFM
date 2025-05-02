@@ -205,7 +205,7 @@ Master in Advanced Mathematics and Mathematical Engineering\\[0.2em]
 %                                        {-1em}%
 %                                        {\normalfont\normalsize\bfseries}}
 % No te indentacio i te separacio entre paragrafs
-\setlength{\parskip}{1mm}
+\setlength{\parskip}{1.5mm}
 \setlength{\parindent}{0pt}
 % Modifiquem les fonts
 \renewcommand*{\familydefault}{\sfdefault}

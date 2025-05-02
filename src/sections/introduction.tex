@@ -1,4 +1,56 @@
 % !TEX root = ../thesis.tex
 
 \section{Introduction}\label{sec:introduction}
-TODO: Write introduction
+
+Graph theory provides fundamental tools for modeling relationships and networks across diverse fields.
+A natural and powerful extension of graphs is the concept of \emph{hypergraphs}, where edges can connect more than two vertices.
+Specifically, a $k$-uniform hypergraph, or $k$-graph, consists of a set of vertices and a collection of edges, each being a $k$-element subset of the vertices.
+These structures arise naturally in areas ranging from combinatorics and computer science to data analysis and computational biology.
+
+A central theme in graph theory, extending readily to hypergraphs, is \emph{extremal combinatorics}.
+This field seeks to understand the maximum or minimum size of a combinatorial structure satisfying certain properties.
+Its foundational result is Turán's theorem~\cite{Turan1941},
+which determined the maximum number of edges a simple graph on $n$
+vertices can have without containing a complete graph $K_r$ as a subgraph.
+This line of inquiry extends naturally to $k$-uniform hypergraphs.
+Given a fixed $k$-graph $G$, the \emph{Turán number} $\ex{n}{G}$ denotes the maximum number of edges in a $k$-graph on $n$ vertices that does not contain $G$ as a subgraph.
+The asymptotic behavior of $\ex{n}{G}$ as $n \to \infty$
+is often characterized by the \emph{Turán density}, defined as $\pi(G) = \lim_{n \to \infty} \ex{n}{G} / \binom{n}{k}$.
+A fundamental result distinguishes between two regimes: $\pi(G) = 0$ if and only if $G$ is $k$-partite
+(meaning its vertices can be partitioned into $k$ sets such that no edge has two vertices in the same set).
+Determining the exact value of $\pi(G)$ for non-$k$-partite $k$-graphs when $k > 2$
+is a notoriously difficult open problem for many families, including even small hypergraphs like the complete $3$-graph on $4$ vertices,
+$K_4^{(3)}$~\cite{keevash2011hypergraph, razborov20103}.
+
+This thesis focuses on the complementary \emph{degenerate} case, where $\pi(G) = 0$.
+We are particularly interested in the problem of forbidding complete balanced $k$-partite $k$-graphs,
+denoted $\compoverset{k}{t}$, which consists of $k$ disjoint sets of $t$ vertices each,
+and all $t^k$ edges formed by selecting one vertex from each set.
+The classical Kővari-Sós-Turán theorem~\cite{Kovari1954, Hylten1958} provides an upper bound $\ex{n}{K(s, t)} = O(n^{2 - 1/\min\{s,t\}})$ for $k=2$.
+Erdős~\cite{Erods1964} generalized this type of bound to higher uniformities, showing that $\ex{n}{\compoverset{k}{t}} = O(n^{k - 1/t^{k-1}})$ for $k \ge 2$.
+These results guarantee that any $k$-graph with substantially more edges must contain $\compoverset{k}{t}$ as a subgraph.
+
+While these upper bounds establish that $\ex{n}{\compoverset{k}{t}} = o(n^k)$, indicating that $k$-partite graphs have Turán density zero, there is often a significant gap between these bounds and the best-known lower bounds.
+Lower bounds, frequently derived from probabilistic methods or algebraic constructions~\cite{kollar1996norm, brown1966graphs, conlon2020random},
+typically yield exponents smaller than those suggested by the upper bounds
+(as seen in Equation~\eqref{eq:balanced_lower_bound} vs Equation~\eqref{eq:balanced_upper_bound}).
+Furthermore, the proofs of the upper bounds, like the one presented for Theorem~\ref{thm:erdos64}
+involving averaging over links or related techniques like dependent random choice~\cite{fox2011dependent},
+are often non-constructive.
+They guarantee the existence of the desired subgraph $\compoverset{k}{t}$ in dense enough hypergraphs but do not typically provide an efficient algorithm to \emph{find} such a subgraph.
+The main contribution of this thesis is bridging this gap by providing an efficient algorithmic solution.
+We develop and analyze a deterministic, polynomial-time algorithm that, given a $k$-graph $G$ with $n$ vertices and $m$ edges, finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$ within $G$.
+The size $t$ of the parts found by the algorithm depends on the uniformity $k$, the number of vertices $n$, and the edge density of the host graph, given precisely by Equation~\eqref{eq:t}.
+Specifically, $t$ is in the order of $(\log n)^{1/(k-1)}$.
+This result provides a constructive proof for the upper bounds of the type established by Erdős~\cite{Erods1964},
+demonstrating that not only does such a subgraph exist in sufficiently dense hypergraphs, but it can also be found efficiently.
+Our algorithm generalizes the approach used by Mubayi and Turán for the bipartite case ($k=2$)~\cite{MUBAYI2010174}.
+It employs a recursive strategy that mirrors the inductive proof structure of the Erdős bound,
+iteratively reducing the uniformity $k$ by constructing appropriate link graphs.
+
+This thesis is organized as follows.
+Section~\ref{sec:preliminaries} introduces the necessary definitions and foundational results concerning hypergraphs, partite hypergraphs, the Turán problem, and the Zarankiewicz problem,
+including detailed proofs of Turán's theorem and the Kővari-Sós-Turán theorem.
+Section~\ref{sec:algorithm} presents our main algorithm (Algorithm~\ref{alg:kpartite}), provides a rigorous proof of its correctness (Theorem~\ref{thm:kpartite}),
+and analyzes its polynomial runtime complexity.
+Finally, Section~\ref{sec:bibliography} contains the bibliography.

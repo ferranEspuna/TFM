@@ -393,7 +393,6 @@ contain $G$ as a subgraph.
 
 We call the integer $\ex{n}{G}$ the \emph{Turán number} of $G$ on $n$ vertices.
 It is clearly invariant under isomorphism of $G$.
-
 There are very few $k$-graphs $G$ for which an exact formula for $\ex{n}{G}$ is known.
 Of these, the most famous family of examples are the complete $2$-graphs $\completesuperindex{2}{r}$,
 for which extremal numbers were first studied by Turán~\cite{Turan1941} in 1941.
@@ -650,17 +649,50 @@ where we will have more powerful tools at our disposal.
 Note that letting $G = \completesuperindex{2}{r}$ we recover
 Corollary~\ref{cor:turan_density_kr} of Theorem~\ref{thm:turan}.
 
-% TODO examples of solved and unsolved non-degenerate Turán problems (cube, tetrahedron, fano plane, etc.)
-% TODO supersaturation
+Determining the Turán density of $k$-graphs for $k > 2$ is a much harder problem.
+Famously, not even the Turán density of the tetrahedron $3$-graph $\completesuperindex{3}{4}$
+(pictured in Figure~\ref{fig:complete_kgraph}) or the unique graph $\completesuperindex{3}{4-}$
+obtained by removing one edge from it is known.
+The best known bounds are
+\[
+    0.5555 = \frac{5}{9} \leq \pi\left(\completesuperindex{3}{4}\right) \leq 0.561666~\cite{keevash2011hypergraph,baber2011hypergraphs}
+\]
+and
+\[
+     0.2857 = \frac{2}{7} \leq \pi\left(\completesuperindex{3}{4-}\right) \leq 0.2871~\cite{baber2011hypergraphs, frankl1984exact}.
+\]
+The lower bounds are obtained by explicit constructions of $3$-graphs, and are believed to be optimal~\cite{keevash2011hypergraph},
+while the upper bounds are obtained by the method of flag algebras~\cite{razborov2007flag},
+which is a powerful tool for studying Turán problems that automates the search for relevant inequalities.
+
+One of the few examples of success in obtaining turán densities for in uniformity greater than $2$ is the case of
+the Fano plane $F^{(3)}_7$, a $3$-graph with $7$ vertices corresponding to the points
+of the projective plane over the field $\mathbb{F}_2$,
+and $7$ edges correspnding to the projective lines.
+It is known that
+\[
+    \pi(F^{(3)}_7) = \frac{3}{4}~\cite{de2000maximum}.
+\]
+
+We know that $k$-graphs assymptotically below the Turán number of a $k$-graph $G$
+may not contain $G$ as a subgraph.
+We may also ask how many copies (embeddings with different images) of $G$ can be found in a $k$-graph $H$
+exceeding the Turán density.
+The following surprising result~\cite{erdHos1983supersaturated} shows that the number of copies of $G$ in $H$
+is assymptotically guaranteed to be very large.
+
+\begin{theorem}[Supersaturation Lemma]
+    TODO % TODO
+\end{theorem}
 
 \subsection{Degenerate Turán Problems}\label{subsec:degenerate}
 
-\begin{remark}
-    All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$
-    are contained in $\compdots{a_1}{a_k}$ as subgraphs.
-    This lets us follow the same argument as in Proposition~\ref{prop:extremal}
-    to define the following.
-\end{remark}
+We now turn our attention to Turán problems for $k$-partite $k$-graphs,
+which are the ones that have Turán density $0$ (we will prove so in this section).
+All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$
+are contained in $\compdots{a_1}{a_k}$ as subgraphs.
+This lets us follow the same argument as in Proposition~\ref{prop:extremal}
+to define the following.
 
 \begin{definition}\label{def:zarankiewicz}
     Let $1 < t_1 \leq v_1, \dots, 1 < t_k \leq v_k$ be integers.
@@ -679,6 +711,8 @@ $H$ contains $\compdots{t_1}{t_k}$ as a subgraph if and only if
 for some sets $S_i \subset V_i$ of size $t_i$ for all $i$,
 $H[S_1 \cup \dots \cup S_k]$ = $\compdots{S_1}{S_K}$,
 and such an embedding is always induced.
+Definition~\ref{def:zarankiewicz} is useful for studying the Turán problem for $k$-partite $k$-graphs
+in the following way.
 
 \begin{remark}\label{rem:zar_vs_turan}
     Finding Zarankiewicz numbers can help us upper bound the extremal number of $\compdots{t_1}{t_k}$ asymptotically.
@@ -697,7 +731,6 @@ and such an embedding is always induced.
     \]
 
 \end{remark}
-
 
 The problem on finding the Zarankiewicz number was first posed by K. Zarankiewicz in 1951 for the
 case of bipartite 2-graphs (that is, finding $z(u, w; s, t)$),
@@ -879,20 +912,9 @@ Theorem~\ref{thm:erdos64} shows that the Turán density of all $k$-partite $k$-g
 completing the proof of Proposition~\ref{prop:degenerate}.
 This gives little insight on how the Turán numbers of $k$-partite $k$-graphs grow.
 In this case, we are usually satisfied with determining the growth up to a constant factor.
-There are even fewer solved cases than in the non-degenerate case.
-Among them, it is known that, for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$, Theorem~\ref{thm:kst} is optimal in the sense that
-\begin{equation} \label{eq:k22-optimal}
-    \ex{n}{K(2, t)} = \Theta\left(n^{\frac{3}{2}}\right)~\cite{erdHos1966problem, furedi1996new},
-\end{equation}
-and also
-\begin{equation} \label{eq:k33-optimal}
-    \ex{n}{K(3, 3)} = \Theta\left(n^{\frac{5}{3}}\right)~\cite{brown1966graphs}.
-\end{equation}
-The theorem is also optimal for $K(s, t)$ when $s \geq t! + 1$~\cite{kollar1996norm}.
-The main difficulty for degenerate problems is that lower bounds for the Turán numbers
-often rely on specific geometric or algebraic constructions such as the ones
-cited for $K(2, 2)$ and $K(3, 3)$.
-General lower bounds are usually very weak and do not reach the correct order of magnitude.
+
+General lower bounds are usually obtained by probabilistic arguments,
+which are often weak and do not reach the correct order of magnitude.
 For example, see the following probabilistic construction.
 
 \begin{proposition} \label{prop:probabilistic-lower-bound}
@@ -972,13 +994,54 @@ from Proposition~\ref{prop:probabilistic-lower-bound}.
 The exponent in~\eqref{eq:balanced_lower_bound} is always
 smaller than the one in~\eqref{eq:balanced_upper_bound},
 as long as $t \geq 2$ and $k \geq 2$.
-Some progress has been made in the case of $K(s, t)$ only for small values of $s \geq t \geq 4$.
+
+There are even fewer solved cases for degenerate Turán problems than in the non-degenerate case.
+Among them, it is known that, for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$,
+Theorem~\ref{thm:kst} is optimal in the sense that
+\[ \label{eq:k22-optimal}
+    \ex{n}{K(2, t)} = \Theta\left(n^{\frac{3}{2}}\right)~\cite{erdHos1966problem, furedi1996new},
+\]
+and also
+\[ \label{eq:k33-optimal}
+    \ex{n}{K(3, 3)} = \Theta\left(n^{\frac{5}{3}}\right)~\cite{brown1966graphs}.
+\]
+The theorem is also optimal for $K(s, t)$ when $s \geq t! + 1$~\cite{kollar1996norm}.
+Some progress has been made in the case of $K(s, t)$ when $s$ and $t$ have similar sizes,
+only for small values of $s \geq t \geq 4$.
+For example, Theorem~\ref{thm:kst} gives
+\[
+    \ex{n}{K(5,5)} = \bigO{n^{\frac{9}{5}}} = \bigO{n^{1.8}},
+\]
+and by Proposition~\ref{prop:probabilistic-lower-bound} we get
+\begin{equation} \label{eq:k55-probabilistic}
+    \ex{n}{K(5,5)} = \Omega\left(n^{\frac{5}{3}}\right) = \Omega\left(n^{1.67}\right),
+\end{equation}
+but~\eqref{eq:k55-probabilistic} has been improved to
+\[
+    \ex{n}{K(5,5)} = \Omega\left(n^{\frac{7}{4}}\right) = \Omega\left(n^{1.75}\right)~\cite{ball2012asymptotic}.
+\]
+It is conjectured that Theorem~\ref{thm:kst} always gives the correct order of magnitude.
+Even less is known about degenerate problems for graphs of higher uniformity.
+For example, not even the growth rate of the Turán number for the octahedron 3-graph
+($\ex{n}{K(2, 2, 2)}$, pictured in Figure~\ref{fig:222}) is known.
+The best upper bound, again, comes from Theorem~\ref{thm:erdos64}, which gives
+\[
+    \ex{n}{K(2, 2, 2)} = \bigO{n^{\frac{11}{4}}} = \bigO{n^{2.75}},
+\]
+while the best know lower bound is
+\[
+    \ex{n}{K(2, 2, 2)} = \Omega\left(n^{\frac{8}{3}}\right) = \Omega\left(n^{2.67}\right)~\cite{conlon2020random}.
+\]
+
+The main difficulty for degenerate problems is that sharp lower bounds for the Turán numbers
+often rely on specific geometric or algebraic constructions that work for very few cases,
+such as the ones cited for $K(2, 2)$ and $K(3, 3)$.
 
 Degenerate Turán problems are also of interest as tools to solve non-degenerate ones.
 A classic example is the following.
 % TODO Erdős-Stone theorem
 
 \begin{proof}[Proof of the Erdős-Stone-Simonovits Theorem (Theorem~\ref{thm:erdos_stone_simonovits})]
-    TODO % TODO
+    TODO. Uses KST + supersaturation % TODO
 \end{proof}
 

@@ -282,7 +282,7 @@ in which we impose that edges are not fully contained in any part.
 In general, this is much weaker, but the two notions are the same when $k = 2$.
 
 \begin{remark}
-    These chromatic numbers are increasing under the inclusion $k-graphs$.
+    These chromatic numbers are monotone non-decreasing with respect to the subgraph relation.
     Indeed, if $f: G \to H$ is an embedding of $k$-graphs,
     and $H$ is $(p, \gamma)$-partite with parts $V_1, \dots, V_p$,
     then $G$ is $(p, \gamma)$-partite with parts $f^{-1}(V_1), \dots, f^{-1}(V_p)$.
@@ -499,7 +499,7 @@ Now we are ready to prove Theorem~\ref{thm:turan}.
     in the statement maximizes the expression~\eqref{eq:turan}.
     The imposition that $\lfloor n / (r-1) \rfloor \leq a_i \leq \lceil n / (r-1) \rceil$ for all $i$
     is equivalent to saying that the part sizes are as equal as possible, that is,
-    $|a_i - a_j| < 1$ for all $i, j$.
+    $|a_i - a_j| \leq 1$ for all $i, j$.
     Suppose, by way of contradiction and without loss of generality, that $a_1 > a_2 + 1$.
     Let $a_1' = a_1 - 1$, $a_2' = a_2 + 1$ and $a_i' = a_i$ for all $i \geq 3$.
     Then,
@@ -565,9 +565,9 @@ for all $k$-graphs.
         This means that $H[W \setminus \{x\}]$ is a complete $k$-graph on $n - 1$ vertices,
         which must contain $G$ as a subgraph.
 
-        We show that the sequence $(a_n)$ it is non-increasing, so it must converge to a value $0 \leq \pi(G) < 1$.
+        We show that the sequence $(a_n)$ is non-increasing, so it must converge to a value $0 \leq \pi(G) < 1$.
         Let $n \geq |V(G)|$.
-        There exists a graph $H = (W, F)$ with $n+1$ vertices and $\ex{n+1}{G}$ edges does not contain
+        There exists a graph $H = (W, F)$ with $n+1$ vertices and $\ex{n+1}{G}$ edges that does not contain
         $G$ as a subgraph.
         For each vertex $w \in W$, the graph $H_w = H[W \setminus \{w\}]$ has $n$ vertices
         and does not contain $G$ as a subgraph.
@@ -665,7 +665,7 @@ The lower bounds are obtained by explicit constructions of $3$-graphs, and are b
 while the upper bounds are obtained by the method of flag algebras~\cite{razborov2007flag},
 which is a powerful tool for studying Turán problems that automates the search for relevant inequalities.
 
-One of the few examples of success in obtaining turán densities for in uniformity greater than $2$ is the case of
+One of the few examples of success in obtaining turán densities of $k$-graphs with uniformity $k > 2$ is the case of
 the Fano plane $F^{(3)}_7$, a $3$-graph with $7$ vertices corresponding to the points
 of the projective plane over the field $\mathbb{F}_2$,
 and $7$ edges correspnding to the projective lines.
@@ -749,15 +749,15 @@ The result is stated and proved here for completeness.
         with $|U| = u$, $|W| = w$ and $|E| = z$ exceeding the bound stated above.
         Let us consider the set
         \[
-            P = \left\{ (x, Y) \in U \times \binom{W}{t}
-            \middle\vert\, x \in N_G(Y) \right\}.
+            P = \left\{ (x, T) \in U \times \binom{W}{t}
+            \middle\vert\, \{x, y\} \in E \text{ for all } x \in T \right\}.
         \]
         Counting on the first coordinate, we get
         \begin{equation} \label{eq:kst_p_lower}
             |P| =
             \sum_{x \in U} \binom{d_G(x)}{t} =
             \sum_{x \in U} \varphi(d_G(x)) \geq
-            u  \sum_{x \in U} \varphi(z/u) =
+            u \varphi(z/u) =
             u \binom{z / u}{t},
         \end{equation}
         where we define
@@ -862,7 +862,7 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
         \begin{align*}
             U &= W_1 \times \dots \times W_{k-1}, \\
             W &= W_k, \\
-            E' &= \{(X, y) \in V \times W \mid X \cup \{y\} \in E\}.
+            E' &= \{(X, y) \in U \times W \mid X \cup \{y\} \in E\}.
         \end{align*}
         Condition~\eqref{eq:conditionlink} is equivalent to saying that
         there is no embedding of $K(z' + 1, t)$ onto $G'$ respecting the respective partitions.
@@ -998,11 +998,11 @@ as long as $t \geq 2$ and $k \geq 2$.
 There are even fewer solved cases for degenerate Turán problems than in the non-degenerate case.
 Among them, it is known that, for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$,
 Theorem~\ref{thm:kst} is optimal in the sense that
-\[ \label{eq:k22-optimal}
+\[
     \ex{n}{K(2, t)} = \Theta\left(n^{\frac{3}{2}}\right)~\cite{erdHos1966problem, furedi1996new},
 \]
 and also
-\[ \label{eq:k33-optimal}
+\[
     \ex{n}{K(3, 3)} = \Theta\left(n^{\frac{5}{3}}\right)~\cite{brown1966graphs}.
 \]
 The theorem is also optimal for $K(s, t)$ when $s \geq t! + 1$~\cite{kollar1996norm}.

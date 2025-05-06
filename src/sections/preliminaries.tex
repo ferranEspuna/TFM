@@ -676,13 +676,35 @@ It is known that
 
 We know that $k$-graphs assymptotically below the Turán number of a $k$-graph $G$
 may not contain $G$ as a subgraph.
-We may also ask how many copies (embeddings with different images) of $G$ can be found in a $k$-graph $H$
+We may also ask how many copies (different embeddings) of $G$ can be found in a $k$-graph $H$
 exceeding the Turán density.
 The following surprising result~\cite{erdHos1983supersaturated} shows that the number of copies of $G$ in $H$
 is assymptotically guaranteed to be very large.
 
-\begin{theorem}[Supersaturation Lemma]
-    TODO % TODO
+\begin{theorem}[Supersaturation \cite{erdHos1983supersaturated}] \label{thm:supersaturation}
+    Let $G = (V, E)$ be a $k$-graph, and let $H_n = (W, F)$ be a $k$-graph with $n$ vertices
+    and $\left(\pi(G) + \Omega(1) \right) \binom{n}{k}$ edges.
+    Then, $H_n$ has $\Omega \left(n^{|V|} \right)$ copies of $G$ as a subgraph.
+    \begin{proof}
+        We follow the proof of a survey by Keevash~\cite{keevash2011hypergraph}.
+        For $t$ large enough, $\ex{t}{G} \leq (\pi(G) + \gamma) \binom{t}{k}$.
+        Suppose that $n \geq t$.
+        Notice that
+        \[
+            \binom{n-k}{t-k}m = \sum_{T \in \binom{V}{t}} E(H_n[T]).
+        \]
+        This is because, for each edge in $H_n$, we can choose a set $T \subset V$ containing it in
+        $\binom{n-k}{t-k}$ ways.
+        We define
+        \[
+            P = \left\{ T \in \binom{V}{t} \middle| E(H_n[T]) > (\pi(G) + \gamma) \binom{t}{k} \right\}.
+        \]
+        If $T \in \binom{V}{t}$, the number of edges in $H_n[T]$ is at most $\binom{t}{k}$.
+        Therefore,
+        \[
+            \binom{n-k}{t-k}(\pi(G) + \gamma)\binom{n}{k} \leq \binom{n-k}{t-k}m \leq |P| \left( (\pi(G) +  \gamma)\binom{t}{k}\right) + (n - |P|) \binom{t}{k}.
+        \]
+    \end{proof}
 \end{theorem}
 
 \subsection{Degenerate Turán Problems}\label{subsec:degenerate}

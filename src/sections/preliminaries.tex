@@ -354,31 +354,6 @@ with $2$ vertices in each part, $K(2, 2, 2) = K^{(3)}(2, 2, 2)$.
 In contrast, Figure~\ref{fig:k2_222} shows the complete $3$-partite $2$-graph
 $K^{(3)}(2, 2, 2)$.
 
-\subsection{Blowing Up} \label{subsec:blowup}
-
-Another interesting operation we can do with $k$-graphs is the following.
-
-\begin{definition}
-    Let $G = (\{v_1, \dots, v_p\}, E)$ be a $k$-graph and let $t$ be a positive integer.
-    The $t$-\emph{blowup} $G(t)$ of $G$ is the $p$-partite $k$-graph
-    \[
-        G(t) = (V_1, \dots, V_p; E')
-    \]
-    where $|V_i| = t$ and
-    \[
-        E' = \bigcup_{v_{i_1}, \dots, v_{i_k} \in E} V_{i_1} \times \dots \times V_{i_k}.
-    \]
-\end{definition}
-
-In essence, we replace each vertex with a set of $t$ vertices, and each edge with a complete $k$-partite $k$-graph
-on the corresponding parts.
-For example, Figure~\ref{fig:k2_222} displays the $2$-blowup of the triangle graph \completesuperindex{2}{3},
-with the edges corresponding to the three original edges of the triangle shown in different colors.
-Any complete $p$-partite $k$-graph with equal part sizes can be seen as a blowup of a complete $k$-graph.
-In particular, the complete $k$-graph $\compoverset{k}{t}$ (see Figure~\ref{fig:222} for an example)
-is often known as a \emph{blowup of an edge}, because it is a $t$-blowup of the
-$k$-graph on $k$ vertices with a single edge $\completesuperindex{k}{k}$.
-
 \subsection{Turán Problem for $k$-graphs}\label{subsec:turan}
 
 Now we can state the \emph{forbidden subgraph problem} for $k$-graphs.

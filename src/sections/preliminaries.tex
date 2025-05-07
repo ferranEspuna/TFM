@@ -1099,14 +1099,20 @@ A classic example is the following way to prove Theorem~\ref{thm:erdos_stone_sim
     there is a family of $G'$-free $k$-graphs $H_n = (V_n, E_n)$ with $n$ vertices and
     $\left(\frac{1}{p - 1} + \Omega(1)\right) \binom{n}{k}$ edges.
     By the Turán Theorem and supersaturation (Theorem~\ref{thm:supersaturation}),
-    there are $\Omega\left(n^{p})$ copies of $\completesuperindex{2}{p}$ in $H_n$,
+    there are $\Omega\left(n^{p}\right)$ copies of $\completesuperindex{2}{p}$ in $H_n$,
     where we are only overcounting by a constant factor of $p!$, for all the possible embeddings with the same image set.
-    Consider the auxiliary $p$-graph $(H_n') = (V_n, E_n')$, where
+    Consider the auxiliary $p$-graph $H_n' = (V_n, E_n')$, where
     \[
         E_n' = \left\{ T \in \binom{V_n}{p} \middle| H_n[T] \text{ is complete} \right\}.
     \]
     It has $\Omega\left(n^{p}\right)$ edges, so by Theorem~\ref{thm:erdos64} (applied with $k = p$),
     for $n$ large enough, $H_n'$ contains $\compoverset{p}{t}$ as a subgraph.
+    Say, for example, that $H_n'[V_1 \cup \dots \cup V_p] = \compdots{V_1}{V_p}$, with $V_i = t$.
+    Whe have that $(v_1, \dots, v_p)$ is an edge of $H_n'$
+    for all $\in V_1 \times \dots \times V_p$.
+    In particular, if $i \neq j$, $\{v_i, v_j\} \in E_n$.
+    This means that $H_n[V_1 \cup \dots \cup V_p] = \compdotssuperindex{2}{V_1}{V_p} \cong G'$,
+    against our assumption that $H_n$ is $G'$-free.
 
 \end{proof}
 

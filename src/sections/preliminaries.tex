@@ -671,7 +671,7 @@ of the projective plane over the field $\mathbb{F}_2$,
 and $7$ edges correspnding to the projective lines.
 It is known that
 \[
-    \pi(F^{(3)}_7) = \frac{3}{4}~\cite{de2000maximum}.
+    \pi\left(F^{(3)}_7\right) = \frac{3}{4}~\cite{de2000maximum}.
 \]
 
 We know that $k$-graphs assymptotically below the Turán number of a $k$-graph $G$
@@ -687,8 +687,9 @@ is assymptotically guaranteed to be very large.
     Then, $H_n$ has $\Omega \left(n^{|V|} \right)$ copies of $G$ as a subgraph.
     \begin{proof}
         We follow the proof of a survey by Keevash~\cite{keevash2011hypergraph}.
-        For $t$ large enough, $\ex{t}{G} \leq (\pi(G) + \gamma) \binom{t}{k}$.
-        Suppose that $n \geq t$.
+        Suppose that, for $n$ large enough, $H_n$ has $ m \geq (\pi(G) + \gamma) \binom{n}{k}$ edges.
+        Pick $t$ large enough so that $\ex{t}{G} \leq \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k}$.
+        Suppose, furthermore, that $n \geq t$.
         Notice that
         \[
             \binom{n-k}{t-k}m = \sum_{T \in \binom{V}{t}} E(H_n[T]).
@@ -697,12 +698,27 @@ is assymptotically guaranteed to be very large.
         $\binom{n-k}{t-k}$ ways.
         We define
         \[
-            P = \left\{ T \in \binom{V}{t} \middle| E(H_n[T]) > (\pi(G) + \gamma) \binom{t}{k} \right\}.
+            P = \left\{ T \in \binom{V}{t} \middle| E(H_n[T]) > \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k} \right\}.
         \]
         If $T \in \binom{V}{t}$, the number of edges in $H_n[T]$ is at most $\binom{t}{k}$.
         Therefore,
         \[
-            \binom{n-k}{t-k}(\pi(G) + \gamma)\binom{n}{k} \leq \binom{n-k}{t-k}m \leq |P| \left( (\pi(G) +  \gamma)\binom{t}{k}\right) + (n - |P|) \binom{t}{k}.
+            \binom{n-k}{t-k}(\pi(G) + \gamma)\binom{n}{k}
+            \leq \binom{n-k}{t-k}m
+            \leq |P| \binom{t}{k} + \left(\binom{n}{t} - |P|\right) \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k}.
+        \]
+        Rearranging and applying standard binomial coefficient identities, we can bound $|P|$ as
+        \[
+            |P| \geq \frac{\gamma}{2(1 - \pi(G)- \gamma /2)} \binom{n}{t} \geq \frac{\gamma}{2} \binom{n}{t}.
+        \]
+        Now, for each $T \in P$, $H_n[T]$ contains $G$ as a subgraph.
+        Furthermore, each copy of $G$ is in at most $\binom{n - |V|}{t - |V|}$
+        such sets.
+        Therefore, the number of copies of $G$ in $H_n$ is at least
+        \[
+            \frac{\gamma}{2} \binom{n}{t} \frac{1}{\binom{n - |V|}{t - |V|}}
+            = \frac{\gamma}{2 \binom{t}{|V|}} \binom{n}{|V|}
+            = \Omega\left( n^{|V|}\right). \qedhere
         \]
     \end{proof}
 \end{theorem}

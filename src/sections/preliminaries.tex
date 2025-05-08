@@ -191,7 +191,7 @@ we need to show some basic properties.
         \item $G \subseteq H$ if and only if $G' \subseteq H'$. \label{item:embedding}
         \item $G \subseteq_{\text{ind}} H$ if and only if $G' \subseteq_{\text{ind}} H'$. \label{item:induced_embedding}
     \end{enumerate}
-    \begin{proof} % TODO REVIEW
+    \begin{proof}
         Because the isomorphism relation is symmetric, we only need to show one direction of each implication.
         let $f: V(G) \to V(H)$ be an embedding of $G$ in $H$, and let
         $g: V(G) \to V(G')$ and $h: V(H) \to V(H')$ be isomorphisms between the respective graphs.
@@ -979,7 +979,7 @@ For example, see the following probabilistic construction.
 
 Note that this also implies that
 \[
-    \ex{n}{\compdots{t_1}{t_k}} = \Omega\left(n^{k - \frac{\sum_i t_i - k}{\prod_i t_i - 1}}\right).
+    \ex{n}{\compdots{t_1}{t_k}} = \Omega\left(n^{k - \frac{\left( \sum_i t_i \right) - k}{\left( \prod_i t_i \right) - 1}}\right).
 \]
 This leaves a very large gap between the upper and lower bounds for the Turán numbers of degenerate $k$-graphs.
 For example, in the balanced case, where all $t_i$ are equal, we get

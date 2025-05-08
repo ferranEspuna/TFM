@@ -261,7 +261,7 @@ For example, in Figure~\ref{fig:complete_kgraph} we show the complete graph $\co
 
 \subsection{Partite $k$-graphs}\label{subsec:partite}
 
-We now introduce the notion of partite $k$-graphs.
+One way to impose structure on a $k$-graph is to require that it is \emph{partite}.
 
 \begin{definition} \label{def:partite}
     for an integer $p \geq k$, a $k$-graph $G = (V, E)$ is \emph{$p$-partite}
@@ -352,7 +352,7 @@ or, in the $k$-partite case, by
 Figure~\ref{fig:222} shows the complete $3$-partite $3$-graph
 with $2$ vertices in each part, $K(2, 2, 2) = K^{(3)}(2, 2, 2)$.
 In contrast, Figure~\ref{fig:k2_222} shows the complete $3$-partite $2$-graph
-$K^{(3)}(2, 2, 2)$.
+$K^{(2)}(2, 2, 2)$.
 
 \subsection{Turán Problem for $k$-graphs}\label{subsec:turan}
 
@@ -392,7 +392,17 @@ contain $G$ as a subgraph.
 \end{proposition}
 
 We call the integer $\ex{n}{G}$ the \emph{Turán number} of $G$ on $n$ vertices.
-It is clearly invariant under isomorphism of $G$.
+The turán number is increasing both in $n$ and under graph inclusion.
+The first property can be seen by taking a $G$-free $k$-graph on $H$ with $n$ vertices
+and $\ex{n}{G}$ vertices; and adding a vertex $v$ and no edges to it, obtaining $H'$.
+If $f: G \to H$ is an embedding and $v$ has a preimage $x$, it must be a vertex in $H$ with degree $0$,
+so it can be replaced by any other vertex in $H$ outside the image of $f$.
+Restricting this new mapping to $H$, we get that $G \subset H$, against our assumption.
+For the second, suppose that $G \subset G'$.
+Because $H$ is $G$-free, it is also $G'$-free, which means that it has at most $\ex{n}{G'}$ edges.
+Therefore, $\ex{n}{G} \leq \ex{n}{G'}$.
+As a consequence of this, we also get that the Turán number is invariant under isomorphism of $G$.
+
 There are very few $k$-graphs $G$ for which an exact formula for $\ex{n}{G}$ is known.
 Of these, the most famous family of examples are the complete $2$-graphs $\completesuperindex{2}{r}$,
 for which extremal numbers were first studied by Turán~\cite{Turan1941} in 1941.
@@ -668,21 +678,59 @@ which is a powerful tool for studying Turán problems that automates the search 
 One of the few examples of success in obtaining turán densities of $k$-graphs with uniformity $k > 2$ is the case of
 the Fano plane $F^{(3)}_7$, a $3$-graph with $7$ vertices corresponding to the points
 of the projective plane over the field $\mathbb{F}_2$,
-and $7$ edges correspnding to the projective lines.
+and $7$ edges corresponding to the projective lines.
 It is known that
 \[
-    \pi(F^{(3)}_7) = \frac{3}{4}~\cite{de2000maximum}.
+    \pi\left(F^{(3)}_7\right) = \frac{3}{4}~\cite{de2000maximum}.
 \]
 
-We know that $k$-graphs assymptotically below the Turán number of a $k$-graph $G$
+We know that $k$-graphs asymptotically below the Turán number of a $k$-graph $G$
 may not contain $G$ as a subgraph.
-We may also ask how many copies (embeddings with different images) of $G$ can be found in a $k$-graph $H$
+We may also ask how many copies (different embeddings) of $G$ can be found in a $k$-graph $H$
 exceeding the Turán density.
 The following surprising result~\cite{erdHos1983supersaturated} shows that the number of copies of $G$ in $H$
-is assymptotically guaranteed to be very large.
+is asymptotically guaranteed to be very large.
 
-\begin{theorem}[Supersaturation Lemma]
-    TODO % TODO
+\begin{theorem}[Supersaturation \cite{erdHos1983supersaturated}] \label{thm:supersaturation}
+    Let $G = (V, E)$ be a $k$-graph, and let $H_n = (W, F)$ be a $k$-graph with $n$ vertices
+    and $\left(\pi(G) + \Omega(1) \right) \binom{n}{k}$ edges.
+    Then, $H_n$ has $\Omega \left(n^{|V|} \right)$ copies of $G$ as a subgraph.
+    \begin{proof}
+        We follow the proof of a survey by Keevash~\cite{keevash2011hypergraph}.
+        Suppose that, for $n$ large enough, $H_n$ has $ m \geq (\pi(G) + \gamma) \binom{n}{k}$ edges.
+        Pick $t$ large enough so that $\ex{t}{G} \leq \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k}$.
+        Suppose, furthermore, that $n \geq t$.
+        Notice that
+        \[
+            \binom{n-k}{t-k}m = \sum_{T \in \binom{V}{t}} E(H_n[T]).
+        \]
+        This is because, for each edge in $H_n$, we can choose a set $T \subset V$ containing it in
+        $\binom{n-k}{t-k}$ ways.
+        We define
+        \[
+            P = \left\{ T \in \binom{V}{t} \middle| E(H_n[T]) > \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k} \right\}.
+        \]
+        If $T \in \binom{V}{t}$, the number of edges in $H_n[T]$ is at most $\binom{t}{k}$.
+        Therefore,
+        \[
+            \binom{n-k}{t-k}(\pi(G) + \gamma)\binom{n}{k}
+            \leq \binom{n-k}{t-k}m
+            \leq |P| \binom{t}{k} + \left(\binom{n}{t} - |P|\right) \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k}.
+        \]
+        Rearranging and applying standard binomial coefficient identities, we can bound $|P|$ as
+        \[
+            |P| \geq \frac{\gamma}{2(1 - \pi(G)- \gamma /2)} \binom{n}{t} \geq \frac{\gamma}{2} \binom{n}{t}.
+        \]
+        Now, for each $T \in P$, $H_n[T]$ contains $G$ as a subgraph.
+        Furthermore, each copy of $G$ is in at most $\binom{n - |V|}{t - |V|}$
+        such sets.
+        Therefore, the number of copies of $G$ in $H_n$ is at least
+        \[
+            \frac{\gamma}{2} \binom{n}{t} \frac{1}{\binom{n - |V|}{t - |V|}}
+            = \frac{\gamma}{2 \binom{t}{|V|}} \binom{n}{|V|}
+            = \Omega\left( n^{|V|}\right). \qedhere
+        \]
+    \end{proof}
 \end{theorem}
 
 \subsection{Degenerate Turán Problems}\label{subsec:degenerate}
@@ -1038,10 +1086,31 @@ often rely on specific geometric or algebraic constructions that work for very f
 such as the ones cited for $K(2, 2)$ and $K(3, 3)$.
 
 Degenerate Turán problems are also of interest as tools to solve non-degenerate ones.
-A classic example is the following.
-% TODO Erdős-Stone theorem
+A classic example is the following way to prove Theorem~\ref{thm:erdos_stone_simonovits}.
 
-\begin{proof}[Proof of the Erdős-Stone-Simonovits Theorem (Theorem~\ref{thm:erdos_stone_simonovits})]
-    TODO. Uses KST + supersaturation % TODO
+\begin{proof}[Proof of the Erdős-Stone-Simonovits Theorem]
+    Let $G = (V, E)$ be a $2$-graph and $r = \chi(G)$.
+    In particular, let $G \subset G' = \compdotssuperindexoverset{2}{r}{t}$.
+    By the same construction as in the Turán Theorem (Theorem~\ref{thm:turan}),
+    we know that the Turán density of \emph{any}
+    $2$-graph with chromatic number $r$ is at least $1 - \frac{1}{r - 1}$.
+    Therefore, we only need to show that $\pi \left( G' \right) \leq 1 - \frac{1}{r - 1}$.
+    Suppose, by way of contradiction, that
+    there is a family of $G'$-free $2$-graphs $H_n = (V_n, E_n)$ with $n$ vertices and
+    $\left(1 - \frac{1}{r - 1} + \Omega(1)\right) \binom{n}{2}$ edges.
+    By the Turán Theorem and supersaturation (Theorem~\ref{thm:supersaturation}),
+    there are $\Omega\left(n^{r}\right)$ copies of $\completesuperindex{2}{r}$ in $H_n$,
+    where we are only overcounting by a constant factor of $r!$, for all the possible embeddings with the same image set.
+    Consider the auxiliary $r$-graph $H_n' = (V_n, E_n')$, where
+    \[
+        E_n' = \left\{ T \in \binom{V_n}{r} \middle| H_n[T] \text{ is complete} \right\}.
+    \]
+    It has $\Omega\left(n^{r}\right)$ edges, so by Theorem~\ref{thm:erdos64} (applied with $k = r$),
+    for $n$ large enough, $H_n'$ contains $\compoverset{r}{t}$ as a subgraph.
+    Say, for example, that $H_n'[V_1 \cup \dots \cup V_r] = \compdots{V_1}{V_r}$, with $|V_i| = t$.
+    We have that $(v_1, \dots, v_r)$ is an edge of $H_n'$
+    for all $\in V_1 \times \dots \times V_r$.
+    In particular, if $i \neq j$, $\{v_i, v_j\} \in E_n$.
+    This means that $H_n[V_1 \cup \dots \cup V_r] = \compdotssuperindex{2}{V_1}{V_r} \cong G'$,
+    against our assumption that $H_n$ is $G'$-free.
 \end{proof}
-

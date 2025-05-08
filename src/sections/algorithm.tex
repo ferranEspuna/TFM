@@ -58,6 +58,7 @@ The construction in Theorem~\ref{thm:kpartite} then proves
 \]
 
 % TODO discussion of constant density case. Is it optimal?
+\subsection{Previous Results}\label{subsec:previous-results}
 
 For $k = 2$, this problem was already solved by an algorithm of Mubayi and Turán~\cite{MUBAYI2010174},
 which we present here (Algorithm~\ref{alg:bipartite}) for context and clarity.
@@ -123,6 +124,8 @@ the  number of iterations of the loop is
     e^{2\log n} = n^2.
 \]
 
+\subsection{Algorithm for $k$-graphs} \label{subsec:algorithm-for-k-graphs}
+
 We now present Algorithm~\ref{alg:kpartite}, which is
 a generalization of Algorithm~\ref{alg:bipartite} to $k$-graphs.
 It follows the same structure as Algorithm~\ref{alg:bipartite},
@@ -186,6 +189,8 @@ so it forms a $\compoverset{k}{t}$ in $G$.
         \EndFunction
     \end{algorithmic}
 \end{algorithm}
+
+\subsection{Proof of Correctness} \label{subsec:proof-of-correctness}
 
 The implementation of the algorithm and its proof of correctness are less cumbersome if we assume
 a $1$-graph to be just a subset of a set and use it as the base case.

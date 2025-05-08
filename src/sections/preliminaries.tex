@@ -352,7 +352,7 @@ or, in the $k$-partite case, by
 Figure~\ref{fig:222} shows the complete $3$-partite $3$-graph
 with $2$ vertices in each part, $K(2, 2, 2) = K^{(3)}(2, 2, 2)$.
 In contrast, Figure~\ref{fig:k2_222} shows the complete $3$-partite $2$-graph
-$K^{(3)}(2, 2, 2)$.
+$K^{(2)}(2, 2, 2)$.
 
 \subsection{Turán Problem for $k$-graphs}\label{subsec:turan}
 
@@ -1089,30 +1089,28 @@ Degenerate Turán problems are also of interest as tools to solve non-degenerate
 A classic example is the following way to prove Theorem~\ref{thm:erdos_stone_simonovits}.
 
 \begin{proof}[Proof of the Erdős-Stone-Simonovits Theorem]
-    Let $G = (V, E)$ be a $2$-graph with $\chi(G) = p$.
-    In particular, let $G \subset G' = \compdotssuperindex{2}{t}{t}$.
+    Let $G = (V, E)$ be a $2$-graph and $r = \chi(G)$.
+    In particular, let $G \subset G' = \compdotssuperindexoverset{2}{r}{t}$.
     By the same construction as in the Turán Theorem (Theorem~\ref{thm:turan}),
     we know that the Turán density of \emph{any}
-    $2$-graph with chromatic number $p$ is at least $1 - \frac{1}{p - 1}$.
-    Therefore, we only need to show that $\pi \left( G' \right) \leq 1 - \frac{1}{p - 1}$.
+    $2$-graph with chromatic number $r$ is at least $1 - \frac{1}{r - 1}$.
+    Therefore, we only need to show that $\pi \left( G' \right) \leq 1 - \frac{1}{r - 1}$.
     Suppose, by way of contradiction, that
-    there is a family of $G'$-free $k$-graphs $H_n = (V_n, E_n)$ with $n$ vertices and
-    $\left(\frac{1}{p - 1} + \Omega(1)\right) \binom{n}{k}$ edges.
+    there is a family of $G'$-free $2$-graphs $H_n = (V_n, E_n)$ with $n$ vertices and
+    $\left(1 - \frac{1}{r - 1} + \Omega(1)\right) \binom{n}{2}$ edges.
     By the Turán Theorem and supersaturation (Theorem~\ref{thm:supersaturation}),
-    there are $\Omega\left(n^{p}\right)$ copies of $\completesuperindex{2}{p}$ in $H_n$,
-    where we are only overcounting by a constant factor of $p!$, for all the possible embeddings with the same image set.
-    Consider the auxiliary $p$-graph $H_n' = (V_n, E_n')$, where
+    there are $\Omega\left(n^{r}\right)$ copies of $\completesuperindex{2}{r}$ in $H_n$,
+    where we are only overcounting by a constant factor of $r!$, for all the possible embeddings with the same image set.
+    Consider the auxiliary $r$-graph $H_n' = (V_n, E_n')$, where
     \[
-        E_n' = \left\{ T \in \binom{V_n}{p} \middle| H_n[T] \text{ is complete} \right\}.
+        E_n' = \left\{ T \in \binom{V_n}{r} \middle| H_n[T] \text{ is complete} \right\}.
     \]
-    It has $\Omega\left(n^{p}\right)$ edges, so by Theorem~\ref{thm:erdos64} (applied with $k = p$),
-    for $n$ large enough, $H_n'$ contains $\compoverset{p}{t}$ as a subgraph.
-    Say, for example, that $H_n'[V_1 \cup \dots \cup V_p] = \compdots{V_1}{V_p}$, with $V_i = t$.
-    Whe have that $(v_1, \dots, v_p)$ is an edge of $H_n'$
-    for all $\in V_1 \times \dots \times V_p$.
+    It has $\Omega\left(n^{r}\right)$ edges, so by Theorem~\ref{thm:erdos64} (applied with $k = r$),
+    for $n$ large enough, $H_n'$ contains $\compoverset{r}{t}$ as a subgraph.
+    Say, for example, that $H_n'[V_1 \cup \dots \cup V_r] = \compdots{V_1}{V_r}$, with $|V_i| = t$.
+    We have that $(v_1, \dots, v_r)$ is an edge of $H_n'$
+    for all $\in V_1 \times \dots \times V_r$.
     In particular, if $i \neq j$, $\{v_i, v_j\} \in E_n$.
-    This means that $H_n[V_1 \cup \dots \cup V_p] = \compdotssuperindex{2}{V_1}{V_p} \cong G'$,
+    This means that $H_n[V_1 \cup \dots \cup V_r] = \compdotssuperindex{2}{V_1}{V_r} \cong G'$,
     against our assumption that $H_n$ is $G'$-free.
-
 \end{proof}
-

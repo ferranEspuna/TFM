@@ -377,6 +377,8 @@ Any complete $p$-partite $k$-graph with equal part sizes can be seen as a blowup
 In particular, the complete $k$-graph $\compoverset{k}{t}$ (see Figure~\ref{fig:222} for an example)
 is often known as a \emph{blowup of an edge}, because it is a $t$-blowup of the
 $k$-graph on $k$ vertices with a single edge $\completesuperindex{k}{k}$.
+Similarly to the case of complete $k$-graphs and complete $k$-partite $k$-graphs,
+the $t$-blowup of a $k$-graph is unique up to isomorphism.
 
 \subsection{Turán Problems}\label{subsec:turan}
 
@@ -1005,11 +1007,42 @@ for large enough $n$, $H_n$ contains a $\compdots{t_n}{t_n}$ as a subgraph, with
 The following theorem generalizes this notion to blow-ups of arbitrary $k$-partite $k$-graphs.
 
 \begin{theorem}
-    Let $G$ be an $r$-partite hypergraph and let $H_n$ be a family of graphs with $n$
+    Let $G = (V, E)$ be a $k$-graph and let $(W_n, F_n)$ be a family of graphs with $n$
     vertices and $\left( \pi(G) + \Omega (1) \right) \binom{n}{k}$ edges.
     Then, for $n$ large enough, $H_n$ contains $G(t_n)$ as a subgraph,
-    where $t_n = \Omega\left( (\log n)^{\frac{1}{r-1}} \right)$.
+    where
+    \[
+        t_n = \Omega\left( (\log n)^{\frac{1}{|V|-1}} \right).
+    \]
     \begin{proof}
+        By Theorem~\ref{thm:supersaturation}, $H_n$ contains $\Omega\left( n^{|V|} \right)$ copies of $G$.
+        Consider the $|V|$-graph $H_n' = (W_n, F_n')$, where
+        \[
+            F_n' = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H_n\}.
+        \]
+        Because each set of $|V|$ vertices in $H_n$ can be the image of at most $|V|! = \bigO{1}$ embeddings of $G$,
+        $H_n'$ has $\Omega\left(n^{|V|} \right)$ edges.
+        Furthermore, by the same argument as in Remark~\ref{rem:zar_vs_turan}, $H_n'$, we can assume that
+        $H_n'$ is $|V|$-partite (say, $H_n' = (W_1, \dots, W_{|V|}; F_n')$ with
+        $|W_i| \geq \left\lfloor n / |V| \right\rfloor$
+        without losing this condition.
+        Each edge in this graph is the image of $V$ under an embedding $f$ of $G$ in $H_n$.
+        Numbering the vertices of $G$ as $v_1, \dots, v_{|V|}$, $f$ corresponds to a permutation $\sigma$
+        of the vertices of $G$, where $f(v_i) \in W_j$ when $\sigma(i) = j$.
+        Picking the permutation $\hat{\sigma}$ that has the most edges corresponding to it
+        (at least $|E_n'| / |V|! = \Omega\left( n^{|V|} \right)$), and without loss of generality,
+        each edge in $(u_1, \dots, u_{|V|}) \in F_n' \subset W_1 \times \dots \times W_{|V|}$
+        corresponds to the fact that for each edge $\{v_{i_1}, \dots, v_{i_k}\} \in E$,
+        $\{u_{i_1}, \dots ,u_{i_k}\}$ is an edge of $H_n$.
+        By Remark~\ref{rem:uniform-t}, we can find a \compoverset{|V|}{t_n} in $H_n'$,
+        where
+        \[
+            t_n = \Omega\left( (\log n)^{\frac{1}{|V|-1}} \right).
+        \]
+        That is, there are $|V|$ sets $T_1, \dots, T_{|V|}$ of size $t_n$ such that
+        if $\{v_{i_1}, \dots, v_{i_k}\} \in E$ is an edge of $G$, then
+        $\{u_{i_1}, \dots, u_{i_k}\} \in F_n$ is an edge of $H_n$ for all $u_{i_j} \in T_j$.
+        This means that $G(t)$ is a subgraph of $H_n$.
 
     \end{proof}
 \end{theorem}

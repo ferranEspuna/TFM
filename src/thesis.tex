@@ -31,6 +31,7 @@
 \newtheorem{observation}[theorem]{Observation}
 
 \usepackage{algorithmicx}
+\usepackage{cleveref}
 \newlength{\depthofsumsign}
 \newlength{\totalheightofsumsign}
 \newlength{\heightanddepthofargument}
@@ -49,6 +50,14 @@
 \newcommand{\compdotssuperindex}[3]{\ensuremath{K^{(#1)}\left(#2, \dots, #3\right)}}
 \newcommand{\completesuperindex}[2]{\ensuremath{K^{(#1)}_{#2}}}
 \newcommand{\compdotssuperindexoverset}[3]{\ensuremath{K^{(#1)}\left(#3, \overset{#2}{\dots}, #3\right)}}
+
+\newenvironment{delayedproof}[1]
+ {\begin{proof}[\raisedtarget{#1}Proof of \Cref{#1}]}
+ {\end{proof}}
+\newcommand{\raisedtarget}[1]{%
+  \raisebox{\fontcharht\font`P}[0pt][0pt]{\hypertarget{#1}{}}%
+}
+\newcommand{\proofref}[1]{\hyperlink{#1}{proof}}
 % Body of document
 
 \titol{Finding Partite Hypergraphs Efficiently}

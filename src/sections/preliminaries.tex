@@ -264,14 +264,14 @@ For example, in Figure~\ref{fig:complete_kgraph} we show the complete graph $\co
 One way to impose structure on a $k$-graph is to require that it is \emph{partite}.
 
 \begin{definition} \label{def:partite}
-    for an integer $p \geq k$, a $k$-graph $G = (V, E)$ is \emph{$p$-partite}
-    (or $(p, 1)$-\emph{colorable})
-    if there exists a partition $V = V_1 \cup \dots \cup V_p$
+    for an integer $r \geq k$, a $k$-graph $G = (V, E)$ is \emph{$r$-partite}
+    (or $(r, 1)$-\emph{colorable})
+    if there exists a partition $V = V_1 \cup \dots \cup V_r$
     such that every edge $e \in E$ intersects every part $V_i$ in at most one vertex.
-    We may write $G = (V_1, \dots, V_p; E)$ and say that
-    $G$ is a partite $k$-graph on $V_1, \dots, V_p$.
-    If $p$ is the minimum integer such that $G$ is $p$-partite,
-    we say that $p = \chi_{1}(G)$ is the \emph{partiteness} of $G$.
+    We may write $G = (V_1, \dots, V_r; E)$ and say that
+    $G$ is a partite $k$-graph on $V_1, \dots, V_r$.
+    If $r$ is the minimum integer such that $G$ is $r$-partite,
+    we say that $r = \chi_{1}(G)$ is the \emph{partiteness} of $G$.
 \end{definition}
 
 The above definition is a special case of the family of chromatic numbers of hypergraphs $\chi_{\gamma}(G)$,
@@ -284,8 +284,8 @@ In general, this is much weaker, but the two notions are the same when $k = 2$.
 \begin{remark}
     These chromatic numbers are monotone non-decreasing with respect to the subgraph relation.
     Indeed, if $f: G \to H$ is an embedding of $k$-graphs,
-    and $H$ is $(p, \gamma)$-partite with parts $V_1, \dots, V_p$,
-    then $G$ is $(p, \gamma)$-partite with parts $f^{-1}(V_1), \dots, f^{-1}(V_p)$.
+    and $H$ is $(r, \gamma)$-partite with parts $V_1, \dots, V_r$,
+    then $G$ is $(r, \gamma)$-partite with parts $f^{-1}(V_1), \dots, f^{-1}(V_r)$.
     This is because $f$ is injective, so it preserves the number of vertices in each part for every edge.
     This in turn means that $\chi_{\gamma}(G) \leq \chi_{\gamma}(H)$.
 \end{remark}
@@ -309,26 +309,26 @@ In some cases, it is useful to generalize this notation to partite $k$-graphs
 where the number of parts is different from $k$.
 
 \begin{definition}
-    Let $p \geq k \geq 1$.
-    A $p$-partite $k$-graph $G = (V_1, \dots, V_p; E)$ is \emph{complete} if
+    Let $r \geq k \geq 1$.
+    An $r$-partite $k$-graph $G = (V_1, \dots, V_r; E)$ is \emph{complete} if
     \[
-        E = \bigcup_{\left\{i_1, \dots, i_k \right\} \in \binom{[p]}{k}} V_{i_1} \times \dots \times V_{i_k}.
+        E = \bigcup_{\left\{i_1, \dots, i_k \right\} \in \binom{[r]}{k}} V_{i_1} \times \dots \times V_{i_k}.
     \]
-    We denote $G = \compdotssuperindex{k}{V_1}{V_p}$.
+    We denote $G = \compdotssuperindex{k}{V_1}{V_r}$.
 
 \end{definition}
 
-If $V_1, \dots, V_p$ and $W_1, \dots, W_p$ are disjoint sets
+If $V_1, \dots, V_r$ and $W_1, \dots, W_r$ are disjoint sets
 and $|V_i| = |W_i| = a_i$ for all $i$, then
 \[
-    \compdotssuperindex{k}{V_1}{V_p} \cong \compdotssuperindex{k}{W_1}{W_p}.
+    \compdotssuperindex{k}{V_1}{V_r} \cong \compdotssuperindex{k}{W_1}{W_r}.
 \]
 An isomorphism is given by any bijection $f: V \to W$ (where $V=\cup_i V_i, W=\cup_i W_i$)
 such that $f(V_i) = W_i$ for all $i$.
-This allows us to talk, up to isomorphism, about \emph{the} complete $p$-partite $k$-graph
-with part sizes $a_1, \dots, a_p$, which we denote by
+This allows us to talk, up to isomorphism, about \emph{the} complete $r$-partite $k$-graph
+with part sizes $a_1, \dots, a_r$, which we denote by
 \[
-    \compdotssuperindex{k}{a_1}{a_p},
+    \compdotssuperindex{k}{a_1}{a_r},
 \]
 or, in the $k$-partite case, by
 \[
@@ -449,8 +449,9 @@ The result is the following.
 
 \end{theorem}
 
-To prove this theorem, we suppose that $G = (V, E)$ is a $2$-graph with $n$ vertices and
-$\ex{n}{\completesuperindex{2}{r}}$edges, and use the following two lemmas.
+Before the \proofref{thm:turan} of Turán's theorem, we introduce two lemmas.
+Suppose that $G = (V, E)$ is a $2$-graph with $n$ vertices and
+$\ex{n}{\completesuperindex{2}{r}}$ edges.
 
 \begin{lemma}\label{lem:same_degree}
     If $x, y \in V$ are different vertices and $\{x, y\} \notin E$, then $d_G(x) = d_G(y)$.
@@ -519,8 +520,8 @@ $\ex{n}{\completesuperindex{2}{r}}$edges, and use the following two lemmas.
     \end{proof}
 \end{lemma}
 
-Now we are ready to prove Theorem~\ref{thm:turan}.
-\begin{proof}[Proof of Turán Theorem]
+Now we are ready to prove Turán's theorem.
+\begin{delayedproof}{thm:turan}
     We have shown in Lemma~\ref{lem:turan_complete_partite} that $G = (V_1, \dots V_p; E)$ is complete.
     In fact, we can set $p = r - 1$:
     If $p < r - 1$, we can always add empty parts to $G$; and if it has more than $r - 1$ nonempty parts
@@ -544,7 +545,7 @@ Now we are ready to prove Theorem~\ref{thm:turan}.
         > \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y,
     \end{align*}
     in contradiction with the number of edges in $G$ being maximal.
-\end{proof}
+\end{delayedproof}
 
 Because of the difficulty of finding exact Turán numbers for $k$-graphs,
 we usually look for asymptotic approximations of them.
@@ -678,7 +679,7 @@ The following theorem gives the Turán density of all $2$-graphs.
     \]
 \end{theorem}
 
-We defer the proof of this theorem to the end of this section,
+We defer the \proofref{thm:erdos_stone_simonovits} of this theorem to the next subsection,
 where we will have more powerful tools at our disposal.
 Note that letting $G = \completesuperindex{2}{r}$ we recover
 Corollary~\ref{cor:turan_density_kr} of Theorem~\ref{thm:turan}.
@@ -1004,12 +1005,12 @@ for large enough $n$, $H_n$ contains a $\compdots{t_n}{t_n}$ as a subgraph, with
 The following theorem generalizes this notion to blow-ups of arbitrary $k$-partite $k$-graphs.
 
 \begin{theorem}
-    Let $G$ be a hypergraph and let $H_n$ be a family of graphs with $n$
+    Let $G$ be an $r$-partite hypergraph and let $H_n$ be a family of graphs with $n$
     vertices and $\left( \pi(G) + \Omega (1) \right) \binom{n}{k}$ edges.
     Then, for $n$ large enough, $H_n$ contains $G(t_n)$ as a subgraph,
-    where $t_n = \Omega\left( (\log n)^{\frac{1}{k-1}} \right)$.
+    where $t_n = \Omega\left( (\log n)^{\frac{1}{r-1}} \right)$.
     \begin{proof}
-        TODO. Use supersaturation + probabilistic method + remark. % TODO
+
     \end{proof}
 \end{theorem}
 
@@ -1019,9 +1020,20 @@ The following corollary highlights that degenerate Turán problems can be applie
     Then, $\pi(G(t)) = \pi(G)$.
 \end{corollary}
 
-In particular, this directly proves the Erdős-Stone-Simonovits theorem for $2$-graphs (Theorem~\ref{thm:erdos_stone_simonovits}).
-Indeed, any graph with chromatic number $r$ is a subgraph of
-$\compdotssuperindexoverset{2}{r}{t} \cong \completesuperindex{2}{r}(t)$.
+In particular, this directly proves the Erdős-Stone-Simonovits theorem for $2$-graphs.
+
+\begin{delayedproof}{thm:erdos_stone_simonovits}
+
+    Let $G$ be a $2$-graph with chromatic number $r$.
+    For some $t \geq 1$, $G$ is a subgraph of $\compdotssuperindexoverset{2}{r}{t} \cong \completesuperindex{2}{r}(t)$.
+    Therefore,
+    \[
+        \pi(G) \leq \pi\left(\completesuperindex{2}{r}(t)\right) = \pi\left(\completesuperindex{2}{r}\right) = 1 - \frac{r-2}{r-1}.
+    \]
+    The reverse inequality follows from the same construction in the \proofref{thm:turan} of Turán's theorem.
+    Indeed, this construction has the desired density and avoids not only \completesuperindex{2}{r} but also
+    any $r$-partite $2$-graph, and in particular $G$.
+\end{delayedproof}
 
 Theorem~\ref{thm:erdos64} gives little insight on how the Turán numbers of $k$-partite $k$-graphs grow.
 In this case, we are usually satisfied with determining the growth up to a constant factor.

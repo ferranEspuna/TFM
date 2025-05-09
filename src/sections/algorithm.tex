@@ -1,7 +1,4 @@
 % TODO refactor dots stuff
-% TODO refactor (k-1)-link
-% TODO what if we do not restrict the edges to have exactly one vertex in W?
-
 
 \section{Main Contribution}\label{sec:algorithm}
 Let $G = (V, E)$ be a $k$-graph with $n$ vertices and $m$ edges.
@@ -106,7 +103,7 @@ In other words, $S \times T \subset E$ for $S, T \subset V$ of size at least $t$
 
 The minimum density $d \geq 3n^{-1/2}$ in line~\ref{line:bipartite_min_d} is required
 because if $d = o\left(n^{-1/2}\right)$ then
-there may not even be a $K(2, 2)$ in $G$. % TODO: Explain this better in preliminaries
+there may not even be a $K(2, 2)$ in $G$.
 If the set $S$ is too large, a subset of it of size $t$ can be returned instead.
 To see that the algorithm returns a pair of sets $(S, T)$, one uses the fact that
 there is large number of edges between $U$ and $W$ (proportional to the size of $W$).

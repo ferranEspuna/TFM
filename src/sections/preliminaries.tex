@@ -354,6 +354,30 @@ with $2$ vertices in each part, $K(2, 2, 2) = K^{(3)}(2, 2, 2)$.
 In contrast, Figure~\ref{fig:k2_222} shows the complete $3$-partite $2$-graph
 $K^{(2)}(2, 2, 2)$.
 
+\subsection{Blowing Up} \label{subsec:blowup}
+Another interesting operation we can do with $k$-graphs is the following.
+
+\begin{definition}
+    Let $G = (\{v_1, \dots, v_p\}, E)$ be a $k$-graph and let $t$ be a positive integer.
+    The $t$-\emph{blowup} $G(t)$ of $G$ is the $p$-partite $k$-graph
+    \[
+        G(t) = (V_1, \dots, V_p; E')
+    \]
+    where $|V_i| = t$ and
+    \[
+        E' = \bigcup_{v_{i_1}, \dots, v_{i_k} \in E} V_{i_1} \times \dots \times V_{i_k}.
+    \]
+\end{definition}
+
+In essence, we replace each vertex with a set of $t$ vertices, and each edge with a complete $k$-partite $k$-graph
+on the corresponding parts.
+For example, Figure~\ref{fig:k2_222} displays the $2$-blowup of the triangle graph \completesuperindex{2}{3},
+with the edges corresponding to the three original edges of the triangle shown in different colors.
+Any complete $p$-partite $k$-graph with equal part sizes can be seen as a blowup of a complete $k$-graph.
+In particular, the complete $k$-graph $\compoverset{k}{t}$ (see Figure~\ref{fig:222} for an example)
+is often known as a \emph{blowup of an edge}, because it is a $t$-blowup of the
+$k$-graph on $k$ vertices with a single edge $\completesuperindex{k}{k}$.
+
 \subsection{Turán Problems}\label{subsec:turan}
 
 Now we can state the \emph{forbidden subgraph problem} for $k$-graphs.
@@ -405,7 +429,7 @@ As a consequence of this, we also get that the Turán number is invariant under 
 
 There are very few $k$-graphs $G$ for which an exact formula for $\ex{n}{G}$ is known.
 Of these, the most famous family of examples are the complete $2$-graphs $\completesuperindex{2}{r}$,
-for which extremal numbers were first studied by Turán~\cite{Turan1941} in 1941.
+for which Turán numbers were first studied by Turán~\cite{Turan1941} in 1941.
 The result is the following.
 
 \begin{theorem}[Turán Theorem]
@@ -522,7 +546,7 @@ Now we are ready to prove Theorem~\ref{thm:turan}.
     in contradiction with the number of edges in $G$ being maximal.
 \end{proof}
 
-Because of the difficulty of finding exact extremal numbers for $k$-graphs,
+Because of the difficulty of finding exact Turán numbers for $k$-graphs,
 we usually look for asymptotic approximations of them.
 In particular, we are interested in how the expression
 $\ex{n}{G}$ grows with $n$ for any fixed $k$-graph $G$.
@@ -763,7 +787,7 @@ Definition~\ref{def:zarankiewicz} is useful for studying the Turán problem for 
 in the following way.
 
 \begin{remark}\label{rem:zar_vs_turan}
-    Finding Zarankiewicz numbers can help us upper bound the extremal number of $\compdots{t_1}{t_k}$ asymptotically.
+    Finding Zarankiewicz numbers can help us upper bound the Turán number of $\compdots{t_1}{t_k}$ asymptotically.
     Assume that $H$ is a $\compdots{t_1}{t_k}$-free $n$-vertex $k$-graph with $m$ edges.
     pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
     (For example $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$)
@@ -867,7 +891,7 @@ The result is stated and proved here for completeness.
 \end{theorem}
 
 \begin{remark}
-    Following Remark~\ref{rem:zar_vs_turan}, we can use this bound to get an upper bound on the extremal number of $K(s, t)$:
+    Following Remark~\ref{rem:zar_vs_turan}, we can use this bound to get an upper bound on the Turán number of $K(s, t)$:
     \[
         \ex{n}{K(s, t)} =
         \bigO{(s - 1)^{1 / t}\left(\left\lceil\frac{n}{2}\right\rceil - t + 1\right)n^{1 - 1 / t} + (t - 1)\left\lceil\frac{n}{2}\right\rceil} =
@@ -958,7 +982,48 @@ we arrive at
 Because all $k$-partite $k$-graphs can be embedded in a $\compoverset{k}{t}$,
 Theorem~\ref{thm:erdos64} shows that the Turán density of all $k$-partite $k$-graphs is $0$,
 completing the proof of Proposition~\ref{prop:degenerate}.
-This gives little insight on how the Turán numbers of $k$-partite $k$-graphs grow.
+
+\begin{remark} \label{rem:uniform-t}
+    The constant factors in the estimates of Theorem ~\ref{thm:erdos64} can be made to depend only on $k$ and not on $t$.
+    Reducing to the partite host case by Remark~\ref{rem:zar_vs_turan} only reduces the number of edges by a constant factor.
+    For $k=2$, Theorem~\ref{thm:kst} applied with $s = t$ and $u = w$
+    gives
+    \[
+        z(w, w, t, t) \leq (t-1)^{1/t}(w-t+1)w^{1-1/t} + (t-1)w \leq w^{2 - 1/t} + o\left(w^{1-1/t}\right).
+    \]
+    and for $k \geq 3$ we can prove it inductively, by carrying out the computations of the theorem more carefully.
+\end{remark}
+
+Elementrary computation can be used then shows that if
+$H_n$ is a family of $k$-partite $k$-graphs with constant positive density
+(that is, $E(H_n) \geq \gamma \binom{n}{k} = \Omega\left( n^k \right)$ for some $\gamma > 0$),
+for large enough $n$, $H_n$ contains a $\compdots{t_n}{t_n}$ as a subgraph, with
+\[
+    t_n = \Omega \left( (\log n)^{\frac{1}{k-1}}\right).
+\]
+The following theorem generalizes this notion to blow-ups of arbitrary $k$-partite $k$-graphs.
+
+\begin{theorem}
+    Let $G$ be a hypergraph and let $H_n$ be a family of graphs with $n$
+    vertices and $\left( \pi(G) + \Omega (1) \right) \binom{n}{k}$ edges.
+    Then, for $n$ large enough, $H_n$ contains $G(t_n)$ as a subgraph,
+    where $t_n = \Omega\left( (\log n)^{\frac{1}{k-1}} \right)$.
+    \begin{proof}
+        TODO. Use supersaturation + probabilistic method + remark. % TODO
+    \end{proof}
+\end{theorem}
+
+The following corollary highlights that degenerate Turán problems can be applied to solve non-degenerate ones.
+\begin{corollary}
+    Let $G$ be a $k$-graph and $t$ be a positive integer.
+    Then, $\pi(G(t)) = \pi(G)$.
+\end{corollary}
+
+In particular, this directly proves the Erdős-Stone-Simonovits theorem for $2$-graphs (Theorem~\ref{thm:erdos_stone_simonovits}).
+Indeed, any graph with chromatic number $r$ is a subgraph of
+$\compdotssuperindexoverset{2}{r}{t} \cong \completesuperindex{2}{r}(t)$.
+
+Theorem~\ref{thm:erdos64} gives little insight on how the Turán numbers of $k$-partite $k$-graphs grow.
 In this case, we are usually satisfied with determining the growth up to a constant factor.
 
 General lower bounds are usually obtained by probabilistic arguments,
@@ -1084,33 +1149,3 @@ while the best know lower bound is
 The main difficulty for degenerate problems is that sharp lower bounds for the Turán numbers
 often rely on specific geometric or algebraic constructions that work for very few cases,
 such as the ones cited for $K(2, 2)$ and $K(3, 3)$.
-
-Degenerate Turán problems are also of interest as tools to solve non-degenerate ones.
-A classic example is the following way to prove Theorem~\ref{thm:erdos_stone_simonovits}.
-
-\begin{proof}[Proof of the Erdős-Stone-Simonovits Theorem]
-    Let $G = (V, E)$ be a $2$-graph and $r = \chi(G)$.
-    In particular, let $G \subset G' = \compdotssuperindexoverset{2}{r}{t}$.
-    By the same construction as in the Turán Theorem (Theorem~\ref{thm:turan}),
-    we know that the Turán density of \emph{any}
-    $2$-graph with chromatic number $r$ is at least $1 - \frac{1}{r - 1}$.
-    Therefore, we only need to show that $\pi \left( G' \right) \leq 1 - \frac{1}{r - 1}$.
-    Suppose, by way of contradiction, that
-    there is a family of $G'$-free $2$-graphs $H_n = (V_n, E_n)$ with $n$ vertices and
-    $\left(1 - \frac{1}{r - 1} + \Omega(1)\right) \binom{n}{2}$ edges.
-    By the Turán Theorem and supersaturation (Theorem~\ref{thm:supersaturation}),
-    there are $\Omega\left(n^{r}\right)$ copies of $\completesuperindex{2}{r}$ in $H_n$,
-    where we are only overcounting by a constant factor of $r!$, for all the possible embeddings with the same image set.
-    Consider the auxiliary $r$-graph $H_n' = (V_n, E_n')$, where
-    \[
-        E_n' = \left\{ T \in \binom{V_n}{r} \middle| H_n[T] \text{ is complete} \right\}.
-    \]
-    It has $\Omega\left(n^{r}\right)$ edges, so by Theorem~\ref{thm:erdos64} (applied with $k = r$),
-    for $n$ large enough, $H_n'$ contains $\compoverset{r}{t}$ as a subgraph.
-    Say, for example, that $H_n'[V_1 \cup \dots \cup V_r] = \compdots{V_1}{V_r}$, with $|V_i| = t$.
-    We have that $(v_1, \dots, v_r)$ is an edge of $H_n'$
-    for all $\in V_1 \times \dots \times V_r$.
-    In particular, if $i \neq j$, $\{v_i, v_j\} \in E_n$.
-    This means that $H_n[V_1 \cup \dots \cup V_r] = \compdotssuperindex{2}{V_1}{V_r} \cong G'$,
-    against our assumption that $H_n$ is $G'$-free.
-\end{proof}

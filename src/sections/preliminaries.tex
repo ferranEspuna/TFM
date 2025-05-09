@@ -825,7 +825,7 @@ The result is stated and proved here for completeness.
         Let us consider the set
         \[
             P = \left\{ (x, T) \in U \times \binom{W}{t}
-            \middle\vert\, \{x, y\} \in E \text{ for all } x \in T \right\}.
+            \middle\vert\, \{x, y\} \in E \text{ for all } y \in T \right\}.
         \]
         Counting on the first coordinate, we get
         \begin{equation} \label{eq:kst_p_lower}
@@ -992,7 +992,7 @@ completing the proof of Proposition~\ref{prop:degenerate}.
     For $k=2$, Theorem~\ref{thm:kst} applied with $s = t$ and $u = w$
     gives
     \[
-        z(w, w, t, t) \leq (t-1)^{1/t}(w-t+1)w^{1-1/t} + (t-1)w \leq w^{2 - 1/t} + o\left(w^{1-1/t}\right).
+        z(w, w, t, t) \leq (t-1)^{1/t}(w-t+1)w^{1-1/t} + (t-1)w \leq 2w^{2 - 1/t} + o\left(w^{1-1/t}\right).
     \]
     and for $k \geq 3$ we can prove it inductively, by carrying out the computations of the theorem more carefully.
 \end{remark}
@@ -1007,7 +1007,7 @@ for large enough $n$, $H_n$ contains a $\compdots{t_n}{t_n}$ as a subgraph, with
 The following theorem generalizes this notion to blow-ups of arbitrary $k$-partite $k$-graphs.
 
 \begin{theorem}
-    Let $G = (V, E)$ be a $k$-graph and let $(W_n, F_n)$ be a family of graphs with $n$
+    Let $G = (V, E)$ be a $k$-graph and let $(W_n, F_n)$ be a family of $k$-graphs with $n$
     vertices and $\left( \pi(G) + \Omega (1) \right) \binom{n}{k}$ edges.
     Then, for $n$ large enough, $H_n$ contains $G(t_n)$ as a subgraph,
     where

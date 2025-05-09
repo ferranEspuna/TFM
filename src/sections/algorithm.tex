@@ -23,8 +23,9 @@ $t \geq 2$ (otherwise, we may just select a set of $k$ vertices forming an edge 
 More precisely, we show the following.
 \begin{theorem}\label{thm:kpartite}
     There is an algorithm that, given a $k$-graph $G$ satisfying the conditions above,
-    finds a complete balanced $k$-partite $k$-graph in $G$ with part sizes $t = t(n, d, k)$.
-    That is, the algorithm returns a tuple of sets $(V_1, \dots, V_k) \subset \binom{V}{t}^k$ such that
+    finds a $\compoverset{k}{t}$ embedded in $G$ with $t = t(n, d, k)$.
+
+    That is, the algorithm returns a tuple of sets ${(V_1, \dots, V_k) \subset \binom{V}{t}^k}$ such that
     $V_1 \times \dots \times V_k \subset E$.
     Furthermore, the algorithm's runtime is polynomial in $n$.
 \end{theorem}
@@ -141,6 +142,7 @@ The main idea is to select a set $W \subset V$ of vertices of highest degree wit
 
 Then, for every $t$-subset $T$ of $W$, we compute the set $S$ of $(k-1)$-subsets of $V \setminus W$
 that form an edge with every vertex in $T$.
+These are precisely the edges of $G' = L_{k-1}(G; T) = (V \setminus W, S)$.
 For a specific $T$, the set $S$ satisfies
 
 \begin{equation}
@@ -148,7 +150,6 @@ For a specific $T$, the set $S$ satisfies
     |S| \geq s = s(n, d, k) = \left\lceil d^{t(n, d, k)} n^{k-1} \right\rceil.
 \end{equation}
 
-We define a new $(k-1)$-graph $G'$ with vertex set $V \setminus W$ and edge set $S$.
 As it turns out, $S$ is large enough~\eqref{eq:s}
 that applying the algorithm recursively to $G'$
 yields a $\compoverset{k-1}{t'}$ in $G'$ with $t' \geq t$.
@@ -538,12 +539,8 @@ All in all, we can now state our main theorem.
         returns a tuple of sets
         $(X_1, X_2, \dots, X_{k-1}) \in \mathcal{P}(V)^{k-1}$ such that $|X_i| \geq t(n-w, d', k-1) \geq t$
         for all $i$ and $X_1 \times \dots \times X_{k-1} \subset E(G')$.
-        However, by construction of $G'$,
-         \[
-             E(G') = S = \left\{x \in \binom{V \setminus W}{k-1} : \{x\} \cup y \in E \text{ for all } y \in T\right\}.
-         \]
-
-        That is, the tuple $(X_1, \dots, X_{k-1}, T)$ returned in line~\ref{line:return}
+        However, by construction, $G' = L_{k-1}(G; T)$, which means that $T \times E(G') \subset E(G)$.
+        All in all, the tuple $(X_1, \dots, X_{k-1}, T)$ returned in line~\ref{line:return}
         satisfies $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$, making the algorithm correct.
 
         For the time complexity, note that all operations in the algorithm are in polynomial time, % TODO: check this

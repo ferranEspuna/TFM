@@ -997,7 +997,7 @@ For example, see the following probabilistic construction.
     $t = \sum_{i=1}^{k} t_i = \sum_{i=1}^{k} |T_i|$ vertices
     and $e = |E| > 1$ edges.
     Then, $\ex{n}{G} = \Omega\left(n^{k - \frac{t - k}{e - 1}} \right)$, and the
-    constant factor depends only on the number of edges $e$.
+    constant factor depends only on the number of edges $e$ (and not on the number of vertices $t$).
     \begin{proof}
         Let $n \geq t$.
         We use the so-called \emph{random alteration} method to construct a $k$-graph
@@ -1127,7 +1127,7 @@ The following observation is key.
     For $k \geq 3$, we can prove it inductively, by carrying out the computations of the theorem more carefully.
 \end{remark}
 
-Elementrary computation then shows that if
+Elementary computation then shows that if
 $H_n$ is a family of $k$-partite $k$-graphs with constant positive density
 (that is, $E(H_n) \geq \gamma \binom{n}{k} = \Omega\left( n^k \right)$ for some $\gamma > 0$),
 for large enough $n$, $H_n$ contains a $\compdots{t_n}{t_n}$ as a subgraph, with

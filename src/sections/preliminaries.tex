@@ -985,90 +985,7 @@ we arrive at
 Because all $k$-partite $k$-graphs can be embedded in a $\compoverset{k}{t}$,
 Theorem~\ref{thm:erdos64} shows that the Turán density of all $k$-partite $k$-graphs is $0$,
 completing the proof of Proposition~\ref{prop:degenerate}.
-
-\begin{remark} \label{rem:uniform-t}
-    The constant factors in the estimates of Theorem ~\ref{thm:erdos64} can be made to depend only on $k$ and not on $t$.
-    Reducing to the partite host case by Remark~\ref{rem:zar_vs_turan} only reduces the number of edges by a constant factor.
-    For $k=2$, Theorem~\ref{thm:kst} applied with $s = t$ and $u = w$
-    gives
-    \[
-        z(w, w, t, t) \leq (t-1)^{1/t}(w-t+1)w^{1-1/t} + (t-1)w \leq 2w^{2 - 1/t} + o\left(w^{1-1/t}\right).
-    \]
-    and for $k \geq 3$ we can prove it inductively, by carrying out the computations of the theorem more carefully.
-\end{remark}
-
-Elementrary computation can be used then shows that if
-$H_n$ is a family of $k$-partite $k$-graphs with constant positive density
-(that is, $E(H_n) \geq \gamma \binom{n}{k} = \Omega\left( n^k \right)$ for some $\gamma > 0$),
-for large enough $n$, $H_n$ contains a $\compdots{t_n}{t_n}$ as a subgraph, with
-\[
-    t_n = \Omega \left( (\log n)^{\frac{1}{k-1}}\right).
-\]
-The following theorem generalizes this notion to blow-ups of arbitrary $k$-partite $k$-graphs.
-
-\begin{theorem}
-    Let $G = (V, E)$ be a $k$-graph and let $(W_n, F_n)$ be a family of $k$-graphs with $n$
-    vertices and $\left( \pi(G) + \Omega (1) \right) \binom{n}{k}$ edges.
-    Then, for $n$ large enough, $H_n$ contains $G(t_n)$ as a subgraph,
-    where
-    \[
-        t_n = \Omega\left( (\log n)^{\frac{1}{|V|-1}} \right).
-    \]
-    \begin{proof}
-        By Theorem~\ref{thm:supersaturation}, $H_n$ contains $\Omega\left( n^{|V|} \right)$ copies of $G$.
-        Consider the $|V|$-graph $H_n' = (W_n, F_n')$, where
-        \[
-            F_n' = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H_n\}.
-        \]
-        Because each set of $|V|$ vertices in $H_n$ can be the image of at most $|V|! = \bigO{1}$ embeddings of $G$,
-        $H_n'$ has $\Omega\left(n^{|V|} \right)$ edges.
-        Furthermore, by the same argument as in Remark~\ref{rem:zar_vs_turan}, $H_n'$, we can assume that
-        $H_n'$ is $|V|$-partite (say, $H_n' = (W_1, \dots, W_{|V|}; F_n')$ with
-        $|W_i| \geq \left\lfloor n / |V| \right\rfloor$
-        without losing this condition.
-        Each edge in this graph is the image of $V$ under an embedding $f$ of $G$ in $H_n$.
-        Numbering the vertices of $G$ as $v_1, \dots, v_{|V|}$, $f$ corresponds to a permutation $\sigma$
-        of the vertices of $G$, where $f(v_i) \in W_j$ when $\sigma(i) = j$.
-        Picking the permutation $\hat{\sigma}$ that has the most edges corresponding to it
-        (at least $|E_n'| / |V|! = \Omega\left( n^{|V|} \right)$), and without loss of generality,
-        each edge in $(u_1, \dots, u_{|V|}) \in F_n' \subset W_1 \times \dots \times W_{|V|}$
-        corresponds to the fact that for each edge $\{v_{i_1}, \dots, v_{i_k}\} \in E$,
-        $\{u_{i_1}, \dots ,u_{i_k}\}$ is an edge of $H_n$.
-        By Remark~\ref{rem:uniform-t}, we can find a \compoverset{|V|}{t_n} in $H_n'$,
-        where
-        \[
-            t_n = \Omega\left( (\log n)^{\frac{1}{|V|-1}} \right).
-        \]
-        That is, there are $|V|$ sets $T_1, \dots, T_{|V|}$ of size $t_n$ such that
-        if $\{v_{i_1}, \dots, v_{i_k}\} \in E$ is an edge of $G$, then
-        $\{u_{i_1}, \dots, u_{i_k}\} \in F_n$ is an edge of $H_n$ for all $u_{i_j} \in T_j$.
-        This means that $G(t)$ is a subgraph of $H_n$.
-
-    \end{proof}
-\end{theorem}
-
-The following corollary highlights that degenerate Turán problems can be applied to solve non-degenerate ones.
-\begin{corollary}
-    Let $G$ be a $k$-graph and $t$ be a positive integer.
-    Then, $\pi(G(t)) = \pi(G)$.
-\end{corollary}
-
-In particular, this directly proves the Erdős-Stone-Simonovits theorem for $2$-graphs.
-
-\begin{delayedproof}{thm:erdos_stone_simonovits}
-
-    Let $G$ be a $2$-graph with chromatic number $r$.
-    For some $t \geq 1$, $G$ is a subgraph of $\compdotssuperindexoverset{2}{r}{t} \cong \completesuperindex{2}{r}(t)$.
-    Therefore,
-    \[
-        \pi(G) \leq \pi\left(\completesuperindex{2}{r}(t)\right) = \pi\left(\completesuperindex{2}{r}\right) = 1 - \frac{r-2}{r-1}.
-    \]
-    The reverse inequality follows from the same construction in the \proofref{thm:turan} of Turán's theorem.
-    Indeed, this construction has the desired density and avoids not only \completesuperindex{2}{r} but also
-    any $r$-partite $2$-graph, and in particular $G$.
-\end{delayedproof}
-
-Theorem~\ref{thm:erdos64} gives little insight on how the Turán numbers of $k$-partite $k$-graphs grow.
+Knowing that the Turán density of $k$-partite $k$-graphs is $0$ gives little information on the growth of their Turán numbers.
 In this case, we are usually satisfied with determining the growth up to a constant factor.
 
 General lower bounds are usually obtained by probabilistic arguments,
@@ -1194,3 +1111,100 @@ while the best know lower bound is
 The main difficulty for degenerate problems is that sharp lower bounds for the Turán numbers
 often rely on specific geometric or algebraic constructions that work for very few cases,
 such as the ones cited for $K(2, 2)$ and $K(3, 3)$.
+
+Similarly to non-degenerate Turán problems, we also have interesting results when the
+Turán density of a $k$-partite $k$-graph (namely, $0$) is exceeded.
+The following observation is key.
+
+\begin{remark} \label{rem:uniform-t}
+    The constant factors in the estimates of Theorem ~\ref{thm:erdos64} can be made to depend only on $k$ and not on $t$.
+    Reducing to the partite host case by Remark~\ref{rem:zar_vs_turan} only reduces the number of edges by a constant factor.
+    For $k=2$, Theorem~\ref{thm:kst} applied with $s = t$ and $u = w$
+    gives
+    \[
+        z(w, w, t, t) \leq (t-1)^{1/t}(w-t+1)w^{1-1/t} + (t-1)w \leq 2w^{2 - 1/t} + o\left(w^{1-1/t}\right).
+    \]
+    and for $k \geq 3$ we can prove it inductively, by carrying out the computations of the theorem more carefully.
+\end{remark}
+
+Elementrary computation can be used then shows that if
+$H_n$ is a family of $k$-partite $k$-graphs with constant positive density
+(that is, $E(H_n) \geq \gamma \binom{n}{k} = \Omega\left( n^k \right)$ for some $\gamma > 0$),
+for large enough $n$, $H_n$ contains a $\compdots{t_n}{t_n}$ as a subgraph, with
+\[
+    t_n = \Omega \left( (\log n)^{\frac{1}{k-1}}\right).
+\]
+The following theorem generalizes this notion to blow-ups of arbitrary $k$-partite $k$-graphs.
+
+\begin{theorem} \label{thm:quant-blowup}
+    Let $G = (V, E)$ be a $k$-graph and let $(W_n, F_n)$ be a family of $k$-graphs with $n$
+    vertices and $\left( \pi(G) + \Omega (1) \right) \binom{n}{k}$ edges.
+    Then, for $n$ large enough, $H_n$ contains $G(t_n)$ as a subgraph,
+    where
+    \[
+        t_n = \Omega\left( (\log n)^{\frac{1}{|V|-1}} \right).
+    \]
+    \begin{proof}
+        By Theorem~\ref{thm:supersaturation}, $H_n$ contains $\Omega\left( n^{|V|} \right)$ copies of $G$.
+        Consider the $|V|$-graph $H_n' = (W_n, F_n')$, where
+        \[
+            F_n' = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H_n\}.
+        \]
+        Because each set of $|V|$ vertices in $H_n$ can be the image of at most $|V|! = \bigO{1}$ embeddings of $G$,
+        $H_n'$ has $\Omega\left(n^{|V|} \right)$ edges.
+        Furthermore, by the same argument as in Remark~\ref{rem:zar_vs_turan}, $H_n'$, we can assume that
+        $H_n'$ is $|V|$-partite (say, $H_n' = (W_1, \dots, W_{|V|}; F_n')$ with
+        $|W_i| \geq \left\lfloor n / |V| \right\rfloor$
+        without losing this condition.
+        Each edge in this graph is the image of $V$ under an embedding $f$ of $G$ in $H_n$.
+        Numbering the vertices of $G$ as $v_1, \dots, v_{|V|}$, $f$ corresponds to a permutation $\sigma$
+        of the vertices of $G$, where $f(v_i) \in W_j$ when $\sigma(i) = j$.
+        Picking the permutation $\hat{\sigma}$ that has the most edges corresponding to it
+        (at least $|E_n'| / |V|! = \Omega\left( n^{|V|} \right)$), and without loss of generality,
+        each edge in $(u_1, \dots, u_{|V|}) \in F_n' \subset W_1 \times \dots \times W_{|V|}$
+        corresponds to the fact that for each edge $\{v_{i_1}, \dots, v_{i_k}\} \in E$,
+        $\{u_{i_1}, \dots ,u_{i_k}\}$ is an edge of $H_n$.
+        By Remark~\ref{rem:uniform-t}, we can find a \compoverset{|V|}{t_n} in $H_n'$,
+        where
+        \[
+            t_n = \Omega\left( (\log n)^{\frac{1}{|V|-1}} \right).
+        \]
+        That is, there are $|V|$ sets $T_1, \dots, T_{|V|}$ of size $t_n$ such that
+        if $\{v_{i_1}, \dots, v_{i_k}\} \in E$ is an edge of $G$, then
+        $\{u_{i_1}, \dots, u_{i_k}\} \in F_n$ is an edge of $H_n$ for all $u_{i_j} \in T_j$.
+        This means that $G(t)$ is a subgraph of $H_n$.
+
+    \end{proof}
+\end{theorem}
+
+The following corollary highlights that degenerate Turán problems can be applied to solve non-degenerate ones.
+\begin{corollary}
+    Let $G$ be a $k$-graph and $t$ be a positive integer.
+    Then, $\pi(G(t)) = \pi(G)$.
+\end{corollary}
+
+In particular, this directly proves the Erdős-Stone-Simonovits theorem for $2$-graphs.
+
+\begin{delayedproof}{thm:erdos_stone_simonovits}
+    Let $G$ be a $2$-graph with chromatic number $r$.
+    For some $t \geq 1$, $G$ is a subgraph of $\compdotssuperindexoverset{2}{r}{t} \cong \completesuperindex{2}{r}(t)$.
+    Therefore,
+    \[
+        \pi(G) \leq \pi\left(\completesuperindex{2}{r}(t)\right) = \pi\left(\completesuperindex{2}{r}\right) = 1 - \frac{r-2}{r-1}.
+    \]
+    The reverse inequality follows from the same construction in the \proofref{thm:turan} of Turán's theorem.
+    Indeed, this construction has the desired density and avoids not only \completesuperindex{2}{r} but also
+    any $r$-partite $2$-graph, and in particular $G$.
+\end{delayedproof}
+
+Theorem~\ref{thm:quant-blowup} is known not to be optimal.
+Erdős and Bollobás~\cite{bollobas1973structure} in fact proved that the optimal growth
+rate of a guaranteed $t_n$-blow-up of a $2$-graph $G$ in $2$-graphs of constant density greater than $\pi(G)$ is
+\[
+    t_n = \Theta (\log n).
+\]
+A still open question raised by the authors is whether this can be extended to $k$-graphs.
+That is, is it true that $k$-graphs with $n$ vertices and  $\left( 1 + \Omega(1) \right) \pi(G) \binom{n}{k}$ edges
+contain $G(t_n)$ for some $t_n = \Omega \left((\log n)^{\frac{1}{k-1}}\right)$?
+An even more general yet unresolved question is whether this is true for
+$k$-graphs with $n$ vertices and $\Omega (n^{|V(G)|})$ copies of $G$~\cite{rodl2012complete}.

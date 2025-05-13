@@ -5,9 +5,7 @@ Let $G = (V, E)$ be a $k$-graph with $n$ vertices and $m$ edges.
 We describe a polynomial-time algorithm that finds a complete $k$-partite $k$-graph in $G$
 with all part sizes at least
 \begin{equation}
-     t = t (n, d, k) = \left\lfloor
-        \left(  \frac{\log (n/2^{k-1})}{\log (3/d)} \right)
-        ^{\frac{1}{k-1}} \right\rfloor \label{eq:t},
+     t = t (n, d, k) = \left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (3/d)} \right)^{\frac{1}{k-1}} \right\rfloor \label{eq:t},
 \end{equation}
 where
 \begin{equation} \label{eq:d}
@@ -55,7 +53,26 @@ The construction in Theorem~\ref{thm:kpartite} then proves
     \ex{n}{\compoverset{k}{t}} < m = \bigO{n^{k - \frac{1}{t^{k-1}}}}.
 \]
 
-% TODO discussion of constant density case. Is it optimal?
+Furthermore, for a fixed value of $d$,
+the value of $t$ is in the best possible order of magnitude.
+Indeed, if
+\[
+    dn^k \geq \ex{n}{\compoverset{k}{t}},
+\]
+by Poposition~\ref{prop:probabilistic-lower-bound}, we have that
+\[
+    d \geq n^{-\frac{k(t-1)}{t^{k-1}}}.
+\]
+Thaking logarithms and rearranging, we get
+\[
+    \log{(1/d)} \leq \frac{k(t-1)}{t^{k-1}} \log n \leq \frac{2k}{t^{(k-1)}} \log n,
+\]
+which implies
+\[
+    t \leq \left( \frac{2k \log n}{\log(1/d)} \right)^{\frac{1}{k-1}} =
+    \bigO{\left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (3/d)} \right)^{\frac{1}{k-1}} \right\rfloor}.
+\]
+
 \subsection{Previous Results}\label{subsec:previous-results}
 
 For $k = 2$, this problem was already solved by an algorithm of Mubayi and Turán~\cite{MUBAYI2010174},

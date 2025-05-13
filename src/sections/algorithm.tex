@@ -52,7 +52,6 @@ The construction in Theorem~\ref{thm:kpartite} then proves
 \[
     \ex{n}{\compoverset{k}{t}} < m = \bigO{n^{k - \frac{1}{t^{k-1}}}}.
 \]
-
 Furthermore, for a fixed value of $d$,
 the value of $t$ is in the best possible order of magnitude.
 Indeed, if
@@ -61,11 +60,11 @@ Indeed, if
 \]
 by Poposition~\ref{prop:probabilistic-lower-bound}, we have that
 \[
-    d \geq n^{-\frac{k(t-1)}{t^{k-1}}}.
+    d \geq n^{-\frac{k(t-1)}{t^{k}-1}}.
 \]
 Thaking logarithms and rearranging, we get
 \[
-    \log{(1/d)} \leq \frac{k(t-1)}{t^{k-1}} \log n \leq \frac{2k}{t^{(k-1)}} \log n,
+    \log{(1/d)} \leq \frac{k(t-1)}{t^{k}-1} \log n \leq \frac{2k}{t^{(k-1)}} \log n,
 \]
 which implies
 \[

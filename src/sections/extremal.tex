@@ -513,8 +513,11 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
         We prove this by induction on $k$.
         For $k=2$, this is obtained by setting $u = w$ and $s = t$ in Theorem~\ref{thm:kst}.
         For $k > 2$, suppose by way of contradiction that the theorem is false.
-        For all ${w_0 \in \N}$, ${K \in \mathbb{R}^+}$, there exists a $k$-partite $k$-graph $G = (W_1, \dots, W_k; E)$ with part sizes
-        $|W_i| = w \geq w_0$ and ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$ such that no embedding of $\compoverset{k}{t}$ into $G$ exists.
+        For all ${w_0 \in \N}$, ${K \in \mathbb{R}^+}$, there exists a $k$-partite $k$-graph
+        $G = (W_1, \dots, W_k; E)$ with part sizes
+        $|W_i| = w \geq w_0$ and
+        ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$
+        such that no embedding of $\compoverset{k}{t}$ into $G$ exists.
         Consider, for each set $T \in \binom{W_k}{t}$, the associated \text{$(k-1)$-link}
         \link{G}{T}{k-1}.
         We claim that it does not contain $\compoverset{k-1}{t}$ as a subgraph.
@@ -581,7 +584,8 @@ we arrive at
 Because all $k$-partite $k$-graphs can be embedded in a $\compoverset{k}{t}$,
 Theorem~\ref{thm:erdos64} shows that the Turán density of all $k$-partite $k$-graphs is $0$,
 completing the proof of Proposition~\ref{prop:degenerate}.
-Knowing that the Turán density of $k$-partite $k$-graphs is $0$ gives little information on the growth of their Turán numbers.
+Knowing that the Turán density of $k$-partite $k$-graphs is $0$
+gives little information on the growth of their Turán numbers.
 In this case, we are usually satisfied with determining the growth up to a constant factor.
 
 General lower bounds are usually obtained by probabilistic arguments,
@@ -721,10 +725,12 @@ In particular, this directly proves the Erdős-Stone-Simonovits theorem for $2$-
 
 \begin{delayedproof}{thm:erdos_stone_simonovits}
     Let $G$ be a $2$-graph with chromatic number $r$.
-    For some $t \geq 1$, $G$ is a subgraph of $\compdotssuperindexoverset{2}{r}{t} \cong \completesuperindex{2}{r}(t)$.
+    For some $t \geq 1$, $G$ is a subgraph of
+    $\compdotssuperindexoverset{2}{r}{t} \cong \completesuperindex{2}{r}(t)$.
     Therefore,
     \[
-        \pi(G) \leq \pi\left(\completesuperindex{2}{r}(t)\right) = \pi\left(\completesuperindex{2}{r}\right) = 1 - \frac{1}{r-1}.
+        \pi(G) \leq \pi\left(\completesuperindex{2}{r}(t)\right)
+        = \pi\left(\completesuperindex{2}{r}\right) = 1 - \frac{1}{r-1}.
     \]
     The reverse inequality follows from the same construction in the \proofref{thm:turan} of Turán's theorem.
     Indeed, this construction has the desired density and avoids not only \completesuperindex{2}{r} but also
@@ -742,13 +748,18 @@ Famously, not even the Turán density of the tetrahedron $3$-graph $\completesup
 obtained by removing one edge from it is known.
 The best known bounds are
 \[
-    0.5555 = \frac{5}{9} \leq \pi\left(\completesuperindex{3}{4}\right) \leq 0.561666~\cite{keevash2011hypergraph,baber2011hypergraphs}
+    0.5555 = \frac{5}{9}
+    \leq \pi\left(\completesuperindex{3}{4}\right)
+    \leq 0.561666~\cite{keevash2011hypergraph,baber2011hypergraphs} % TODO cites outside math environment?
 \]
 and
 \[
-     0.2857 = \frac{2}{7} \leq \pi\left(\completesuperindex{3}{4-}\right) \leq 0.2871~\cite{frankl1984exact, baber2011hypergraphs}.
+     0.2857 = \frac{2}{7}
+     \leq \pi\left(\completesuperindex{3}{4-}\right)
+     \leq 0.2871~\cite{frankl1984exact, baber2011hypergraphs}.
 \]
-The lower bounds are obtained by explicit constructions of $3$-graphs, and were conjectured to be optimal by Turán~\cite{keevash2011hypergraph},
+The lower bounds are obtained by explicit constructions of $3$-graphs,
+and were conjectured to be optimal by Turán~\cite{keevash2011hypergraph},
 while the upper bounds are obtained by the method of flag algebras~\cite{razborov2007flag},
 which is a powerful tool for studying Turán problems that automates the search for relevant inequalities.
 
@@ -780,11 +791,13 @@ as long as $t \geq 2$ and $k \geq 2$.
 In the case $k=2$, it is known that, for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$,
 Theorem~\ref{thm:kst} is optimal in the sense that
 \[
-    \ex{n}{K(2, t)} = \Theta\left(n^{\frac{3}{2}}\right)~\cite{erdHos1966problem, furedi1996new},
+    \ex{n}{K(2, t)}
+    = \Theta\left(n^{\frac{3}{2}}\right)~\cite{erdHos1966problem, furedi1996new},
 \]
 and also
 \[
-    \ex{n}{K(3, 3)} = \Theta\left(n^{\frac{5}{3}}\right)~\cite{brown1966graphs}.
+    \ex{n}{K(3, 3)}
+    = \Theta\left(n^{\frac{5}{3}}\right)~\cite{brown1966graphs}.
 \]
 The theorem is also optimal for $K(s, t)$ when $s \geq t! + 1$~\cite{kollar1996norm}.
 Some progress has been made in the case of $K(s, t)$ when $s$ and $t$ have similar sizes,
@@ -795,11 +808,15 @@ For example, Theorem~\ref{thm:kst} gives
 \]
 and by Proposition~\ref{prop:probabilistic-lower-bound} we get
 \begin{equation} \label{eq:k55-probabilistic}
-    \ex{n}{K(5,5)} = \Omega\left(n^{\frac{5}{3}}\right) = \Omega\left(n^{1.67}\right),
+    \ex{n}{K(5,5)}
+= \Omega\left(n^{\frac{5}{3}}\right)
+= \Omega\left(n^{1.67}\right),
 \end{equation}
 but~\eqref{eq:k55-probabilistic} has been improved to
 \[
-    \ex{n}{K(5,5)} = \Omega\left(n^{\frac{7}{4}}\right) = \Omega\left(n^{1.75}\right)~\cite{ball2012asymptotic}.
+    \ex{n}{K(5,5)}
+    = \Omega\left(n^{\frac{7}{4}}\right)
+    = \Omega\left(n^{1.75}\right)~\cite{ball2012asymptotic}.
 \]
 Even less is known about degenerate problems for graphs of higher uniformity.
 For example, not even the growth rate of the Turán number for the octahedron 3-graph
@@ -810,7 +827,9 @@ The best upper bound, again, comes from Theorem~\ref{thm:erdos64}, which gives
 \]
 while the best know lower bound is
 \[
-    \ex{n}{K(2, 2, 2)} = \Omega\left(n^{\frac{8}{3}}\right) = \Omega\left(n^{2.67}\right)~\cite{conlon2020random}.
+    \ex{n}{K(2, 2, 2)}
+    = \Omega\left(n^{\frac{8}{3}}\right)
+    = \Omega\left(n^{2.67}\right)~\cite{conlon2020random}.
 \]
 
 The main difficulty for degenerate problems is that sharp lower bounds for the Turán numbers

@@ -64,7 +64,7 @@ FRAME_LABEL = "G"  # The label text (use $G$ for math italics)
 # Position relative to bounding box: south, north, north west, etc.
 FRAME_LABEL_POSITION = "north"
 # TikZ node options for the label (positioning, font, etc.)
-FRAME_LABEL_OPTIONS = "anchor=north, yshift=-5pt, font=\Large"
+FRAME_LABEL_OPTIONS = "anchor=north, yshift=-5pt, font=\\Large"
 
 # --- Define the graph G = (V, E) and set T ---
 

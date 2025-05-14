@@ -1,14 +1,12 @@
-% !TEX root = ../thesis.tex
-
-\section{Hypergraph Turán Problems}\label{sec:preliminaries}
-In this section we introduce some basic definitions and results that are used throughout this thesis.
+\section{Notation and Basic Definitions}\label{sec:preliminaries}
+In this section, we introduce some basic definitions and results that are used throughout this thesis.
 We start with some preliminaries on hypergraphs, which are the main objects of study in this thesis.
 
 \subsection{Hypergraphs}\label{subsec:hypergraphs}
 
 \begin{definition}
 
-    For an integer $k \geq 1$ a finite \emph{$k$-uniform hypergraph} (or \emph{$k$-graph}, for short)
+    For an integer $k \geq 1$ a \emph{$k$-uniform hypergraph} (or \emph{$k$-graph}, for short)
     is a tuple $G = (V, E)$ where $V$ is a finite set
     and $E \subset \binom{V}{k}$.
     We call the elements of $V(G) = V$ its \emph{vertices}
@@ -58,40 +56,30 @@ different uniformity from a subset of vertices of a $k$-graph.
     $T \subset V$ be a set of vertices satisfying $k - j \leq |T|$.
     The \emph{common $j$-link graph} of $T$ is the $j$-graph $\link{G}{T}{j} = (V \setminus T, E')$, where
     \[
-        E' = \left\{Y \in \binom{V}{j}\middle\vert \, X \cup Y \in E \text{ for all } X \in \binom{T}{k-j}\right\}.
+        E' = \left\{Y \in \binom{V \setminus T}{j}\middle\vert \, X \cup Y \in E \text{ for all } X \in \binom{T}{k-j}\right\}.
     \]
 \end{definition}
 
-\begin{figure}[htbp]
+Figure~\ref{fig:link} illustrates how to construct
+a common $j$-link graph from a $k$-graph $G$ in the case $k=3$ and $j=2$.
+
+\begin{figure}[ht]
     \centering
     \input{figures/common_link}
     \caption{A $3$-graph $G$ and the common $2$-link graph $\link{G}{T}{2}$ of the set $T = \{A, B, C\}$.
-        The link graph has vertex set $\{X, Y, Z, W\}$ and edge set
+        Vertices are represented as black dots, and $3$-edges of $G$ are represented as colored or gray small dots,
+        connected by a line to the vertices they contain.
+        Colored dots correspond to $3$-edges with exactly
+        $k - j = 3 - 2 = 1$ vertices in $T$, which are the only ones that can contribute to the common $2$-link graph.
+        Edges in the common $2$-link graph are represented as solid lines connecting the corresponding vertices,
+        in the same color that the $3$-edges they come from.
+        Dashed lines correspond to edge pairs
+        in $V \setminus T$ that have some of the required $3$-edges in $G$, but not all of them.
+        The resulting link graph has vertex set $\{X, Y, Z, W\}$ and edge set
         $\{\{X, Y\}, \{W, Z\}\}$.
     }
     \label{fig:link}
 \end{figure}
-
-Figure~\ref{fig:link} exemplifies how to construct
-a common $j$-link graph from a $k$-graph $G$ in the case $k=3$ and $j=2$.
-Vertices are represented as black dots, and $3$-edges of $G$ are represented as colored or gray small dots,
-connected by a line to the vertices they contain.
-Colored dots correspond to $3$-edges with exactly
-$k - j = 3 - 2 = 1$ vertices in $T$, which are the only ones that can contribute to the common $2$-link graph.
-Edges in the common $2$-link graph are represented as solid lines connecting the corresponding vertices,
-in the same color that the $3$-edges they come from.
-Dashed lines correspond to edge pairs
-in $V \setminus T$ that have some of the required $3$-edges in $G$, but not all of them.
-
-\begin{remark}
-    Definition~\ref{def:link} might appear confusing because $E'$ is defined
-    as a set of subsets of $V$, while the link graph has vertex set $V \setminus T$.
-    In fact, it is impossible for an element $Y \in E'$ to contain a vertex $v \in T$.
-    To see this, suppose that $v \in Y$.
-    We can pick a $(k-j)$-set $X \in \binom{T}{k-j}$ such that $v \in X$.
-    Then $v \in X \cap Y$ so
-    $| X \cup Y | < j + (k-j) = k$, contradicting the fact that $X \cup Y$ is an edge in $G$.
-\end{remark}
 
 Next, we introduce $k$-graph homomorphisms, embeddings and isomorphisms, which allow us
 to relate $k$-graphs of the same uniformity to each other.
@@ -112,12 +100,14 @@ to relate $k$-graphs of the same uniformity to each other.
     and is injective, we say that $f$ is an \emph{embedding} of $G$ on $H$
     and that $H$ \emph{contains} $G$ as a subgraph.
     We write $G \subset H$.
-    If, furthermore,
+    Otherwise, we say that $H$ is $G$-\emph{free}.
+
+    If $f$ is an embedding of $G$ in $H$ and
     \begin{equation}
         \label{eq:induced_embedding}
         f(E) = E(H[f(V)]),
     \end{equation}
-    we say that $f$is an \emph{induced} embedding
+    we say that $f$ is an \emph{induced} embedding
     and that $H$ contains $G$ as an \emph{induced} subgraph.
     We write $G \subset_{\text{ind}} H$.
     If, in addition, $f$ is a bijection, we say that $f$ is an \emph{isomorphism}
@@ -242,10 +232,10 @@ We now introduce an important family of them.
 
 If $K$ and $K'$ are complete $k$-graphs with the same number of vertices $r$,
 any bijection $f: V(K) \to V(K')$ is clearly an isomorphism between $K$ and $K'$.
-This lets us talk, up to isomorphism, about \emph{the} complete $k$-graph on $r$ vertices $\completesuperindex{k}{r}$.
+This allows us to talk, up to isomorphism, about \emph{the} complete $k$-graph on $r$ vertices $\completesuperindex{k}{r}$.
 For example, in Figure~\ref{fig:complete_kgraph} we show the complete graph $\completesuperindex{3}{4}$.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
     \centering
     \input{figures/k3_4}
     \caption{A complete $3$-graph on $4$ vertices.}
@@ -263,7 +253,7 @@ For example, in Figure~\ref{fig:complete_kgraph} we show the complete graph $\co
 
 One way to impose structure on a $k$-graph is to require that it is \emph{partite}.
 
-\begin{definition} \label{def:partite}
+\begin{definition} \label{def:partite} % TODO why does richard say you do not recover the chromatic number?
     for an integer $r \geq k$, a $k$-graph $G = (V, E)$ is \emph{$r$-partite}
     (or $(r, 1)$-\emph{colorable})
     if there exists a partition $V = V_1 \cup \dots \cup V_r$
@@ -335,14 +325,14 @@ or, in the $k$-partite case, by
     K(a_1, \dots, a_k) = K^{(k)}(a_1, \dots, a_k).
 \]
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
     \centering
     \input{figures/k3_222}
     \caption{The complete 3-partite 3-graph $K(2, 2, 2)$, with parts $V_1, V_2, V_3$.}
     \label{fig:222}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
     \centering
     \input{figures/k2_222}
     \caption{The complete 3-partite 2-graph $K^{(2)}(2, 2, 2)$, with parts $V_1, V_2, V_3$.}
@@ -380,831 +370,3 @@ $k$-graph on $k$ vertices with a single edge $\completesuperindex{k}{k}$.
 Similarly to the case of complete $k$-graphs and complete $k$-partite $k$-graphs,
 the $t$-blowup of a $k$-graph is unique up to isomorphism.
 
-\subsection{Turán Problems}\label{subsec:turan}
-
-Now we can state the \emph{forbidden subgraph problem} for $k$-graphs.
-Informally, given a $k$-graph $G$, and an integer $n \geq |V(G)|$,
-we want to find the smallest $M_0$ such that all $k$-graphs with $n$ vertices and $m > M_0$ edges
-contain $G$ as a subgraph.
-
-\begin{proposition} \label{prop:extremal}
-    Let $G = (V, E)$ be a $k$-graph with nonempty edge set and $n \geq |V|$ be an integer.
-    Then there exists an integer $M_0 = \ex{n}{G} \in \left[ 0, \binom{n}{k}\right)$ such that
-    the condition
-    \[
-        \text{``All $k$-graphs with $n$ vertices and $m$ edges contain $G$ as a subgraph.''}
-    \]
-    is true for all $\binom{n}{k} \geq m > M_0$ and false for all $0 \leq m \leq M_0$.
-
-    \begin{proof}
-        Note that, if $M_0$ exists, clearly it is unique.
-        Also, the condition is clearly false for $m = 0$ and
-        true for $m = \binom{n}{k}$
-        (the only graph $H$ with vertex set $W$, $|W|=n$ and $\binom{n}{k}$ edges
-        is the one having all $k$-sets of vertices so any injective map $f: V \to W$
-        is an embedding of $G$ in $H$).
-        We only need to show that if the condition is true for $m$ then it is true for
-        all $m' \geq m$.
-        Suppose it is true for $m$ and let $m' \geq m$.
-        Let $H = (W, F)$ be a $k$-graph with $n$ vertices and $m'$ edges.
-        We can take $F' \subset F$ with $|F'| = m$.
-        By hypothesis, the graph $H' = (W, F')$ contains $G$ as a subgraph,
-        and the identity map in $W$ is an embedding of $H'$ in $H$.
-        Then, $G \subset H' \subset H$ implies $G \subset H$ by transitivity of the embedding
-        relation (Proposition~\ref{prop:embedding_properties}).
-
-    \end{proof}
-
-\end{proposition}
-
-We call the integer $\ex{n}{G}$ the \emph{Turán number} of $G$ on $n$ vertices.
-The turán number is increasing both in $n$ and under graph inclusion.
-The first property can be seen by taking a $G$-free $k$-graph on $H$ with $n$ vertices
-and $\ex{n}{G}$ vertices; and adding a vertex $v$ and no edges to it, obtaining $H'$.
-If $f: G \to H$ is an embedding and $v$ has a preimage $x$, it must be a vertex in $H$ with degree $0$,
-so it can be replaced by any other vertex in $H$ outside the image of $f$.
-Restricting this new mapping to $H$, we get that $G \subset H$, against our assumption.
-For the second, suppose that $G \subset G'$.
-Because $H$ is $G$-free, it is also $G'$-free, which means that it has at most $\ex{n}{G'}$ edges.
-Therefore, $\ex{n}{G} \leq \ex{n}{G'}$.
-As a consequence of this, we also get that the Turán number is invariant under isomorphism of $G$.
-
-There are very few $k$-graphs $G$ for which an exact formula for $\ex{n}{G}$ is known.
-Of these, the most famous family of examples are the complete $2$-graphs $\completesuperindex{2}{r}$,
-for which Turán numbers were first studied by Turán~\cite{Turan1941} in 1941.
-The result is the following.
-
-\begin{theorem}[Turán Theorem]
-    \label{thm:turan}
-    Let $r > 2$ be an integer and let $n \geq r$.
-    Let $a_1, \dots, a_{r-1}$ be integers such that $a_1 + \dots + a_{r-1} = n$
-    and $\lfloor n / (r-1) \rfloor \leq a_i \leq \lceil n / (r-1) \rceil$ for all $i$.
-    Then
-    \begin{equation} \label{eq:turan}
-        \ex{n}{\completesuperindex{2}{r}} = \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y
-    \end{equation}
-    Furthermore, if $G$ is a $2$-graph with $\ex{n}{\completesuperindex{2}{r}}$ edges
-    and $G$ does not contain $K_r^{(2)}$ as a subgraph, then
-    \[
-        G\cong \compdotssuperindex{2}{a_1}{a_{r-1}}.
-    \]
-
-\end{theorem}
-
-Before the \proofref{thm:turan} of Turán's theorem, we introduce two lemmas.
-Suppose that $G = (V, E)$ is a $2$-graph with $n$ vertices and
-$\ex{n}{\completesuperindex{2}{r}}$ edges.
-
-\begin{lemma}\label{lem:same_degree}
-    If $x, y \in V$ are different vertices and $\{x, y\} \notin E$, then $d_G(x) = d_G(y)$.
-    \begin{proof}
-        We argue by contradiction.
-        Suppose, without loss of generality, that $d_G(x) > d_G(y)$.
-        We argue that we can construct a $2$-graph $G'$ with $n$ vertices
-        and more edges than $G$ that does not contain $K_r^{(2)}$ as a subgraph, against the definition of
-        the Turán number.
-
-        The new graph $G' = (E', V')$ is constructed from $G$ by removing from $V$ the vertex $y$
-        (and all edges containing it)
-        and adding a copy $x'$ of $x$, connected to the same vertices (that is, $\{x', v\} \in E'$
-        if and only if $\{x, v\} \in E$).
-        Clearly, $|V'| = |V|$ and $|E'| = E - d_G(y) + d_G(x) > |E|$.
-        To see that $G'$ does not contain $K_r^{(2)}$ as a subgraph,
-        suppose that $G'[T']$ is complete for some $T' \subset V'$ of size $r$.
-        Because $\{x, x'\}$ is not an edge in $G'$, $T'$ cannot contain both $x$ and $x'$.
-        Because the edges not containing $x'$ are the same as in $G$, which contains no $K_r^{(2)}$,
-        we deduce that $T'$ contains $x'$ and therefore does not contain $x$.
-        Now, let $T = (T' \setminus \{x'\}) \cup \{x\} \subset V$, also of size $r$.
-        We argue that the graph $G[T] = G'[T]$ must be complete, reaching a contradiction.
-        If it were not, then there would exist $v \in T, v \neq x$, such that $\{x, v\} \notin E$.
-        This implies that $\{x', v\} \notin E'$, but $v \in T' \setminus \{x'\}$,
-        against the completeness of $G'[T']$.
-    \end{proof}
-\end{lemma}
-
-\begin{lemma} \label{lem:turan_complete_partite}
-    $G$ is a complete $p$-partite graph for some $p \geq 2$.
-    \begin{proof}
-        Equivalently, we show that the relation defined by non-adjacency on $V$ (that is, $x \sim y$ when
-        $\{x, y\} \notin E$) is an equivalence relation, so we can divide $V$ into equivalence classes
-        by this relation, which means that $\{x, y\} \in E$ if and only if they are in different parts.
-
-        The reflexivity and symmetry of the relation are clear.
-        Suppose, by way of contradiction, that there exist $x, y, z \in V$ such that
-        $x \sim z$ and $y \sim z$, but $x \nsim y$.
-        We now construct a different graph $G'$ with the same number of vertices as $G$
-        that also does not contain $K_r^{(2)}$ as a subgraph, reaching a contradiction.
-        $G'$ is constructed from $G$ by removing the vertices
-        $x$ and $y$ (and all the associated edges) and adding the two new vertices
-        $z_1$ and $z_2$ and the edges $\{\{v, z_i\} | \{v, z\} \in E, i \in \{1, 2\}\}$.
-
-        First, we show that $G'$ contains no embedding of $K_r^{(2)}$.
-        We make a similar argument as in the proof of Lemma~\ref{lem:same_degree}.
-        By way of contradiction, suppose that $G'[T']$ is complete for some $T' \subset V'$ of size $r$.
-        Because $z$, $z_1$ and $z_2$ pairwise non-edges of $G'$, only one of them can be
-        an image of a vertex in $K_r^{(2)}$.
-        However, $G'[V \setminus \{x, y\}] \subset G$ has no embedding of $K_r^{(2)}$,
-        so at least one of the vertices in $K_r^{(2)}$ must be mapped to $z_1$ or $z_2$.
-        Without loss of generality, we can write $T' = \{x_1, x_2, x_3, \dots, x_{r-1}, z_1\}$,
-        with $x_i \notin \{z_2, z\}$ for all $i$.
-        However, $\{z_1, x_i\}$ is an edge in $G'$ if an only if $\{z, x_i\}$ is an edge in $G$,
-        which means that $G'[\{x_1, x_2, x_3 \dots, x_{r-1}, z\}] = G[\{x_1, x_2, x_3 \dots, x_{r-1}, z\}]$ is complete,
-        against our assumption.
-
-        Now, we show that $G'$ has more edges than $G$.
-        By Lemma~\ref{lem:same_degree}, $d_G(x) = d_G(z)$ and $d_G(y) = d_G(z)$,
-        so the three vertices $x, y, z$ have the same degree $d$ in $G$.
-        The edges containing $x$ and the edges containing $y$ intersect at exactly the edge $\{x, y\} \in E$.
-        Therefore, by removing all of them from $G$ we are removing $2d - 1$ edges.
-        Furthermore, for each edge containing $z$ we are adding two edges,
-        and these sets of edges do not intersect because $z$ is not adjacent to $x$ or $y$ (so $\{z_1, z_2\} \notin E'$).
-        We conclude that $G'$ has $|E'| = |E| - (2d - 1) + 2d = |E| + 1 > |E| $ edges, as we wanted to show.
-    \end{proof}
-\end{lemma}
-
-Now we are ready to prove Turán's theorem.
-\begin{delayedproof}{thm:turan}
-    We have shown in Lemma~\ref{lem:turan_complete_partite} that $G = (V_1, \dots V_p; E)$ is complete.
-    In fact, we can set $p = r - 1$:
-    If $p < r - 1$, we can always add empty parts to $G$; and if it has more than $r - 1$ nonempty parts
-    (without loss of generality, $x_1 \in V_1, \dots, x_r \in V_r$), then $G[\{x_1, \dots, x_r\}]$ is complete,
-    which is a contradiction.
-    Furthermore, any complete $(r-1)$-partite $2$-graph is $\completesuperindex{2}{r}$-free,
-    because $\completesuperindex{2}{r}$ is not $(r-1)$-partite.
-
-    This means that we only need to show that the choice of the part sizes $a_1, \dots, a_{r-1}$ summing to $n$
-    in the statement maximizes the expression~\eqref{eq:turan}.
-    The imposition that $\lfloor n / (r-1) \rfloor \leq a_i \leq \lceil n / (r-1) \rceil$ for all $i$
-    is equivalent to saying that the part sizes are as equal as possible, that is,
-    $|a_i - a_j| \leq 1$ for all $i, j$.
-    Suppose, by way of contradiction and without loss of generality, that $a_1 > a_2 + 1$.
-    Let $a_1' = a_1 - 1$, $a_2' = a_2 + 1$ and $a_i' = a_i$ for all $i \geq 3$.
-    Then,
-    \begin{align*}
-        \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x' \cdot a_y'
-        =& \, (a_1 - 1)(a_2 + 1) + (a_1 - 1) \sum_{i \geq 3} a_i + (a_2 + 1) \sum_{i \geq 3} a_i + \sum_{3 \leq x < y} a_x a_y \\
-        =& \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y - a_2 + a_1 - 1
-        > \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y,
-    \end{align*}
-    in contradiction with the number of edges in $G$ being maximal.
-\end{delayedproof}
-
-Because of the difficulty of finding exact Turán numbers for $k$-graphs,
-we usually look for asymptotic approximations of them.
-In particular, we are interested in how the expression
-$\ex{n}{G}$ grows with $n$ for any fixed $k$-graph $G$.
-This is known as the \emph{Turán problem} for the graph $G$.
-For an example, we turn to the complete $2$-graph $\completesuperindex{2}{r}$,
-for which we already have an exact formula.
-In expression~\eqref{eq:turan}, we can see that
-$a_i = n/(r-1) + \bigO{1}$ for all $i$.
-Therefore,
-\begin{equation} \label{eq:turan_asymptotic}
-    \ex{n}{\completesuperindex{2}{r}} = \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y
-    = \binom{r-1}{2} \cdot \left( \frac{n}{r-1} + \mathcal{O}(1) \right)^2
-    = \frac{(r-2)}{2(r-1)} n^2 + \mathcal{O}(n).
-\end{equation}
-Note that the maximum number of edges in a $2$-graph on $n$ vertices is
-\[
-    \binom{n}{2} = \frac{1}{2} n^2 + \mathcal{O}(n).
-\]
-The two quantities are comparable as they are both quadratic in $n$.
-This lets us restate equation~\eqref{eq:turan_asymptotic} as
-\begin{equation} \label{eq:turan_asymptotic_density}
-    \ex{n}{\completesuperindex{2}{r}} =
-    \frac{r-2}{r-1} \binom{n}{2} + \mathcal{O}(n) =
-    \frac{r-2}{r-1} \binom{n}{2} + o\left(\binom{n}{2}\right),
-\end{equation}
-Which means that, asymptotically, the maximum \emph{edge density} of a $2$-graph on $n$ vertices
-without $K_r^{(2)}$ as a subgraph is $(r-2)/(r-1) < 1$, so we must exclude a nontrivial fraction of edges
-to avoid any particular complete $2$-graph.
-The following general theorem greatly restricts the growth of Turán numbers
-for all $k$-graphs.
-
-\begin{theorem}
-    Let $G = (V, E)$ be a $k$-graph.
-    The limit
-    \begin{equation} \label{eq:turan_density}
-        \pi(G) = \lim_{n \to \infty} \frac{\ex{n}{G}}{\binom{n}{k}}
-    \end{equation}
-    exists and is between $0$ and $1$.
-    We call it the \emph{Turán density} of $G$.
-    \begin{proof}
-        The sequence
-        \[
-            a_n = \frac{\ex{n}{G}}{\binom{n}{k}}
-        \]
-        Is bounded between $0$ and $1$ for all $n \geq |V(G)|$, by Proposition~\ref{prop:extremal}.
-        Furthermore, it is less than $1$ for all $n \geq |V(G)| + 1$.
-        To see this, consider a graph $H = (W, F)$ with $n$ vertices and $\binom{n}{k} - 1$ edges.
-        Its edge density is less than $1$.
-        Without loss of generality, we can suppose that $F = \binom{W}{k} \setminus \{\{x, y\}\}$.
-        This means that $H[W \setminus \{x\}]$ is a complete $k$-graph on $n - 1$ vertices,
-        which must contain $G$ as a subgraph.
-
-        We show that the sequence $(a_n)$ is non-increasing, so it must converge to a value $0 \leq \pi(G) < 1$.
-        Let $n \geq |V(G)|$.
-        There exists a graph $H = (W, F)$ with $n+1$ vertices and $\ex{n+1}{G}$ edges that does not contain
-        $G$ as a subgraph.
-        For each vertex $w \in W$, the graph $H_w = H[W \setminus \{w\}]$ has $n$ vertices
-        and does not contain $G$ as a subgraph.
-        Therefore, it must contain at most $\ex{n}{G}$ edges.
-        Consider the set
-        \[
-            \mathcal{P} = \left\{ (w, e) | w \in W, e \in E(H_w) \right\}.
-        \]
-        Counting on the first coordinate, we get
-        \begin{equation} \label{eq:densityUpperBound}
-            |\mathcal{P}| = \sum_{w \in W} |E(H_w)| \leq (n+1)\, \ex{n}{G}.
-        \end{equation}
-        On the other hand, for every edge $e \in F$, $e \in E(H_w)$
-        for all $w \in W \setminus e$.
-        Therefore, counting on the second coordinate, we get
-        \begin{equation} \label{eq:densityLowerBound}
-            |\mathcal{P}| = (n + 1 - k) |F| = (n + 1 - k)\, \ex{n+1}{G}.
-        \end{equation}
-        Combining equations~\eqref{eq:densityUpperBound} and~\eqref{eq:densityLowerBound},
-        we get
-        \[
-            (n + 1 - k)\, \ex{n+1}{G} \leq (n + 1)\, \ex{n}{G}.
-        \]
-        Going back to the sequence $a_n$, we can write
-        \[
-            a_{n+1} = \frac{\ex{n+1}{G}}{\binom{n+1}{k}} \leq
-            \frac{(n + 1)\, \ex{n}{G}}{(n + 1 - k) \binom{n+1}{k}} =
-            \frac{\ex{n}{G}}{\binom{n}{k}} = a_n. \qedhere
-        \]
-    \end{proof}
-\end{theorem}
-
-We can now summarize expression~\eqref{eq:turan_asymptotic_density} as follows.
-\begin{corollary} \label{cor:turan_density_kr}
-    The Turán density of the complete $2$-graph $\completesuperindex{2}{r}$ is
-    \[
-        \pi\left(\completesuperindex{2}{r}\right) = \frac{r-2}{r-1} = 1 - \frac{1}{r-1}.
-    \]
-\end{corollary}
-
-The first natural question that arises is for what graphs $G$ the Turán density $\pi(G)$ is positive
-(in which case, we call the corresponding Turán problem \emph{non-degenerate}
-and consider it solved if we can calculate $\pi(G)$).
-The following gives a complete characterization.
-
-\begin{proposition} \label{prop:degenerate}
-    Let $G = (V, E)$ be a $k$-graph.
-    Then $\pi(G) = 0$ if and only if $G$ is $k$-partite.
-    \begin{proof}
-        If $G$ is not $k$-partite, a construction similar to the one in the proof of Theorem~\ref{thm:turan}
-        directly shows $\pi (G) > 0$.
-        Indeed, for all $m$ the graph $\compoverset{k}{m}$ is $k$-partite so it cannot contain $G$ as a subgraph.
-        Furthermore, its edge density is
-        \[
-             \frac{m^k}{\binom{km}{k}} \geq \frac{1}{k^k}.
-        \]
-        Because we can make $n = km = |V\left( \compoverset{k}{m} \right)|$ as large as we want,
-        the limit~\eqref{eq:turan_density} bounded below by a positive constant.
-        We defer the proof of the other direction to subsection~\ref{subsec:degenerate},
-        where we study $k$-partite $k$-graph Turán problems
-        in more depth (in particular, see Theorem~\ref{thm:erdos64}).
-    \end{proof}
-\end{proposition}
-
-In fact, non-degenerate Turán problems for $2$-graphs are considered solved in this regard.
-The following theorem gives the Turán density of all $2$-graphs.
-
-\begin{theorem}[Erdős-Stone-Simonovits Theorem]
-    \label{thm:erdos_stone_simonovits}
-    Let $G = (V, E)$ be a $2$-graph and let $r = \chi(G)$.
-    Then,
-    \[
-        \pi(G) = 1 - \frac{1}{r - 1}.
-    \]
-\end{theorem}
-
-We defer the \proofref{thm:erdos_stone_simonovits} of this theorem to the next subsection,
-where we will have more powerful tools at our disposal.
-Note that letting $G = \completesuperindex{2}{r}$ we recover
-Corollary~\ref{cor:turan_density_kr} of Theorem~\ref{thm:turan}.
-
-Determining the Turán density of $k$-graphs for $k > 2$ is a much harder problem.
-Famously, not even the Turán density of the tetrahedron $3$-graph $\completesuperindex{3}{4}$
-(pictured in Figure~\ref{fig:complete_kgraph}) or the unique graph $\completesuperindex{3}{4-}$
-obtained by removing one edge from it is known.
-The best known bounds are
-\[
-    0.5555 = \frac{5}{9} \leq \pi\left(\completesuperindex{3}{4}\right) \leq 0.561666~\cite{keevash2011hypergraph,baber2011hypergraphs}
-\]
-and
-\[
-     0.2857 = \frac{2}{7} \leq \pi\left(\completesuperindex{3}{4-}\right) \leq 0.2871~\cite{frankl1984exact, baber2011hypergraphs}.
-\]
-The lower bounds are obtained by explicit constructions of $3$-graphs, and are believed to be optimal~\cite{keevash2011hypergraph},
-while the upper bounds are obtained by the method of flag algebras~\cite{razborov2007flag},
-which is a powerful tool for studying Turán problems that automates the search for relevant inequalities.
-
-One of the few examples of success in obtaining turán densities of $k$-graphs with uniformity $k > 2$ is the case of
-the Fano plane $F^{(3)}_7$, a $3$-graph with $7$ vertices corresponding to the points
-of the projective plane over the field $\mathbb{F}_2$,
-and $7$ edges corresponding to the projective lines.
-It is known that
-\[
-    \pi\left(F^{(3)}_7\right) = \frac{3}{4}~\cite{de2000maximum}.
-\]
-
-We know that $k$-graphs asymptotically below the Turán number of a $k$-graph $G$
-may not contain $G$ as a subgraph.
-We may also ask how many copies (different embeddings) of $G$ can be found in a $k$-graph $H$
-exceeding the Turán density.
-The following surprising result~\cite{erdHos1983supersaturated} shows that the number of copies of $G$ in $H$
-is asymptotically guaranteed to be very large.
-
-\begin{theorem}[Supersaturation \cite{erdHos1983supersaturated}] \label{thm:supersaturation}
-    Let $G = (V, E)$ be a $k$-graph, and let $H_n = (W, F)$ be a $k$-graph with $n$ vertices
-    and $\left(\pi(G) + \Omega(1) \right) \binom{n}{k}$ edges.
-    Then, $H_n$ has $\Omega \left(n^{|V|} \right)$ copies of $G$ as a subgraph.
-    \begin{proof}
-        We follow the proof of a survey by Keevash~\cite{keevash2011hypergraph}.
-        Suppose that, for $n$ large enough, $H_n$ has $ m \geq (\pi(G) + \gamma) \binom{n}{k}$ edges.
-        Pick $t$ large enough so that $\ex{t}{G} \leq \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k}$.
-        Suppose, furthermore, that $n \geq t$.
-        Notice that
-        \[
-            \binom{n-k}{t-k}m = \sum_{T \in \binom{V}{t}} E(H_n[T]).
-        \]
-        This is because, for each edge in $H_n$, we can choose a set $T \subset V$ containing it in
-        $\binom{n-k}{t-k}$ ways.
-        We define
-        \[
-            P = \left\{ T \in \binom{V}{t} \middle| E(H_n[T]) > \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k} \right\}.
-        \]
-        If $T \in \binom{V}{t}$, the number of edges in $H_n[T]$ is at most $\binom{t}{k}$.
-        Therefore,
-        \[
-            \binom{n-k}{t-k}(\pi(G) + \gamma)\binom{n}{k}
-            \leq \binom{n-k}{t-k}m
-            \leq |P| \binom{t}{k} + \left(\binom{n}{t} - |P|\right) \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k}.
-        \]
-        Rearranging and applying standard binomial coefficient identities, we can bound $|P|$ as
-        \[
-            |P| \geq \frac{\gamma}{2(1 - \pi(G)- \gamma /2)} \binom{n}{t} \geq \frac{\gamma}{2} \binom{n}{t}.
-        \]
-        Now, for each $T \in P$, $H_n[T]$ contains $G$ as a subgraph.
-        Furthermore, each copy of $G$ is in at most $\binom{n - |V|}{t - |V|}$
-        such sets.
-        Therefore, the number of copies of $G$ in $H_n$ is at least
-        \[
-            \frac{\gamma}{2} \binom{n}{t} \frac{1}{\binom{n - |V|}{t - |V|}}
-            = \frac{\gamma}{2 \binom{t}{|V|}} \binom{n}{|V|}
-            = \Omega\left( n^{|V|}\right). \qedhere
-        \]
-    \end{proof}
-\end{theorem}
-
-\subsection{Degenerate Turán Problems}\label{subsec:degenerate}
-
-We now turn our attention to Turán problems for $k$-partite $k$-graphs,
-which are the ones that have Turán density $0$ (we will prove so in this section).
-All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$
-are contained in $\compdots{a_1}{a_k}$ as subgraphs.
-This lets us follow the same argument as in Proposition~\ref{prop:extremal}
-to define the following.
-
-\begin{definition}\label{def:zarankiewicz}
-    Let $1 < t_1 \leq v_1, \dots, 1 < t_k \leq v_k$ be integers.
-    Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
-    is the largest integer $0 \leq z < \prod_i{ v_i}$ for which there exists a $k$-partite $k$-graph
-    $H$ with part sizes $ |V_1| = v_1, \dots, |V_k| = v_k$ and $z$ edges
-    such that no embedding $f$ of $\compdots{T_1}{T_k}$ with $|T_i| = t_i$ in it exists
-    satisfying $f(T_i) \subset V_i$ for all $i$.
-\end{definition}
-
-From now on, every time we talk about embeddings from one $k$-partite $k$-graph
-$G = (T_1, \dots, T_k; E)$ to another $k$-partite $k$-graph $H = (V_1, \dots, V_k; F)$,
-we assume the condition $f(T_i) \subset V_i$.
-Similarly to the case of complete graphs,
-$H$ contains $\compdots{t_1}{t_k}$ as a subgraph if and only if
-for some sets $S_i \subset V_i$ of size $t_i$ for all $i$,
-$H[S_1 \cup \dots \cup S_k]$ = $\compdots{S_1}{S_K}$,
-and such an embedding is always induced.
-Definition~\ref{def:zarankiewicz} is useful for studying the Turán problem for $k$-partite $k$-graphs
-in the following way.
-
-\begin{remark}\label{rem:zar_vs_turan}
-    Finding Zarankiewicz numbers can help us upper bound the Turán number of $\compdots{t_1}{t_k}$ asymptotically.
-    Assume that $H$ is a $\compdots{t_1}{t_k}$-free $n$-vertex $k$-graph with $m$ edges.
-    pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
-    (For example $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$)
-    Let $V_1, \dots, V_k$ be a uniform random partition of $V(H)$ with $|V_i| = v_i$.
-    for an edge $e \in E(H)$, the probability that $e$ is an edge in $\compdots{V_1}{V_k}$ is
-    greater than
-    \[k! \prod_i \frac{v_i}{n} \sim \frac{k!}{k^k},\]
-    which is independent of $n$.
-    Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
-    Applying the first moment method, we can conclude that
-    \[
-        \ex{n}{\compdots{t_1}{t_k}} = \bigO{\zaroversetdots{k}{\lceil n / k \rceil}{t_1}{t_k}}.
-    \]
-
-\end{remark}
-
-The problem on finding the Zarankiewicz number was first posed by K. Zarankiewicz in 1951 for the
-case of bipartite 2-graphs (that is, finding $z(u, w; s, t)$),
-in terms of finding all-1 sub-matrices in a $0-1$ matrix.
-An upper bound for it in the case $u=w, s=t$ was found by Kővari, Sós and Turán~\cite{Kovari1954} in 1954.
-This was generalized to arbitrary complete
-bipartite 2-graphs by C. Hyltén-Cavallius~\cite{Hylten1958} in 1958.
-The result is stated and proved here for completeness.
-
-\begin{theorem}[Kővari-Sós-Turán Theorem] \label{thm:kst}
-    Let $0 < s \leq u$ and $0 < t \leq w$ be integers.
-    Then 
-    \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
-    \begin{proof}
-        Suppose, by way of contradiction, that we have a $K(s, t)$-free bipartite graph $G = (U, W; E)$
-        with $|U| = u$, $|W| = w$ and $|E| = z$ exceeding the bound stated above.
-        Let us consider the set
-        \[
-            P = \left\{ (x, T) \in U \times \binom{W}{t}
-            \middle\vert\, \{x, y\} \in E \text{ for all } y \in T \right\}.
-        \]
-        Counting on the first coordinate, we get
-        \begin{equation} \label{eq:kst_p_lower}
-            |P| =
-            \sum_{x \in U} \binom{d_G(x)}{t} =
-            \sum_{x \in U} \varphi(d_G(x)) \geq
-            u \varphi(z/u) =
-            u \binom{z / u}{t},
-        \end{equation}
-        where we define
-        \[
-            \varphi(x) =
-            \begin{cases}
-                \binom{x}{t}, & \text{if } x \geq t - 1; \\
-                0, & \text{otherwise.}
-            \end{cases}
-        \]
-        The function $\varphi$ is convex, so we get the inequality in~\eqref{eq:kst_p_lower}
-        as a consequence of Jensen's inequality.
-        The other equalities come from the fact that $\varphi(d)$ agrees
-        with $\binom{d}{t}$ for all integers $d \geq 0$;
-        and that by our bound on $z$, $z \geq (t-1)u \implies z/u \geq t - 1$.
-
-        If we had $s$ different elements of $P$ with the same second coordinate $T$,
-        they would all necessarily have different first coordinates
-        (say $S = \{x_1, \dots, x_s\}$).
-        But now, by definition of $P$, for all $a \in S, b \in T$, we have $\{a, b\} \in E$,
-        so $G[S \cup T] = K(S, T)$, against the assumption that $G$ is $K(s, t)$-free.
-        Therefore, there are at most $s - 1$ different elements of $P$ for each $T \in \binom{W}{t}$:
-        \begin{equation} \label{eq:kst_p_upper}
-            |P| \leq (s - 1) \binom{w}{t}.
-        \end{equation}
-        Putting inequalities~\eqref{eq:kst_p_lower} and~\eqref{eq:kst_p_upper}
-        together, we get
-        \begin{equation} \label{eq:kst_chained}
-            u \binom{z / u}{t} \leq (s - 1) \binom{w}{t}.
-        \end{equation}
-        Now, because we can see $E$ as a subset of $U \times W$,
-        we get $z \leq uw \implies z/u \leq w$.
-        We claim that this implies that
-        \begin{equation} \label{eq:kst_binom}
-            \frac{(z/u - (t - 1))^t}{\binom{z/u}{t}} \leq \frac{(w - (t - 1))^t}{\binom{w}{t}},
-        \end{equation}
-        because the function
-        \[
-            g(x) = \frac{(x - (t - 1))^t}{\binom{x}{t}}
-        \]
-        is increasing for $x \geq t - 1$.
-        To see this, we expand the denominator into a product and absorb the $(x - (t - 1))^t$ factor.
-        \begin{equation} \label{eq:g_expansion}
-            g(x) = \prod_{i=0}^{t-1} (x-(t-1)) \frac{i+1}{x-i} = t! \prod_{i=0}^{t-1} \frac{x-(t-1)}{x-i}.
-        \end{equation}
-        Every factor in the product on the right side of~\eqref{eq:g_expansion} is increasing
-        in $x$ for $x \geq t - 1 \geq i$, proving the claim.
-        Multiplying inequalities~\eqref{eq:kst_chained} and~\eqref{eq:kst_binom} yields
-        \[
-            u \, (z/u - (t - 1))^t \leq (s - 1)(w - (t - 1))^t.
-        \]
-        Then, algebraic manipulation then gives
-        \[
-            z \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u,
-        \]
-        In contradiction with our assumption. \qedhere
-    \end{proof}
-
-\end{theorem}
-
-\begin{remark}
-    Following Remark~\ref{rem:zar_vs_turan}, we can use this bound to get an upper bound on the Turán number of $K(s, t)$:
-    \[
-        \ex{n}{K(s, t)} =
-        \bigO{(s - 1)^{1 / t}\left(\left\lceil\frac{n}{2}\right\rceil - t + 1\right)n^{1 - 1 / t} + (t - 1)\left\lceil\frac{n}{2}\right\rceil} =
-        \bigO{n^{2 - 1 / t}}.
-    \]
-    Note that if $s < t$, we get the better bound $\bigO{n^{2 - 1 / s}}$ by interchanging the roles of $s$ and $t$.
-\end{remark}
-
-In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete partite $k$-graphs in the following theorem.
-
-\begin{theorem}\label{thm:erdos64}
-    For $k \geq 2$ and $2 \leq t \leq \frac{n}{k}$,
-    $\ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{k-1}}}}$.
-    \begin{proof}
-        By Remark~\ref{rem:zar_vs_turan}, it suffices to show that
-        \[
-            z = \zaroverset{k}{w}{t} = \bigO{w^{k - \frac{1}{t^{k-1}}}}
-        \]
-        as $w \to \infty$.
-        We prove this by induction on $k$.
-        For $k=2$, this is obtained by setting $u = w$ and $s = t$ in Theorem~\ref{thm:kst}.
-        For $k > 2$, suppose by way of contradiction that the theorem is false.
-        For all ${w_0 \in \N}$, ${K \in \mathbb{R}^+}$, there exists a $k$-partite $k$-graph $G = (W_1, \dots, W_k; E)$ with part sizes
-        $|W_i| = w \geq w_0$ and ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$ such that no embedding of $\compoverset{k}{t}$ in it exists.
-        Consider, for each set $T \in \binom{W_k}{t}$, the associated \text{$(k-1)$-link}
-        \link{G}{T}{k-1}.
-        We claim that it does not contain $\compoverset{k-1}{t}$ as a subgraph.
-        If it did (say, $T_1 \times \dots \times T_{k-1} \in E(\link{G}{T}{k-1})$),
-        then $T_1 \times \dots \times T_{k-1} \times T \in E$
-        would contradict the assumption that $G$ does not contain $\compoverset{k}{t}$ as a subgraph.
-        This means that
-        \begin{equation} \label{eq:conditionlink}
-            \link{G}{T}{k-1} \text{ has at most $z'$ edges for all } T \in \binom{W_k}{t},
-        \end{equation}
-        where
-        \[
-            z' = \zaroverset{k-1}{w}{t}.
-        \]
-        Now, consider the bipartite graph $G' = (U, W; E')$, where
-        \begin{align*}
-            U &= W_1 \times \dots \times W_{k-1}, \\
-            W &= W_k, \\
-            E' &= \{(X, y) \in U \times W \mid X \cup \{y\} \in E\}.
-        \end{align*}
-        Condition~\eqref{eq:conditionlink} is equivalent to saying that
-        there is no embedding of $K(z' + 1, t)$ onto $G'$ respecting the respective partitions.
-        Furthermore, $G'$ has the same number of edges as $G$.
-        Finally, we invoke Theorem~\ref{thm:kst} with
-        ${u = |U| = w^{k-1}}$ and
-        ${s = z' + 1}$ to get
-        \begin{equation} \label{eq:erdos64_induction}
-            K w^{k - \frac{1}{t^{k-1}}} \leq
-            |E| = |E'| \leq
-            (z')^{1 / t}(w - t + 1)w^{(k-1)(1 - 1 / t)} + (t - 1)w^{k-1}.
-        \end{equation}
-        By the inductive hypothesis, for $w_0$ and $K'$ large enough, we can bound
-        \begin{equation} \label{eq:erdos64prime}
-            z' \leq K' w^{(k - 1) - \frac{1}{t^{k-2}}}.
-        \end{equation}
-        Substituting inequality~\eqref{eq:erdos64prime} into~\eqref{eq:erdos64_induction} and approximating yields
-        \[
-            K w^{k - \frac{1}{t^{k-1}}} \leq (K')^{1 / t} w^{k-\frac{1}{t^{k-1}}} + (t - 1)w^{k-1}.
-        \]
-        Combining like terms and picking $K > 2 (K')^{1 / t}$ gives
-        \[
-            \frac{1}{2}K w^{k - \frac{1}{t^{k-1}}} < (t - 1)w^{k-1},
-        \]
-        which we can rewrite as
-        \begin{equation} \label{eq:erdos64_contradiction}
-            \frac{1}{2}Kw^{1 - \frac{1}{t^{k-1}}} < (t - 1).
-        \end{equation}
-        This is a contradiction, because the right side of inequality~\eqref{eq:erdos64_contradiction}
-        is constant in $w$, while the left side grows to infinity as $w$ increases.
-    \end{proof}
-\end{theorem}
-
-This approach can be generalized to give a lower bound on the number of
-copies (that is, embeddings with different image sets)
-of $\compdots{t_1}{t_k}$ in a $k$-partite $k$-graph $G$
-with different part sizes~\cite{carvajal2024canonical},
-therefore upper bounding all generalized Zarankiewicz numbers.
-Applying the same observations that we have made for the balanced case,
-we arrive at
-\begin{equation} \label{eq:general-partite-bound}
-    \ex{n}{\compdots{t_1}{t_k}} = \bigO{n^{k - \frac{1}{\prod_{i=1}^{k-1} t_i}}}.
-\end{equation}
-
-Because all $k$-partite $k$-graphs can be embedded in a $\compoverset{k}{t}$,
-Theorem~\ref{thm:erdos64} shows that the Turán density of all $k$-partite $k$-graphs is $0$,
-completing the proof of Proposition~\ref{prop:degenerate}.
-Knowing that the Turán density of $k$-partite $k$-graphs is $0$ gives little information on the growth of their Turán numbers.
-In this case, we are usually satisfied with determining the growth up to a constant factor.
-
-General lower bounds are usually obtained by probabilistic arguments,
-which are often weak and do not reach the correct order of magnitude.
-For example, see the following probabilistic construction.
-
-\begin{proposition} \label{prop:probabilistic-lower-bound}
-    Let $G = (T_1, \dots, T_k; E)$ be a $k$-partite $k$-graph with
-    $t = \sum_{i=1}^{k} t_i = \sum_{i=1}^{k} |T_i|$ vertices
-    and $e = |E| > 1$ edges.
-    Then, $\ex{n}{G} = \Omega\left(n^{k - \frac{t - k}{e - 1}} \right)$, and the
-    constant factor depends only on the number of edges $e$ (and not on the number of vertices $t$).
-    \begin{proof}
-        Let $n \geq t$.
-        We use the so-called \emph{random alteration} method to construct a $k$-graph
-        $H_n$ with $n$ vertices that does not contain $G$ as a subgraph.
-        We first define $R_n = (V, E)$ to be a random $k$-graph on a vertex set $V$ of size $n$,
-        where each edge $e \in \binom{V}{k}$ is included in $E$ independently at random
-        with a certain probability $p \in (0, 1)$.
-        The expected number of edges in $R_n$ is
-        \[
-            \mathbb{E}(|E|) = p \binom{n}{k} \geq p \left( \frac{n}{k} \right)^k.
-        \]
-        Let us now count the number of possible injective functions of $V(G)$ in $V$.
-        They are defined by the (ordered) choice of the image of each vertex, so there are
-        \[
-            \prod_{j=1}^{t} (n - j + 1) \leq n^t
-        \]
-        of them.
-        The probability that any particular injective function $f$ of $V(G)$ in $V$ is an embedding of $G$ in $R_n$
-        is calculated as the product of the probabilities that each image of an edge is an edge in $R_n$,
-        because the presence of edges in $R_n$ is independent.
-        Therefore,
-        \[
-            \mathbb{P}(f \text{ is an embedding of } G) = p^{|E|} = p^{e}.
-        \]
-        If we define $X$ to be the number of embeddings of $G$ in $R_n$, by linearity of expectation we get
-        \[
-            \mathbb{E}(X) = \sum_{f} \mathbb{P}(f \text{ is an embedding of } G) \leq n^t p^{e}.
-        \]
-        We can now obtain a $G$-free $k$-graph $H_n$ by removing from $R_n$, for each embedding of $G$,
-        the image of an edge of $G$.
-        The expected number of edges in $H_n$ is
-        \[
-            \mathbb{E}(|E(H_n)|) = \mathbb{E}(|E|) - \mathbb{E}(X) \geq
-            p \left( \frac{n}{k} \right)^k - n^t p^{e}.
-        \]
-        This quantity is maximized by setting
-        \[
-            p = \left( \frac{1}{ek^k} n^{k-t} \right)^{\frac{1}{e-1}}.
-        \]
-        This yields
-        \[
-            \mathbb{E}(|E(H_n)|) \geq
-            m_0(n) =
-            \left( \frac{(e-1)^{e-1}}{e^e k^{ek}} \right)^{\frac{1}{e-1}} n^{k - \frac{t-k}{e-1}}
-            = \Omega_{e}\left(n^{k - \frac{t-k}{e-1}} \right).
-        \]
-        Therefore, the event that $|E(H_n)| \geq m_0(n)$
-        must have positive probability, and in particular,
-        there exists one such graph $\widehat{H_n}$, which is $G$-free by construction.
-
-    \end{proof}
-
-\end{proposition}
-
-Note that this also implies that
-\[
-    \ex{n}{\compdots{t_1}{t_k}} = \Omega\left(n^{k - \frac{\left( \sum_i t_i \right) - k}{\left( \prod_i t_i \right) - 1}}\right).
-\]
-This leaves a very large gap between the upper and lower bounds for the Turán numbers of degenerate $k$-graphs.
-For example, in the balanced case, where all $t_i$ are equal, we get
-\begin{equation} \label{eq:balanced_upper_bound}
-    \ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}
-\end{equation}
-from Theorem~\ref{thm:erdos64}, but only
-\begin{equation} \label{eq:balanced_lower_bound}
-    \ex{n}{\compoverset{k}{t}} = \Omega\left(n^{k - \frac{k(t-1)}{t^k - 1}}\right)
-\end{equation}
-from Proposition~\ref{prop:probabilistic-lower-bound}.
-The exponent in~\eqref{eq:balanced_lower_bound} is always
-smaller than the one in~\eqref{eq:balanced_upper_bound},
-as long as $t \geq 2$ and $k \geq 2$.
-
-There are even fewer solved cases for degenerate Turán problems than in the non-degenerate case.
-Among them, it is known that, for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$,
-Theorem~\ref{thm:kst} is optimal in the sense that
-\[
-    \ex{n}{K(2, t)} = \Theta\left(n^{\frac{3}{2}}\right)~\cite{erdHos1966problem, furedi1996new},
-\]
-and also
-\[
-    \ex{n}{K(3, 3)} = \Theta\left(n^{\frac{5}{3}}\right)~\cite{brown1966graphs}.
-\]
-The theorem is also optimal for $K(s, t)$ when $s \geq t! + 1$~\cite{kollar1996norm}.
-Some progress has been made in the case of $K(s, t)$ when $s$ and $t$ have similar sizes,
-only for small values of $s \geq t \geq 4$.
-For example, Theorem~\ref{thm:kst} gives
-\[
-    \ex{n}{K(5,5)} = \bigO{n^{\frac{9}{5}}} = \bigO{n^{1.8}},
-\]
-and by Proposition~\ref{prop:probabilistic-lower-bound} we get
-\begin{equation} \label{eq:k55-probabilistic}
-    \ex{n}{K(5,5)} = \Omega\left(n^{\frac{5}{3}}\right) = \Omega\left(n^{1.67}\right),
-\end{equation}
-but~\eqref{eq:k55-probabilistic} has been improved to
-\[
-    \ex{n}{K(5,5)} = \Omega\left(n^{\frac{7}{4}}\right) = \Omega\left(n^{1.75}\right)~\cite{ball2012asymptotic}.
-\]
-It is conjectured that Theorem~\ref{thm:kst} always gives the correct order of magnitude.
-Even less is known about degenerate problems for graphs of higher uniformity.
-For example, not even the growth rate of the Turán number for the octahedron 3-graph
-($\ex{n}{K(2, 2, 2)}$, pictured in Figure~\ref{fig:222}) is known.
-The best upper bound, again, comes from Theorem~\ref{thm:erdos64}, which gives
-\[
-    \ex{n}{K(2, 2, 2)} = \bigO{n^{\frac{11}{4}}} = \bigO{n^{2.75}},
-\]
-while the best know lower bound is
-\[
-    \ex{n}{K(2, 2, 2)} = \Omega\left(n^{\frac{8}{3}}\right) = \Omega\left(n^{2.67}\right)~\cite{conlon2020random}.
-\]
-
-The main difficulty for degenerate problems is that sharp lower bounds for the Turán numbers
-often rely on specific geometric or algebraic constructions that work for very few cases,
-such as the ones cited for $K(2, 2)$ and $K(3, 3)$.
-
-Similarly to non-degenerate Turán problems, we also have interesting results when the
-Turán density of a $k$-partite $k$-graph (namely, $0$) is exceeded.
-The following observation is key.
-
-\begin{remark} \label{rem:uniform-t}
-    The constant factors in the estimates of Theorem ~\ref{thm:erdos64} can be made to depend only on $k$ and not on $t$.
-    Reducing to the partite host case by Remark~\ref{rem:zar_vs_turan} only reduces the number of edges by a constant factor.
-    For $k=2$, Theorem~\ref{thm:kst} applied with $s = t$ and $u = w$
-    gives
-    \[
-        z(w, w, t, t) \leq (t-1)^{1/t}(w-t+1)w^{1-1/t} + (t-1)w \leq 2w^{2 - 1/t} + o\left(w^{1-1/t}\right).
-    \]
-    For $k \geq 3$, we can prove it inductively, by carrying out the computations of the theorem more carefully.
-\end{remark}
-
-Elementary computation then shows that if
-$H_n$ is a family of $k$-partite $k$-graphs with constant positive density
-(that is, $E(H_n) \geq \gamma \binom{n}{k} = \Omega\left( n^k \right)$ for some $\gamma > 0$),
-for large enough $n$, $H_n$ contains a $\compdots{t_n}{t_n}$ as a subgraph, with
-\[
-    t_n = \Omega \left( (\log n)^{\frac{1}{k-1}}\right).
-\]
-The following theorem generalizes this notion to blow-ups of arbitrary $k$-partite $k$-graphs.
-
-\begin{theorem} \label{thm:quant-blowup}
-    Let $G = (V, E)$ be a $k$-graph and let $(W_n, F_n)$ be a family of $k$-graphs with $n$
-    vertices and $\left( \pi(G) + \Omega (1) \right) \binom{n}{k}$ edges.
-    Then, for $n$ large enough, $H_n$ contains $G(t_n)$ as a subgraph,
-    where
-    \[
-        t_n = \Omega\left( (\log n)^{\frac{1}{|V|-1}} \right).
-    \]
-    \begin{proof}
-        By Theorem~\ref{thm:supersaturation}, $H_n$ contains $\Omega\left( n^{|V|} \right)$ copies of $G$.
-        Consider the $|V|$-graph $H_n' = (W_n, F_n')$, where
-        \[
-            F_n' = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H_n\}.
-        \]
-        Because each set of $|V|$ vertices in $H_n$ can be the image of at most $|V|! = \bigO{1}$ embeddings of $G$,
-        $H_n'$ has $\Omega\left(n^{|V|} \right)$ edges.
-        Furthermore, by the same argument as in Remark~\ref{rem:zar_vs_turan}, $H_n'$, we can assume that
-        $H_n'$ is $|V|$-partite (say, $H_n' = (W_1, \dots, W_{|V|}; F_n')$ with
-        $|W_i| \geq \left\lfloor n / |V| \right\rfloor$
-        without losing this condition.
-        Each edge in this graph is the image of $V$ under an embedding $f$ of $G$ in $H_n$.
-        Numbering the vertices of $G$ as $v_1, \dots, v_{|V|}$, $f$ corresponds to a permutation $\sigma$
-        of the vertices of $G$, where $f(v_i) \in W_j$ when $\sigma(i) = j$.
-        Picking the permutation $\hat{\sigma}$ that has the most edges corresponding to it
-        (at least $|E_n'| / |V|! = \Omega\left( n^{|V|} \right)$), and without loss of generality,
-        each edge in $(u_1, \dots, u_{|V|}) \in F_n' \subset W_1 \times \dots \times W_{|V|}$
-        corresponds to the fact that for each edge $\{v_{i_1}, \dots, v_{i_k}\} \in E$,
-        $\{u_{i_1}, \dots ,u_{i_k}\}$ is an edge of $H_n$.
-        By Remark~\ref{rem:uniform-t}, we can find a \compoverset{|V|}{t_n} in $H_n'$,
-        where
-        \[
-            t_n = \Omega\left( (\log n)^{\frac{1}{|V|-1}} \right).
-        \]
-        That is, there are $|V|$ sets $T_1, \dots, T_{|V|}$ of size $t_n$ such that
-        if $\{v_{i_1}, \dots, v_{i_k}\} \in E$ is an edge of $G$, then
-        $\{u_{i_1}, \dots, u_{i_k}\} \in F_n$ is an edge of $H_n$ for all $u_{i_j} \in T_j$.
-        This means that $G(t)$ is a subgraph of $H_n$.
-
-    \end{proof}
-\end{theorem}
-
-The following corollary highlights that degenerate Turán problems can be applied to solve non-degenerate ones.
-\begin{corollary}
-    Let $G$ be a $k$-graph and $t$ be a positive integer.
-    Then, $\pi(G(t)) = \pi(G)$.
-\end{corollary}
-
-In particular, this directly proves the Erdős-Stone-Simonovits theorem for $2$-graphs.
-
-\begin{delayedproof}{thm:erdos_stone_simonovits}
-    Let $G$ be a $2$-graph with chromatic number $r$.
-    For some $t \geq 1$, $G$ is a subgraph of $\compdotssuperindexoverset{2}{r}{t} \cong \completesuperindex{2}{r}(t)$.
-    Therefore,
-    \[
-        \pi(G) \leq \pi\left(\completesuperindex{2}{r}(t)\right) = \pi\left(\completesuperindex{2}{r}\right) = 1 - \frac{r-2}{r-1}.
-    \]
-    The reverse inequality follows from the same construction in the \proofref{thm:turan} of Turán's theorem.
-    Indeed, this construction has the desired density and avoids not only \completesuperindex{2}{r} but also
-    any $r$-partite $2$-graph, and in particular $G$.
-\end{delayedproof}
-
-Theorem~\ref{thm:quant-blowup} is known not to be optimal.
-Erdős and Bollobás~\cite{bollobas1973structure} in fact proved that the optimal growth
-rate of a guaranteed $t_n$-blow-up of a $2$-graph $G$ in $2$-graphs of constant density greater than $\pi(G)$ is
-\[
-    t_n = \Theta (\log n).
-\]
-A still open question raised by the authors is whether this can be extended to $k$-graphs.
-That is, is it true that $k$-graphs with $n$ vertices and  $\left( 1 + \Omega(1) \right) \pi(G) \binom{n}{k}$ edges
-contain $G(t_n)$ for some $t_n = \Omega \left((\log n)^{\frac{1}{k-1}}\right)$?
-An even more general yet unresolved question is whether this is true for
-$k$-graphs with $n$ vertices and $\Omega (n^{|V(G)|})$ copies of $G$~\cite{rodl2012complete}.

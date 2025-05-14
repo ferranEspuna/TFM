@@ -195,7 +195,7 @@ This allows us to restate equation~\eqref{eq:turan_asymptotic} as
 \begin{equation} \label{eq:turan_asymptotic_density}
     \ex{n}{\completesuperindex{2}{r}} =
     \frac{r-2}{r-1} \binom{n}{2} + \mathcal{O}(n) =
-    (1 + o(1))\binom{n}{2},
+    \left(1 - \frac{1}{r-1} + o(1)\right)\binom{n}{2},
 \end{equation}
 which means that, asymptotically, the maximum \emph{edge density} of a $2$-graph on $n$ vertices
 without $K_r^{(2)}$ as a subgraph is $(r-2)/(r-1) < 1$, so we must exclude a nontrivial fraction of edges
@@ -308,31 +308,6 @@ where we will have more powerful tools at our disposal.
 Note that letting $G = \completesuperindex{2}{r}$ we recover
 Corollary~\ref{cor:turan_density_kr} of Theorem~\ref{thm:turan}.
 
-Determining the Turán density of $k$-graphs for $k > 2$ is a much harder problem.
-Famously, not even the Turán density of the tetrahedron $3$-graph $\completesuperindex{3}{4}$
-(pictured in Figure~\ref{fig:complete_kgraph}) or the unique graph $\completesuperindex{3}{4-}$
-obtained by removing one edge from it is known.
-The best known bounds are
-\[
-    0.5555 = \frac{5}{9} \leq \pi\left(\completesuperindex{3}{4}\right) \leq 0.561666~\cite{keevash2011hypergraph,baber2011hypergraphs}
-\]
-and
-\[
-     0.2857 = \frac{2}{7} \leq \pi\left(\completesuperindex{3}{4-}\right) \leq 0.2871~\cite{frankl1984exact, baber2011hypergraphs}.
-\]
-The lower bounds are obtained by explicit constructions of $3$-graphs, and are believed to be optimal~\cite{keevash2011hypergraph},
-while the upper bounds are obtained by the method of flag algebras~\cite{razborov2007flag},
-which is a powerful tool for studying Turán problems that automates the search for relevant inequalities.
-
-One of the few examples of success in obtaining Turán densities of $k$-graphs with uniformity $k > 2$ is the case of
-the Fano plane $F^{(3)}_7$, a $3$-graph with $7$ vertices corresponding to the points
-of the projective plane over the field $\mathbb{F}_2$,
-and $7$ edges corresponding to the projective lines.
-It is known that
-\[
-    \pi\left(F^{(3)}_7\right) = \frac{3}{4}~\cite{de2000maximum}.
-\]
-
 We know that $k$-graphs asymptotically below the Turán number of a $k$-graph $G$
 may not contain $G$ as a subgraph.
 We may also ask how many copies (different embeddings) of $G$ can be found in a $k$-graph $H$
@@ -342,7 +317,7 @@ is asymptotically guaranteed to be very large.
 
 \begin{theorem}[Supersaturation \cite{erdHos1983supersaturated}] \label{thm:supersaturation}
     Let $G = (V, E)$ be a $k$-graph, and let $H_n = (W, F)$ be a $k$-graph with $n$ vertices
-    and $\left(\pi(G) + \Omega(1) \right) \binom{n}{k}$ edges.
+    and $\left(\pi(G) + \Omega(1) \right) \binom{n}{k}$ edges. % TODO why does Richard not like this?
     Then, $H_n$ has $\Omega \left(n^{|V|} \right)$ copies of $G$ as a subgraph.
     \begin{proof}
         Suppose that, for $n$ large enough, $H_n$ has $ m \geq (\pi(G) + \gamma) \binom{n}{k}$ edges.
@@ -395,7 +370,7 @@ to define the following.
     Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
     is the largest integer $0 \leq z < \prod_i{ v_i}$ for which there exists a $k$-partite $k$-graph
     $H$ with part sizes $ |V_1| = v_1, \dots, |V_k| = v_k$ and $z$ edges
-    such that no embedding $f$ of $\compdots{T_1}{T_k}$ with $|T_i| = t_i$ in it exists
+    such that no embedding $f$ of $\compdots{T_1}{T_k}$ with $|T_i| = t_i$ into $H$ exists
     satisfying $f(T_i) \subset V_i$ for all $i$.
 \end{definition}
 
@@ -414,10 +389,10 @@ in the following way.
     Finding Zarankiewicz numbers can help us upper bound the Turán number of $\compdots{t_1}{t_k}$ asymptotically.
     Assume that $H$ is a $\compdots{t_1}{t_k}$-free $n$-vertex $k$-graph with $m$ edges.
     pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
-    (For example $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$)
+    (for example, $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$).
     Let $V_1, \dots, V_k$ be a uniform random partition of $V(H)$ with $|V_i| = v_i$.
-    for an edge $e \in E(H)$, the probability that $e$ is an edge in $\compdots{V_1}{V_k}$ is
-    greater than
+    For any edge $e \in E(H)$, the probability that $e$ is an edge in $\compdots{V_1}{V_k}$ is
+    at least
     \[k! \prod_i \frac{v_i}{n} \sim \frac{k!}{k^k},\]
     which is independent of $n$.
     Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
@@ -428,12 +403,12 @@ in the following way.
 
 \end{remark}
 
-The problem on finding the Zarankiewicz number was first posed by K. Zarankiewicz in 1951 for the
+The problem of finding the Zarankiewicz number was first posed by K. Zarankiewicz in 1951 for the
 case of bipartite 2-graphs (that is, finding $z(u, w; s, t)$),
-in terms of finding all-1 sub-matrices in a $0-1$ matrix.
+in terms of finding all-1 sub-matrices in a $0$-$1$ matrix.
 An upper bound for it in the case $u=w, s=t$ was found by Kővari, Sós and Turán~\cite{Kovari1954} in 1954.
 This was generalized to arbitrary complete
-bipartite 2-graphs by C. Hyltén-Cavallius~\cite{Hylten1958} in 1958.
+bipartite 2-graphs by Hyltén-Cavallius~\cite{Hylten1958} in 1958.
 The result is stated and proved here for completeness.
 
 \begin{theorem}[Kővari-Sós-Turán Theorem] \label{thm:kst}
@@ -509,7 +484,7 @@ The result is stated and proved here for completeness.
         \[
             z \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u,
         \]
-        In contradiction with our assumption. \qedhere
+        in contradiction to our assumption. \qedhere
     \end{proof}
 
 \end{theorem}
@@ -539,7 +514,7 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
         For $k=2$, this is obtained by setting $u = w$ and $s = t$ in Theorem~\ref{thm:kst}.
         For $k > 2$, suppose by way of contradiction that the theorem is false.
         For all ${w_0 \in \N}$, ${K \in \mathbb{R}^+}$, there exists a $k$-partite $k$-graph $G = (W_1, \dots, W_k; E)$ with part sizes
-        $|W_i| = w \geq w_0$ and ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$ such that no embedding of $\compoverset{k}{t}$ in it exists.
+        $|W_i| = w \geq w_0$ and ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$ such that no embedding of $\compoverset{k}{t}$ into $G$ exists.
         Consider, for each set $T \in \binom{W_k}{t}$, the associated \text{$(k-1)$-link}
         \link{G}{T}{k-1}.
         We claim that it does not contain $\compoverset{k-1}{t}$ as a subgraph.
@@ -610,7 +585,7 @@ Knowing that the Turán density of $k$-partite $k$-graphs is $0$ gives little in
 In this case, we are usually satisfied with determining the growth up to a constant factor.
 
 General lower bounds are usually obtained by probabilistic arguments,
-which are often weak and do not reach the correct order of magnitude.
+which are often weak and worse that lower bounds obtained by other means.
 For example, see the following probabilistic construction.
 
 \begin{proposition} \label{prop:probabilistic-lower-bound}
@@ -663,75 +638,13 @@ For example, see the following probabilistic construction.
             \mathbb{E}(|E(H_n)|) \geq
             m_0(n) =
             \left( \frac{(e-1)^{e-1}}{e^e k^{ek}} \right)^{\frac{1}{e-1}} n^{k - \frac{t-k}{e-1}}
-            = \Omega_{e}\left(n^{k - \frac{t-k}{e-1}} \right).
+            = \Omega\left(n^{k - \frac{t-k}{e-1}} \right).
         \]
         Therefore, the event that $|E(H_n)| \geq m_0(n)$
         must have positive probability, and in particular,
         there exists one such graph $\widehat{H_n}$, which is $G$-free by construction.
-
     \end{proof}
-
 \end{proposition}
-
-Note that this also implies that
-\[
-    \ex{n}{\compdots{t_1}{t_k}} = \Omega\left(n^{k - \frac{\left( \sum_i t_i \right) - k}{\left( \prod_i t_i \right) - 1}}\right).
-\]
-This leaves a very large gap between the upper and lower bounds for the Turán numbers of degenerate $k$-graphs.
-For example, in the balanced case, where all $t_i$ are equal, we get
-\begin{equation} \label{eq:balanced_upper_bound}
-    \ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}
-\end{equation}
-from Theorem~\ref{thm:erdos64}, but only
-\begin{equation} \label{eq:balanced_lower_bound}
-    \ex{n}{\compoverset{k}{t}} = \Omega\left(n^{k - \frac{k(t-1)}{t^k - 1}}\right)
-\end{equation}
-from Proposition~\ref{prop:probabilistic-lower-bound}.
-The exponent in~\eqref{eq:balanced_lower_bound} is always
-smaller than the one in~\eqref{eq:balanced_upper_bound},
-as long as $t \geq 2$ and $k \geq 2$.
-
-There are even fewer solved cases for degenerate Turán problems than in the non-degenerate case.
-Among them, it is known that, for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$,
-Theorem~\ref{thm:kst} is optimal in the sense that
-\[
-    \ex{n}{K(2, t)} = \Theta\left(n^{\frac{3}{2}}\right)~\cite{erdHos1966problem, furedi1996new},
-\]
-and also
-\[
-    \ex{n}{K(3, 3)} = \Theta\left(n^{\frac{5}{3}}\right)~\cite{brown1966graphs}.
-\]
-The theorem is also optimal for $K(s, t)$ when $s \geq t! + 1$~\cite{kollar1996norm}.
-Some progress has been made in the case of $K(s, t)$ when $s$ and $t$ have similar sizes,
-only for small values of $s \geq t \geq 4$.
-For example, Theorem~\ref{thm:kst} gives
-\[
-    \ex{n}{K(5,5)} = \bigO{n^{\frac{9}{5}}} = \bigO{n^{1.8}},
-\]
-and by Proposition~\ref{prop:probabilistic-lower-bound} we get
-\begin{equation} \label{eq:k55-probabilistic}
-    \ex{n}{K(5,5)} = \Omega\left(n^{\frac{5}{3}}\right) = \Omega\left(n^{1.67}\right),
-\end{equation}
-but~\eqref{eq:k55-probabilistic} has been improved to
-\[
-    \ex{n}{K(5,5)} = \Omega\left(n^{\frac{7}{4}}\right) = \Omega\left(n^{1.75}\right)~\cite{ball2012asymptotic}.
-\]
-It is conjectured that Theorem~\ref{thm:kst} always gives the correct order of magnitude.
-Even less is known about degenerate problems for graphs of higher uniformity.
-For example, not even the growth rate of the Turán number for the octahedron 3-graph
-($\ex{n}{K(2, 2, 2)}$, pictured in Figure~\ref{fig:222}) is known.
-The best upper bound, again, comes from Theorem~\ref{thm:erdos64}, which gives
-\[
-    \ex{n}{K(2, 2, 2)} = \bigO{n^{\frac{11}{4}}} = \bigO{n^{2.75}},
-\]
-while the best know lower bound is
-\[
-    \ex{n}{K(2, 2, 2)} = \Omega\left(n^{\frac{8}{3}}\right) = \Omega\left(n^{2.67}\right)~\cite{conlon2020random}.
-\]
-
-The main difficulty for degenerate problems is that sharp lower bounds for the Turán numbers
-often rely on specific geometric or algebraic constructions that work for very few cases,
-such as the ones cited for $K(2, 2)$ and $K(3, 3)$.
 
 Similarly to non-degenerate Turán problems, we also have interesting results when the
 Turán density of a $k$-partite $k$-graph (namely, $0$) is exceeded.
@@ -743,23 +656,23 @@ The following observation is key.
     For $k=2$, Theorem~\ref{thm:kst} applied with $s = t$ and $u = w$
     gives
     \[
-        z(w, w, t, t) \leq (t-1)^{1/t}(w-t+1)w^{1-1/t} + (t-1)w \leq 2w^{2 - 1/t} + o\left(w^{1-1/t}\right).
+        z(w, w, t, t) \leq (t-1)^{1/t}(w-t+1)w^{1-1/t} + (t-1)w \leq 2w^{2 - 1/t} + o\left(w^{2-1/t}\right).
     \]
     For $k \geq 3$, we can prove it inductively, by carrying out the computations of the theorem more carefully.
 \end{remark}
 
-Elementary computation then shows that if
+More computation then shows that if
 $H_n$ is a family of $k$-partite $k$-graphs with constant positive density
 (that is, $E(H_n) \geq \gamma \binom{n}{k} = \Omega\left( n^k \right)$ for some $\gamma > 0$),
-for large enough $n$, $H_n$ contains a $\compdots{t_n}{t_n}$ as a subgraph, with
+for large enough $n$, $H_n$ contains a $\compoverset{k}{t_n}$ as a subgraph, with
 \[
     t_n = \Omega \left( (\log n)^{\frac{1}{k-1}}\right).
 \]
 The following theorem generalizes this notion to blow-ups of arbitrary $k$-partite $k$-graphs.
 
 \begin{theorem} \label{thm:quant-blowup}
-    Let $G = (V, E)$ be a $k$-graph and let $(W_n, F_n)$ be a family of $k$-graphs with $n$
-    vertices and $\left( \pi(G) + \Omega (1) \right) \binom{n}{k}$ edges.
+    Let $G = (V, E)$ be a $k$-graph and let $H_n$ be a family of $k$-graphs with $n$
+    vertices and $\left( \pi(G) + \Omega (1) \right) \binom{n}{k}$ edges. % Again, Richard says this is not correct. Why?
     Then, for $n$ large enough, $H_n$ contains $G(t_n)$ as a subgraph,
     where
     \[
@@ -792,8 +705,8 @@ The following theorem generalizes this notion to blow-ups of arbitrary $k$-parti
         \]
         That is, there are $|V|$ sets $T_1, \dots, T_{|V|}$ of size $t_n$ such that
         if $\{v_{i_1}, \dots, v_{i_k}\} \in E$ is an edge of $G$, then
-        $\{u_{i_1}, \dots, u_{i_k}\} \in F_n$ is an edge of $H_n$ for all $u_{i_j} \in T_j$.
-        This means that $G(t)$ is a subgraph of $H_n$.
+        $\{u_{i_1}, \dots, u_{i_k}\}$ is an edge of $H_n$ for all $u_{i_j} \in T_j$.
+        This means that $G(t_n)$ is a subgraph of $H_n$.
 
     \end{proof}
 \end{theorem}
@@ -811,12 +724,98 @@ In particular, this directly proves the Erdős-Stone-Simonovits theorem for $2$-
     For some $t \geq 1$, $G$ is a subgraph of $\compdotssuperindexoverset{2}{r}{t} \cong \completesuperindex{2}{r}(t)$.
     Therefore,
     \[
-        \pi(G) \leq \pi\left(\completesuperindex{2}{r}(t)\right) = \pi\left(\completesuperindex{2}{r}\right) = 1 - \frac{r-2}{r-1}.
+        \pi(G) \leq \pi\left(\completesuperindex{2}{r}(t)\right) = \pi\left(\completesuperindex{2}{r}\right) = 1 - \frac{1}{r-1}.
     \]
     The reverse inequality follows from the same construction in the \proofref{thm:turan} of Turán's theorem.
     Indeed, this construction has the desired density and avoids not only \completesuperindex{2}{r} but also
     any $r$-partite $2$-graph, and in particular $G$.
 \end{delayedproof}
+
+\subsection{Open Problems}\label{subsec:open-problems}
+
+In Subsections~\ref{subsec:turan} and~\ref{subsec:degenerate}, we have
+seen the solution for non-degenerate Turán problems for $2$-graphs.
+Determining the Turán density of $k$-graphs for $k > 2$ is a much harder problem.
+
+Famously, not even the Turán density of the tetrahedron $3$-graph $\completesuperindex{3}{4}$
+(pictured in Figure~\ref{fig:complete_kgraph}) or the unique graph $\completesuperindex{3}{4-}$
+obtained by removing one edge from it is known.
+The best known bounds are
+\[
+    0.5555 = \frac{5}{9} \leq \pi\left(\completesuperindex{3}{4}\right) \leq 0.561666~\cite{keevash2011hypergraph,baber2011hypergraphs}
+\]
+and
+\[
+     0.2857 = \frac{2}{7} \leq \pi\left(\completesuperindex{3}{4-}\right) \leq 0.2871~\cite{frankl1984exact, baber2011hypergraphs}.
+\]
+The lower bounds are obtained by explicit constructions of $3$-graphs, and were conjectured to be optimal by Turán~\cite{keevash2011hypergraph},
+while the upper bounds are obtained by the method of flag algebras~\cite{razborov2007flag},
+which is a powerful tool for studying Turán problems that automates the search for relevant inequalities.
+
+One of the few examples of success in obtaining Turán densities of $k$-graphs with uniformity $k > 2$ is the case of
+the Fano plane $F^{(3)}_7$, a $3$-graph with $7$ vertices corresponding to the points
+of the projective plane over the field $\mathbb{F}_2$,
+and $7$ edges corresponding to the projective lines.
+It is known that
+\[
+    \pi\left(F^{(3)}_7\right) = \frac{3}{4}~\cite{de2000maximum}.
+\]
+
+There are even fewer solved cases for degenerate Turán problems than in the non-degenerate case.
+In general, there is a very large gap between the upper and lower bounds for the Turán numbers of degenerate $k$-graphs,
+even for complete $k$-partite $k$-graphs.
+For example, in the balanced case, where all $t_i$ are equal, we get
+\begin{equation} \label{eq:balanced_upper_bound}
+    \ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}
+\end{equation}
+from Theorem~\ref{thm:erdos64}, but only
+\begin{equation} \label{eq:balanced_lower_bound}
+    \ex{n}{\compoverset{k}{t}} = \Omega\left(n^{k - \frac{k(t-1)}{t^k - 1}}\right)
+\end{equation}
+from Proposition~\ref{prop:probabilistic-lower-bound}.
+The exponent in~\eqref{eq:balanced_lower_bound} is always
+smaller than the one in~\eqref{eq:balanced_upper_bound},
+as long as $t \geq 2$ and $k \geq 2$.
+
+In the case $k=2$, it is known that, for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$,
+Theorem~\ref{thm:kst} is optimal in the sense that
+\[
+    \ex{n}{K(2, t)} = \Theta\left(n^{\frac{3}{2}}\right)~\cite{erdHos1966problem, furedi1996new},
+\]
+and also
+\[
+    \ex{n}{K(3, 3)} = \Theta\left(n^{\frac{5}{3}}\right)~\cite{brown1966graphs}.
+\]
+The theorem is also optimal for $K(s, t)$ when $s \geq t! + 1$~\cite{kollar1996norm}.
+Some progress has been made in the case of $K(s, t)$ when $s$ and $t$ have similar sizes,
+only for small values of $s \geq t \geq 4$.
+For example, Theorem~\ref{thm:kst} gives
+\[
+    \ex{n}{K(5,5)} = \bigO{n^{\frac{9}{5}}} = \bigO{n^{1.8}},
+\]
+and by Proposition~\ref{prop:probabilistic-lower-bound} we get
+\begin{equation} \label{eq:k55-probabilistic}
+    \ex{n}{K(5,5)} = \Omega\left(n^{\frac{5}{3}}\right) = \Omega\left(n^{1.67}\right),
+\end{equation}
+but~\eqref{eq:k55-probabilistic} has been improved to
+\[
+    \ex{n}{K(5,5)} = \Omega\left(n^{\frac{7}{4}}\right) = \Omega\left(n^{1.75}\right)~\cite{ball2012asymptotic}.
+\]
+Even less is known about degenerate problems for graphs of higher uniformity.
+For example, not even the growth rate of the Turán number for the octahedron 3-graph
+($\ex{n}{K(2, 2, 2)}$, pictured in Figure~\ref{fig:222}) is known.
+The best upper bound, again, comes from Theorem~\ref{thm:erdos64}, which gives
+\[
+    \ex{n}{K(2, 2, 2)} = \bigO{n^{\frac{11}{4}}} = \bigO{n^{2.75}},
+\]
+while the best know lower bound is
+\[
+    \ex{n}{K(2, 2, 2)} = \Omega\left(n^{\frac{8}{3}}\right) = \Omega\left(n^{2.67}\right)~\cite{conlon2020random}.
+\]
+
+The main difficulty for degenerate problems is that sharp lower bounds for the Turán numbers
+often rely on specific geometric or algebraic constructions that work for very few cases,
+such as the ones cited for $K(2, 2)$ and $K(3, 3)$.
 
 Theorem~\ref{thm:quant-blowup} is known not to be optimal.
 Erdős and Bollobás~\cite{bollobas1973structure} in fact proved that the optimal growth
@@ -825,7 +824,7 @@ rate of a guaranteed $t_n$-blow-up of a $2$-graph $G$ in $2$-graphs of constant 
     t_n = \Theta (\log n).
 \]
 A still open question raised by the authors is whether this can be extended to $k$-graphs.
-That is, is it true that $k$-graphs with $n$ vertices and  $\left( 1 + \Omega(1) \right) \pi(G) \binom{n}{k}$ edges
+That is, is it true that $k$-graphs with $n$ vertices and  $\left(\pi(G) + \Omega(1) \right)  \binom{n}{k}$ edges
 contain $G(t_n)$ for some $t_n = \Omega \left((\log n)^{\frac{1}{k-1}}\right)$?
 An even more general yet unresolved question is whether this is true for
 $k$-graphs with $n$ vertices and $\Omega (n^{|V(G)|})$ copies of $G$~\cite{rodl2012complete}.

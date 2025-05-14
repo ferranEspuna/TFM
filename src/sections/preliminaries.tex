@@ -370,3 +370,54 @@ $k$-graph on $k$ vertices with a single edge $\completesuperindex{k}{k}$.
 Similarly to the case of complete $k$-graphs and complete $k$-partite $k$-graphs,
 the $t$-blowup of a $k$-graph is unique up to isomorphism.
 
+\subsection{Asymptotic Notation}\label{subsec:asymptotic-notation} % Corrected spelling
+
+Throughout this thesis, we will often describe the growth rate of functions whose domain is the set of positive integers $\mathbb{N}$. Unless otherwise stated, the functions we consider map to non-negative real numbers $\mathbb{R}_{\ge 0}$. We now introduce some standard asymptotic notations.
+
+\begin{definition}
+    Let $f: \mathbb{N} \to \mathbb{R}_{\ge 0}$ be a function.
+    We define $\bigO{f}$ to be the set of functions $g: \mathbb{N} \to \mathbb{R}_{\ge 0}$ such that there exist a constant $C > 0$ and an integer $n_0 \in \mathbb{N}$ for which
+    \[
+        g(n) \leq C \cdot f(n) \quad \text{for all } n \geq n_0.
+    \]
+\end{definition}
+
+As a common shorthand, we write $g(n) = \bigO{f(n)}$ to mean $g \in \bigO{f}$.
+This notation is also used in arithmetic expressions.
+For example, if $h$ is the function $n \mapsto n^2$,
+an expression like $e^n + \bigO{n^2}$ denotes the set of functions $\{n \mapsto e^n + k(n) \mid k \in \bigO{h}\}$.
+
+\begin{definition}
+    Let $f: \mathbb{N} \to \mathbb{R}_{\ge 0}$ be a function.
+    We define $\Omega(f)$ to be the set of functions $g: \mathbb{N} \to \mathbb{R}_{\ge 0}$ such that there exist a constant $c > 0$ and an integer $n_0 \in \mathbb{N}$ for which
+    \[
+        g(n) \geq c \cdot f(n) \quad \text{for all } n \geq n_0.
+    \]
+    As shorthand, we write $g(n) = \Omega(f(n))$ for $g \in \Omega(f)$.
+\end{definition}
+
+\begin{definition}
+    Let $f: \mathbb{N} \to \mathbb{R}_{\ge 0}$ be a function.
+    We define $\Theta(f)$ to be the set of functions $g: \mathbb{N} \to \mathbb{R}_{\ge 0}$ such that there exist constants $c_1 > 0, c_2 > 0$ and an integer $n_0 \in \mathbb{N}$ for which
+    \[
+        c_1 \cdot f(n) \leq g(n) \leq c_2 \cdot f(n) \quad \text{for all } n \geq n_0.
+    \]
+    Equivalently, $\Theta(f) = \bigO{f} \cap \Omega(f)$, assuming $f, g$ are non-negative.
+    As shorthand, we write $g(n) = \Theta(f(n))$ for $g \in \Theta(f)$.
+\end{definition}
+
+\begin{definition}
+    Let $f: \mathbb{N} \to \mathbb{R}_{\ge 0}$ be a function.
+    We define $o(f)$  to be the set of functions $g: \mathbb{N} \to \mathbb{R}_{\ge 0}$
+    such that for every constant $\varepsilon > 0$, there exists an integer $n_0 \in \mathbb{N}$ for which
+    \[
+        g(n) \leq \varepsilon \cdot f(n) \quad \text{for all } n \geq n_0.
+    \]
+    If $f(n) > 0$ for all $n \geq n_0'$ (for some $n_0'$),
+    this condition is equivalent to $\lim_{n \to \infty} \frac{g(n)}{f(n)} = 0$.
+    As shorthand, we write $g(n) = o(f(n))$ for $g \in o(f)$.
+\end{definition}
+
+Unless otherwise specified, these notations describe the limiting behavior as $n \to \infty$.
+They are crucial for comparing growth rates, especially when exact formulas are complex or unknown.
+

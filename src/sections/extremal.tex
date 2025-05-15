@@ -315,31 +315,32 @@ We may also ask how many copies (different embeddings) of $G$ can be found in a 
 exceeding the Turán density.
 The following surprising result~\cite{erdHos1983supersaturated} shows that the number of copies of $G$ in $H$
 is asymptotically guaranteed to be very large.
-In essence, if a $k$-graph $H$ has $\left(\pi(G) + \Omega(1) \right) \binom{n}{k}$ edges,
+In essence, if a $k$-graph $H_n$ has $n$ vertices and $\left(\pi(G) + \Omega(1) \right) \binom{n}{k}$ edges,
 then it must contain $\Omega\left(n^{|V|}\right)$ copies of $G$ as a subgraph,
 which correspond to a positive fraction of all the functions from $V(G)$ to $V(H)$.
 
 \begin{theorem}[Supersaturation] \label{thm:supersaturation}
     Let $G = (V, E)$ be a $k$-graph and let $\epsilon > 0$.
-    There exists a positive integer $n_0(G, \epsilon)$ and a constant $\delta(G, \epsilon) > 0$
-    such that any graph $H_n$ with $n \geq n_0$ vertices and at least $\left(\pi(G) + \epsilon \right) \binom{n}{k}$ edges
+    There exists a positive integer $t = t(G, \epsilon)$ and a constant $\delta = \delta(G, \epsilon) > 0$
+    such that any $k$-graph $H$ with $n \geq t$ vertices and at least $\left(\pi(G) + \epsilon \right) \binom{n}{k}$ edges
     contains at least $\delta n^{|V|}$ copies of $G$ as a subgraph.
 
     \begin{proof}
-        Pick $t$ large enough so that $\ex{t}{G} \leq \left(\pi(G) + \frac{\epsilon}{2}\right) \binom{t}{k}$.
-        Suppose, furthermore, that $n \geq t$.
-        Let m be the number of edges of $H_n$.
+        Pick $t(G, \epsilon)$ large enough so that
+        $\ex{t}{G} \leq \left(\pi(G) + \frac{\epsilon}{2}\right) \binom{t}{k}$.
+        Let $m \geq \left(\pi(G) + \epsilon \right) \binom{n}{k}$
+        be the number of edges of $H$.
         Notice that
         \[
-            \binom{n-k}{t-k}m = \sum_{T \in \binom{V}{t}} |E(H_n[T])|.
+            \binom{n-k}{t-k}m = \sum_{T \in \binom{V}{t}} |E(H[T])|.
         \]
-        This is because, for each edge in $H_n$, we can choose a set $T \subset V$ containing it in
+        This is because, for each edge in $H$, we can choose a set $T \subset V$ containing it in
         $\binom{n-k}{t-k}$ ways.
         We define
         \[
-            P = \left\{ T \in \binom{V}{t} \middle| E(H_n[T]) > \left(\pi(G) + \frac{\epsilon}{2}\right) \binom{t}{k} \right\}.
+            P = \left\{ T \in \binom{V}{t} \middle| E(H[T]) > \left(\pi(G) + \frac{\epsilon}{2}\right) \binom{t}{k} \right\}.
         \]
-        If $T \in \binom{V}{t}$, the number of edges in $H_n[T]$ is at most $\binom{t}{k}$.
+        If $T \in \binom{V}{t}$, the number of edges in $H[T]$ is at most $\binom{t}{k}$.
         Therefore,
         \[
             \binom{n-k}{t-k}(\pi(G) + \epsilon)\binom{n}{k}
@@ -350,10 +351,10 @@ which correspond to a positive fraction of all the functions from $V(G)$ to $V(H
         \[
             |P| \geq \frac{\epsilon}{2(1 - \pi(G)- \epsilon /2)} \binom{n}{t} \geq \frac{\epsilon}{2} \binom{n}{t}.
         \]
-        Now, for each $T \in P$, $H_n[T]$ contains $G$ as a subgraph.
+        Now, for each $T \in P$, $H[T]$ contains $G$ as a subgraph.
         Furthermore, each copy of $G$ is in at most $\binom{n - |V|}{t - |V|}$
         such sets.
-        Therefore, the number of copies of $G$ in $H_n$ is at least
+        Therefore, the number of copies of $G$ in $H$ is at least
         \[
             \frac{\epsilon}{2} \binom{n}{t} \frac{1}{\binom{n - |V|}{t - |V|}}
             = \frac{\epsilon}{2 \binom{t}{|V|}} \binom{n}{|V|}

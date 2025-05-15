@@ -122,105 +122,12 @@ to relate $k$-graphs of the same uniformity to each other.
     However, it does not necessarily imply that $f$ is injective on all of $V$.
 \end{remark}
 
-\begin{remark} \label{rem:inverse_embedding}
-    In Definition~\ref{def:embedding}, given that a map $f: V \to W$ is an embedding
-    (and therefore injective),
-    a different way to state that it is an induced embedding is to say that
-    $f^{-1}: H[f(V)] \to G$ is also an embedding.
-\end{remark}
-
-For the notions that we have introduced to be useful,
-we need to show some basic properties.
-
-\begin{proposition}\label{prop:embedding_properties}
-    Graph inclusion $(\subset)$ and induced graph inclusion $\left(\subset_{\text{ind}}\right)$
-    are preorder relations on $k$-graphs.
-    \begin{proof}
-        We need to show that the relations are reflexive and transitive.
-        Reflexivity is clear, as the identity map is an induced embedding of a $k$-graph in itself.
-        Let $G, H,$ and $K$ be $k$-graphs with vertex sets $X, Y,$ and $Z$ respectively.
-        If $G \subset H$ via $f: X \to Y$ and $H \subset K$ via $g: Y \to Z$,
-        then $g \circ f: X \to Z$ is injective and satisfies that for each edge $e \in E(G)$,
-        \[
-            g \circ f(e) =
-            \{g(f(x))\mid x \in e\} =
-            \{g(y) \mid y \in f(e)\} \in E(K),
-        \]
-        because $f(e) \in E(H)$.
-        Therefore, $G \subset K$ via $g \circ f$.
-        If the embeddings are induced,
-        and $e$ is an edge in
-        $E(K[g \circ f(X)])$,
-        then $e$ is also an edge in $E(K[g (Y)]) = g(E(H))$.
-        Therefore, $e' = g^{-1}(e)$ is an edge in $H$.
-        Furthermore, because $e = g(e') \subset g \circ f(X)$,
-        we have that $e' \in E(H[f(X)]) = f(E(G))$,
-        so $e \in g(f(E(G)))$.
-    \end{proof}
-\end{proposition}
-
-\begin{proposition}\label{prop:isomorphism_equivalence}
-    The relation of isomorphism $(\cong)$ is an equivalence relation on $k$-graphs.
-    \begin{proof}
-        The relation is reflexive via the identity map.
-        If $f: G \to H$ is an isomorphism, then $f^{-1}: H \to G$ is also an isomorphism,
-        so the relation is symmetric.
-        Finally, if $f: G \to H$ and $g: H \to K$ are isomorphisms,
-        then $g \circ f: G \to K$ is also an isomorphism, because it is bijective,
-        and by Proposition~\ref{prop:embedding_properties},
-        it is an embedding
-        and $(g \circ f)^{-1} = f^{-1} \circ g^{-1}$ is also an embedding.
-        By remark~\ref{rem:inverse_embedding}, we are done.
-    \end{proof}
-\end{proposition}
-
-\begin{proposition} \label{prop:isomorphism_preserves_embedding}
-    Let $G, G', H, H'$ be $k$-graphs such that $G \cong G'$ and $H \cong H'$.
-    Then,
-    \begin{enumerate}
-        \item $G \subseteq H$ if and only if $G' \subseteq H'$. \label{item:embedding}
-        \item $G \subseteq_{\text{ind}} H$ if and only if $G' \subseteq_{\text{ind}} H'$. \label{item:induced_embedding}
-    \end{enumerate}
-    \begin{proof}
-        Because the isomorphism relation is symmetric, we only need to show one direction of each implication.
-        let $f: V(G) \to V(H)$ be an embedding of $G$ in $H$, and let
-        $g: V(G) \to V(G')$ and $h: V(H) \to V(H')$ be isomorphisms between the respective graphs.
-        We claim that the composition
-        \[
-            f' = h \circ f \circ g^{-1}: V(G') \to V(H')
-        \]
-        is an embedding of $G'$ in $H'$.
-        Injectivity is given by the injectivity of $h, f$, and $g^{-1}$.
-        By Proposition~\ref{prop:isomorphism_equivalence}, we have that $g^{-1}$ is an isomorphism of $G'$ in $G$,
-        and in particular an embedding.
-        Therefore, by Proposition~\ref{prop:embedding_properties},
-        $f'$ is an embedding of $G'$ in $H'$, proving part~\eqref{item:embedding}.
-        Suppose now that the embedding $f$ is induced.
-        consider the maps
-        \[
-            (f')^{-1}: f'(V(G')) \to V(G')
-        \]
-        and
-        \[
-            \varphi = g \circ f^{-1} \circ h^{-1}: h \circ f(V(G)) \to V(G'),
-        \]
-        where we restrict the domain of $f^{-1}$ to $f(V(G))$.
-        Because $g$ is a bijection, $V(G) = g^{-1}(V(G'))$ so the
-        domain of $\varphi$ is $f'(V(G'))$.
-        In fact, one can check that the two functions are identical.
-        Because $f^{-1}$ is an embedding of $H[f(V(G))]$ in $G$,
-        we can argue as in the first case that
-        $(f')^{-1}$ is an embedding of $H'[f'(V(G'))]$ in $G'$,
-        and therefore $f'$ is an induced embedding of $G'$ in $H'$.
-        This concludes the proof of part~\eqref{item:induced_embedding}.
-    \end{proof}
-\end{proposition}
-
-Propositions~\ref{prop:isomorphism_equivalence},~\ref{prop:embedding_properties},
-and~\ref{prop:isomorphism_preserves_embedding}
-establish that the properties of containing a $k$-graph $G$ as a (induced)
-subgraph within a $k$-graph $H$ depend only on the isomorphism classes of $G$ and $H$.
-Therefore, discussions of (induced) subgraph containment can be conducted up to isomorphism.
+It can be checked that isomorphism of $k$-graphs is an equivalence relation.
+Furthermore, it is compatible with the subgraph ($\subset$) and induced subgraph
+($\subset_{\text{ind}}$) relations, which are preorders.
+This allows us to discuss whether a graph $G$ is an (induced) subgraph of another graph $H$,
+\emph{ up to isomorphism} in both the \emph{guest} graph $G$ and the \emph{host} graph $H$.
+For more details, see Appendix~\ref{apx:embeddings-properties}.
 
 So far, we have not seen any concrete examples of $k$-graphs or their isomorphism classes.
 We now introduce an important family of them.

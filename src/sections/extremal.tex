@@ -315,45 +315,51 @@ We may also ask how many copies (different embeddings) of $G$ can be found in a 
 exceeding the Turán density.
 The following surprising result~\cite{erdHos1983supersaturated} shows that the number of copies of $G$ in $H$
 is asymptotically guaranteed to be very large.
+In essence, if a $k$-graph $H$ has $\left(\pi(G) + \Omega(1) \right) \binom{n}{k}$ edges,
+then it must contain $\Omega\left(n^{|V|}\right)$ copies of $G$ as a subgraph,
+which correspond to a positive fraction of all the functions from $V(G)$ to $V(H)$.
 
-\begin{theorem}[Supersaturation \cite{erdHos1983supersaturated}] \label{thm:supersaturation}
-    Let $G = (V, E)$ be a $k$-graph, and let $H_n = (W, F)$ be a $k$-graph with $n$ vertices
-    and $\left(\pi(G) + \Omega(1) \right) \binom{n}{k}$ edges. % TODO why does Richard not like this?
-    Then, $H_n$ has $\Omega \left(n^{|V|} \right)$ copies of $G$ as a subgraph.
+\begin{theorem}[Supersaturation] \label{thm:supersaturation}
+    Let $G = (V, E)$ be a $k$-graph and let $\epsilon > 0$.
+    There exists a positive integer $n_0(G, \epsilon)$ and a constant $\delta(G, \epsilon) > 0$
+    such that any graph $H_n$ with $n \geq n_0$ vertices and at least $\left(\pi(G) + \epsilon \right) \binom{n}{k}$ edges
+    contains at least $\delta n^{|V|}$ copies of $G$ as a subgraph.
+
     \begin{proof}
-        Suppose that, for $n$ large enough, $H_n$ has $ m \geq (\pi(G) + \gamma) \binom{n}{k}$ edges.
-        Pick $t$ large enough so that $\ex{t}{G} \leq \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k}$.
+        Pick $t$ large enough so that $\ex{t}{G} \leq \left(\pi(G) + \frac{\epsilon}{2}\right) \binom{t}{k}$.
         Suppose, furthermore, that $n \geq t$.
+        Let m be the number of edges of $H_n$.
         Notice that
         \[
-            \binom{n-k}{t-k}m = \sum_{T \in \binom{V}{t}} E(H_n[T]).
+            \binom{n-k}{t-k}m = \sum_{T \in \binom{V}{t}} |E(H_n[T])|.
         \]
         This is because, for each edge in $H_n$, we can choose a set $T \subset V$ containing it in
         $\binom{n-k}{t-k}$ ways.
         We define
         \[
-            P = \left\{ T \in \binom{V}{t} \middle| E(H_n[T]) > \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k} \right\}.
+            P = \left\{ T \in \binom{V}{t} \middle| E(H_n[T]) > \left(\pi(G) + \frac{\epsilon}{2}\right) \binom{t}{k} \right\}.
         \]
         If $T \in \binom{V}{t}$, the number of edges in $H_n[T]$ is at most $\binom{t}{k}$.
         Therefore,
         \[
-            \binom{n-k}{t-k}(\pi(G) + \gamma)\binom{n}{k}
+            \binom{n-k}{t-k}(\pi(G) + \epsilon)\binom{n}{k}
             \leq \binom{n-k}{t-k}m
-            \leq |P| \binom{t}{k} + \left(\binom{n}{t} - |P|\right) \left(\pi(G) + \frac{\gamma}{2}\right) \binom{t}{k}.
+            \leq |P| \binom{t}{k} + \left(\binom{n}{t} - |P|\right) \left(\pi(G) + \frac{\epsilon}{2}\right) \binom{t}{k}.
         \]
         Rearranging and applying standard binomial coefficient identities, we can bound $|P|$ as
         \[
-            |P| \geq \frac{\gamma}{2(1 - \pi(G)- \gamma /2)} \binom{n}{t} \geq \frac{\gamma}{2} \binom{n}{t}.
+            |P| \geq \frac{\epsilon}{2(1 - \pi(G)- \epsilon /2)} \binom{n}{t} \geq \frac{\epsilon}{2} \binom{n}{t}.
         \]
         Now, for each $T \in P$, $H_n[T]$ contains $G$ as a subgraph.
         Furthermore, each copy of $G$ is in at most $\binom{n - |V|}{t - |V|}$
         such sets.
         Therefore, the number of copies of $G$ in $H_n$ is at least
         \[
-            \frac{\gamma}{2} \binom{n}{t} \frac{1}{\binom{n - |V|}{t - |V|}}
-            = \frac{\gamma}{2 \binom{t}{|V|}} \binom{n}{|V|}
-            = \Omega\left( n^{|V|}\right). \qedhere
+            \frac{\epsilon}{2} \binom{n}{t} \frac{1}{\binom{n - |V|}{t - |V|}}
+            = \frac{\epsilon}{2 \binom{t}{|V|}} \binom{n}{|V|}
+            \geq \frac{\epsilon}{2 \binom{t}{|V|} |V|^{|V|}} n^{|V|}.
         \]
+        Picking $\delta = \frac{\epsilon}{2 \binom{t}{|V|} |V|^{|V|}}$ gives us the desired result.
     \end{proof}
 \end{theorem}
 
@@ -668,14 +674,15 @@ The following observation is key.
 
 More computation then shows that if
 $H_n$ is a family of $k$-partite $k$-graphs with constant positive density
-(that is, $E(H_n) \geq \gamma \binom{n}{k} = \Omega\left( n^k \right)$ for some $\gamma > 0$),
+(that is, $E(H_n) \geq \epsilon \binom{n}{k} = \Omega\left( n^k \right)$ for some $\epsilon > 0$),
 for large enough $n$, $H_n$ contains a $\compoverset{k}{t_n}$ as a subgraph, with
 \[
-    t_n = \Omega \left( (\log n)^{\frac{1}{k-1}}\right).
+    t_n = \delta(\epsilon, k) \cdot (\log n)^{\frac{1}{k-1}}
 \]
+for some constant $\delta(\epsilon, k) > 0$.
 The following theorem generalizes this notion to blow-ups of arbitrary $k$-partite $k$-graphs.
 
-\begin{theorem} \label{thm:quant-blowup}
+\begin{theorem} \label{thm:quant-blowup} % TODO epsilon delta
     Let $G = (V, E)$ be a $k$-graph and let $H_n$ be a family of $k$-graphs with $n$
     vertices and $\left( \pi(G) + \Omega (1) \right) \binom{n}{k}$ edges. % Again, Richard says this is not correct. Why?
     Then, for $n$ large enough, $H_n$ contains $G(t_n)$ as a subgraph,

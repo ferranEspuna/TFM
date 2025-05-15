@@ -183,7 +183,7 @@ so it forms a $\compoverset{k}{t}$ in $G$.
         \Function{FIND\_PARTITE}{$G, k$}
             \State \textbf{assert} G is a $k$-graph
             \If {$k = 1$} \label{line:base_case}
-                \State \Return $(\{x : \{x\} \in E(G)\})$
+                \State \Return $(\{x \colon \{x\} \in E(G)\})$
             \EndIf
 
             \State $V \gets V(G), E \gets E(G), n \gets |V|,\, m \gets |E|,\, d \gets m/n^k$
@@ -373,7 +373,7 @@ that form an edge with every vertex in $T$.
         \]
         where $F$ is defined as
         \[
-            F = \{(x, y) \in U \times W | \{x\} \cup y \in E \}.
+            F = \{(x, y) \in U \times W \mid \{x\} \cup y \in E \}.
         \]
         By Lemma~\ref{lm:many_edges}, $\mathcal{P}$ has at least
         $\frac{3}{2}dwn^{k-1}$ edges.

@@ -43,7 +43,7 @@ The first property can be seen by taking a $G$-free $k$-graph on $H$ with $n$ ve
 and $\ex{n}{G}$ vertices; and adding a vertex $v$ and no edges to it, obtaining $H'$.
 If $f: G \to H$ is an embedding and $v$ has a preimage $x$, it must be a vertex in $H$ with degree $0$,
 so it can be replaced by any other vertex in $H$ outside the image of $f$.
-Restricting this new mapping to $H$, we get that $G \subset H$, against our assumption.
+Restricting this new mapping to $H$, we get that $G \subset H$, in contradiction to our assumption.
 For the second, suppose that $G \subset G'$.
 Because $H$ is $G$-free, it is also $G'$-free, which means that it has at most $\ex{n}{G'}$ edges.
 Therefore, $\ex{n}{G} \leq \ex{n}{G'}$.
@@ -81,7 +81,8 @@ Before the \proofref{thm:turan} of Turán's theorem, we introduce two lemmas.
         We argue by contradiction.
         Suppose, without loss of generality, that $d_G(x) > d_G(y)$.
         We argue that we can construct a $2$-graph $G'$ with $n$ vertices
-        and more edges than $G$ that does not contain $K_r^{(2)}$ as a subgraph, against the definition of
+        and more edges than $G$ that does not contain $K_r^{(2)}$ as a subgraph,
+        contradicting the definition of
         the Turán number.
 
         The new graph $G' = (E', V')$ is constructed from $G$ by removing from $V$ the vertex $y$
@@ -98,7 +99,7 @@ Before the \proofref{thm:turan} of Turán's theorem, we introduce two lemmas.
         We argue that the graph $G[T] = G'[T]$ must be complete, reaching a contradiction.
         If it were not, then there would exist $v \in T, v \neq x$, such that $\{x, v\} \notin E$.
         This implies that $\{x', v\} \notin E'$, but $v \in T' \setminus \{x'\}$,
-        against the completeness of $G'[T']$.
+        which contradicts our assumption that $G'[T']$ is complete.
     \end{proof}
 \end{lemma}
 
@@ -131,7 +132,7 @@ Before the \proofref{thm:turan} of Turán's theorem, we introduce two lemmas.
         with $x_i \notin \{z_2, z\}$ for all $i$.
         However, $\{z_1, x_i\}$ is an edge in $G'$ if an only if $\{z, x_i\}$ is an edge in $G$,
         which means that $G'[\{x_1, x_2, x_3 \dots, x_{r-1}, z\}] = G[\{x_1, x_2, x_3 \dots, x_{r-1}, z\}]$ is complete,
-        against our assumption.
+        contradicting our assumption.
 
         Now, we show that $G'$ has more edges than $G$.
         By Lemma~\ref{lem:same_degree}, $d_G(x) = d_G(z)$ and $d_G(y) = d_G(z)$,
@@ -449,7 +450,7 @@ The result is stated and proved here for completeness.
         they would all necessarily have different first coordinates
         (say $S = \{x_1, \dots, x_s\}$).
         But now, by definition of $P$, for all $a \in S, b \in T$, we have $\{a, b\} \in E$,
-        so $G[S \cup T] = K(S, T)$, against the assumption that $G$ is $K(s, t)$-free.
+        so $G[S \cup T] = K(S, T)$, contradicting the assumption that $G$ is $K(s, t)$-free.
         Therefore, there are at most $s - 1$ different elements of $P$ for each $T \in \binom{W}{t}$:
         \begin{equation} \label{eq:kst_p_upper}
             |P| \leq (s - 1) \binom{w}{t}.

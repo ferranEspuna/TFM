@@ -54,22 +54,18 @@ The construction in Theorem~\ref{thm:kpartite} then proves
 \]
 Furthermore, for a fixed value of $d$,
 the value of $t$ is in the best possible order of magnitude.
-Indeed, if
+Indeed, if % TODO CHECK THIS
 \[
     dn^k \geq \ex{n}{\compoverset{k}{t}},
 \]
 by Proposition~\ref{prop:probabilistic-lower-bound}, we have that
 \[
-    d \geq n^{-\frac{k(t-1)}{t^{k}-1}}. % TODO WRONG
+    d \geq \left( \frac{t^k - 1}{t^{(t^k)/(t^k-1)}k^{(ek)/(t^k-1)}} \right)n^{-\frac{k(t-1)}{t^{k}-1}} \geq \frac{1}{k!} n^{-\frac{k}{t^{k-1}}}
 \]
+for $t$ large enough.
 Thaking logarithms and rearranging, we get
 \[
-    \log{(1/d)} \leq \frac{k(t-1)}{t^{k}-1} \log n \leq \frac{2k}{t^{(k-1)}} \log n,
-\]
-which implies
-\[
-    t \leq \left( \frac{2k \log n}{\log(1/d)} \right)^{\frac{1}{k-1}} =
-    \bigO{\left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (3/d)} \right)^{\frac{1}{k-1}} \right\rfloor}.
+    t \leq \left( \frac{k \log n}{\log(1/(k!d))} \right)^{\frac{1}{k-1}} = \bigO{t(n, d, k)}.
 \]
 
 \subsection{Previous Results}\label{subsec:previous-results}

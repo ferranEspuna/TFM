@@ -247,7 +247,6 @@ The following observation is useful for some of the bounds we have to prove.
 
 We start by proving that the selection of $t, w, s$ in line~\ref{line:tws} of Algorithm~\ref{alg:kpartite}
 is sound, in the sense that we only consider subsets of sizes smaller than the corresponding supersets.
-% todo a bit clunky
 
 \begin{lemma}\label{lm:sound}
     For $t, w, s$ as selected in line~\ref{line:tws} of Algorithm~\ref{alg:kpartite},
@@ -262,7 +261,7 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
             w =
             \left\lceil \frac{2t}{d} \right\rceil \leq
             1 + \frac{2t}{d} <
-            1 + \frac{2 \log (n/2) \sqrt{n}}{3} = % todo one more step
+            1 + \frac{2 \log (n/2) \sqrt{n}}{3} < % todo one more step
             1 + \frac{n}{4}.
         \]
         This implies that $n < 4$, in contradiction to Remark~\ref{rm:min_d}.

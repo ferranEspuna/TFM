@@ -601,7 +601,7 @@ which are often weak and worse that lower bounds obtained by other means.
 For example, see the following probabilistic construction.
 
 \begin{proposition} \label{prop:probabilistic-lower-bound}
-    Let $G = (T_1, \dots, T_k; E)$ be a $k$-partite $k$-graph with
+    Let $G = (T_1, \dots, T_k; E)$ be a $k$-graph with
     $t = \sum_{i=1}^{k} t_i = \sum_{i=1}^{k} |T_i|$ vertices
     and $e = |E| > 1$ edges.
     Then, $\ex{n}{G} = \Omega\left(n^{k - \frac{t - k}{e - 1}} \right)$, and the
@@ -678,48 +678,62 @@ $H_n$ is a family of $k$-partite $k$-graphs with constant positive density
 (that is, $E(H_n) \geq \epsilon \binom{n}{k} = \Omega\left( n^k \right)$ for some $\epsilon > 0$),
 for large enough $n$, $H_n$ contains a $\compoverset{k}{t_n}$ as a subgraph, with
 \[
-    t_n = \delta(\epsilon, k) \cdot (\log n)^{\frac{1}{k-1}}
+    t_n = \delta \cdot (\log n)^{\frac{1}{k-1}}
 \]
-for some constant $\delta(\epsilon, k) > 0$.
-The following theorem generalizes this notion to blow-ups of arbitrary $k$-partite $k$-graphs.
+for some constant $\delta = \delta(k, \epsilon) > 0$.
+Loosely speaking, we may find a blow-up of an edge as large as we wish, if we let the number of vertices grow
+while keeping the density constant.
+The following theorem generalizes this notion to blow-ups of arbitrary $k$-graphs.
 
-\begin{theorem} \label{thm:quant-blowup} % TODO epsilon delta
-    Let $G = (V, E)$ be a $k$-graph and let $H_n$ be a family of $k$-graphs with $n$
-    vertices and $\left( \pi(G) + \Omega (1) \right) \binom{n}{k}$ edges. % Again, Richard says this is not correct. Why?
-    Then, for $n$ large enough, $H_n$ contains $G(t_n)$ as a subgraph,
+\begin{theorem} \label{thm:quant-blowup}
+    Let $G = (V, E)$ be a $k$-graph and let $\epsilon > 0$.
+    There exists a positive integer $n_0 = n_0(G, \epsilon)$ and a constant $\delta = \delta(G, \epsilon) > 0$
+    such that for all $n \geq n_0$,
+    \[
+         \ex{n}{G(t_n)} \leq \left( \pi(G) + \epsilon \right) \binom{n}{k},
+    \]
     where
     \[
-        t_n = \Omega\left( (\log n)^{\frac{1}{|V|-1}} \right).
+        t_n = \delta \cdot (\log n)^{\frac{1}{|V|-1}}.
     \]
     \begin{proof}
-        By Theorem~\ref{thm:supersaturation}, $H_n$ contains $\Omega\left( n^{|V|} \right)$ copies of $G$.
-        Consider the $|V|$-graph $H_n' = (W_n, F_n')$, where
+
+        We determine the value of $\delta$ later in the proof.
+        Suppose that $H$ is a $k$-graph with $n$ vertices and at least $(\pi(G) + \epsilon) \binom{n}{k}$ edges.
+        Theorem~\ref{thm:supersaturation} states that if $n \geq n_0 \geq t(G, \epsilon)$,
+        there are at least $\delta_1(G, \epsilon) n^{|V|}$ embeddings of $G$ into $H$.
+
+        We may also assume that $n \geq n_0 \geq 2|V|$.
+        Consider, as in Remark~\ref{rem:zar_vs_turan},
+        a random partition of the vertices of $H$ into $|V|$ parts of size
+        $\left\lfloor n / |V| \right\rfloor  \leq |V_i| \leq \left\lceil n / |V|  \right\rceil$.
+        Suppose that we have an embedding $f$ of $G$ in $H$.
+        The probability that for all vertices $v_i \in V$, $f(v_i) \in V_i$ is
         \[
-            F_n' = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H_n\}.
+            \prod_{i=1}^{|V|} \frac{|V_i|}{n} \geq \left( \frac{1}{2|V|} \right)^{|V|}.
         \]
-        Because each set of $|V|$ vertices in $H_n$ can be the image of at most $|V|! = \bigO{1}$ embeddings of $G$,
-        $H_n'$ has $\Omega\left(n^{|V|} \right)$ edges.
-        Furthermore, by the same argument as in Remark~\ref{rem:zar_vs_turan}, $H_n'$, we can assume that
-        $H_n'$ is $|V|$-partite (say, $H_n' = (W_1, \dots, W_{|V|}; F_n')$ with
-        $|W_i| \geq \left\lfloor n / |V| \right\rfloor$
-        without losing this condition.
-        Each edge in this graph is the image of $V$ under an embedding $f$ of $G$ in $H_n$.
-        Numbering the vertices of $G$ as $v_1, \dots, v_{|V|}$, $f$ corresponds to a permutation $\sigma$
-        of the vertices of $G$, where $f(v_i) \in W_j$ when $\sigma(i) = j$.
-        Picking the permutation $\hat{\sigma}$ that has the most edges corresponding to it
-        (at least $|E_n'| / |V|! = \Omega\left( n^{|V|} \right)$), and without loss of generality,
-        each edge in $(u_1, \dots, u_{|V|}) \in F_n' \subset W_1 \times \dots \times W_{|V|}$
-        corresponds to the fact that for each edge $\{v_{i_1}, \dots, v_{i_k}\} \in E$,
-        $\{u_{i_1}, \dots ,u_{i_k}\}$ is an edge of $H_n$.
-        By Remark~\ref{rem:uniform-t}, we can find a \compoverset{|V|}{t_n} in $H_n'$,
+        Therefore, for at least one such partition, there are at least
+        \[
+            \delta_1(G, \epsilon) \cdot \left( \frac{1}{2|V|} \right)^{|V|} \cdot n^{|V|} = \delta_2(G, \epsilon) n^{|V|}
+        \]
+        embeddings of $G$ in $H$ respecting the partition.
+        Furthermore, these embeddings all have different image sets, which have one vertex in each part.
+        Consider now the $|V|$-partite $|V|$-graph $H' = (V_1, \dots, V_{|V|}; F)$,
         where
         \[
-            t_n = \Omega\left( (\log n)^{\frac{1}{|V|-1}} \right).
+            F = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H \text{ and } f(V_i) \subset V_i \text{ for all } i\}.
+        \]
+        By Remark~\ref{rem:uniform-t}, making $n_0$ large enough depending only on $\delta_2$ and $|V|$,
+        there exists some $\delta_3 = \delta_3(G, \epsilon) = \delta(|V|, \delta_2(G, \epsilon)) > 0$ such that
+        $H'$ contains $\compoverset{|V|}{t_n}$ as a subgraph, where
+        \[
+            t_n = \delta_3(G, \epsilon) \cdot (\log n)^{\frac{1}{|V|-1}}.
         \]
         That is, there are $|V|$ sets $T_1, \dots, T_{|V|}$ of size $t_n$ such that
         if $\{v_{i_1}, \dots, v_{i_k}\} \in E$ is an edge of $G$, then
         $\{u_{i_1}, \dots, u_{i_k}\}$ is an edge of $H_n$ for all $u_{i_j} \in T_j$.
-        This means that $G(t_n)$ is a subgraph of $H_n$.
+        This means that $G(t_n)$ is a subgraph of $H_n$, so picking $\delta = \delta_3$
+        gives the desired result.
 
     \end{proof}
 \end{theorem}

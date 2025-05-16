@@ -673,7 +673,7 @@ The following observation is key.
     For $k \geq 3$, we can prove it inductively, by carrying out the computations of the theorem more carefully.
 \end{remark}
 
-More computation then shows that if
+More computations then show that if
 $H_n$ is a family of $k$-partite $k$-graphs with constant positive density
 (that is, $E(H_n) \geq \epsilon \binom{n}{k} = \Omega\left( n^k \right)$ for some $\epsilon > 0$),
 for large enough $n$, $H_n$ contains a $\compoverset{k}{t_n}$ as a subgraph, with
@@ -703,12 +703,12 @@ The following theorem generalizes this notion to blow-ups of arbitrary $k$-graph
         Theorem~\ref{thm:supersaturation} states that if $n \geq n_0 \geq t(G, \epsilon)$,
         there are at least $\delta_1(G, \epsilon) n^{|V|}$ embeddings of $G$ into $H$.
 
-        We may also assume that $n \geq n_0 \geq 2|V|$.
         Consider, as in Remark~\ref{rem:zar_vs_turan},
         a random partition of the vertices of $H$ into $|V|$ parts of size
         $\left\lfloor n / |V| \right\rfloor  \leq |V_i| \leq \left\lceil n / |V|  \right\rceil$.
         Suppose that we have an embedding $f$ of $G$ in $H$.
-        The probability that for all vertices $v_i \in V$, $f(v_i) \in V_i$ is
+        Assuming that that $n \geq n_0 \geq 2|V|$,
+        the probability that for all vertices $v_i \in V$, $f(v_i) \in V_i$ is
         \[
             \prod_{i=1}^{|V|} \frac{|V_i|}{n} \geq \left( \frac{1}{2|V|} \right)^{|V|}.
         \]
@@ -861,12 +861,12 @@ such as the ones cited for $K(2, 2)$ and $K(3, 3)$.
 
 Theorem~\ref{thm:quant-blowup} is known not to be optimal.
 Erdős and Bollobás~\cite{bollobas1973structure} in fact proved that the optimal growth
-rate of a guaranteed $t_n$-blow-up of a $2$-graph $G$ in $2$-graphs of constant density greater than $\pi(G)$ is
+rate of a guaranteed $t_n$-blow-up of a $2$-graph $G$ in $2$-graphs of constant density greater than $\pi(G) + \epsilon$ is
 \[
-    t_n = \Theta (\log n).
+    t_n = \delta(G, \epsilon) \cdot \log n.
 \]
-A still open question raised by the authors is whether this can be extended to $k$-graphs.
-That is, is it true that $k$-graphs with $n$ vertices and  $\left(\pi(G) + \Omega(1) \right)  \binom{n}{k}$ edges
-contain $G(t_n)$ for some $t_n = \Omega \left((\log n)^{\frac{1}{k-1}}\right)$?
+A still open question is whether this can be extended to $k$-graphs.
+That is, is it true that $k$-graphs with $n$ vertices and  $\left(\pi(G) + \epsilon \right)  \binom{n}{k}$ edges
+contain $G(t_n)$ for some $t_n = \delta(G, \epsilon) (\log n)^{\frac{1}{k-1}}$?
 An even more general yet unresolved question is whether this is true for
 $k$-graphs with $n$ vertices and $\Omega (n^{|V(G)|})$ copies of $G$~\cite{rodl2012complete}.

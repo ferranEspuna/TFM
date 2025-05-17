@@ -399,14 +399,19 @@ in the following way.
     pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
     (for example, $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$).
     Let $V_1, \dots, V_k$ be a uniform random partition of $V(H)$ with $|V_i| = v_i$.
-    For any edge $e \in E(H)$, the probability that $e$ is an edge in $\compdots{V_1}{V_k}$ is
+    Assuming, for example, that $n \geq 2k$,
+    for any edge $e \in E(H)$, the probability that $e$ is an edge in $\compdots{V_1}{V_k}$ is
     at least
-    \[k! \prod_i \frac{v_i}{n} \sim \frac{k!}{k^k},\]
+    \[
+        k! \prod_i \frac{v_i}{n} \geq \frac{k!}{(2k)^k}
+    \]
     which is independent of $n$.
     Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
-    Applying the first moment method, we can conclude that
+    Applying the first moment method, there is at least one partition retaining $ \frac{k!}{(2k)^k} m$
+    edges.
+
     \[
-        \ex{n}{\compdots{t_1}{t_k}} = \bigO{\zaroversetdots{k}{\lceil n / k \rceil}{t_1}{t_k}}.
+        \ex{n}{\compdots{t_1}{t_k}} \leq \frac{(2k)^k}{k!} \cdot \zaroversetdots{k}{\lceil n / k \rceil}{t_1}{t_k}.
     \]
 
 \end{remark}
@@ -509,74 +514,100 @@ The result is stated and proved here for completeness.
 
 In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete partite $k$-graphs in the following theorem.
 
-\begin{theorem}\label{thm:erdos64}
-    For $k \geq 2$ and $2 \leq t \leq \frac{n}{k}$,
+\begin{theorem}[Erdős 1964 Theorem]\label{thm:erdos64}
+    For $k \geq 2$,
     $\ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{k-1}}}}$.
+\end{theorem}
+
+This theorem is a consequence of the following lemma.
+
+\begin{lemma}~\label{lem:erdos64-quant}
+    Let $k$ be a positive integer.
+    There exists a constant $\delta = \delta_k > 0$
+    such that, for all integers $t \leq w$,
+    \[
+        \zaroverset{k}{w}{t} < \delta w^{k - \frac{1}{t^{k-1}}}.
+    \]
     \begin{proof}
-        By Remark~\ref{rem:zar_vs_turan}, it suffices to show that
-        \[
-            z = \zaroverset{k}{w}{t} = \bigO{w^{k - \frac{1}{t^{k-1}}}}
-        \]
-        as $w \to \infty$.
-        We prove this by induction on $k$.
+        We proceed by induction on $k$.
         For $k=2$, this is obtained by setting $u = w$ and $s = t$ in Theorem~\ref{thm:kst}.
-        For $k > 2$, suppose by way of contradiction that the theorem is false.
-        For all ${w_0 \in \N}$, ${K \in \mathbb{R}^+}$, there exists a $k$-partite $k$-graph
-        $G = (W_1, \dots, W_k; E)$ with part sizes
-        $|W_i| = w \geq w_0$ and
-        ${|E| \geq K w^{k - \frac{1}{t^{k-1}}}}$
-        such that no embedding of $\compoverset{k}{t}$ into $G$ exists.
+        This yields
+        \[
+            z(w, w, t, t)
+            \leq (t-1)^{1/t}(w-t+1)w^{1-1/t} + (t-1)w
+            < 2w^{2 - 1/t} + tw,
+        \]
+        where the right inequality comes from $(t-1)^{1/t} < 2$ for all positive $t$.
+        We now argue that $tw < 2 w^{2-1/t}$,
+        which will conclude the proof for $k=2$ by setting $\delta_2 = 4$.
+        Otherwise,
+        \[
+            t \geq 2 w^{1 - 1/t} \geq 2 t^{1 - 1/t},
+        \]
+        which is false for all positive $t$.
+
+        For $k > 2$, suppose that the lemma holds for $k - 1$ and that
+        a certain $\delta > 0$ does not meet our conditions.
+        There exist integers $t \leq w$ and a $k$-partite $k$-graph $H=(W_1, \dots, W_k; F)$
+        with part sizes $|W_i| = w$ and $z = |F| \geq \delta w^{k - \frac{1}{t^{k-1}}}$ edges
+        such that no embedding of $\compoverset{k}{t}$ into $H$ exists.
         Consider, for each set $T \in \binom{W_k}{t}$, the associated \text{$(k-1)$-link}
-        \link{G}{T}{k-1}.
+        \link{H}{T}{k-1}.
         We claim that it does not contain $\compoverset{k-1}{t}$ as a subgraph.
-        If it did (say, $T_1 \times \dots \times T_{k-1} \in E(\link{G}{T}{k-1})$),
-        then $T_1 \times \dots \times T_{k-1} \times T \in E$
-        would contradict the assumption that $G$ does not contain $\compoverset{k}{t}$ as a subgraph.
+        If it did (say, $T_1 \times \dots \times T_{k-1} \subset E(\link{H}{T}{k-1})$),
+        then $T_1 \times \dots \times T_{k-1} \times T \subset F$
+        would contradict the assumption that $H$ does not contain $\compoverset{k}{t}$ as a subgraph.
         This means that
         \begin{equation} \label{eq:conditionlink}
-            \link{G}{T}{k-1} \text{ has at most $z'$ edges for all } T \in \binom{W_k}{t},
+            \link{H}{T}{k-1} \text{ has at most $z'$ edges for all } T \in \binom{W_k}{t},
         \end{equation}
         where
         \[
-            z' = \zaroverset{k-1}{w}{t}.
+            z' = \zaroverset{k-1}{w}{t} \leq \delta_{k-1} w^{(k - 1) - \frac{1}{t^{k-2}}}.
         \]
-        Now, consider the bipartite graph $G' = (U, W; E')$, where
+        Now, consider the bipartite graph $H' = (U, W; F')$, where
         \begin{align*}
             U &= W_1 \times \dots \times W_{k-1}, \\
             W &= W_k, \\
-            E' &= \{(X, y) \in U \times W \mid X \cup \{y\} \in E\}.
+            F' &= \{(X, y) \in U \times W \mid X \cup \{y\} \in F\}.
         \end{align*}
         Condition~\eqref{eq:conditionlink} is equivalent to saying that
-        there is no embedding of $K(z' + 1, t)$ onto $G'$ respecting the respective partitions.
-        Furthermore, $G'$ has the same number of edges as $G$.
+        there is no embedding of $K(z' + 1, t)$ onto $H'$ respecting the partitions.
+        Furthermore, $H'$ has the same number of edges as $H$.
         Finally, we invoke Theorem~\ref{thm:kst} with
         ${u = |U| = w^{k-1}}$ and
         ${s = z' + 1}$ to get
         \begin{equation} \label{eq:erdos64_induction}
-            K w^{k - \frac{1}{t^{k-1}}} \leq
+            \delta w^{k - \frac{1}{t^{k-1}}} \leq
             |E| = |E'| \leq
-            (z')^{1 / t}(w - t + 1)w^{(k-1)(1 - 1 / t)} + (t - 1)w^{k-1}.
+            \left(\delta_{k-1} w^{(k - 1) - \frac{1}{t^{k-2}}}\right)^{1 / t}(w - t + 1)w^{(k-1)(1 - 1 / t)} + (t - 1)w^{k-1}.
         \end{equation}
-        By the inductive hypothesis, for $w_0$ and $K'$ large enough, we can bound
-        \begin{equation} \label{eq:erdos64prime}
-            z' \leq K' w^{(k - 1) - \frac{1}{t^{k-2}}}.
-        \end{equation}
-        Substituting inequality~\eqref{eq:erdos64prime} into~\eqref{eq:erdos64_induction} and approximating yields
+        Approximating, this implies that
         \[
-            K w^{k - \frac{1}{t^{k-1}}} \leq (K')^{1 / t} w^{k-\frac{1}{t^{k-1}}} + (t - 1)w^{k-1}.
+            \delta w^{k - \frac{1}{t^{k-1}}} < \delta_{k-1}^{1 / t} w^{k - \frac{1}{t^{k-1}}} + tw^{k-1} \leq \delta_{k-1}w^{k - \frac{1}{t^{k-1}}} + tw^{k-1}.
         \]
-        Combining like terms and picking $K > 2 (K')^{1 / t}$ gives
-        \[
-            \frac{1}{2}K w^{k - \frac{1}{t^{k-1}}} < (t - 1)w^{k-1},
-        \]
-        which we can rewrite as
-        \begin{equation} \label{eq:erdos64_contradiction}
-            \frac{1}{2}Kw^{1 - \frac{1}{t^{k-1}}} < (t - 1).
-        \end{equation}
-        This is a contradiction, because the right side of inequality~\eqref{eq:erdos64_contradiction}
-        is constant in $w$, while the left side grows to infinity as $w$ increases.
+        Similarly as before, one can check that $tw^{k-1} < 2w^{k-\frac{1}{t^{k-1}}}$.
+        Therefore, we reach a contradiction whenever $\delta \geq \delta_{k-1} + 2$,
+        so setting $\delta_k = \delta_{k-1} + 2$ gives us the desired result.
+        In fact, the theorem works for $\delta_k = 2 \cdot k$.
+
     \end{proof}
-\end{theorem}
+\end{lemma}
+
+The proof of the Erdős 1964 Theorem is now straightforward.
+
+\begin{delayedproof}{thm:erdos64}
+    We in fact are more precise.
+    Following Remark~\ref{rem:zar_vs_turan}, if $n \geq tk$
+    and $n \geq 2k$,
+    \[
+        \ex{n}{\compoverset{k}{t}}
+        \leq \frac{(2k)^k}{k!} \cdot \zaroverset{k}{\lceil n / k \rceil}{t}
+        \leq 2k \cdot \frac{(2k)^k}{k!} \cdot \left\lceil \frac{n}{k} \right\rceil^{k - \frac{1}{t^{k-1}}}
+        \leq \frac{k \cdot 4^k}{(k-1)!} \cdot n^{k - \frac{1}{t^{k-1}}}.
+    \]
+
+\end{delayedproof}
 
 This approach can be generalized to give a lower bound on the number of
 copies (that is, embeddings with different image sets)
@@ -592,6 +623,97 @@ we arrive at
 Because all $k$-partite $k$-graphs can be embedded in a $\compoverset{k}{t}$,
 Theorem~\ref{thm:erdos64} shows that the Turán density of all $k$-partite $k$-graphs is $0$,
 completing the proof of Proposition~\ref{prop:degenerate}.
+
+A stronger version of Theorem~\ref{thm:erdos64}, which also follows from Lemma~\ref{lem:erdos64-quant},
+is the following.
+If $H_n$ is a family of $k$-partite $k$-graphs with constant positive density
+(that is, $E(H_n) \geq \epsilon \binom{n}{k} = \Omega\left( n^k \right)$ for some $\epsilon > 0$),
+for large enough $n$, $H_n$ contains a $\compoverset{k}{t_n}$ as a subgraph, with
+\[
+    t_n = \delta \cdot (\log n)^{\frac{1}{k-1}}
+\]
+for some constant $\delta = \delta(k, \epsilon) > 0$.
+
+Loosely speaking, we may find a blow-up of an edge as large as we wish, if we let the number of vertices grow
+while keeping the density constant.
+The following theorem generalizes this notion to blow-ups of arbitrary $k$-graphs.
+
+\begin{theorem} \label{thm:quant-blowup}
+    Let $G = (V, E)$ be a $k$-graph and let $\epsilon > 0$.
+    There exists a positive integer $n_0 = n_0(G, \epsilon)$ and a constant $\delta = \delta(G, \epsilon) > 0$
+    such that for all $n \geq n_0$,
+    \[
+         \ex{n}{G(t_n)} \leq \left( \pi(G) + \epsilon \right) \binom{n}{k},
+    \]
+    where
+    \[
+        t_n = \delta \cdot (\log n)^{\frac{1}{|V|-1}}.
+    \]
+    \begin{proof}
+
+        We determine the value of $\delta$ later in the proof.
+        Suppose that $H$ is a $k$-graph with $n$ vertices and at least $(\pi(G) + \epsilon) \binom{n}{k}$ edges.
+        Theorem~\ref{thm:supersaturation} states that if $n \geq n_0 \geq t(G, \epsilon)$,
+        there are at least $\delta_1(G, \epsilon) n^{|V|}$ embeddings of $G$ into $H$.
+
+        Consider, as in Remark~\ref{rem:zar_vs_turan},
+        a random partition of the vertices of $H$ into $|V|$ parts of size
+        $\left\lfloor n / |V| \right\rfloor  \leq |V_i| \leq \left\lceil n / |V|  \right\rceil$.
+        Suppose that we have an embedding $f$ of $G$ in $H$.
+        Assuming that that $n \geq n_0 \geq 2|V|$,
+        the probability that for all vertices $v_i \in V$, $f(v_i) \in V_i$ is
+        \[
+            \prod_{i=1}^{|V|} \frac{|V_i|}{n} \geq \left( \frac{1}{2|V|} \right)^{|V|}.
+        \]
+        Therefore, for at least one such partition, there are at least
+        \[
+            \delta_1(G, \epsilon) \cdot \left( \frac{1}{2|V|} \right)^{|V|} \cdot n^{|V|} = \delta_2(G, \epsilon) n^{|V|}
+        \]
+        embeddings of $G$ in $H$ respecting the partition.
+        Furthermore, these embeddings all have different image sets, which have one vertex in each part.
+        Consider now the $|V|$-partite $|V|$-graph $H' = (V_1, \dots, V_{|V|}; F)$,
+        where
+        \[
+            F = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H \text{ and } f(V_i) \subset V_i \text{ for all } i\}.
+        \]
+        By Lemma~\ref{lem:erdos64-quant}, making $n_0$ large enough depending only on $\delta_2$ and $|V|$,
+        there exists some $\delta_3 = \delta_3(G, \epsilon) = \delta(|V|, \delta_2(G, \epsilon)) > 0$ such that
+        $H'$ contains $\compoverset{|V|}{t_n}$ as a subgraph, where
+        \[
+            t_n = \delta_3(G, \epsilon) \cdot (\log n)^{\frac{1}{|V|-1}}.
+        \]
+        That is, there are $|V|$ sets $T_1, \dots, T_{|V|}$ of size $t_n$ such that
+        if $\{v_{i_1}, \dots, v_{i_k}\} \in E$ is an edge of $G$, then
+        $\{u_{i_1}, \dots, u_{i_k}\}$ is an edge of $H_n$ for all $u_{i_j} \in T_j$.
+        This means that $G(t_n)$ is a subgraph of $H_n$, so picking $\delta = \delta_3$
+        gives the desired result.
+
+    \end{proof}
+\end{theorem}
+
+The following corollary highlights that degenerate Turán problems can be applied to solve non-degenerate ones.
+\begin{corollary}
+    Let $G$ be a $k$-graph and $t$ be a positive integer.
+    Then, $\pi(G(t)) = \pi(G)$.
+\end{corollary}
+
+In particular, this directly proves the Erdős--Stone--Simonovits theorem for $2$-graphs.
+
+\begin{delayedproof}{thm:erdos_stone_simonovits}
+    Let $G$ be a $2$-graph with chromatic number $r$.
+    For some $t \geq 1$, $G$ is a subgraph of
+    $\compdotssuperindexoverset{2}{r}{t} \cong \completesuperindex{2}{r}(t)$.
+    Therefore,
+    \[
+        \pi(G) \leq \pi\left(\completesuperindex{2}{r}(t)\right)
+        = \pi\left(\completesuperindex{2}{r}\right) = 1 - \frac{1}{r-1}.
+    \]
+    The reverse inequality follows from the same construction in the \proofref{thm:turan} of Turán's theorem.
+    Indeed, this construction has the desired density and avoids not only \completesuperindex{2}{r} but also
+    any $r$-partite $2$-graph, and in particular $G$.
+\end{delayedproof}
+
+
 Knowing that the Turán density of $k$-partite $k$-graphs is $0$
 gives little information on the growth of their Turán numbers.
 In this case, we are usually satisfied with determining the growth up to a constant factor.
@@ -657,108 +779,6 @@ For example, see the following probabilistic construction.
         there exists one such graph $\widehat{H_n}$, which is $G$-free by construction.
     \end{proof}
 \end{proposition}
-
-Similarly to non-degenerate Turán problems, we also have interesting results when the
-Turán density of a $k$-partite $k$-graph (namely, $0$) is exceeded.
-The following observation is key.
-
-\begin{remark} \label{rem:uniform-t}
-    The constant factors in the estimates of Theorem ~\ref{thm:erdos64} can be made to depend only on $k$ and not on $t$.
-    Reducing to the partite host case by Remark~\ref{rem:zar_vs_turan} only reduces the number of edges by a constant factor.
-    For $k=2$, Theorem~\ref{thm:kst} applied with $s = t$ and $u = w$
-    gives
-    \[
-        z(w, w, t, t) \leq (t-1)^{1/t}(w-t+1)w^{1-1/t} + (t-1)w \leq 2w^{2 - 1/t} + o\left(w^{2-1/t}\right).
-    \]
-    For $k \geq 3$, we can prove it inductively, by carrying out the computations of the theorem more carefully.
-\end{remark}
-
-More computations then show that if
-$H_n$ is a family of $k$-partite $k$-graphs with constant positive density
-(that is, $E(H_n) \geq \epsilon \binom{n}{k} = \Omega\left( n^k \right)$ for some $\epsilon > 0$),
-for large enough $n$, $H_n$ contains a $\compoverset{k}{t_n}$ as a subgraph, with
-\[
-    t_n = \delta \cdot (\log n)^{\frac{1}{k-1}}
-\]
-for some constant $\delta = \delta(k, \epsilon) > 0$.
-Loosely speaking, we may find a blow-up of an edge as large as we wish, if we let the number of vertices grow
-while keeping the density constant.
-The following theorem generalizes this notion to blow-ups of arbitrary $k$-graphs.
-
-\begin{theorem} \label{thm:quant-blowup}
-    Let $G = (V, E)$ be a $k$-graph and let $\epsilon > 0$.
-    There exists a positive integer $n_0 = n_0(G, \epsilon)$ and a constant $\delta = \delta(G, \epsilon) > 0$
-    such that for all $n \geq n_0$,
-    \[
-         \ex{n}{G(t_n)} \leq \left( \pi(G) + \epsilon \right) \binom{n}{k},
-    \]
-    where
-    \[
-        t_n = \delta \cdot (\log n)^{\frac{1}{|V|-1}}.
-    \]
-    \begin{proof}
-
-        We determine the value of $\delta$ later in the proof.
-        Suppose that $H$ is a $k$-graph with $n$ vertices and at least $(\pi(G) + \epsilon) \binom{n}{k}$ edges.
-        Theorem~\ref{thm:supersaturation} states that if $n \geq n_0 \geq t(G, \epsilon)$,
-        there are at least $\delta_1(G, \epsilon) n^{|V|}$ embeddings of $G$ into $H$.
-
-        Consider, as in Remark~\ref{rem:zar_vs_turan},
-        a random partition of the vertices of $H$ into $|V|$ parts of size
-        $\left\lfloor n / |V| \right\rfloor  \leq |V_i| \leq \left\lceil n / |V|  \right\rceil$.
-        Suppose that we have an embedding $f$ of $G$ in $H$.
-        Assuming that that $n \geq n_0 \geq 2|V|$,
-        the probability that for all vertices $v_i \in V$, $f(v_i) \in V_i$ is
-        \[
-            \prod_{i=1}^{|V|} \frac{|V_i|}{n} \geq \left( \frac{1}{2|V|} \right)^{|V|}.
-        \]
-        Therefore, for at least one such partition, there are at least
-        \[
-            \delta_1(G, \epsilon) \cdot \left( \frac{1}{2|V|} \right)^{|V|} \cdot n^{|V|} = \delta_2(G, \epsilon) n^{|V|}
-        \]
-        embeddings of $G$ in $H$ respecting the partition.
-        Furthermore, these embeddings all have different image sets, which have one vertex in each part.
-        Consider now the $|V|$-partite $|V|$-graph $H' = (V_1, \dots, V_{|V|}; F)$,
-        where
-        \[
-            F = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H \text{ and } f(V_i) \subset V_i \text{ for all } i\}.
-        \]
-        By Remark~\ref{rem:uniform-t}, making $n_0$ large enough depending only on $\delta_2$ and $|V|$,
-        there exists some $\delta_3 = \delta_3(G, \epsilon) = \delta(|V|, \delta_2(G, \epsilon)) > 0$ such that
-        $H'$ contains $\compoverset{|V|}{t_n}$ as a subgraph, where
-        \[
-            t_n = \delta_3(G, \epsilon) \cdot (\log n)^{\frac{1}{|V|-1}}.
-        \]
-        That is, there are $|V|$ sets $T_1, \dots, T_{|V|}$ of size $t_n$ such that
-        if $\{v_{i_1}, \dots, v_{i_k}\} \in E$ is an edge of $G$, then
-        $\{u_{i_1}, \dots, u_{i_k}\}$ is an edge of $H_n$ for all $u_{i_j} \in T_j$.
-        This means that $G(t_n)$ is a subgraph of $H_n$, so picking $\delta = \delta_3$
-        gives the desired result.
-
-    \end{proof}
-\end{theorem}
-
-The following corollary highlights that degenerate Turán problems can be applied to solve non-degenerate ones.
-\begin{corollary}
-    Let $G$ be a $k$-graph and $t$ be a positive integer.
-    Then, $\pi(G(t)) = \pi(G)$.
-\end{corollary}
-
-In particular, this directly proves the Erdős--Stone--Simonovits theorem for $2$-graphs.
-
-\begin{delayedproof}{thm:erdos_stone_simonovits}
-    Let $G$ be a $2$-graph with chromatic number $r$.
-    For some $t \geq 1$, $G$ is a subgraph of
-    $\compdotssuperindexoverset{2}{r}{t} \cong \completesuperindex{2}{r}(t)$.
-    Therefore,
-    \[
-        \pi(G) \leq \pi\left(\completesuperindex{2}{r}(t)\right)
-        = \pi\left(\completesuperindex{2}{r}\right) = 1 - \frac{1}{r-1}.
-    \]
-    The reverse inequality follows from the same construction in the \proofref{thm:turan} of Turán's theorem.
-    Indeed, this construction has the desired density and avoids not only \completesuperindex{2}{r} but also
-    any $r$-partite $2$-graph, and in particular $G$.
-\end{delayedproof}
 
 \subsection{Open Problems}\label{subsec:open-problems} % TODO mention people by name + techniques, remove citations in math environment
 

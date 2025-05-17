@@ -38,7 +38,7 @@ contain $G$ as a subgraph.
 \end{proposition}
 
 We call the integer $\ex{n}{G}$ the \emph{Turán number} of $G$ on $n$ vertices.
-The Turán number is increasing both in $n$ and under graph inclusion.
+The Turán number is increasing both in $n$ and under graph inclusion. % TODO Gemini says this is wrong
 The first property can be seen by taking a $G$-free $k$-graph on $H$ with $n$ vertices
 and $\ex{n}{G}$ vertices; and adding a vertex $v$ and no edges to it, obtaining $H'$.
 If $f: G \to H$ is an embedding and $v$ has a preimage $x$, it must be a vertex in $H$ with degree $0$,
@@ -424,7 +424,7 @@ This was generalized to arbitrary complete
 bipartite 2-graphs by Hyltén--Cavallius~\cite{Hylten1958} in 1958.
 The result is stated and proved here for completeness.
 
-\begin{theorem}[Kővari--Sós--Turán Theorem] \label{thm:kst}
+\begin{theorem}[Kővari--Sós--Turán Theorem] \label{thm:kst} % TODO G --> H
     Let $0 < s \leq u$ and $0 < t \leq w$ be integers.
     Then
     \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
@@ -722,7 +722,7 @@ General lower bounds are usually obtained by probabilistic arguments,
 which are often weak and worse that lower bounds obtained by other means.
 For example, see the following probabilistic construction.
 
-\begin{proposition} \label{prop:probabilistic-lower-bound}
+\begin{proposition} \label{prop:probabilistic-lower-bound} % TODO i dont like e for edges
     Let $G = (T_1, \dots, T_k; E)$ be a $k$-graph with
     $t = \sum_{i=1}^{k} t_i = \sum_{i=1}^{k} |T_i|$ vertices
     and $e = |E| > 1$ edges.

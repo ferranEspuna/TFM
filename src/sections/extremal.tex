@@ -623,7 +623,7 @@ This lets us restate the theorem in the following stronger form.
     Let $k \geq 2$ be an integer.
     There exist an integer $n_k$ and a positive constant $\gamma_k$
     such that, for all
-    $\epsilon > 0$,
+    $0 < \epsilon < 1$,
     all graphs with more than $\epsilon \binom{n}{k}$ edges
     contain $\compoverset{k}{t_n}$ as a subgraph, where
     \[
@@ -646,16 +646,17 @@ This lets us restate the theorem in the following stronger form.
         (we will later show that this condition can be made true independently of $n$ for our chosen $t_n$).
         This condition also implies that the number of edges of $H$ is at least
         \[
-            \epsilon \binom{n}{k} \geq \epsilon \frac{(n - k + 1)^k}{k!} \geq \epsilon \left( \frac{k-1}{k} \right)^k \frac{1}{k!} n^{k} = (e_k  \cdot \epsilon) n^{k},
+            \epsilon \binom{n}{k} \geq \epsilon \frac{(n - k + 1)^k}{k!} \geq \epsilon \left( \frac{1}{2} \right)^k \frac{1}{k!} n^{k} = (e_k  \cdot \epsilon) n^{k},
         \]
-        where $e_k = \frac{(k-1)^k}{k!}$ does not depend on $n$.
-        We pick
+        where $e_k = \frac{1}{k! \cdot 2^k}$ does not depend on $n$.
+        We pick, for example,
         \[
-             \gamma_k = \frac{c_k}{e_k},
+             \gamma_k = \frac{2c_k}{e_k} = 2 \cdot 8^k \cdot k,
         \]
         so that
         \[
-            \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{k-1}}} \leq c_k n^k  \frac{\epsilon}{\gamma_k} = e_k \cdot \epsilon n^{k} \leq |E(H)|,
+            \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{k-1}}} \leq c_k n^k  \frac{\epsilon}{\gamma_k}
+            = \frac{e_k \cdot \epsilon}{2} n^{k} \leq  \frac{|E(H)|}{2} < |E(H)|,
         \]
         which guarantees that $H$ contains $\compoverset{k}{t_n}$ as a subgraph.
         The only thing left to prove is that, for this choice of $t_n$, there exists $n_k$
@@ -670,7 +671,7 @@ This lets us restate the theorem in the following stronger form.
         \[
             t_n k
             = \left\lfloor \left( \frac{\log n}{\log(\gamma_k / \epsilon)} \right)^{\frac{1}{k-1}} \right\rfloor k
-            = \left\lfloor \left( \frac{\log n}{\log\gamma_k} \right)^{\frac{1}{k-1}} \right\rfloor k
+            < \left\lfloor \left( \frac{\log n}{\log\gamma_k} \right)^{\frac{1}{k-1}} \right\rfloor k
             <   \left( \frac{1}{\log \gamma_k} \right)^{\frac{1}{k-1}} k \sqrt{n}
             \leq \left( \frac{1}{\log \gamma_k} \right)^{\frac{1}{k-1}} k \frac{n}{\sqrt{n_k}}
             \leq n. \qedhere

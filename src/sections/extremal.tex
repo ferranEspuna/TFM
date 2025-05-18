@@ -20,7 +20,7 @@ contain $G$ as a subgraph.
         Note that, if such an $M_0$ exists, clearly it is unique.
         Also, the condition is clearly false for $m = 0$ and
         true for $m = \binom{n}{k}$
-        (the only graph $H$ with vertex set $W$, $|W|=n$ and $\binom{n}{k}$ edges
+        (the only $k$-graph $H$ with vertex set $W$, $|W|=n$ and $\binom{n}{k}$ edges
         is the one having all $k$-sets of vertices so any injective map $f: V \to W$
         is an embedding of $G$ in $H$).
         We only need to show that if the condition is true for $m$ then it is true for
@@ -28,7 +28,7 @@ contain $G$ as a subgraph.
         Suppose it is true for $m$ and let $m' \geq m$.
         Let $H = (W, F)$ be a $k$-graph with $n$ vertices and $m'$ edges.
         We can take $F' \subset F$ with $|F'| = m$.
-        By hypothesis, the graph $H' = (W, F')$ contains $G$ as a subgraph,
+        By hypothesis, the $k$-graph $H' = (W, F')$ contains $G$ as a subgraph,
         and the identity map in $W$ is an embedding of $H'$ in $H$.
         Then, $G \subset H' \subset H$ implies $G \subset H$ by transitivity of the embedding
         relation (Proposition~\ref{prop:embedding_properties}).
@@ -38,7 +38,7 @@ contain $G$ as a subgraph.
 \end{proposition}
 
 We call the integer $\ex{n}{G}$ the \emph{Turán number} of $G$ on $n$ vertices.
-The Turán number is increasing both in $n$ and under graph inclusion. % TODO Gemini says this is wrong
+The Turán number is increasing both in $n$ and under $k$-graph inclusion. % TODO Gemini says this is wrong
 The first property can be seen by taking a $G$-free $k$-graph on $H$ with $n$ vertices
 and $\ex{n}{G}$ vertices; and adding a vertex $v$ and no edges to it, obtaining $H'$.
 If $f: G \to H$ is an embedding and $v$ has a preimage $x$, it must be a vertex in $H$ with degree $0$,
@@ -176,7 +176,7 @@ Because of the difficulty of finding exact Turán numbers for $k$-graphs,
 we usually look for asymptotic approximations of them.
 In particular, we are interested in how the expression
 $\ex{n}{G}$ grows with $n$ for any fixed $k$-graph $G$.
-This is known as the \emph{Turán problem} for the graph $G$.
+This is known as the \emph{Turán problem} for the $k$-graph $G$.
 For an example, we turn to the complete $2$-graph $\completesuperindex{2}{r}$,
 for which we already have an exact formula.
 In expression~\eqref{eq:turan}, we can see that
@@ -219,7 +219,7 @@ for all $k$-graphs.
         \]
         is bounded between $0$ and $1$ for all $n \geq |V(G)|$, by Proposition~\ref{prop:extremal}.
         Furthermore, it is less than $1$ for all $n \geq |V(G)| + 1$.
-        To see this, consider a graph $H = (W, F)$ with $n$ vertices and $\binom{n}{k} - 1$ edges.
+        To see this, consider a $k$-graph $H = (W, F)$ with $n$ vertices and $\binom{n}{k} - 1$ edges.
         Its edge density is less than $1$.
         Without loss of generality, we can suppose that $F = \binom{W}{k} \setminus \{\{x, y\}\}$.
         This means that $H[W \setminus \{x\}]$ is a complete $k$-graph on $n - 1$ vertices,
@@ -227,9 +227,9 @@ for all $k$-graphs.
 
         We show that the sequence $(a_n)$ is non-increasing, so it must converge to a value $0 \leq \pi(G) < 1$.
         Let $n \geq |V(G)|$.
-        There exists a graph $H = (W, F)$ with $n+1$ vertices and $\ex{n+1}{G}$ edges that does not contain
+        There exists a $k$-graph $H = (W, F)$ with $n+1$ vertices and $\ex{n+1}{G}$ edges that does not contain
         $G$ as a subgraph.
-        For each vertex $w \in W$, the graph $H_w = H[W \setminus \{w\}]$ has $n$ vertices
+        For each vertex $w \in W$, the $k$-graph $H_w = H[W \setminus \{w\}]$ has $n$ vertices
         and does not contain $G$ as a subgraph.
         Therefore, it must contain at most $\ex{n}{G}$ edges.
         Consider the set
@@ -268,7 +268,7 @@ We can now summarize expression~\eqref{eq:turan_asymptotic_density} as follows.
     \]
 \end{corollary}
 
-The first natural question that arises is for what graphs $G$ the Turán density $\pi(G)$ is positive
+The first natural question that arises is for what $k$-graphs $G$ the Turán density $\pi(G)$ is positive
 (in which case, we call the corresponding Turán problem \emph{non-degenerate}
 and consider it solved if we can calculate $\pi(G)$).
 The following gives a complete characterization.
@@ -279,7 +279,7 @@ The following gives a complete characterization.
     \begin{proof}
         If $G$ is not $k$-partite, a construction similar to the one in the proof of Theorem~\ref{thm:turan}
         directly shows $\pi (G) > 0$.
-        Indeed, for all $m$ the graph $\compoverset{k}{m}$ is $k$-partite so it cannot contain $G$ as a subgraph.
+        Indeed, for all $m$ the $k$-graph $\compoverset{k}{m}$ is $k$-partite so it cannot contain $G$ as a subgraph.
         Furthermore, its edge density is
         \[
              \frac{m^k}{\binom{km}{k}} \geq \frac{1}{k^k}.
@@ -385,7 +385,7 @@ to define the following.
 From now on, every time we talk about embeddings from one $k$-partite $k$-graph
 $G = (T_1, \dots, T_k; E)$ to another $k$-partite $k$-graph $H = (V_1, \dots, V_k; F)$,
 we assume the condition $f(T_i) \subset V_i$.
-Similarly to the case of complete graphs,
+Similarly to the case of complete $k$-graphs,
 $H$ contains $\compdots{t_1}{t_k}$ as a subgraph if and only if
 for some sets $S_i \subset V_i$ of size $t_i$ for all $i$,
 $H[S_1 \cup \dots \cup S_k]$ = $\compdots{S_1}{S_K}$,
@@ -624,7 +624,7 @@ This lets us restate the theorem in the following stronger form.
     There exist an integer $n_k$ and a positive constant $\gamma_k$
     such that, for all
     $0 < \epsilon < 1$,
-    all graphs with more than $\epsilon \binom{n}{k}$ edges
+    all $k$-graphs with more than $\epsilon \binom{n}{k}$ edges
     contain $\compoverset{k}{t_n}$ as a subgraph, where
     \[
         t_n = \left\lfloor \left( \frac{\log n}{\log(\gamma_k/\epsilon)} \right)^{\frac{1}{k-1}} \right\rfloor.
@@ -689,7 +689,7 @@ We only need that
 \[
     \epsilon \geq \gamma_k \cdot n^{-\frac{1}{t^{k-1}}},
 \]
-that is, the graph has at least
+that is, the $k$-graph has at least
 \[
     \gamma_k \cdot n^{-\frac{1}{t^{k-1}}} \cdot \binom{n}{k} = \bigO{n^{k - \frac{1}{t^{k-1}}}}
 \]
@@ -782,7 +782,7 @@ So far, we have only proven upper bounds for this growth rate.
 General lower bounds are usually obtained by probabilistic arguments,
 which are often weak and worse that lower bounds obtained by other means (See Subsection~\ref{subsec:open-problems})
 for a few examples of this in the literature).
-Here we present an example of a general probabilistic argument that applies to any guest graph.
+Here we present an example of a general probabilistic argument that applies to any guest $k$-graph.
 
 \begin{proposition} \label{prop:probabilistic-lower-bound} % TODO i dont like e for edges
     Let $G = (T_1, \dots, T_k; E)$ be a $k$-graph with
@@ -838,7 +838,7 @@ Here we present an example of a general probabilistic argument that applies to a
         \]
         Therefore, the event that $|E(H_n)| \geq m_0(n)$
         must have positive probability, and in particular,
-        there exists one such graph $\widehat{H_n}$, which is $G$-free by construction.
+        there exists one such $k$-graph $\widehat{H_n}$, which is $G$-free by construction.
     \end{proof}
 \end{proposition}
 
@@ -849,7 +849,7 @@ seen the solution for non-degenerate Turán problems for $2$-graphs.
 Determining the Turán density of $k$-graphs for $k > 2$ is a much harder problem.
 
 Famously, not even the Turán density of the tetrahedron $3$-graph $\completesuperindex{3}{4}$
-(pictured in Figure~\ref{fig:complete_kgraph}) or the unique graph $\completesuperindex{3}{4-}$
+(pictured in Figure~\ref{fig:complete_kgraph}) or the unique $3$-graph $\completesuperindex{3}{4-}$
 obtained by removing one edge from it, are known.
 The best known bounds are
 \[
@@ -923,7 +923,7 @@ but~\eqref{eq:k55-probabilistic} has been improved to
     = \Omega\left(n^{\frac{7}{4}}\right)
     = \Omega\left(n^{1.75}\right)~\cite{ball2012asymptotic}.
 \]
-Even less is known about degenerate problems for graphs of higher uniformity.
+Even less is known about degenerate problems for hypergraphs of higher uniformity.
 For example, not even the growth rate of the Turán number for the octahedron 3-graph
 ($\ex{n}{K(2, 2, 2)}$, pictured in Figure~\ref{fig:222}) is known.
 The best upper bound, again, comes from Theorem~\ref{thm:erdos64}, which gives

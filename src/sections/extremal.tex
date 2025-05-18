@@ -630,8 +630,8 @@ This lets us restate the theorem in the following stronger form.
         t_n = \left\lfloor \left( \frac{\log n}{\log(\gamma_k/\epsilon)} \right)^{\frac{1}{k-1}} \right\rfloor.
     \]
     \begin{proof}
-        Again, if $t=1$, there is nothing to prove.
-        Suppose that $t \geq 2$.
+        Again, if $t_n=1$, there is nothing to prove.
+        Suppose that $t_n \geq 2$.
         Let us define
         \[
             c_k = \frac{k \cdot 4^k}{(k-1)!}.
@@ -640,38 +640,36 @@ This lets us restate the theorem in the following stronger form.
         \[
             \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{k-1}}}
         \]
-        as long as $n \geq tk$.
-        Suppose that this is true and that $H$ is a $k$-graph with $n$ vertices and $m \geq \epsilon \binom{n}{k}$ edges.
+        as long as $n \geq t_n k$.
+        Suppose that $H$ is a $k$-graph with $n$ vertices and $m \geq \epsilon \binom{n}{k}$ edges.
         Suppose, furthermore, that $n \geq t_n k$
         (we will later show that this condition can be made true independently of $n$ for our chosen $t_n$).
         This condition also implies that the number of edges of $H$ is at least
         \[
-            \epsilon \binom{n}{k} \geq \epsilon \frac{(n - k + 1)^k}{k!} \geq \epsilon \left( \frac{k-1}{k} \right)^k \frac{1}{k!} n^{k} = d n^{k},
+            \epsilon \binom{n}{k} \geq \epsilon \frac{(n - k + 1)^k}{k!} \geq \epsilon \left( \frac{k-1}{k} \right)^k \frac{1}{k!} n^{k} = (e_k  \cdot \epsilon) n^{k},
         \]
-        where $d > 0$ is independent of $n$.
-        Suppose that the statement is false for our choice of parameters.
-        This would imply that
+        where $e_k = \frac{(k-1)^k}{k!}$ does not depend on $n$.
+        We pick
         \[
-            c_k n^{k - \frac{1}{t_n^{k-1}}} \geq m \geq d n^{k}.
+             \gamma_k = \frac{c_k}{e_k},
         \]
-        Rearranging (and noting that $d < 1$ and $c_k > 1$) gives
+        so that
         \[
-            t_n \geq \left( \frac{\log n}{\log (c_k / d)} \right)^{\frac{1}{k-1}}.
+            \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{k-1}}} \leq c_k n^k  \frac{\epsilon}{\gamma_k} = e_k \cdot \epsilon n^{k} \leq |E(H)|,
         \]
-        Picking
-        \[
-            \gamma_k = \frac{c_k \cdot k^k \cdot k!}{(k-1)^k}
-        \]
-        gives a contradiction with our hypothesis.
+        which guarantees that $H$ contains $\compoverset{k}{t_n}$ as a subgraph.
         The only thing left to prove is that, for this choice of $t_n$, there exists $n_k$
         such that $n \geq n_k$ implies $n \geq t_n k$.
         Indeed, we can pick any
         \[
             n_k \geq \left( k \left(\frac{1}{\log(\gamma_k)} \right)^{\frac{1}{k-1}}\right)^2.
         \]
-        Using the inequality $\log n < \sqrt{n}$ yields
+        Using that $\gamma_k / \epsilon > \gamma_k$ (because $\epsilon < 1$),
+        that $\gamma_k > 1$ (which can be easily checked from the definitions)
+        and the inequality $\log n < \sqrt{n}$ yields
         \[
             t_n k
+            = \left\lfloor \left( \frac{\log n}{\log(\gamma_k / \epsilon)} \right)^{\frac{1}{k-1}} \right\rfloor k
             = \left\lfloor \left( \frac{\log n}{\log\gamma_k} \right)^{\frac{1}{k-1}} \right\rfloor k
             <   \left( \frac{1}{\log \gamma_k} \right)^{\frac{1}{k-1}} k \sqrt{n}
             \leq \left( \frac{1}{\log \gamma_k} \right)^{\frac{1}{k-1}} k \frac{n}{\sqrt{n_k}}

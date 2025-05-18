@@ -394,7 +394,7 @@ Definition~\ref{def:zarankiewicz} is useful for studying the Turán problem for 
 in the following way.
 
 \begin{remark}\label{rem:zar_vs_turan}
-    Finding Zarankiewicz numbers can help us upper bound the Turán number of $\compdots{t_1}{t_k}$ asymptotically.
+    Finding Zarankiewicz numbers can help us upper bound the Turán number of $\compdots{t_1}{t_k}$.
     Assume that $H$ is a $\compdots{t_1}{t_k}$-free $n$-vertex $k$-graph with $m$ edges.
     pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
     (for example, $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$).
@@ -407,9 +407,11 @@ in the following way.
     \]
     which is independent of $n$.
     Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
-    Applying the first moment method, there is at least one partition retaining $ \frac{k!}{(2k)^k} m$
-    edges.
-
+    Applying the first moment method, there is at least one partition retaining $ \frac{k!}{(2k)^k} m$ edges.
+    This means that, if the size of each part is greater than $t_i$ (that is, $n \geq k t_i$ for all $i$)
+    and $m$ is greater than $z(v_1, \dots, v_k; t_1, \dots, t_k) \cdot \frac{(2k)^k}{k!}$, then
+    $H$ must contain $\compdots{t_1}{t_k}$ as a subgraph.
+    All in all,
     \[
         \ex{n}{\compdots{t_1}{t_k}} \leq \frac{(2k)^k}{k!} \cdot \zaroversetdots{k}{\lceil n / k \rceil}{t_1}{t_k}.
     \]
@@ -522,7 +524,7 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
 This theorem is a consequence of the following lemma.
 
 \begin{lemma}~\label{lem:erdos64-quant}
-    Let $k$ be a positive integer.
+    Let $k \geq 2$ be an integer.
     There exists a constant $\delta = \delta_k > 0$
     such that, for all integers $t \leq w$,
     \[
@@ -597,9 +599,10 @@ This theorem is a consequence of the following lemma.
 The proof of the Erdős 1964 Theorem is now straightforward.
 
 \begin{delayedproof}{thm:erdos64}
-    We in fact are more precise.
+    If $t=1$, there is nothing to prove,
+    so suppose that $t \geq 2$.
     Following Remark~\ref{rem:zar_vs_turan}, if $n \geq tk$
-    and $n \geq 2k$,
+    (and in particular $n \geq 2k$),
     \[
         \ex{n}{\compoverset{k}{t}}
         \leq \frac{(2k)^k}{k!} \cdot \zaroverset{k}{\lceil n / k \rceil}{t}
@@ -609,32 +612,91 @@ The proof of the Erdős 1964 Theorem is now straightforward.
 
 \end{delayedproof}
 
-This approach can be generalized to give a lower bound on the number of
-copies (that is, embeddings with different image sets)
-of $\compdots{t_1}{t_k}$ in a $k$-partite $k$-graph $G$
-with different part sizes~\cite{carvajal2024canonical},
-therefore upper bounding all generalized Zarankiewicz numbers.
-Applying the same observations that we have made for the balanced case,
-we arrive at
-\begin{equation} \label{eq:general-partite-bound}
-    \ex{n}{\compdots{t_1}{t_k}} = \bigO{n^{k - \frac{1}{\prod_{i=1}^{k-1} t_i}}}.
-\end{equation}
-
 Because all $k$-partite $k$-graphs can be embedded in a $\compoverset{k}{t}$,
 Theorem~\ref{thm:erdos64} shows that the Turán density of all $k$-partite $k$-graphs is $0$,
 completing the proof of Proposition~\ref{prop:degenerate}.
+Note that the constant factor found in the bound of Theorem~\ref{thm:erdos64}
+does not depend on $t$.
+This lets us restate the theorem in the following stronger form.
 
-A stronger version of Theorem~\ref{thm:erdos64}, which also follows from Lemma~\ref{lem:erdos64-quant},
-is the following.
-If $H_n$ is a family of $k$-partite $k$-graphs with constant positive density
-(that is, $E(H_n) \geq \epsilon \binom{n}{k} = \Omega\left( n^k \right)$ for some $\epsilon > 0$),
-for large enough $n$, $H_n$ contains a $\compoverset{k}{t_n}$ as a subgraph, with
+\begin{theorem} \label{thm:erdos64-constant-density}
+    Let $k \geq 2$ be an integer.
+    There exist an integer $n_k$ and a positive constant $\gamma_k$
+    such that, for all
+    $\epsilon > 0$,
+    all graphs with more than $\epsilon \binom{n}{k}$ edges
+    contain $\compoverset{k}{t_n}$ as a subgraph, where
+    \[
+        t_n = \left\lfloor \left( \frac{\log n}{\log(\gamma_k/\epsilon)} \right)^{\frac{1}{k-1}} \right\rfloor.
+    \]
+    \begin{proof}
+        Again, if $t=1$, there is nothing to prove.
+        Suppose that $t \geq 2$.
+        Let us define
+        \[
+            c_k = \frac{k \cdot 4^k}{(k-1)!}.
+        \]
+        In the \proofref{thm:erdos64} of Theorem~\ref{thm:erdos64}, we have shown that
+        \[
+            \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{k-1}}}
+        \]
+        as long as $n \geq tk$.
+        Suppose that this is true and that $H$ is a $k$-graph with $n$ vertices and $m \geq \epsilon \binom{n}{k}$ edges.
+        Suppose, furthermore, that $n \geq t_n k$
+        (we will later show that this condition can be made true independently of $n$ for our chosen $t_n$).
+        This condition also implies that the number of edges of $H$ is at least
+        \[
+            \epsilon \binom{n}{k} \geq \epsilon \frac{(n - k + 1)^k}{k!} \geq \epsilon \left( \frac{k-1}{k} \right)^k \frac{1}{k!} n^{k} = d n^{k},
+        \]
+        where $d > 0$ is independent of $n$.
+        Suppose that the statement is false for our choice of parameters.
+        This would imply that
+        \[
+            c_k n^{k - \frac{1}{t_n^{k-1}}} \geq m \geq d n^{k}.
+        \]
+        Rearranging (and noting that $d < 1$ and $c_k > 1$) gives
+        \[
+            t_n \geq \left( \frac{\log n}{\log (c_k / d)} \right)^{\frac{1}{k-1}}.
+        \]
+        Picking
+        \[
+            \gamma_k = \frac{c_k \cdot k^k \cdot k!}{(k-1)^k}
+        \]
+        gives a contradiction with our hypothesis.
+        The only thing left to prove is that, for this choice of $t_n$, there exists $n_k$
+        such that $n \geq n_k$ implies $n \geq t_n k$.
+        Indeed, we can pick any
+        \[
+            n_k \geq \left( k \left(\frac{1}{\log(\gamma_k)} \right)^{\frac{1}{k-1}}\right)^2.
+        \]
+        Using the inequality $\log n < \sqrt{n}$ yields
+        \[
+            t_n k
+            = \left\lfloor \left( \frac{\log n}{\log\gamma_k} \right)^{\frac{1}{k-1}} \right\rfloor k
+            <   \left( \frac{1}{\log \gamma_k} \right)^{\frac{1}{k-1}} k \sqrt{n}
+            \leq \left( \frac{1}{\log \gamma_k} \right)^{\frac{1}{k-1}} k \frac{n}{\sqrt{n_k}}
+            \leq n. \qedhere
+        \]
+    \end{proof}
+\end{theorem}
+
+This is the result we prove constructively in Section~\ref{sec:algorithm}.
+It is stronger than Theorem~\ref{thm:erdos64}
+because it bounds the Turán number of partite $k$-graphs uniformly,
+while obtaining the same order of magnitude.
+Indeed, suppose we have a fixed value for $t$.
+We may choose $\epsilon$ such that $t_n \geq t$.
+We only need that
 \[
-    t_n = \delta \cdot (\log n)^{\frac{1}{k-1}}
+    \epsilon \geq \gamma_k \cdot n^{-\frac{1}{t^{k-1}}},
 \]
-for some constant $\delta = \delta(k, \epsilon) > 0$.
-
-Loosely speaking, we may find a blow-up of an edge as large as we wish, if we let the number of vertices grow
+that is, the graph has at least
+\[
+    \gamma_k \cdot n^{-\frac{1}{t^{k-1}}} \cdot \binom{n}{k} = \bigO{n^{k - \frac{1}{t^{k-1}}}}
+\]
+edges.
+Qualitatively, Theorem~\ref{thm:erdos64-constant-density} states that
+we may find a blow-up of an edge as large as we wish, if we let the number of vertices grow
 while keeping the density constant.
 The following theorem generalizes this notion to blow-ups of arbitrary $k$-graphs.
 
@@ -660,7 +722,7 @@ The following theorem generalizes this notion to blow-ups of arbitrary $k$-graph
         a random partition of the vertices of $H$ into $|V|$ parts of size
         $\left\lfloor n / |V| \right\rfloor  \leq |V_i| \leq \left\lceil n / |V|  \right\rceil$.
         Suppose that we have an embedding $f$ of $G$ in $H$.
-        Assuming that that $n \geq n_0 \geq 2|V|$,
+        Assuming that $n \geq n_0 \geq 2|V|$,
         the probability that for all vertices $v_i \in V$, $f(v_i) \in V_i$ is
         \[
             \prod_{i=1}^{|V|} \frac{|V_i|}{n} \geq \left( \frac{1}{2|V|} \right)^{|V|}.
@@ -676,7 +738,7 @@ The following theorem generalizes this notion to blow-ups of arbitrary $k$-graph
         \[
             F = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H \text{ and } f(V_i) \subset V_i \text{ for all } i\}.
         \]
-        By Lemma~\ref{lem:erdos64-quant}, making $n_0$ large enough depending only on $\delta_2$ and $|V|$,
+        By Theorem~\ref{thm:erdos64-constant-density}, making $n_0$ large enough depending only on $\delta_2$ and $|V|$,
         there exists some $\delta_3 = \delta_3(G, \epsilon) = \delta(|V|, \delta_2(G, \epsilon)) > 0$ such that
         $H'$ contains $\compoverset{|V|}{t_n}$ as a subgraph, where
         \[
@@ -717,10 +779,11 @@ In particular, this directly proves the Erdős--Stone--Simonovits theorem for $2
 Knowing that the Turán density of $k$-partite $k$-graphs is $0$
 gives little information on the growth of their Turán numbers.
 In this case, we are usually satisfied with determining the growth up to a constant factor.
-
+So far, we have only proven upper bounds for this growth rate.
 General lower bounds are usually obtained by probabilistic arguments,
-which are often weak and worse that lower bounds obtained by other means.
-For example, see the following probabilistic construction.
+which are often weak and worse that lower bounds obtained by other means (See Subsection~\ref{subsec:open-problems})
+for a few examples of this in the literature).
+Here we present an example of a general probabilistic argument that applies to any guest graph.
 
 \begin{proposition} \label{prop:probabilistic-lower-bound} % TODO i dont like e for edges
     Let $G = (T_1, \dots, T_k; E)$ be a $k$-graph with

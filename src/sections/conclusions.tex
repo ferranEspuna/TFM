@@ -8,11 +8,10 @@ finds a complete balanced $k$-partite $k$-subgraph $\compoverset{k}{t}$.
 The part size $t$ achieved, given by Equation~\eqref{eq:t} as $t \approx (\log n / \log(1/d))^{1/(k-1)}$ where $d=m/n^k$,
 closely matches the parameters implicit in the non-constructive existence proofs of Erd\H{o}s for such structures.
 This provides an efficient, constructive counterpart to these classical results,
-demonstrating that these fundamental subgraphs can indeed be located algorithmically within polynomial time.
+demonstrating that these subgraphs can indeed be located algorithmically within polynomial time.
 The recursive approach, which reduces the uniformity $k$ by analyzing appropriately defined link graphs,
 generalizes previous work for the $k=2$
 case by Mubayi and Turán.
-
 There are several avenues for future research stemming from this work:
 
 \begin{enumerate}
@@ -28,25 +27,43 @@ There are several avenues for future research stemming from this work:
     enhancing its practical significance for analyzing real-world hypergraphs which might not meet the currently proven,
     somewhat high, minimum vertex or density thresholds.
 
+    \item \textbf{Generalizing to unbalanced partite hypergraphs:}
+    This approach taken in the proof of Theorem~\ref{thm:erdos64}
+    can be generalized to give a lower bound on the number of
+    copies (that is, embeddings with different image sets)
+    of $\compdots{t_1}{t_k}$ in a $k$-partite $k$-graph $G$
+    with different part sizes~\cite{carvajal2024canonical},
+    therefore upper bounding all generalized Zarankiewicz numbers.
+    Applying the same observations that we have made for the balanced case,
+    we arrive at
+    \begin{equation} \label{eq:general-partite-bound}
+        \ex{n}{\compdots{t_1}{t_k}} = \bigO{n^{k - \frac{1}{\prod_{i=1}^{k-1} t_i}}}.
+    \end{equation}
+    An algorithm finding these more general $k$-partite hypergraphs
+    of growing sizes could be obtained by modifying the current algorithm
+    and, for example, fixing the approximate ratio between the part sizes to be found.
+
+    \item \textbf{Exploring what happens when the density is not fixed:}
+    There are versions of Theorem~\ref{thm:erdos64-constant-density}
+    that make $n_k$ depend on $\epsilon$ and show that the size of the
+    guaranteed complete $k$-partite $k$-graph is at least $\delta n^{k-\frac{1}{t^{k-1}}}$.
+    This shows Algorithm~\ref{alg:kpartite} may not return a complete balanced $k$-partite
+    $k$-graph of the best possible order of magnitude for a family of graphs with density tending to $1$.
+    An interesting question is whether the algorithm can be modified to find
+    a partite hypergraph of approximately the right size in these circumstances,
+    maybe losing the polynomial time complexity when this size is no longer logarithmic in $n$.
+
     \item \textbf{Finding Blow-ups of General $k$-Graphs:}
     The presented algorithm is tailored to find blow-ups of a single edge, i.e., $\compoverset{k}{t}$.
     A natural extension would be to adapt this algorithmic framework to find $t_n$-blowups $H(t_n)$ of an arbitrary fixed $k$-graph $H$.
     As discussed in Section~\ref{subsec:degenerate} (Theorem~\ref{thm:quant-blowup}), $k$-graphs with density $\pi(G) + \epsilon$
     are known to contain $G(t_n)$ where $t_n = \delta (\log n)^{1/(|V(G)|-1)}$.
-    Our current algorithm, if applied iteratively or adapted, might yield a constructive proof for finding such blow-ups.
+    Our current algorithm, if adapted, might yield a constructive proof for finding such blow-ups.
     However, for $k=2$, it is known from Bollobás and Erd\H{o}s~\cite{bollobas1973structure} that the optimal growth for $t_n$
-    is $\delta \log n$, which is better than the $(\log n)^{1/(|V(G)|-1)}$ if $|V(G)| > 2$.
-    The general question for $k > 2$ of whether $t_n = \delta (\log n)^{1/(k-1)}$
-    (or perhaps even better, related to $|E(G)|$) can be achieved for blow-ups of general $k$-graphs $G$ (not just an edge)
-    via an efficient algorithm remains open.
-    Investigating new algorithmic techniques, possibly deviating from the direct link-graph recursion if it proves
-    suboptimal for general blow-ups, could be a fruitful direction.
+    is $\delta \log n$, which is better than $(\log n)^{1/(|V(G)|-1)}$ if $|V(G)| > 2$.
+    It remains open whether there is a way to adapt their proof into a constructive one,
+    providing a polynomial-time algorithm.
 
-    \item \textbf{Average-Case Analysis and Randomized Algorithms:}
-    The current algorithm is deterministic.
-    Exploring randomized versions might lead to simpler algorithms or improved part sizes $t$ on average, or with high probability.
-    Furthermore, analyzing the performance of this algorithm on random hypergraph models (e.g., $G_{n,p}^{(k)}$)
-    could provide insights into its typical behavior.
 
     \item \textbf{Implementation and Experimental Evaluation:}
     Implementing Algorithm~\ref{alg:kpartite}
@@ -54,7 +71,3 @@ There are several avenues for future research stemming from this work:
     This could help identify practical bottlenecks and compare its findings with theoretical guarantees,
     especially concerning the constants involved in the calculation of $t$.
 \end{enumerate}
-
-In summary, while this thesis provides a constructive step forward in finding specific partite structures,
-the broader landscape of algorithmic extremal hypergraph theory, especially concerning tighter bounds and more general forbidden subgraphs,
-remains rich with open questions.

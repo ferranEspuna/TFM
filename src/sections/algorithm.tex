@@ -33,40 +33,17 @@ More precisely, we show the following.
     This means that the inclusion map from $\compdots{V_1}{V_k}$ to $V$ defines an embedding, as desired.
 \end{remark}
 
-This gives a constructive proof of Theorem~\ref{thm:erdos64}.
-Indeed, suppose we have a fixed value for $t$.
-For $n$ large enough, we may choose $d$ such that $t(n, d, k) \geq t$.
-By our definition of $t$, we only need that
-\[
-    d \geq 3 {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}},
-\]
-which is satisfied for
-\[
-    m =
-    \left\lceil
-    3 n^k {\left( \frac{2^{k-1}}{n}\right)}^{\frac{1}{t^{k-1}}}
-    \right\rceil =
-    \bigO{n^{k - \frac{1}{t^{k-1}}}}.
-\]
-The construction in Theorem~\ref{thm:kpartite} then proves
-\[
-    \ex{n}{\compoverset{k}{t}} < m = \bigO{n^{k - \frac{1}{t^{k-1}}}}.
-\]
+This gives a constructive proof of Theorem~\ref{thm:erdos64-constant-density} (which implies the Erdős Theorem~\ref{thm:erdos64}),
+by adjusting the value of $\gamma_k$ and $n_k$ appropriately.
 Furthermore, for a fixed value of $d$,
 the value of $t$ is in the best possible order of magnitude.
-Indeed, if % TODO CHECK THIS
+Indeed, if
 \[
     dn^k \geq \ex{n}{\compoverset{k}{t}},
 \]
 by Proposition~\ref{prop:probabilistic-lower-bound}, we have that
-\[
-    d \geq \left( \frac{t^k - 1}{t^{(t^k)/(t^k-1)}k^{(ek)/(t^k-1)}} \right)n^{-\frac{k(t-1)}{t^{k}-1}} \geq \frac{1}{k!} n^{-\frac{k}{t^{k-1}}}
-\]
-for $t$ large enough.
-Thaking logarithms and rearranging, we get
-\[
-    t \leq \left( \frac{k \log n}{\log(1/(k!d))} \right)^{\frac{1}{k-1}} = \bigO{t(n, d, k)}.
-\]
+
+\dots % TODO
 
 \subsection{Previous Results}\label{subsec:previous-results}
 

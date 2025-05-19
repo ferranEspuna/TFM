@@ -784,60 +784,61 @@ which are often weak and worse that lower bounds obtained by other means (See Su
 for a few examples of this in the literature).
 Here we present an example of a general probabilistic argument that applies to any guest $k$-graph.
 
-\begin{proposition} \label{prop:probabilistic-lower-bound} % TODO i dont like e for edges
-    Let $G = (T_1, \dots, T_k; E)$ be a $k$-graph with
-    $t = \sum_{i=1}^{k} t_i = \sum_{i=1}^{k} |T_i|$ vertices
-    and $e = |E| > 1$ edges.
-    Then, $\ex{n}{G} = \Omega\left(n^{k - \frac{t - k}{e - 1}} \right)$, and the
-    constant factor depends only on the number of edges $e$ (and not on the number of vertices $t$).
+\begin{proposition} \label{prop:probabilistic-lower-bound}
+    Let $G = (V, E)$ be a $k$-graph with
+    $\alpha = \sum_{i=1}^{k} t_i = \sum_{i=1}^{k} |T_i|$ vertices
+    and $\beta = |E| > 1$ edges.
+    Then, $\ex{n}{G} = \Omega\left(n^{k - \frac{\alpha - k}{\beta - 1}} \right)$, and the
+    constant factor depends only on the number of edges $\beta$ (and not on the number of vertices $\alpha$).
     \begin{proof}
-        Let $n \geq t$.
+        Let $n \geq \alpha$.
         We use the so-called \emph{random alteration} method to construct a $k$-graph
         $H_n$ with $n$ vertices that does not contain $G$ as a subgraph.
-        We first define $R_n = (V, E)$ to be a random $k$-graph on a vertex set $V$ of size $n$,
-        where each edge $e \in \binom{V}{k}$ is included in $E$ independently at random
+        We first define $R_n = (W, F)$ to be a random $k$-graph on a vertex set $W$ of size $n$,
+        where each edge $e \in \binom{W}{k}$ is included in $E$ independently at random
         with a certain probability $p \in (0, 1)$.
         The expected number of edges in $R_n$ is
         \[
-            \mathbb{E}(|E|) = p \binom{n}{k} \geq p \left( \frac{n}{k} \right)^k.
+            \mathbb{E}(|F|) = p \binom{n}{k}.
         \]
         Let us now count the number of possible injective functions of $V(G)$ in $V$.
         They are defined by the (ordered) choice of the image of each vertex, so there are
         \[
-            \prod_{j=1}^{t} (n - j + 1) \leq n^t
+            \prod_{j=1}^{\alpha} (n - j + 1) \leq n^{\alpha}
         \]
         of them.
-        The probability that any particular injective function $f$ of $V(G)$ in $V$ is an embedding of $G$ in $R_n$
+        The probability that any particular injective function $f$ of $V(G)$ in $W$ is an embedding of $G$ in $R_n$
         is calculated as the product of the probabilities that each image of an edge is an edge in $R_n$,
         because the presence of edges in $R_n$ is independent.
         Therefore,
         \[
-            \mathbb{P}(f \text{ is an embedding of } G) = p^{|E|} = p^{e}.
+            \mathbb{P}(f \text{ is an embedding of } G) = p^{\beta}.
         \]
         If we define $X$ to be the number of embeddings of $G$ in $R_n$, by linearity of expectation we get
         \[
-            \mathbb{E}(X) = \sum_{f} \mathbb{P}(f \text{ is an embedding of } G) \leq n^t p^{e}.
+            \mathbb{E}(X) = \sum_{f} \mathbb{P}(f \text{ is an embedding of } G) \leq n^{\alpha} p^{\beta}.
         \]
         We can now obtain a $G$-free $k$-graph $H_n$ by removing from $R_n$, for each embedding of $G$,
-        the image of an edge of $G$.
+        the image of an edge of $G$ (these might coincide for different embeddings, but this only decreases the number of edges removed).
         The expected number of edges in $H_n$ is
         \[
-            \mathbb{E}(|E(H_n)|) = \mathbb{E}(|E|) - \mathbb{E}(X) \geq
-            p \left( \frac{n}{k} \right)^k - n^t p^{e}.
+            \mathbb{E}(|E(H_n)|) \geq \mathbb{E}(|F|) - \mathbb{E}(X) \geq
+            p \binom{n}{k} - n^{\alpha} p^{\beta}.
         \]
-        This quantity is maximized by setting
+        The right quantity is maximized by setting
         \[
-            p = \left( \frac{1}{ek^k} n^{k-t} \right)^{\frac{1}{e-1}}.
+            p = \left( \frac{\binom{n}{k}}{\beta n^{\alpha}} \right)^{\frac{1}{\beta-1}}.
         \]
         This yields
         \[
             \mathbb{E}(|E(H_n)|) \geq
-            m_0(n) =
-            \left( \frac{(e-1)^{e-1}}{e^e k^{ek}} \right)^{\frac{1}{e-1}} n^{k - \frac{t-k}{e-1}}
-            = \Omega\left(n^{k - \frac{t-k}{e-1}} \right).
+            m_0(n)
+            = \left( \frac{\beta n^{\alpha} - 1}{\left( \beta n^{\alpha} \right)^\frac{\beta}{\beta-1}} \right) \binom{n}{k}^{\frac{\beta}{\beta-1}}
+            \geq \left( \frac{\beta - 1}{\beta^{\frac{\beta}{\beta - 1}}} \right) n^{- \frac{\alpha}{\beta - 1}} \binom{n}{k}^{\frac{\beta}{\beta - 1}}
+            = \left( \frac{\beta - 1}{(\beta k!)^{\frac{\beta}{\beta - 1}}}  - \bigO{1/n} \right) n^{k - \frac{\alpha - k}{\beta - 1}}.
         \]
         Therefore, the event that $|E(H_n)| \geq m_0(n)$
-        must have positive probability, and in particular,
+        must have positive probability and, in particular,
         there exists one such $k$-graph $\widehat{H_n}$, which is $G$-free by construction.
     \end{proof}
 \end{proposition}

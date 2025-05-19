@@ -1,3 +1,5 @@
+% TODO ^{k-1} inside fraction --> ^{(k-1)}
+
 \section{Hypergraph Turán Problems}\label{sec:extremal}
 
 \subsection{Turán-Type Problems}\label{subsec:turan}
@@ -518,7 +520,7 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
 
 \begin{theorem}[Erdős 1964 Theorem]\label{thm:erdos64}
     For $k \geq 2$,
-    $\ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{k-1}}}}$.
+    $\ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}$.
 \end{theorem}
 
 This theorem is a consequence of the following lemma.
@@ -528,7 +530,7 @@ This theorem is a consequence of the following lemma.
     There exists a constant $\delta = \delta_k > 0$
     such that, for all integers $t \leq w$,
     \[
-        \zaroverset{k}{w}{t} < \delta w^{k - \frac{1}{t^{k-1}}}.
+        \zaroverset{k}{w}{t} < \delta w^{k - \frac{1}{t^{(k-1)}}}.
     \]
     \begin{proof}
         We proceed by induction on $k$.
@@ -835,7 +837,7 @@ Here we present an example of a general probabilistic argument that applies to a
             m_0(n)
             = \left( \frac{\beta n^{\alpha} - 1}{\left( \beta n^{\alpha} \right)^\frac{\beta}{\beta-1}} \right) \binom{n}{k}^{\frac{\beta}{\beta-1}}
             \geq \left( \frac{\beta - 1}{\beta^{\frac{\beta}{\beta - 1}}} \right) n^{- \frac{\alpha}{\beta - 1}} \binom{n}{k}^{\frac{\beta}{\beta - 1}}
-            = \left( \frac{\beta - 1}{(\beta k!)^{\frac{\beta}{\beta - 1}}}  - \bigO{1/n} \right) n^{k - \frac{\alpha - k}{\beta - 1}}.
+            \geq \left( \frac{\beta - 1}{(\beta k!)^{\frac{\beta}{\beta - 1}}}  - \frac{k^k}{n^k} \right) n^{k - \frac{\alpha - k}{\beta - 1}}.
         \]
         Therefore, the event that $|E(H_n)| \geq m_0(n)$
         must have positive probability and, in particular,

@@ -12,7 +12,7 @@ where
     d = m/n^k
 \end{equation}
 is the ``un-normalized'' density of $G$,
-which is easier to work with for the arguments that follow.
+which lies between $0$ and $\frac{1}{k!}$ and is easier to work with for the arguments that follow.
 For the remainder of the section, we assume that
 $t \geq 2$ (otherwise, we may just select a set of $k$ vertices forming an edge in~$G$).
 More precisely, we show the following.
@@ -35,15 +35,29 @@ More precisely, we show the following.
 
 This gives a constructive proof of Theorem~\ref{thm:erdos64-constant-density} (which implies the Erdős Theorem~\ref{thm:erdos64}),
 by adjusting the value of $\gamma_k$ and $n_k$ appropriately.
-Furthermore, for a fixed value of $d$,
+Furthermore, for a fixed value of $0 < d < \frac{1}{k!}$,
 the value of $t$ is in the best possible order of magnitude.
 Indeed, if
 \[
     dn^k \geq \ex{n}{\compoverset{k}{t}},
 \]
-by Proposition~\ref{prop:probabilistic-lower-bound}, we have that
-
-\dots % TODO
+by Proposition~\ref{prop:probabilistic-lower-bound},
+applied with $\alpha = tk$ and $\beta = t^k$,
+we have that
+\[
+    dn^k \geq \left( \frac{\beta - 1}{(\beta k!)^{\frac{\beta}{\beta - 1}}}  - \frac{k^k}{n^k} \right) n^{k - \frac{\alpha - k}{\beta - 1}}
+    \geq \left( \frac{t^k - 1}{t^k k!}  - \frac{k^k}{n^k} \right) n^{k - \frac{k(t-1)}{t^k - 1}}
+\]
+One can check that for some $d < d' < \frac{1}{k!}$, for $n$ large enough depending only on $d$, and $k$,
+and assuming $t \geq 2$,
+this implies
+\[
+    k! d' \geq n^{-\frac{k(t-1)}{t^k - 1}} \geq k! d' \geq n^{-\frac{2k}{t^{(k-1)}}}.
+\]
+Rearranging gives
+\[
+    t \leq \left( \frac{2k\log n}{\log (1/(k!d'))} \right)^{\frac{1}{k-1}} = \bigO{t(n, d, k)}.
+\]
 
 \subsection{Previous Results}\label{subsec:previous-results}
 

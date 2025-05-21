@@ -3,7 +3,7 @@
 This thesis has focused on the algorithmic aspects of finding $k$-partite subgraphs in $k$-uniform hypergraphs,
 a problem central to degenerate Turán theory.
 We have presented a deterministic,
-polynomial-time algorithm (Algorithm~\ref{alg:kpartite}) that, given a $k$-graph $G$ on $n$ vertices with $m$ edges,
+polynomial-time algorithm (\Cref{alg:kpartite}) that, given a $k$-graph $G$ on $n$ vertices with $m$ edges,
 finds a complete balanced $k$-partite $k$-subgraph $\compoverset{k}{t}$.
 The part size $t$ achieved, given by Equation~\eqref{eq:t} as $t \approx (\log n / \log(1/d))^{1/(k-1)}$ where $d=m/n^k$,
 closely matches the parameters implicit in the non-constructive existence proofs of Erd\H{o}s for such structures.
@@ -16,19 +16,19 @@ There are several avenues for future research stemming from this work:
 
 \begin{enumerate}
     \item \textbf{Tightening Bounds and Improving Practicality:}
-    The proofs of correctness for Algorithm~\ref{alg:kpartite}, particularly Lemmas~\ref{lm:sound} through~\ref{lm:t_prime},
+    The proofs of correctness for~\Cref{alg:kpartite}, particularly~\Cref{lm:many_edges,lm:return,lm:t_prime,lm:base_case},
     involve several inequalities.
     While sufficient to establish the polynomial runtime and the asymptotic nature of $t$,
     some of these bounds are quite loose (e.g., approximations of binomial coefficients, conditions for $w \leq n/2$,
     or the constants in the density arguments).
     A more meticulous analysis could potentially yield sharper constants in the definition of
-    $t(n,d,k)$ or relax the minimum density requirements (Remark~\ref{rm:min_d}).
+    $t(n,d,k)$ or relax the minimum density requirements (\Cref{rm:min_d}).
     This could make the algorithm applicable to sparser hypergraphs or guarantee larger $k$-partite structures for a given density,
     enhancing its practical significance for analyzing real-world hypergraphs which might not meet the currently proven,
     somewhat high, minimum vertex or density thresholds.
 
     \item \textbf{Generalizing to unbalanced partite hypergraphs:}
-    This approach taken in the proof of Theorem~\ref{thm:erdos64}
+    This approach taken in the proof of~\Cref{thm:erdos64}
     can be generalized to give a lower bound on the number of
     copies (that is, embeddings with different image sets)
     of $\compdots{t_1}{t_k}$ in a $k$-partite $k$-graph $G$
@@ -44,11 +44,11 @@ There are several avenues for future research stemming from this work:
     and, for example, fixing the approximate ratio between the part sizes to be found.
 
     \item \textbf{Exploring what happens when the density is not fixed:}
-    There are versions of Theorem~\ref{thm:erdos64-constant-density}
+    There are versions of~\Cref{thm:erdos64-constant-density}
     that make $n_k$ depend on $\epsilon$ and show that the size of the
     guaranteed complete $k$-partite $k$-graph is at least $\delta n^{k-\frac{1}{t^{(k-1)}}}$,
     where $\delta \to \infty$ as $\epsilon \to 1$.
-    This shows Algorithm~\ref{alg:kpartite} may not return a complete balanced $k$-partite
+    This shows~\Cref{alg:kpartite} may not return a complete balanced $k$-partite
     $k$-graph of the best possible order of magnitude for a family of graphs with density tending to $1$.
     An interesting question is whether the algorithm can be modified to find
     a partite hypergraph of approximately the right size in these circumstances,
@@ -57,7 +57,7 @@ There are several avenues for future research stemming from this work:
     \item \textbf{Finding Blow-ups of General $k$-Graphs:}
     The presented algorithm is tailored to find blow-ups of a single edge, i.e., $\compoverset{k}{t}$.
     A natural extension would be to adapt this algorithmic framework to find $t_n$-blowups $H(t_n)$ of an arbitrary fixed $k$-graph $H$.
-    As discussed in Section~\ref{subsec:degenerate} (Theorem~\ref{thm:quant-blowup}), $k$-graphs with density $\pi(G) + \epsilon$
+    As discussed in~\Cref{thm:quant-blowup}, $k$-graphs with density $\pi(G) + \epsilon$
     are known to contain $G(t_n)$ where $t_n = \delta (\log n)^{1/(|V(G)|-1)}$.
     Our current algorithm, if adapted, might yield a constructive proof for finding such blow-ups.
     However, for $k=2$, it is known from Bollobás and Erd\H{o}s~\cite{bollobas1973structure} that the optimal growth for $t_n$
@@ -67,7 +67,7 @@ There are several avenues for future research stemming from this work:
 
 
     \item \textbf{Implementation and Experimental Evaluation:}
-    Implementing Algorithm~\ref{alg:kpartite}
+    Implementing~\Cref{alg:kpartite}
     and evaluating its performance on various synthetic and real-world hypergraph datasets would be valuable.
     This could help identify practical bottlenecks and compare its findings with theoretical guarantees,
     especially concerning the constants involved in the calculation of $t$.

@@ -1,12 +1,21 @@
 \documentclass[12,twoside]{mammeTFM}
 \usepackage{amsthm,amsmath,amssymb,amsfonts,amscd}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+
+% shady stuff
+\makeatletter
+\AddToHook{env/algorithmic/before}{\def\@currentcounter{ALG@line}}
+\makeatother
+\usepackage[nameinlink]{cleveref}
+\crefalias{ALG@line}{line}
+% end of shady stuff
+
 \usepackage{enumerate}
 \usepackage[all]{xy}
 \usepackage{booktabs}
-\usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{tikz}
-% TODO cleverref
 
 %%%%%Author packages if necessary
 \usepackage{mathtools}
@@ -25,13 +34,12 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
 
+
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem*{remarknonumber}{Remark}
 \newtheorem{observation}[theorem]{Observation}
 
-\usepackage{algorithmicx}
-\usepackage{cleveref}
 \usepackage{stmaryrd}
 \newlength{\depthofsumsign}
 \newlength{\totalheightofsumsign}

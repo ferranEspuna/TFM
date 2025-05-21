@@ -31,7 +31,7 @@ contain $G$ as a subgraph.
         By hypothesis, the $k$-graph $H' = (W, F')$ contains $G$ as a subgraph,
         and the identity map in $W$ is an embedding of $H'$ in $H$.
         Then, $G \subset H' \subset H$ implies $G \subset H$ by transitivity of the embedding
-        relation (Proposition~\ref{prop:embedding_properties}).
+        relation (\Cref{prop:embedding_properties}).
 
     \end{proof}
 
@@ -122,7 +122,7 @@ Before the \proofref{thm:turan} of Turán's theorem, we introduce two lemmas.
         $z_1$ and $z_2$ and the edges $\{\{v, z_i\} \mid \{v, z\} \in E, i \in \{1, 2\}\}$.
 
         First, we show that $G'$ contains no embedding of $K_r^{(2)}$.
-        We make a similar argument as in the proof of Lemma~\ref{lem:same_degree}.
+        We make a similar argument as in the proof of~\Cref{lem:same_degree}.
         By way of contradiction, suppose that $G'[T']$ is complete for some $T' \subset V'$ of size $r$.
         Because $z$, $z_1$ and $z_2$ pairwise non-edges of $G'$, only one of them can be
         an image of a vertex in $K_r^{(2)}$.
@@ -135,7 +135,7 @@ Before the \proofref{thm:turan} of Turán's theorem, we introduce two lemmas.
         contradicting our assumption.
 
         Now, we show that $G'$ has more edges than $G$.
-        By Lemma~\ref{lem:same_degree}, $d_G(x) = d_G(z)$ and $d_G(y) = d_G(z)$,
+        By~\Cref{lem:same_degree}, $d_G(x) = d_G(z)$ and $d_G(y) = d_G(z)$,
         so the three vertices $x, y, z$ have the same degree $d$ in $G$.
         The edges containing $x$ and the edges containing $y$ intersect at exactly the edge $\{x, y\} \in E$.
         Therefore, by removing all of them from $G$ we are removing $2d - 1$ edges.
@@ -147,7 +147,7 @@ Before the \proofref{thm:turan} of Turán's theorem, we introduce two lemmas.
 
 Now we are ready to prove Turán's theorem.
 \begin{delayedproof}{thm:turan}
-    We have shown in Lemma~\ref{lem:turan_complete_partite} that $G = (V_1, \dots V_p; E)$ is complete.
+    We have shown in~\Cref{lem:turan_complete_partite} that $G = (V_1, \dots V_p; E)$ is complete.
     In fact, we can set $p = r - 1$:
     If $p < r - 1$, we can always add empty parts to $G$; and if it has more than $r - 1$ nonempty parts
     (without loss of generality, $x_1 \in V_1, \dots, x_r \in V_r$), then $G[\{x_1, \dots, x_r\}]$ is complete,
@@ -217,7 +217,7 @@ for all $k$-graphs.
         \[
             a_n = \frac{\ex{n}{G}}{\binom{n}{k}}
         \]
-        is bounded between $0$ and $1$ for all $n \geq |V(G)|$, by Proposition~\ref{prop:extremal}.
+        is bounded between $0$ and $1$ for all $n \geq |V(G)|$, by~\Cref{prop:extremal}.
         Furthermore, it is less than $1$ for all $n \geq |V(G)| + 1$.
         To see this, consider a $k$-graph $H = (W, F)$ with $n$ vertices and $\binom{n}{k} - 1$ edges.
         Its edge density is less than $1$.
@@ -277,7 +277,7 @@ The following gives a complete characterization.
     Let $G = (V, E)$ be a $k$-graph.
     Then $\pi(G) = 0$ if and only if $G$ is $k$-partite.
     \begin{proof}
-        If $G$ is not $k$-partite, a construction similar to the one in the proof of Theorem~\ref{thm:turan}
+        If $G$ is not $k$-partite, a construction similar to the one in the proof of~\Cref{thm:turan}
         directly shows $\pi (G) > 0$.
         Indeed, for all $m$ the $k$-graph $\compoverset{k}{m}$ is $k$-partite so it cannot contain $G$ as a subgraph.
         Furthermore, its edge density is
@@ -286,9 +286,9 @@ The following gives a complete characterization.
         \]
         Because we can make $n = km = |V\left( \compoverset{k}{m} \right)|$ as large as we want,
         the limit~\eqref{eq:turan_density} bounded below by a positive constant.
-        We defer the proof of the other direction to subsection~\ref{subsec:degenerate},
+        We defer the proof of the other direction to~\Cref{subsec:degenerate},
         where we study $k$-partite $k$-graph Turán problems
-        in more depth (in particular, see Theorem~\ref{thm:erdos64}).
+        in more depth (in particular, see~\Cref{thm:erdos64}).
     \end{proof}
 \end{proposition}
 
@@ -307,7 +307,7 @@ The following theorem gives the Turán density of all $2$-graphs.
 We defer the \proofref{thm:erdos_stone_simonovits} of this theorem to the next subsection,
 where we will have more powerful tools at our disposal.
 Note that letting $G = \completesuperindex{2}{r}$ we recover
-Corollary~\ref{cor:turan_density_kr} of Theorem~\ref{thm:turan}.
+\Cref{cor:turan_density_kr} of~\Cref{thm:turan}.
 
 We know that $k$-graphs asymptotically below the Turán number of a $k$-graph $G$
 may not contain $G$ as a subgraph.
@@ -370,7 +370,7 @@ We now turn our attention to Turán problems for $k$-partite $k$-graphs,
 which are the ones that have Turán density $0$ (we will prove so in this section).
 All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$
 are contained in $\compdots{a_1}{a_k}$ as subgraphs.
-This allows us to follow the same argument as in Proposition~\ref{prop:extremal}
+This allows us to follow the same argument as in~\Cref{prop:extremal}
 to define the following.
 
 \begin{definition}\label{def:zarankiewicz}
@@ -390,7 +390,7 @@ $H$ contains $\compdots{t_1}{t_k}$ as a subgraph if and only if
 for some sets $S_i \subset V_i$ of size $t_i$ for all $i$,
 $H[S_1 \cup \dots \cup S_k]$ = $\compdots{S_1}{S_K}$,
 and such an embedding is always induced.
-Definition~\ref{def:zarankiewicz} is useful for studying the Turán problem for $k$-partite $k$-graphs
+\Cref{def:zarankiewicz} is useful for studying the Turán problem for $k$-partite $k$-graphs
 in the following way.
 
 \begin{remark}\label{rem:zar_vs_turan}
@@ -505,7 +505,7 @@ The result is stated and proved here for completeness.
 \end{theorem}
 
 \begin{remark}
-    Following Remark~\ref{rem:zar_vs_turan}, we can use this bound to get an upper bound on the Turán number of $K(s, t)$:
+    Following~\Cref{rem:zar_vs_turan}, we can use this bound to get an upper bound on the Turán number of $K(s, t)$:
     \[
         \ex{n}{K(s, t)} =
         \bigO{(s - 1)^{1 / t}\left(\left\lceil\frac{n}{2}\right\rceil - t + 1\right)n^{1 - 1 / t} + (t - 1)\left\lceil\frac{n}{2}\right\rceil} =
@@ -523,7 +523,7 @@ In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete p
 
 This theorem is a consequence of the following lemma.
 
-\begin{lemma}~\label{lem:erdos64-quant}
+\begin{lemma}~\label{lm:erdos64-quant}
     Let $k \geq 2$ be an integer.
     There exists a constant $\delta = \delta_k > 0$
     such that, for all integers $t \leq w$,
@@ -532,7 +532,7 @@ This theorem is a consequence of the following lemma.
     \]
     \begin{proof}
         We proceed by induction on $k$.
-        For $k=2$, this is obtained by setting $u = w$ and $s = t$ in Theorem~\ref{thm:kst}.
+        For $k=2$, this is obtained by setting $u = w$ and $s = t$ in~\Cref{thm:kst}.
         This yields
         \[
             z(w, w, t, t)
@@ -576,13 +576,13 @@ This theorem is a consequence of the following lemma.
         Condition~\eqref{eq:conditionlink} is equivalent to saying that
         there is no embedding of $K(z' + 1, t)$ onto $H'$ respecting the partitions.
         Furthermore, $H'$ has the same number of edges as $H$.
-        Finally, we invoke Theorem~\ref{thm:kst} with
+        Finally, we invoke~\Cref{thm:kst} with
         ${u = |U| = w^{k-1}}$ and
         ${s = z' + 1}$ to get
         \begin{equation} \label{eq:erdos64_induction}
             \delta w^{k - \frac{1}{t^{(k-1)}}} \leq
             |E| = |E'| \leq
-            \left(\delta_{k-1} w^{(k - 1) - \frac{1}{t^{((k-2))}}}\right)^{1 / t}(w - t + 1)w^{(k-1)(1 - 1 / t)} + (t - 1)w^{k-1}.
+            \left(\delta_{k-1} w^{(k - 1) - \frac{1}{t^{(k-2)}}}\right)^{1 / t}(w - t + 1)w^{(k-1)(1 - 1 / t)} + (t - 1)w^{k-1}.
         \end{equation}
         Approximating, this implies that
         \[
@@ -592,7 +592,6 @@ This theorem is a consequence of the following lemma.
         Therefore, we reach a contradiction whenever $\delta \geq \delta_{k-1} + 2$,
         so setting $\delta_k = \delta_{k-1} + 2$ gives us the desired result.
         In fact, the theorem works for $\delta_k = 2 \cdot k$.
-
     \end{proof}
 \end{lemma}
 
@@ -601,7 +600,7 @@ The proof of the Erdős 1964 Theorem is now straightforward.
 \begin{delayedproof}{thm:erdos64}
     If $t=1$, there is nothing to prove,
     so suppose that $t \geq 2$.
-    Following Remark~\ref{rem:zar_vs_turan}, if $n \geq tk$
+    Following~\Cref{rem:zar_vs_turan}, if $n \geq tk$
     (and in particular $n \geq 2k$),
     \[
         \ex{n}{\compoverset{k}{t}}
@@ -609,13 +608,12 @@ The proof of the Erdős 1964 Theorem is now straightforward.
         \leq 2k \cdot \frac{(2k)^k}{k!} \cdot \left\lceil \frac{n}{k} \right\rceil^{k - \frac{1}{t^{(k-1)}}}
         \leq \frac{k \cdot 4^k}{(k-1)!} \cdot n^{k - \frac{1}{t^{(k-1)}}}. \qedhere
     \]
-
 \end{delayedproof}
 
-Because all $k$-partite $k$-graphs can be embedded in a $\compoverset{k}{t}$,
-Theorem~\ref{thm:erdos64} shows that the Turán density of all $k$-partite $k$-graphs is $0$,
-completing the proof of Proposition~\ref{prop:degenerate}.
-Note that the constant factor found in the bound of Theorem~\ref{thm:erdos64}
+Because all $k$-partite $k$-graphs can be embedded in a $\compoverset{k}{t}$,~\Cref{thm:erdos64}
+shows that the Turán density of all $k$-partite $k$-graphs is $0$,
+completing the proof of~\Cref{prop:degenerate}.
+Note that the constant factor found in the bound of~\Cref{thm:erdos64}
 does not depend on $t$.
 This lets us restate the theorem in the following stronger form.
 
@@ -636,7 +634,7 @@ This lets us restate the theorem in the following stronger form.
         \[
             c_k = \frac{k \cdot 4^k}{(k-1)!}.
         \]
-        In the \proofref{thm:erdos64} of Theorem~\ref{thm:erdos64}, we have shown that
+        In the \proofref{thm:erdos64} of~\Cref{thm:erdos64}, we have shown that
         \[
             \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{(k-1)}}}
         \]
@@ -679,8 +677,8 @@ This lets us restate the theorem in the following stronger form.
     \end{proof}
 \end{theorem}
 
-This is the result we prove constructively in Section~\ref{sec:algorithm}.
-It is stronger than Theorem~\ref{thm:erdos64}
+This is the result we prove constructively in~\Cref{sec:algorithm}.
+It is stronger than~\Cref{thm:erdos64}
 because it bounds the Turán number of partite $k$-graphs uniformly,
 while obtaining the same order of magnitude.
 Indeed, suppose we have a fixed value for $t$.
@@ -694,7 +692,7 @@ that is, the $k$-graph has at least
     \gamma_k \cdot n^{-\frac{1}{t^{(k-1)}}} \cdot \binom{n}{k} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}
 \]
 edges.
-Qualitatively, Theorem~\ref{thm:erdos64-constant-density} states that
+Qualitatively,~\Cref{thm:erdos64-constant-density} states that
 we may find a blow-up of an edge as large as we wish, if we let the number of vertices grow
 while keeping the density constant.
 The following theorem generalizes this notion to blow-ups of arbitrary $k$-graphs.
@@ -714,10 +712,10 @@ The following theorem generalizes this notion to blow-ups of arbitrary $k$-graph
 
         We determine the value of $\delta$ later in the proof.
         Suppose that $H$ is a $k$-graph with $n$ vertices and at least $(\pi(G) + \epsilon) \binom{n}{k}$ edges.
-        Theorem~\ref{thm:supersaturation} states that if $n \geq n_0 \geq t(G, \epsilon)$,
+        \Cref{thm:supersaturation} states that if $n \geq n_0 \geq t(G, \epsilon)$,
         there are at least $\delta_1(G, \epsilon) n^{|V|}$ embeddings of $G$ into $H$.
 
-        Consider, as in Remark~\ref{rem:zar_vs_turan},
+        Consider, as in~\Cref{rem:zar_vs_turan},
         a random partition of the vertices of $H$ into $|V|$ parts of size
         $\left\lfloor n / |V| \right\rfloor  \leq |V_i| \leq \left\lceil n / |V|  \right\rceil$.
         Suppose that we have an embedding $f$ of $G$ in $H$.
@@ -737,7 +735,7 @@ The following theorem generalizes this notion to blow-ups of arbitrary $k$-graph
         \[
             F = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H \text{ and } f(V_i) \subset V_i \text{ for all } i\}.
         \]
-        By Theorem~\ref{thm:erdos64-constant-density}, making $n_0$ large enough depending only on $\delta_2$ and $|V|$,
+        By~\Cref{thm:erdos64-constant-density}, making $n_0$ large enough depending only on $\delta_2$ and $|V|$,
         there exists some $\delta_3 = \delta_3(G, \epsilon) = \delta(|V|, \delta_2(G, \epsilon)) > 0$ such that
         $H'$ contains $\compoverset{|V|}{t_n}$ as a subgraph, where
         \[
@@ -780,7 +778,7 @@ gives little information on the growth of their Turán numbers.
 In this case, we are usually satisfied with determining the growth up to a constant factor.
 So far, we have only proven upper bounds for this growth rate.
 General lower bounds are usually obtained by probabilistic arguments,
-which are often weak and worse that lower bounds obtained by other means (See Subsection~\ref{subsec:open-problems})
+which are often weak and worse that lower bounds obtained by other means (See~\Cref{subsec:open-problems}
 for a few examples of this in the literature).
 Here we present an example of a general probabilistic argument that applies to any guest $k$-graph.
 
@@ -845,12 +843,12 @@ Here we present an example of a general probabilistic argument that applies to a
 
 \subsection{Open Problems}\label{subsec:open-problems} % TODO mention people by name + techniques, remove citations in math environment
 
-In Subsections~\ref{subsec:turan} and~\ref{subsec:degenerate}, we have
+In~\Cref{subsec:turan,subsec:degenerate}, we have
 seen the solution for non-degenerate Turán problems for $2$-graphs.
 Determining the Turán density of $k$-graphs for $k > 2$ is a much harder problem.
 
 Famously, not even the Turán density of the tetrahedron $3$-graph $\completesuperindex{3}{4}$
-(pictured in Figure~\ref{fig:complete_kgraph}) or the unique $3$-graph $\completesuperindex{3}{4-}$
+(pictured in~\Cref{fig:complete_kgraph}) or the unique $3$-graph $\completesuperindex{3}{4-}$
 obtained by removing one edge from it, are known.
 The best known bounds are
 \[
@@ -885,17 +883,17 @@ For example, in the balanced case, where all $t_i$ are equal, we get
 \begin{equation} \label{eq:balanced_upper_bound}
     \ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}
 \end{equation}
-from Theorem~\ref{thm:erdos64}, but only
+from~\Cref{thm:erdos64}, but only
 \begin{equation} \label{eq:balanced_lower_bound}
     \ex{n}{\compoverset{k}{t}} = \Omega\left(n^{k - \frac{k(t-1)}{t^k - 1}}\right)
 \end{equation}
-from Proposition~\ref{prop:probabilistic-lower-bound}.
+from~\Cref{prop:probabilistic-lower-bound}.
 The exponent in~\eqref{eq:balanced_lower_bound} is always
 smaller than the one in~\eqref{eq:balanced_upper_bound},
 as long as $t \geq 2$ and $k \geq 2$.
 
 In the case $k=2$, it is known that, for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$,
-Theorem~\ref{thm:kst} is optimal in the sense that
+\Cref{thm:kst} is optimal in the sense that
 \[
     \ex{n}{K(2, t)}
     = \Theta\left(n^{\frac{3}{2}}\right)~\cite{erdHos1966problem, furedi1996new},
@@ -908,11 +906,11 @@ and also
 The theorem is also optimal for $K(s, t)$ when $s \geq t! + 1$~\cite{kollar1996norm}.
 Some progress has been made in the case of $K(s, t)$ when $s$ and $t$ have similar sizes,
 only for small values of $s \geq t \geq 4$.
-For example, Theorem~\ref{thm:kst} gives
+For example, \Cref{thm:kst} gives
 \[
-    \ex{n}{K(5,5)} = \bigO{n^{\frac{9}{5}}} = \bigO{n^{1.8}},
+    \ex{n}{K(5,5)} = \bigO{n^{\frac{9}{5}}} = \bigO{n^{1.8}}
 \]
-and by Proposition~\ref{prop:probabilistic-lower-bound} we get
+and, by~\Cref{prop:probabilistic-lower-bound}, we get
 \begin{equation} \label{eq:k55-probabilistic}
     \ex{n}{K(5,5)}
 = \Omega\left(n^{\frac{5}{3}}\right)
@@ -926,8 +924,8 @@ but~\eqref{eq:k55-probabilistic} has been improved to
 \]
 Even less is known about degenerate problems for hypergraphs of higher uniformity.
 For example, not even the growth rate of the Turán number for the octahedron 3-graph
-($\ex{n}{K(2, 2, 2)}$, pictured in Figure~\ref{fig:222}) is known.
-The best upper bound, again, comes from Theorem~\ref{thm:erdos64}, which gives
+($K(2, 2, 2)$, pictured in~\Cref{fig:222}) is known.
+The best upper bound, again, comes from~\Cref{thm:erdos64}, which gives
 \[
     \ex{n}{K(2, 2, 2)} = \bigO{n^{\frac{11}{4}}} = \bigO{n^{2.75}},
 \]
@@ -942,7 +940,7 @@ The main difficulty for degenerate problems is that sharp lower bounds for the T
 often rely on specific geometric or algebraic constructions that work for very few cases,
 such as the ones cited for $K(2, 2)$ and $K(3, 3)$.
 
-Theorem~\ref{thm:quant-blowup} is known not to be optimal.
+\Cref{thm:quant-blowup} is known not to be optimal.
 Erdős and Bollobás~\cite{bollobas1973structure} in fact proved that the optimal growth
 rate of a guaranteed $t_n$-blow-up of a $2$-graph $G$ in $2$-graphs of constant density greater than $\pi(G) + \epsilon$ is
 \[

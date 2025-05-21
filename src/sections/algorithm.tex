@@ -209,29 +209,33 @@ The following observation is useful for some of the bounds we have to prove.
 
 \begin{remark}\label{rm:min_d}
     The requirement $t \geq 2$ is met whenever
-    \[
+
+    \begin{equation} \label{eq:d-lower-bound}
         d \geq 3 \cdot 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}},
-    \]
+    \end{equation}
+
     However, $d$ satisfies
-    \[
+
+    \begin{equation} \label{eq:d-upper-bound}
         d = \frac{m}{n^k} \leq \frac{\binom{n}{k}}{n^k} < \frac{1}{k!},
-    \]
-    so we get a minimum value of $n$:
-    \[
+    \end{equation}
+    so we get the following minimum value of $n$.
+    \begin{equation} \label{eq:n-lower-bound}
         n > \left( k!\, \cdot 3 \cdot 2^{\frac{k-1}{2^{k-1}}} \right)^{2^{k-1}} \geq 72.
-    \]
-    This also lets us prove the bound
-    \[
+    \end{equation}
+    From Inequality~\eqref{eq:d-lower-bound} we can also see that
+    \begin{equation} \label{eq:d-lower-bound-2}
         d \geq 3 \sqrt{\frac{2}{n}}
-    \]
+    \end{equation}
     for all $k \geq 2$.
-    We have already seen that this is the case for $k=2$.
+    For $k=2$, this reads directly from the inequality.
     For $k > 2$, suppose that the bound is not met.
     Then,
     \[
-       3 n^{-\frac{1}{4}} \leq 3 n^{-\frac{1}{2^{k-1}}} < d < 3 \sqrt{\frac{2}{n}},
+        3 n^{-\frac{1}{4}} \leq 3 n^{-\frac{1}{2^{k-1}}} < d < 3 \sqrt{\frac{2}{n}},
     \]
-    which by algebraic manipulation implies $n < 4$.
+    which by algebraic manipulation implies $n < 4$,
+    in contradiction to the minimum value for $n$ found in~\eqref{eq:n-lower-bound}.
 \end{remark}
 
 We start by proving that the selection of $t, w, s$ in line~\ref{line:tws} of Algorithm~\ref{alg:kpartite}
@@ -250,11 +254,17 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
             w =
             \left\lceil \frac{2t}{d} \right\rceil \leq
             1 + \frac{2t}{d} <
+            1 + \frac{\log (n/2)}{d}.
+        \]
+        Now, using that $d \geq 3 \sqrt{\frac{2}{n}}$~\eqref{eq:d-lower-bound-2},
+        this implies
+        \[
+            \frac{n}{2} <
             1 + \frac{2 \log (n/2) \sqrt{n}}{3} < % todo one more step
             1 + \frac{n}{4}.
         \]
-        This implies that $n < 4$, in contradiction to Remark~\ref{rm:min_d}.
-        It is also clear from Remark~\ref{rm:min_d} that $n > 2k$
+        Therefore, $n < 4$, in contradiction to our earlier result that $n > 72$~\eqref{eq:n-lower-bound}.
+        It is also clear from Inequality~\eqref{eq:n-lower-bound} that $n > 2k$,
         so we also have $k < n/2$.
         Therefore, $ k + w < n/2 + n/2 = n$, which implies $k - 1 < n - w$,
         as we wanted to show.
@@ -264,7 +274,7 @@ is sound, in the sense that we only consider subsets of sizes smaller than the c
         By the definition of $s$~\eqref{eq:s}
         and the fact that $\binom{n-w}{k-1}$ is an integer, we have that
         $d^t n^{k-1} > \binom{n - w}{k - 1}$.
-        Then, using the fact that $w < \frac{n}{2}$,
+        Then, using the fact that $w < \frac{n}{2}$, we get
         \[
             \left( \frac{n}{2k} \right)^{k-1} \leq
             \left( \frac{n-w}{k-1} \right)^{k-1} \leq

@@ -3,7 +3,7 @@ Let $H = (V, E)$ be a $k$-graph with $n$ vertices and $m$ edges.
 We describe a polynomial-time algorithm that finds a complete $k$-partite $k$-graph in $H$
 with all part sizes at least
 \begin{equation}
-     t = t (n, d, k) = \left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (3/d)} \right)^{\frac{1}{k-1}} \right\rfloor \label{eq:t},
+     t = t (n, d, k) = \left\lfloor \left(  \frac{\log \left(n/2^{(k-1)}\right)}{\log (3/d)} \right)^{\frac{1}{k-1}} \right\rfloor \label{eq:t},
 \end{equation}
 where
 \begin{equation} \label{eq:d}
@@ -145,7 +145,7 @@ For a specific $T$, the set $S$ satisfies
 
 \begin{equation}
     \label{eq:s}
-    |S| \geq s = s(n, d, k) = \left\lceil d^{t(n, d, k)} n^{k-1} \right\rceil.
+    |S| \geq s = s(n, d, k) = \left\lceil d^{t(n, d, k)} n^{(k-1)} \right\rceil.
 \end{equation}
 
 As it turns out, $S$ is large enough~\eqref{eq:s}
@@ -211,7 +211,7 @@ The following observation is useful for some of the bounds we have to prove.
     The requirement $t \geq 2$ is met whenever
 
     \begin{equation} \label{eq:d-lower-bound}
-        d \geq 3 \cdot 2^{\frac{k - 1}{2^{k-1}}} n^{-\frac{1}{2^{k-1}}},
+        d \geq 3 \cdot 2^{\frac{k - 1}{2^{(k-1)}}} n^{-\frac{1}{2^{(k-1)}}},
     \end{equation}
 
     However, $d$ satisfies
@@ -221,7 +221,7 @@ The following observation is useful for some of the bounds we have to prove.
     \end{equation}
     so we get the following minimum value of $n$.
     \begin{equation} \label{eq:n-lower-bound}
-        n > \left( k!\, \cdot 3 \cdot 2^{\frac{k-1}{2^{k-1}}} \right)^{2^{k-1}} \geq 72.
+        n > \left( k!\, \cdot 3 \cdot 2^{\frac{k-1}{2^{(k-1)}}} \right)^{2^{(k-1)}} \geq 72.
     \end{equation}
     From Inequality~\eqref{eq:d-lower-bound} we can also see that
     \begin{equation} \label{eq:d-lower-bound-2}
@@ -232,7 +232,7 @@ The following observation is useful for some of the bounds we have to prove.
     For $k > 2$, suppose that the bound is not met.
     Then,
     \[
-        3 n^{-\frac{1}{4}} \leq 3 n^{-\frac{1}{2^{k-1}}} < d < 3 \sqrt{\frac{2}{n}},
+        3 n^{-\frac{1}{4}} \leq 3 n^{-\frac{1}{2^{(k-1)}}} < d < 3 \sqrt{\frac{2}{n}},
     \]
     which by algebraic manipulation implies $n < 4$,
     in contradiction to the minimum value for $n$ found in~\eqref{eq:n-lower-bound}.
@@ -409,7 +409,7 @@ The next step will be to show that this recursive call finds a $k-1$-partite $k-
 part sizes at least $t$.
 For this, we bound the density $d'$ of $H'$:
 \[
-    d' \geq \frac{s}{(n-w)^{k-1}} \geq \frac{d^t n^{k-1}}{n^{k-1}} = d^t,
+    d' \geq \frac{s}{(n-w)^{(k-1)}} \geq \frac{d^t n^{(k-1)}}{n^{(k-1)}} = d^t,
 \]
 and ensure that the associated part size
 \[
@@ -424,7 +424,7 @@ satisfies $t' \geq t$.
 
         Substituting the new parameters into the definition, we get
         \[
-            t' = \left\lfloor \left(\frac{\log ((n-w)/2^{k-2})}{\log (3/d')} \right)^
+            t' = \left\lfloor \left(\frac{\log \left((n-w)/2^{(k-2)}\right)}{\log (3/d')} \right)^
             {\frac{1}{k-2}} \right\rfloor.
         \]
 
@@ -433,12 +433,12 @@ satisfies $t' \geq t$.
         \[
             t' \geq
             %
-            \left\lfloor \left(  \frac{\log ((n-w)/2^{k-2})}{\log (3/d^t)} \right)^
+            \left\lfloor \left(  \frac{\log \left((n-w)/2^{(k-2)}\right)}{\log (3/d^t)} \right)^
             {\frac{1}{k-2}} \right\rfloor \geq
             %
-            \left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (3/d^t)} \right)^{\frac{1}{k-2}} \right\rfloor =
+            \left\lfloor \left(  \frac{\log \left(n/2^{(k-1)}\right)}{\log (3/d^t)} \right)^{\frac{1}{k-2}} \right\rfloor =
             %
-            \left\lfloor \left(  \frac{\log (n / 2^{k-1})}{\log 3 - t \log d} \right)^
+            \left\lfloor \left(  \frac{\log \left(n / 2^{(k-1)}\right)}{\log 3 - t \log d} \right)^
             {\frac{1}{k-2}} \right\rfloor.
         \]
         Then, we substitute the definition of $t$, where removing the floor function
@@ -447,20 +447,20 @@ satisfies $t' \geq t$.
         \begin{equation} \label{eq:t_prime}
             t' \geq
             %
-            \left\lfloor \left(  \frac{\log (n / 2^{k-1})}
-            {\log 3 - \left(  \frac{\log (n / 2^{k-1})}{\log (3/d)} \right)^{\frac{1}{k-1}}  \log d} \right)^
+            \left\lfloor \left(  \frac{\log \left(n / 2^{(k-1)}\right)}
+            {\log 3 - \left(  \frac{\log \left(n / 2^{(k-1)}\right)}{\log (3/d)} \right)^{\frac{1}{k-1}}  \log d} \right)^
             {\frac{1}{k-2}} \right\rfloor
             =
             %
-            \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
-            {\frac{\log 3}{\log(n / 2^{k-1})^{\frac{1}{k-1}}} - \frac{\log d}{\log (3/d)^{\frac{1}{k-1}}} }
+            \left\lfloor \left(  \frac{\log \left(n / 2^{(k-1)}\right)^{\left(1-\frac{1}{k-1}\right)}}
+            {\frac{\log 3}{\log\left(n / 2^{(k-1)}\right)^{\frac{1}{k-1}}} - \frac{\log d}{\log (3/d)^{\frac{1}{k-1}}} }
             \right)^{\frac{1}{k-2}} \right\rfloor.
         \end{equation}
 
         Now we argue that $n/2^{k-1} \geq 3/d$.
-        Otherwise, by Remark~\ref{rm:min_d}, we would have
+        Otherwise, by Inequality~\eqref{eq:d-lower-bound}, we would have
         \[
-            \frac{3}{n^{\frac{1}{2^{k-1}}}} \leq d < \frac{3 \cdot 2^{k-1}}{n},
+            \frac{3}{n^{\frac{1}{2^{(k-1)}}}} < d < \frac{3 \cdot 2^{(k-1)}}{n},
         \]
         which implies
         \[
@@ -470,21 +470,21 @@ satisfies $t' \geq t$.
         \[
             n < k!^2,
         \]
-        contradicting the minimum value of $n$ in Remark~\ref{rm:min_d}.
+        contradicting the minimum value of $n$ in Inequality~\eqref{eq:n-lower-bound}.
 
         This allows us to find a common denominator on the
         right side of~\eqref{eq:t_prime}:
         \[
             t' \geq
-            \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
+            \left\lfloor \left(  \frac{\log \left(n / 2^{(k-1)}\right)^{\left(1-\frac{1}{k-1}\right)}}
             {\frac{\log 3 - \log d}{\log(3 / d)^{\frac{1}{k-1}}} } \right)^
             {\frac{1}{k-2}} \right\rfloor =
             %
-            \left\lfloor \left(  \frac{\log (n / 2^{k-1})^{1-\frac{1}{k-1}}}
+            \left\lfloor \left(  \frac{\log \left(n / 2^{(k-1)}\right)^{\left( 1-\frac{1}{k-1}\right)}}
             {\frac{\log (3 / d)}{\log(3 / d)^{\frac{1}{k-1}}} } \right)^
             {\frac{1}{k-2}} \right\rfloor =
             %
-            \left\lfloor \left(  \frac{\log (n / 2^{k-1})}
+            \left\lfloor \left(  \frac{\log \left(n / 2^{(k-1)}\right)}
             {\log (3 / d)} \right)^
             {\frac{1}{k-1}} \right\rfloor =
             %

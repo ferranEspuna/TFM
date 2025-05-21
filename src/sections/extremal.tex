@@ -553,7 +553,7 @@ This theorem is a consequence of the following lemma.
         For $k > 2$, suppose that the lemma holds for $k - 1$ and that
         a certain $\delta > 0$ does not meet our conditions.
         There exist integers $t \leq w$ and a $k$-partite $k$-graph $H=(W_1, \dots, W_k; F)$
-        with part sizes $|W_i| = w$ and $z = |F| \geq \delta w^{k - \frac{1}{t^{k-1}}}$ edges
+        with part sizes $|W_i| = w$ and $z = |F| \geq \delta w^{k - \frac{1}{t^{(k-1)}}}$ edges
         such that no embedding of $\compoverset{k}{t}$ into $H$ exists.
         Consider, for each set $T \in \binom{W_k}{t}$, the associated \text{$(k-1)$-link}
         \link{H}{T}{k-1}.
@@ -582,15 +582,15 @@ This theorem is a consequence of the following lemma.
         ${u = |U| = w^{k-1}}$ and
         ${s = z' + 1}$ to get
         \begin{equation} \label{eq:erdos64_induction}
-            \delta w^{k - \frac{1}{t^{k-1}}} \leq
+            \delta w^{k - \frac{1}{t^{(k-1)}}} \leq
             |E| = |E'| \leq
-            \left(\delta_{k-1} w^{(k - 1) - \frac{1}{t^{k-2}}}\right)^{1 / t}(w - t + 1)w^{(k-1)(1 - 1 / t)} + (t - 1)w^{k-1}.
+            \left(\delta_{k-1} w^{(k - 1) - \frac{1}{t^{((k-2))}}}\right)^{1 / t}(w - t + 1)w^{(k-1)(1 - 1 / t)} + (t - 1)w^{k-1}.
         \end{equation}
         Approximating, this implies that
         \[
-            \delta w^{k - \frac{1}{t^{k-1}}} < \delta_{k-1}^{1 / t} w^{k - \frac{1}{t^{k-1}}} + tw^{k-1} \leq \delta_{k-1}w^{k - \frac{1}{t^{k-1}}} + tw^{k-1}.
+            \delta w^{k - \frac{1}{t^{(k-1)}}} < \delta_{k-1}^{1 / t} w^{k - \frac{1}{t^{(k-1)}}} + tw^{k-1} \leq \delta_{k-1}w^{k - \frac{1}{t^{(k-1)}}} + tw^{k-1}.
         \]
-        Similarly as before, one can check that $tw^{k-1} < 2w^{k-\frac{1}{t^{k-1}}}$.
+        Similarly as before, one can check that $tw^{k-1} < 2w^{k-\frac{1}{t^{(k-1)}}}$.
         Therefore, we reach a contradiction whenever $\delta \geq \delta_{k-1} + 2$,
         so setting $\delta_k = \delta_{k-1} + 2$ gives us the desired result.
         In fact, the theorem works for $\delta_k = 2 \cdot k$.
@@ -608,8 +608,8 @@ The proof of the Erdős 1964 Theorem is now straightforward.
     \[
         \ex{n}{\compoverset{k}{t}}
         \leq \frac{(2k)^k}{k!} \cdot \zaroverset{k}{\lceil n / k \rceil}{t}
-        \leq 2k \cdot \frac{(2k)^k}{k!} \cdot \left\lceil \frac{n}{k} \right\rceil^{k - \frac{1}{t^{k-1}}}
-        \leq \frac{k \cdot 4^k}{(k-1)!} \cdot n^{k - \frac{1}{t^{k-1}}}. \qedhere
+        \leq 2k \cdot \frac{(2k)^k}{k!} \cdot \left\lceil \frac{n}{k} \right\rceil^{k - \frac{1}{t^{(k-1)}}}
+        \leq \frac{k \cdot 4^k}{(k-1)!} \cdot n^{k - \frac{1}{t^{(k-1)}}}. \qedhere
     \]
 
 \end{delayedproof}
@@ -640,7 +640,7 @@ This lets us restate the theorem in the following stronger form.
         \]
         In the \proofref{thm:erdos64} of Theorem~\ref{thm:erdos64}, we have shown that
         \[
-            \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{k-1}}}
+            \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{(k-1)}}}
         \]
         as long as $n \geq t_n k$.
         Suppose that $H$ is a $k$-graph with $n$ vertices and $m \geq \epsilon \binom{n}{k}$ edges.
@@ -657,7 +657,7 @@ This lets us restate the theorem in the following stronger form.
         \]
         so that
         \[
-            \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{k-1}}} \leq c_k n^k  \frac{\epsilon}{\gamma_k}
+            \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{(k-1)}}} \leq c_k n^k  \frac{\epsilon}{\gamma_k}
             = \frac{e_k \cdot \epsilon}{2} n^{k} \leq  \frac{|E(H)|}{2} < |E(H)|,
         \]
         which guarantees that $H$ contains $\compoverset{k}{t_n}$ as a subgraph.
@@ -689,11 +689,11 @@ Indeed, suppose we have a fixed value for $t$.
 We may choose $\epsilon$ such that $t_n \geq t$.
 We only need that
 \[
-    \epsilon \geq \gamma_k \cdot n^{-\frac{1}{t^{k-1}}},
+    \epsilon \geq \gamma_k \cdot n^{-\frac{1}{t^{(k-1)}}},
 \]
 that is, the $k$-graph has at least
 \[
-    \gamma_k \cdot n^{-\frac{1}{t^{k-1}}} \cdot \binom{n}{k} = \bigO{n^{k - \frac{1}{t^{k-1}}}}
+    \gamma_k \cdot n^{-\frac{1}{t^{(k-1)}}} \cdot \binom{n}{k} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}
 \]
 edges.
 Qualitatively, Theorem~\ref{thm:erdos64-constant-density} states that

@@ -431,7 +431,7 @@ The result is stated and proved here for completeness.
     Then
     \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
     \begin{proof}
-        Suppose, by way of contradiction, that we have a $K(s, t)$-free bipartite graph $G = (U, W; E)$
+        Suppose, by way of contradiction, that we have a $K(s, t)$-free bipartite graph $H = (U, W; E)$
         with $|U| = u$, $|W| = w$ and $|E| = z$ exceeding the bound stated above.
         Let us consider the set
         \[
@@ -441,8 +441,8 @@ The result is stated and proved here for completeness.
         Counting on the first coordinate, we get
         \begin{equation} \label{eq:kst_p_lower}
             |P| =
-            \sum_{x \in U} \binom{d_G(x)}{t} =
-            \sum_{x \in U} \varphi(d_G(x)) \geq
+            \sum_{x \in U} \binom{d_H(x)}{t} =
+            \sum_{x \in U} \varphi(d_H(x)) \geq
             u \varphi(z/u) =
             u \binom{z / u}{t},
         \end{equation}
@@ -464,7 +464,7 @@ The result is stated and proved here for completeness.
         they would all necessarily have different first coordinates
         (say $S = \{x_1, \dots, x_s\}$).
         But now, by definition of $P$, for all $a \in S, b \in T$, we have $\{a, b\} \in E$,
-        so $G[S \cup T] = K(S, T)$, contradicting the assumption that $G$ is $K(s, t)$-free.
+        so $H[S \cup T] = K(S, T)$, contradicting the assumption that $H$ is $K(s, t)$-free.
         Therefore, there are at most $s - 1$ different elements of $P$ for each $T \in \binom{W}{t}$:
         \begin{equation} \label{eq:kst_p_upper}
             |P| \leq (s - 1) \binom{w}{t}.

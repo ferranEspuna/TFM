@@ -1,8 +1,8 @@
 % TODO G --> H
 
 \section{Main Contribution}\label{sec:algorithm}
-Let $G = (V, E)$ be a $k$-graph with $n$ vertices and $m$ edges.
-We describe a polynomial-time algorithm that finds a complete $k$-partite $k$-graph in $G$
+Let $H = (V, E)$ be a $k$-graph with $n$ vertices and $m$ edges.
+We describe a polynomial-time algorithm that finds a complete $k$-partite $k$-graph in $H$
 with all part sizes at least
 \begin{equation}
      t = t (n, d, k) = \left\lfloor \left(  \frac{\log (n/2^{k-1})}{\log (3/d)} \right)^{\frac{1}{k-1}} \right\rfloor \label{eq:t},
@@ -11,14 +11,14 @@ where
 \begin{equation} \label{eq:d}
     d = m/n^k
 \end{equation}
-is the ``un-normalized'' density of $G$,
+is the ``un-normalized'' density of $H$,
 which lies between $0$ and $\frac{1}{k!}$ and is easier to work with for the arguments that follow.
 For the remainder of the section, we assume that
-$t \geq 2$ (otherwise, we may just select a set of $k$ vertices forming an edge in~$G$).
+$t \geq 2$ (otherwise, we may just select a set of $k$ vertices forming an edge in~$H$).
 More precisely, we show the following.
 \begin{theorem}\label{thm:kpartite}
-    There is an algorithm that, given a $k$-graph $G$ satisfying the conditions above,
-    finds a $\compoverset{k}{t}$ embedded in $G$ with $t = t(n, d, k)$.
+    There is an algorithm that, given a $k$-graph $H$ satisfying the conditions above,
+    finds a $\compoverset{k}{t}$ embedded in $H$ with $t = t(n, d, k)$.
 
     That is, the algorithm returns a tuple of sets ${(V_1, \dots, V_k) \subset \binom{V}{t}^k}$ such that
     $V_1 \times \dots \times V_k \subset E$.
@@ -29,7 +29,7 @@ More precisely, we show the following.
     The stated condition implies that the sets $V_1, \dots, V_k$ are disjoint:
     If, for example, $v \in V_1 \cap V_2$ and for $3 \leq i \leq k$ $v_i \in V_i$ then
     $(v, v, v_3, \dots, v_k) \in V_1 \times \dots \times V_k$ has size $k-1$ as an unordered set so it cannot
-    be an edge in $G$.
+    be an edge in $H$.
     This means that the inclusion map from $\compdots{V_1}{V_k}$ to $V$ defines an embedding, as desired.
 \end{remark}
 
@@ -74,7 +74,7 @@ whereas we get
         \left(  \frac{\log (n/2)}{\log (3/d)} \right)
        \right\rfloor.
 \]
-The vertex set $V(G)$ is partitioned into two sets $U$ and $W$ such that there are many edges between them
+The vertex set $V(H)$ is partitioned into two sets $U$ and $W$ such that there are many edges between them
 and the size of $W$ is logarithmic in $n$.
 This is achieved by selecting $W$ to be a set of vertices of highest degree
 (that is, no vertex in $U$ has a higher degree than any vertex in $W$).
@@ -86,14 +86,14 @@ In other words, $S \times T \subset E$ for $S, T \subset V$ of size at least $t$
     \caption{Finding a balanced bipartite graph in a $2$-graph}
     \label{alg:bipartite}
         \begin{algorithmic}[1]
-        \Require A graph G = $(V, E)$ with $|V| = n$, $E = m$
+        \Require A graph $H = (V, E)$ with $|V| = n$, $E = m$
         \State $d \gets m / n^2 $
         \State \textbf{assert} $d \geq 3 n^{-1/2}$ \label{line:bipartite_min_d}
 
         \State $t \gets \left\lfloor\frac{\log (n/2) }
         {\log (2e/d)}\right\rfloor,\, w \gets \lfloor t/d \rfloor$
 
-        \State $W \gets $ a set of $w$ vertices with highest degree in $G$
+        \State $W \gets $ a set of $w$ vertices with highest degree in $H$
         \State $U \gets V \setminus W$
         \ForAll{$T \in \binom{W}{t} $} \label{line:2partite_for}
             \State $S \gets \{x \in U \colon \{x, y\} \in E \text{ for all } y \in T\}$
@@ -106,7 +106,7 @@ In other words, $S \times T \subset E$ for $S, T \subset V$ of size at least $t$
 
 The minimum density $d \geq 3n^{-1/2}$ in line~\ref{line:bipartite_min_d} is required
 because if $d = o\left(n^{-1/2}\right)$ then
-there may not even be a $K(2, 2)$ in $G$.
+there may not even be a $K(2, 2)$ in $H$.
 If the set $S$ is too large, a subset of it of size $t$ can be returned instead.
 To see that the algorithm returns a pair of sets $(S, T)$, one uses the fact that
 there is large number of edges between $U$ and $W$ (proportional to the size of $W$).
@@ -142,7 +142,7 @@ The main idea is to select a set $W \subset V$ of vertices of highest degree wit
 
 Then, for every $t$-subset $T$ of $W$, we compute the set $S$ of $(k-1)$-subsets of $V \setminus W$
 that form an edge with every vertex in $T$.
-These are precisely the edges of $G' = L_{k-1}(G; T) = (V \setminus W, S)$.
+These are precisely the edges of $H' = L_{k-1}(H; T) = (V \setminus W, S)$.
 For a specific $T$, the set $S$ satisfies
 
 \begin{equation}
@@ -151,8 +151,8 @@ For a specific $T$, the set $S$ satisfies
 \end{equation}
 
 As it turns out, $S$ is large enough~\eqref{eq:s}
-that applying the algorithm recursively to $G'$
-yields a $\compoverset{k-1}{t'}$ in $G'$ with $t' \geq t$.
+that applying the algorithm recursively to $H'$
+yields a $\compoverset{k-1}{t'}$ in $H'$ with $t' \geq t$.
 That is, a tuple
 $P' = (V_1, V_2, \dots, V_{k-1}) \in \mathcal{P}(V \setminus W)^{k-1}$ such that $|V_i| = t'$ and
 $V_1 \times \dots \times V_{k-1}\subset S$.
@@ -160,30 +160,30 @@ $V_1 \times \dots \times V_{k-1}\subset S$.
 If we now concatenate $P'$ with $T$ (choosing a subset of $X_i \subset V_i$ of size $t$ for each $i$ if necessary), we get
 a $k$-tuple $(X_1, \dots, X_{k-1}, T)$, of $t-sets$ of $V$ % todo k-tuple is split
 which by the definition of $S$ satisfies
-$X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$
-so it forms a $\compoverset{k}{t}$ in $G$.
+$X_1 \times \dots \times X_{k-1} \times T \subset E = E(H)$
+so it forms a $\compoverset{k}{t}$ in $H$.
 
 \begin{algorithm}[H]
     \caption{Finding a balanced partite $k$-graph in a $k$-graph}
     \label{alg:kpartite}
     \begin{algorithmic}[1]
-        \Function{FIND\_PARTITE}{$G, k$}
-            \State \textbf{assert} G is a $k$-graph
+        \Function{FIND\_PARTITE}{$H, k$}
+            \State \textbf{assert} $H$ is a $k$-graph
             \If {$k = 1$} \label{line:base_case}
-                \State \Return $(\{x \colon \{x\} \in E(G)\})$
+                \State \Return $(\{x \colon \{x\} \in E(H)\})$
             \EndIf
 
-            \State $V \gets V(G), E \gets E(G), n \gets |V|,\, m \gets |E|,\, d \gets m/n^k$
+            \State $V \gets V(H), E \gets E(H), n \gets |V|,\, m \gets |E|,\, d \gets m/n^k$
             \State $t \gets t(n, d, k),\, w \gets w(n, d, k),\, s \gets s(n, d, k)$ \label{line:tws}
             \State \textbf{assert} $t \geq 2$ \label{line:min_t}
-            \State $W \gets$ a set of $w$ vertices with highest degree in $G$ \label{line:W}
+            \State $W \gets$ a set of $w$ vertices with highest degree in $H$ \label{line:W}
             \State $U \gets \binom{V\setminus W}{k-1}$
 
             \ForAll{$T \in \binom{W}{t}$} \label{line:for}
                 \State $S \gets \{\,y \in U \colon \{x\} \cup y \in E \text{ for all } x \in T\,\}$ \label{line:S}
                 \If{$|S| \geq s$}
-                    \State $G' \gets (V \setminus W, S)$ \label{line:rec_call}
-                    \State $(V_1, \dots, V_{k-1}) \gets$ \Call{FIND\_PARTITE}{$G', k-1$}
+                    \State $H' \gets (V \setminus W, S)$ \label{line:rec_call}
+                    \State $(V_1, \dots, V_{k-1}) \gets$ \Call{FIND\_PARTITE}{$H', k-1$}
                     \State \Return $(V_1, \dots, V_{k-1}, T)$ \label{line:return}
                 \EndIf
             \EndFor
@@ -289,7 +289,7 @@ More precisely, we have the following.
 
 \begin{lemma}\label{lm:many_edges}
     Given $W  \subset V$ as defined in line~\ref{line:W} of Algorithm~\ref{alg:kpartite},
-    There are at least $\frac{3}{2}dwn^{k-1}$ edges of $G$ with exactly one vertex in $W$.
+    There are at least $\frac{3}{2}dwn^{k-1}$ edges of $H$ with exactly one vertex in $W$.
     \begin{proof}
         The degree sum over $V$ is $kdn^{k}$.
         By averaging, the degree sum over $W$ is at least
@@ -397,9 +397,9 @@ that form an edge with every vertex in $T$.
 
 This shows that we reach the recursive call in line~\ref{line:rec_call} of Algorithm~\ref{alg:kpartite}
 at some iteration of the loop in line~\ref{line:for}.
-The next step will be to show that this recursive call finds a $k-1$-partite $k-1$-graph in $G'$ of
+The next step will be to show that this recursive call finds a $k-1$-partite $k-1$-graph in $H'$ of
 part sizes at least $t$.
-For this, we bound the density $d'$ of $G'$:
+For this, we bound the density $d'$ of $H'$:
 \[
     d' \geq \frac{s}{(n-w)^{k-1}} \geq \frac{d^t n^{k-1}}{n^{k-1}} = d^t,
 \]
@@ -485,13 +485,13 @@ satisfies $t' \geq t$.
     \end{proof}
 \end{lemma}
 
-This means that, assuming that the algorithm finds a $\compoverset{k-1}{t'}$ in $G'$ in the recursive call,
-it finds a $\compoverset{k}{t}$ in $G$.
+This means that, assuming that the algorithm finds a $\compoverset{k-1}{t'}$ in $H'$ in the recursive call,
+it finds a $\compoverset{k}{t}$ in $H$.
 This argument only works if $k \geq 3$.
 For $k=2$, the recursive call is handled by the base case in
 line~\ref{line:base_case} of Algorithm~\ref{alg:kpartite}.
 Therefore, the part size of the (singleton) tuple returned by the recursive call
-is the number of (single-vertex) edges in $G'$, which is at least $s$.
+is the number of (single-vertex) edges in $H'$, which is at least $s$.
 To ensure that the algorithm returns a $K(t, t)$ in this case,
 it suffices to show the following.
 
@@ -516,7 +516,7 @@ it suffices to show the following.
 All in all, we can now state our main theorem.
 
 \begin{theorem}
-    Algorithm~\ref{alg:kpartite} finds a balanced partite $k$-graph in a $k$-graph $G$ with
+    Algorithm~\ref{alg:kpartite} finds a balanced partite $k$-graph in a $k$-graph $H$ with
     $n$ vertices and $m = d n^k$ with part size $t(n, d, k)$ in polynomial time,
     as long as $t(n, d, k) \geq 2$.
     \begin{proof}
@@ -525,7 +525,7 @@ All in all, we can now state our main theorem.
         Indeed, the algorithm finds $(V_1, T)$ with $|T| = t$ and $|V_1| \geq s \geq t$.
         Furthermore, $V_1$ is the set of vertices $x \in V \setminus W$ such that
         $\{x, y\} = \{x\} \cup \{y\} \in E$ for all $y \in T$.
-        This means that $V_1 \times T \subset E(G)$.
+        This means that $V_1 \times T \subset E(H)$.
 
         If $k \geq 3$,
         Lemma~\ref{lm:return} tells us that the algorithm
@@ -537,10 +537,10 @@ All in all, we can now state our main theorem.
         this recursive call is successful and
         returns a tuple of sets
         $(X_1, X_2, \dots, X_{k-1}) \in \mathcal{P}(V)^{k-1}$ such that $|X_i| \geq t(n-w, d', k-1) \geq t$
-        for all $i$ and $X_1 \times \dots \times X_{k-1} \subset E(G')$.
-        However, by construction, $G' = L_{k-1}(G; T)$, which means that $T \times E(G') \subset E(G)$.
+        for all $i$ and $X_1 \times \dots \times X_{k-1} \subset E(H')$.
+        However, by construction, $H' = L_{k-1}(H; T)$, which means that $T \times E(H') \subset E(H)$.
         All in all, the tuple $(X_1, \dots, X_{k-1}, T)$ returned in line~\ref{line:return}
-        satisfies $X_1 \times \dots \times X_{k-1} \times T \subset E = E(G)$, making the algorithm correct.
+        satisfies $X_1 \times \dots \times X_{k-1} \times T \subset E = E(H)$, making the algorithm correct.
 
         For the time complexity, note that all operations in the algorithm are in polynomial time, % TODO: check this
         except for perhaps the for loop in line~\ref{line:for} and the recursive call in line~\ref{line:rec_call}.

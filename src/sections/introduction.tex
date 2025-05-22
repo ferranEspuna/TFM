@@ -64,12 +64,13 @@ Careful analysis in the proof of the Erdős bound shows that this guarantees tha
 \begin{equation} \label{eq:t-lower-intro}
     t = \Omega\left( (\log n)^{1/(k-1) }\right).
 \end{equation}
-Running a greedy search on all sets of $kt$ vertices in $H$ would then \textbf{not} yield a polynomial-time algorithm,
-because the number of sets of $kt$ vertices in $H$ grows superpolynomially with $n$.
+Running a greedy search checking all $\binom{n}{kt}$ sets of $kt$
+vertices in $H$ would then \textbf{not} yield a polynomial-time algorithm,
+because $\binom{n}{kt}$ grows superpolynomially with $n$.
 
 The main contribution of this thesis is bridging this gap by providing an efficient algorithmic solution.
 We develop and analyze a deterministic, polynomial-time algorithm that,
-given a $k$-graph $G$ with $n$ vertices and at least $dm^k$ edges,
+given a $k$-graph $G$ with $n$ vertices and at least $dn^k$ edges,
 finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$ within $G$, where
 \[
     \left\lfloor \left(  \frac{\log \left(n/2^{(k-1)}\right)}{\log (3/d)} \right)^{\frac{1}{k-1}} \right\rfloor,

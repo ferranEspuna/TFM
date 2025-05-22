@@ -38,12 +38,12 @@ contain $G$ as a subgraph.
 \end{proposition}
 
 We call the integer $\ex{n}{G}$ the \emph{Turán number} of $G$ on $n$ vertices.
-The Turán number is increasing both in $n$ and under $k$-graph inclusion. % TODO Gemini says this is wrong
-The first property can be seen by taking a $G$-free $k$-graph on $H$ with $n$ vertices
-and $\ex{n}{G}$ vertices; and adding a vertex $v$ and no edges to it, obtaining $H'$.
-If $f: G \to H$ is an embedding and $v$ has a preimage $x$, it must be a vertex in $H$ with degree $0$,
-so it can be replaced by any other vertex in $H$ outside the image of $f$.
-Restricting this new mapping to $H$, we get that $G \subset H$, in contradiction to our assumption.
+The Turán number is increasing both in $n$ and under $k$-graph inclusion. % TODO
+To see this, suppose that $H$ is a $k$-graph with $n$ vertices and $\ex{n}{G}$ edges.
+The first property can be seen by adding to $H$ a new vertex $v$ with no edges containing it, obtaining $H'$.
+If $f: G \to H$ is an embedding and $v$ has a preimage $x$, it must be a vertex in $G$ with degree $0$,
+so it can be replaced by any other vertex $w \neq v$ in $v(H)$ outside the image of $f$.
+Restricting this new map to $H$, we get that $G \subset H$, in contradiction to our assumption.
 For the second, suppose that $G \subset G'$.
 Because $H$ is $G$-free, it is also $G'$-free, which means that it has at most $\ex{n}{G'}$ edges.
 Therefore, $\ex{n}{G} \leq \ex{n}{G'}$.

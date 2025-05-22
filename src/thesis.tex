@@ -83,43 +83,49 @@
 }
 
 
-\abstracteng{ % TODO: rewrite
-Extremal problems for hypergraphs represent a central area of combinatorics, extending classical questions from graph theory.
-A fundamental direction, initiated by Turán, concerns the maximum number of edges a $k$-uniform hypergraph can possess without containing a specific forbidden subgraph.
-This thesis focuses on the degenerate Turán problem, where the forbidden subgraph $G$ is $k$-partite, resulting in a Turán density $\pi(G)=0$.
-Specifically, we investigate the problem of finding complete balanced $k$-partite $k$-subgraphs, denoted $\compoverset{k}{t}$.
+\abstracteng{
+    Turán-type problems are a central theme in extremal (hyper)graph theory,
+    asking how many edges a $k$-graph $H$ can have, as a function of its number of vertices $n$,
+    without containing a specific subgraph $G$.
+    All graphs have a constant $\pi(G)$ called the \emph{Turán density},
+    such that this number is $(\pi(G) + o(1)) \binom{n}{k}$.
+    This thesis deals with degenerate Turán problems ($\pi(G)=0$)
+    by focusing on finding complete balanced $k$-partite $k$-subgraphs,
+    denoted $\compoverset{k}{t}$, within a $k$-uniform hypergraph ($k$-graph).
 
-Classical results by Kővari, Sós and Turán (for $k=2$) and Erdős (for $k \ge 2$) provide upper bounds on the Turán number $\ex{n}{\compoverset{k}{t}}$,
-showing it is $O(n^{k - \delta})$ for some $\delta > 0$ dependent on $t$ and $k$.
-These bounds guarantee the existence of $\compoverset{k}{t}$ in any $k$-uniform hypergraph ($k$-graph) with sufficiently many edges.
-However, the proofs are often non-constructive and do not yield efficient methods for locating such subgraphs.
+    Classical existence theorems by Kővari, Sós, Turán (for $k=2$) and Erdős (for $k \ge 2$)
+    guarantee that $k$-graphs with constant edge density contain $\compoverset{k}{t}$ where $t$
+    grows with the number of vertices $n$ (typically $t = \Omega\left((\log n)^{1/(k-1)}\right)$).
+    These proofs are non-constructive,
+    and locating such dynamically sized subgraphs efficiently is challenging as brute-force search becomes superpolynomial.
 
-This thesis presents a deterministic, polynomial-time algorithm that addresses this gap.
-Given a $k$-graph $G$ with $n$ vertices and $m$ edges, the algorithm finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$.
-The part size $t$ obtained depends explicitly on $n$, $k$, and the edge density parameter $d=m/n^k$,
-closely matching the parameters implicit in the Erdős-type existence proofs (specifically, $t$ is approximately $(\log n / \log(1/d))^{1/(k-1)}$).
-
-Our algorithm generalizes the $k=2$ case addressed by Mubayi and Turán, employing a recursive strategy based on analyzing appropriately defined link graphs.
-The primary contribution is an efficient, constructive proof of the existence bounds for $\compoverset{k}{t}$ in dense hypergraphs,
-demonstrating that these fundamental structures can not only be guaranteed to exist but can also be found algorithmically within polynomial time.
+    This thesis presents a deterministic, polynomial-time algorithm that bridges this gap in the constant density case.
+    Given a $k$-graph with $n$ vertices and $m$ edges, our algorithm finds a $\compoverset{k}{t}$ where $t$
+    explicitly depends on $n$, $k$, and the density $d=m/n^k$, matching the $\Omega((\log n / \log(1/d))^{1/(k-1)})$
+    scaling from existence proofs.
+    Our method generalizes the bipartite case work by Mubayi and Turán, using a recursive strategy on link graphs.
+    This provides an efficient, constructive proof for the existence of these growing
+    $\compoverset{k}{t}$ structures, demonstrating they are algorithmically findable in polynomial time.
 }
 
 %%%%%%%%%
 \begin{document}
 
-\maketitle
-\tableofcontents
+    \maketitle
 
-\include{sections/introduction}
-\include{sections/preliminaries}
-\include{sections/extremal}
-\include{sections/algorithm}
-\include{sections/conclusions}
+    \tableofcontents
 
-\section{Bibliography}\label{sec:bibliography}
-\bibliography{main}
-\bibliographystyle{plain}
+    \include{sections/introduction}
+    \include{sections/preliminaries}
+    \include{sections/extremal}
+    \include{sections/algorithm}
+    \include{sections/conclusions}
 
-\appendix
-\include{sections/appendix_graph}
+    \section{Bibliography}\label{sec:bibliography}
+    \bibliography{main}
+    \bibliographystyle{plain}
+
+    \appendix
+    \include{sections/appendix_graph}
+
 \end{document}

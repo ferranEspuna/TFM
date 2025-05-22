@@ -377,28 +377,26 @@ that form an edge with every vertex in $T$.
         In other words, there is no embedding of $K(s, t)$ in $\mathcal{P}$.
         By~\Cref{thm:kst} applied with $u = \binom{n-w}{k-1}$,
         this implies that
-        % TODO: check the math works, just copied
-
         \[
             \frac{3}{2}dwn^{k-1} \leq
             \, z \left(\binom{n - w}{k-1}; w, s, t  \right) \leq
             (s-1)^{1/t}(w-t+1)\binom{n-w}{k-1}^{1-1/t} + (t-1)\binom{n-w}{k-1}.
         \]
         We now substitute into the above expression $(s-1) \leq d^t n^{k-1}$ (which
-        follows from $s = \lceil d^t n^{k-1} \rceil$) and $w > 0$:
+        follows from $s = \lceil d^t n^{k-1} \rceil$) and $w > 0$.
+        We get
         \[
              \frac{3}{2}dwn^{k-1} <
              \, dn^{\frac{k-1}{t}} w \binom{n}{k-1}^{1-1/t} + t \binom{n}{k-1} \leq
              dn^{\frac{k-1}{t}} wn^{(k-1)(1-1/t)} + tn^{k-1}.
         \]
         Finally, we substitute $t \leq \frac{1}{2}dw$, which follows from
-        $w = \left\lceil \frac{2t}{d} \right\rceil$:
+        $w = \left\lceil \frac{2t}{d} \right\rceil$, obtaining
         \[
             \frac{3}{2}dwn^{k-1} <
             dn^{\frac{k-1}{t}} wn^{(k-1)(1-1/t)} + \frac{1}{2} dwn^{k-1} =
             \frac{3}{2} dwn^{k-1},
         \]
-
         which is a contradiction.
     \end{proof}
 \end{lemma}

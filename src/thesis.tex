@@ -85,13 +85,14 @@
 
 \abstracteng{
     Turán-type problems are a central theme in extremal (hyper)graph theory,
-    asking how many edges a $k$-graph $H$ can have, as a function of its number of vertices $n$,
+    asking the maximum number of edges a $k$-graph $H$ can have, as a function of its number of vertices $n$,
     without containing a specific subgraph $G$.
-    All graphs have a constant $\pi(G)$ called the \emph{Turán density},
-    such that this number is $(\pi(G) + o(1)) \binom{n}{k}$ as $n \to \infty$.
-    This thesis deals with degenerate Turán problems ($\pi(G)=0$)
+    The maximum such number of edges is called the \emph{Turán number} and is denoted $\ex{n}{G}$.
+    Any given $k$-graph $G$ has an associated constant $\pi(G)$ (which we call its \emph{Turán density})
+    such that the Turán number $\ex{n}{G}$ is $(\pi(G) + o(1)) \binom{n}{k}$ as $n \to \infty$.
+    This thesis deals with degenerate Turán problems (in which $\pi(G)=0$)
     by focusing on finding complete balanced $k$-partite $k$-subgraphs,
-    denoted $\compoverset{k}{t}$, within a $k$-uniform hypergraph ($k$-graph).
+    denoted $\compoverset{k}{t}$, within a $k$-graph.
 
     Classical existence theorems by Kővari, Sós, Turán (for $k=2$) and Erdős (for $k \ge 2$)
     guarantee that $k$-graphs with constant edge density contain $\compoverset{k}{t}$ where $t$

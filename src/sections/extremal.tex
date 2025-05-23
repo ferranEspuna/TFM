@@ -841,113 +841,87 @@ Here we present an example of a general probabilistic argument that applies to a
     \end{proof}
 \end{proposition}
 
-\subsection{Open Problems}\label{subsec:open-problems} % TODO mention people by name + techniques, remove citations in math environment
+\subsection{Open Problems}\label{subsec:open-problems} % TODO review
 
 In~\Cref{subsec:turan,subsec:degenerate}, we have
 seen the solution for non-degenerate Turán problems for $2$-graphs.
 Determining the Turán density of $k$-graphs for $k > 2$ is a much harder problem.
 
 Famously, not even the Turán density of the tetrahedron $3$-graph $\completesuperindex{3}{4}$
-(pictured in~\Cref{fig:complete_kgraph}) or the unique $3$-graph $\completesuperindex{3}{4-}$
-obtained by removing one edge from it, are known.
-The best known bounds are
+(pictured in~\Cref{fig:complete_kgraph}) is known.
+Turán conjectured the value $5/9$ for the density, which is a lower bound obtained by specific constructions~\cite{keevash2011hypergraph}.
+The upper bound was improved over time using Razborov's method of flag algebras~\cite{razborov2007flag},
+with the best results published by Baber and Talbot~\cite{baber2011hypergraphs}.
+All in all, we only know that
 \[
     0.5555 = \frac{5}{9}
     \leq \pi\left(\completesuperindex{3}{4}\right)
-    \leq 0.561666~\cite{keevash2011hypergraph,baber2011hypergraphs} % TODO cites outside math environment?
+    \leq 0.561666.
 \]
-and
+For the $3$-graph $\completesuperindex{3}{4-}$ (obtained by removing one edge from $\completesuperindex{3}{4}$),
+Frankl and Füredi~\cite{frankl1984exact} provided an explicit construction giving a lower bound of $2/7$ for its Turán density.
+The upper bound for stands at $0.2871$, also obtained via flag algebras,
+by Baber and Talbot~\cite{baber2011hypergraphs}, reaching
 \[
      0.2857 = \frac{2}{7}
      \leq \pi\left(\completesuperindex{3}{4-}\right)
-     \leq 0.2871~\cite{frankl1984exact, baber2011hypergraphs}.
+     \leq 0.2871.
 \]
-The lower bounds are obtained by explicit constructions of $3$-graphs,
-and were conjectured to be optimal by Turán~\cite{keevash2011hypergraph},
-while the upper bounds are obtained by the method of flag algebras~\cite{razborov2007flag},
-which is a powerful tool for studying Turán problems that automates the search for relevant inequalities.
 
-One of the few examples of success in obtaining Turán densities of $k$-graphs with uniformity $k > 2$ is the case of
-the Fano plane $F^{(3)}_7$, a $3$-graph with $7$ vertices corresponding to the points
-of the projective plane over the field $\mathbb{F}_2$,
-and $7$ edges corresponding to the projective lines.
-It is known that
+One of the few examples of success in obtaining exact Turán densities for $k$-graphs with $k > 2$ is the case of
+the Fano plane $F^{(3)}_7$.
+De Caen and Füredi~\cite{de2000maximum} showed that
 \[
-    \pi\left(F^{(3)}_7\right) = \frac{3}{4}~\cite{de2000maximum}.
+    \pi\left(F^{(3)}_7\right) = \frac{3}{4}.
 \]
 
 There are even fewer solved cases for degenerate Turán problems than in the non-degenerate case.
 In general, there is a very large gap between the upper and lower bounds for the Turán numbers of degenerate $k$-graphs,
 even for complete $k$-partite $k$-graphs.
 For example, in the balanced case, where all $t_i$ are equal, we get
-\begin{equation} \label{eq:balanced_upper_bound}
+\begin{equation} \label{eq:balanced_upper_bound_open}
     \ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}
 \end{equation}
 from~\Cref{thm:erdos64}, but only
-\begin{equation} \label{eq:balanced_lower_bound}
+\begin{equation} \label{eq:balanced_lower_bound_open}
     \ex{n}{\compoverset{k}{t}} = \Omega\left(n^{k - \frac{k(t-1)}{t^k - 1}}\right)
 \end{equation}
 from~\Cref{prop:probabilistic-lower-bound}.
-The exponent in~\eqref{eq:balanced_lower_bound} is always
-smaller than the one in~\eqref{eq:balanced_upper_bound},
+The exponent in~\eqref{eq:balanced_lower_bound_open} is always
+smaller than the one in~\eqref{eq:balanced_upper_bound_open},
 as long as $t \geq 2$ and $k \geq 2$.
+In the case $k=2$, it is known that~\Cref{thm:kst} is optimal in order of magnitude for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$.
+Specifically, $\ex{n}{K(2, t)} = \Theta\left(n^{3/2}\right)$,
+with lower bounds often stemming from constructions related to finite projective planes,
+such as by Erdős, Rényi, and Sós~\cite{erdHos1966problem}, and further work by Füredi~\cite{furedi1996new}.
+For $K(3,3)$, Brown~\cite{brown1966graphs} provided an algebraic construction using finite fields that gives
+$\ex{n}{K(3, 3)} = \Theta\left(n^{5/3}\right)$.
+The Kővári–Sós–Turán theorem is also known to be optimal up to a constant factor for $\ex{n}{K(s,t)}$ when $s \ge t!+1$, a result established by Kollár, Rónyai, and Szabó~\cite{kollar1996norm} using algebraic constructions known as norm-graphs.
 
-In the case $k=2$, it is known that, for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$,
-\Cref{thm:kst} is optimal in the sense that
-\[
-    \ex{n}{K(2, t)}
-    = \Theta\left(n^{\frac{3}{2}}\right)~\cite{erdHos1966problem, furedi1996new},
-\]
-and also
-\[
-    \ex{n}{K(3, 3)}
-    = \Theta\left(n^{\frac{5}{3}}\right)~\cite{brown1966graphs}.
-\]
-The theorem is also optimal for $K(s, t)$ when $s \geq t! + 1$~\cite{kollar1996norm}.
-Some progress has been made in the case of $K(s, t)$ when $s$ and $t$ have similar sizes,
-only for small values of $s \geq t \geq 4$.
+Some progress has been made for other $K(s, t)$ graphs where $s$ and $t$ have similar sizes, particularly for small values.
 For example, \Cref{thm:kst} gives
-\[
-    \ex{n}{K(5,5)} = \bigO{n^{\frac{9}{5}}} = \bigO{n^{1.8}}
-\]
-and, by~\Cref{prop:probabilistic-lower-bound}, we get
-\begin{equation} \label{eq:k55-probabilistic}
-    \ex{n}{K(5,5)}
-= \Omega\left(n^{\frac{5}{3}}\right)
-= \Omega\left(n^{1.67}\right),
-\end{equation}
-but~\eqref{eq:k55-probabilistic} has been improved to
-\[
-    \ex{n}{K(5,5)}
-    = \Omega\left(n^{\frac{7}{4}}\right)
-    = \Omega\left(n^{1.75}\right)~\cite{ball2012asymptotic}.
-\]
+$\ex{n}{K(5,5)} = \bigO{n^{9/5}} = \bigO{n^{1.8}}$,
+while the general probabilistic lower bound from~\Cref{prop:probabilistic-lower-bound} yields
+$\ex{n}{K(5,5)} = \Omega\left(n^{5/3}\right) = \Omega\left(n^{1.67}\right)$.
+This was improved by Ball and Pepe~\cite{ball2012asymptotic}, who used methods from finite geometry to show $\ex{n}{K(5,5)} = \Omega\left(n^{7/4}\right) = \Omega\left(n^{1.75}\right)$.
+
 Even less is known about degenerate problems for hypergraphs of higher uniformity.
-For example, not even the growth rate of the Turán number for the octahedron 3-graph
+For instance, not even the growth rate of the Turán number for the octahedron 3-graph
 ($K(2, 2, 2)$, pictured in~\Cref{fig:222}) is known.
 The best upper bound, again, comes from~\Cref{thm:erdos64}, which gives
-\[
-    \ex{n}{K(2, 2, 2)} = \bigO{n^{\frac{11}{4}}} = \bigO{n^{2.75}},
-\]
-while the best know lower bound is
-\[
-    \ex{n}{K(2, 2, 2)}
-    = \Omega\left(n^{\frac{8}{3}}\right)
-    = \Omega\left(n^{2.67}\right)~\cite{conlon2020random}.
-\]
-
+$\ex{n}{K(2, 2, 2)} = \bigO{n^{11/4}} = \bigO{n^{2.75}}$,
+while the best known lower bound is
+$\ex{n}{K(2, 2, 2)} = \Omega\left(n^{8/3}\right) = \Omega\left(n^{2.67}\right)$,
+a result by Conlon, Pohoata, and Zakharov~\cite{conlon2020random} using techniques involving random multilinear maps.
 The main difficulty for degenerate problems is that sharp lower bounds for the Turán numbers
-often rely on specific geometric or algebraic constructions that work for very few cases,
-such as the ones cited for $K(2, 2)$ and $K(3, 3)$.
+often rely on specific geometric or algebraic constructions that work for very few cases.
 
 \Cref{thm:quant-blowup} is known not to be optimal.
 Erdős and Bollobás~\cite{bollobas1973structure} in fact proved that the optimal growth
 rate of a guaranteed $t_n$-blow-up of a $2$-graph $G$ in $2$-graphs of constant density greater than $\pi(G) + \epsilon$ is
-\[
-    t_n = \delta(G, \epsilon) \cdot \log n.
-\]
+$t_n = \delta(G, \epsilon) \cdot \log n$.
 A still open question is whether this can be extended to $k$-graphs.
 That is, is it true that $k$-graphs with $n$ vertices and  $\left(\pi(G) + \epsilon \right)  \binom{n}{k}$ edges
 contain $G(t_n)$ for some $t_n = \delta(G, \epsilon) (\log n)^{\frac{1}{k-1}}$?
-An even more general yet unresolved question is whether this is true for
-$k$-graphs with $n$ vertices and $\Omega (n^{|V(G)|})$ copies of $G$~\cite{rodl2012complete}.
+An even more general yet unresolved question, discussed by Rödl and Schacht~\cite{rodl2012complete}, is whether this is true for
+$k$-graphs with $n$ vertices and $\Omega (n^{|V(G)|})$ copies of $G$.

@@ -1,99 +1,92 @@
-from typing import List, Set
-import hypergraphx.generation as generation
+from typing import List, Tuple
 import random
-from math import log, floor, ceil, e
+from math import log, floor, ceil
 import heapq
 from scipy.special import binom
 from itertools import combinations
 
 from tqdm import tqdm
 
-from random_graph import RandomHypergraph, RandomPermutationHypergraph
+from random_graph import Hypergraph, RandomPermutationHypergraph, LinkGraph, RandomOracleGraph, StupidHypergraph
 
 random.seed(1234)
 
 
-def calc_r(q, d):
-    return ceil(2 * q / d)
-
-
-def calc_s(q, k, d, n):
-    return floor((d ** q) * (n ** (k - 1)))
-
-
-# get the set R of r nodes with more edges
-def get_R(g: RandomHypergraph, r: int, k: int, d: float) -> List[int]:
-    assert 0 <= r <= g.n, "r must be between 1 and the number of nodes"
-
-    min_total_deg = d * r * g.n ** (k - 1)
+def get_deg_sum_at_least(h: Hypergraph, n_vtxs: int, min_deg_sum: int) -> List[int]:
+    min_heap = []
     total_deg = 0
 
-    if r == 0:
-        return []
+    # for node in range(h.n):
+    for node in tqdm(range(h.n), position=0):
 
-    min_heap = []
-    for node in tqdm(range(g.n)):
+        deg = h.degree(node)
 
-        deg = g.degree(node)
-
-        if len(min_heap) < r:
+        if len(min_heap) < n_vtxs:
             heapq.heappush(min_heap, (deg, node))
             total_deg += deg
+
+        elif total_deg >= min_deg_sum:
+            return [node for _, node in min_heap]
 
         elif deg > min_heap[0][0]:
             total_deg -= min_heap[0][0]
             total_deg += deg
             heapq.heapreplace(min_heap, (deg, node))
+            print(f'{total_deg} > {min_deg_sum}')
 
-        if total_deg >= min_total_deg:
+        print(f"curr_len: {len(min_heap)} / {n_vtxs}, curr_deg: {total_deg} / {min_deg_sum}")
+
+    assert False, f"The algorithm did NOT work! Something went wrong{h.k, h.n, h.N, n_vtxs, min_deg_sum}"
+
+
+def get_partite(h: Hypergraph, min_m=None, t=None) -> Tuple[List, ...]:
+    k = h.k
+
+    if k == 1:
+        ret = list(x for x in range(h.N) if h.is_edge((x,)))
+        if t is not None:
+            assert len(ret) >= t, f"t ({t}) must be less than the number of edges ({len(ret)})"
+            return ret[:t],
+
+    if t is None:
+        if min_m is None:
+            min_m = h.num_edges()
+
+        min_d = min_m / h.n ** k
+        print(f"min_d: {min_d}")
+        assert min_m is not None, "Either t or min_m must be provided"
+        raw_t = (log(h.n / 2 ** (k - 1)) / log(3 / min_d)) ** (1 / (k - 1))
+        print('raw_t:', raw_t)
+        t = floor(raw_t)
+
+    assert t >= 2, "t must be at least 2"
+
+    w = ceil(2 * t / min_d)
+    W = get_deg_sum_at_least(h, w, w * k * min_d * h.n ** (k - 1))
+    print(f"w: {w}, W: {W}")
+    min_s = min_d ** t * h.n ** (k - 1)
+
+    T = None
+    h_prime = None
+
+    for T in combinations(W, t):
+        h_prime = LinkGraph(h, list(T))
+        if h_prime.num_edges() >= min_s:
+            print(f"T: {T}, min_s: {min_s}, num_edges: {h_prime.num_edges()}")
             break
 
-    else:
-        assert False, "The algorithm did NOT work! Something went wrong"
-
-    return [node for _, node in min_heap]
+    assert T is not None and h_prime is not None, "The algorithm did NOT work! Something went wrong"
+    return list(T), *get_partite(h_prime, min_s, t=t)
 
 
-def get_2_partite(g: RandomHypergraph):
-
-    assert g.k == 2, "The algorithm only works for 2-partite graphs"
-    n: int = g.n
-    m: int = g.num_edges()
-
-    d: float = m / n ** 2
-    pre_q = log(n / 2) / log(2 * e / d)
-    print(pre_q)
-    q: int = floor(pre_q)
-    assert q >= 2, "g is not dense enought to apply the algorithm"
-
-    r: int = calc_r(q, d)
-    assert r <= n, "r must be less than the number of nodes. Something went wrong"
-    assert q <= r, "q must be less than r. Something went wrong"
-
-    s: int = calc_s(q, 2, d, n)
-    assert s <= binom(n - r, 1)
-
-    R: List[int] = get_R(g, r, 2, d)
-    R_set: Set[int] = set(R)
-
-    # iterate over q-subsets of R
-    for Q in combinations(R, q):
-
-        S = set(range(g.n)) - R_set
-
-        for q_node in Q:
-            S &= set(i for i, in g.neighbours(q_node))
-
-        if len(S) >= q:
-            return list(Q), list(S)[:q]
-
-    assert False, "The algorithm did NOT work! Something went wrong"
-
-
-N = 5000
+N = 10000000
 p = 0.9
+K = 3
+M = int((p - 0.001) * binom(N, K))
+print(f"n: {N}, k: {K}, m: {M}")
 
-G = RandomPermutationHypergraph(N, 2, int(p * binom(N, 2)))
-print(G.num_edges())
+# G = RandomOracleGraph(K, p, N)
+
+G = StupidHypergraph(K, 2, N)
 print('generated')
-print(get_2_partite(G))
+print(get_partite(G))

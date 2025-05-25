@@ -221,8 +221,8 @@ for all $k$-graphs.
         Furthermore, it is less than $1$ for all $n \geq |V(G)| + 1$.
         To see this, consider a $k$-graph $H = (W, F)$ with $n$ vertices and $\binom{n}{k} - 1$ edges.
         Its edge density is less than $1$.
-        Without loss of generality, we can suppose that $F = \binom{W}{k} \setminus \{\{x, y\}\}$.
-        This means that $H[W \setminus \{x\}]$ is a complete $k$-graph on $n - 1$ vertices,
+        Without loss of generality, we can suppose that $F = \binom{W}{k} \setminus e$ for some edge $e \in \binom{W}{k}$.
+        If $x \in e$ is a vertex, $H[W \setminus \{x\}]$ is a complete $k$-graph on $n - 1$ vertices,
         which must contain $G$ as a subgraph.
 
         We show that the sequence $(a_n)$ is non-increasing, so it must converge to a value $0 \leq \pi(G) < 1$.

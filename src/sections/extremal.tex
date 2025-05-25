@@ -936,11 +936,11 @@ The main difficulty for degenerate problems is that sharp lower bounds for the T
 often rely on specific geometric or algebraic constructions that work for very few cases.
 
 \Cref{thm:quant-blowup} is known not to be optimal.
-Erdős and Bollobás~\cite{bollobas1973structure} in fact proved that the optimal growth
-rate of a guaranteed $t_n$-blow-up of a $2$-graph $G$ in $2$-graphs of constant density greater than $\pi(G) + \epsilon$ is
-$t_n = \delta(G, \epsilon) \cdot \log n$.
+Erdős and Bollobás~\cite{bollobas1973structure} in fact proved that the largest
+guaranteed $t_n$-blow-up of a $2$-graph $G$ in $2$-graphs of constant density greater than $\pi(G) + \epsilon$ is
+$t_n = \Theta_{\epsilon, G}( \log n)$.
 A still open question is whether this can be extended to $k$-graphs.
 That is, is it true that $k$-graphs with $n$ vertices and  $\left(\pi(G) + \epsilon \right)  \binom{n}{k}$ edges
-contain $G(t_n)$ for some $t_n = \delta(G, \epsilon) (\log n)^{\frac{1}{k-1}}$?
+contain $G(t_n)$ for some $t_n = \delta(G, \epsilon) (\log n)^{\frac{1}{k-1}}$ for $n \geq n_0(G, \epsilon)$?
 An even more general yet unresolved question, discussed by Rödl and Schacht~\cite{rodl2012complete}, is whether this is true for
-$k$-graphs with $n$ vertices and $\Omega (n^{|V(G)|})$ copies of $G$.
+$k$-graphs with $n$ vertices and $\epsilon n^{|V(G)|}$ copies of $G$.

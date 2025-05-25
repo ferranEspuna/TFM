@@ -504,7 +504,7 @@ The result is stated and proved here for completeness.
 
 \end{theorem}
 
-\begin{remark}
+\begin{remark} \label{rem:kst_asymptotic}
     Following~\Cref{rem:zar_vs_turan}, we can use this bound to get an upper bound on the Turán number of $K(s, t)$:
     \[
         \ex{n}{K(s, t)} =
@@ -889,21 +889,38 @@ from~\Cref{thm:erdos64}, but only
 from~\Cref{prop:probabilistic-lower-bound}.
 The exponent in~\eqref{eq:balanced_lower_bound_open} is always
 smaller than the one in~\eqref{eq:balanced_upper_bound_open},
-as long as $t \geq 2$ and $k \geq 2$.
-In the case $k=2$, it is known that~\Cref{thm:kst} is optimal in order of magnitude for $K(2, t)$ (for $t \geq 2$) and $K(3, 3)$.
-Specifically, $\ex{n}{K(2, t)} = \Theta\left(n^{3/2}\right)$,
-with lower bounds often stemming from constructions related to finite projective planes,
-such as by Erdős, Rényi, and Sós~\cite{erdHos1966problem}, and further work by Füredi~\cite{furedi1996new}.
-For $K(3,3)$, Brown~\cite{brown1966graphs} provided an algebraic construction using finite fields that gives
-$\ex{n}{K(3, 3)} = \Theta\left(n^{5/3}\right)$.
-The Kővári–Sós–Turán theorem is also known to be optimal up to a constant factor for $\ex{n}{K(s,t)}$ when $s \ge t!+1$, a result established by Kollár, Rónyai, and Szabó~\cite{kollar1996norm} using algebraic constructions known as norm-graphs.
+as long as ${t \geq 2}$ and ${k \geq 2}$.
+
+In the case $k=2$, it is known that~\Cref{thm:kst} is optimal in order of magnitude for
+$K(2, t)$ (for $t \geq 2$) and $K(3, 3)$.
+For $K(2, t)$, this was shown by Erdős, Rényi, and Sós~\cite{erdHos1966problem},
+using constructions related to finite projective planes that show that
+\[
+    \ex{n}{K(2, 2)} = \Omega\left(n^{3/2}\right)
+\]
+(and thus, by \Cref{rem:kst_asymptotic}, $\ex{n}{K(2, t)} = \Theta\left(n^{3/2}\right)$).
+Further work by Füredi~\cite{furedi1996new},
+determined the constant factor, showing that
+\[
+    \ex{n}{K(2, t)} = \left( \frac{1}{2} \sqrt{t} n^{3/2} + o(1) \right)+ n^{3/2}.
+\]
+For $K(3,3)$, Brown~\cite{brown1966graphs} provided a finite geometric construction that gives
+\[
+    \ex{n}{K(3, 3)} = \Theta\left(n^{5/3}\right).
+\]
+The Kővári–Sós–Turán theorem is also known to be optimal up to a constant factor for $\ex{n}{K(s,t)}$ when $s \ge t!+1$, a result established
+by Kollár, Rónyai, and Szabó~\cite{kollar1996norm} using algebraic constructions known as norm-graphs.
 
 Some progress has been made for other $K(s, t)$ graphs where $s$ and $t$ have similar sizes, particularly for small values.
 For example, \Cref{thm:kst} gives
 $\ex{n}{K(5,5)} = \bigO{n^{9/5}} = \bigO{n^{1.8}}$,
 while the general probabilistic lower bound from~\Cref{prop:probabilistic-lower-bound} yields
 $\ex{n}{K(5,5)} = \Omega\left(n^{5/3}\right) = \Omega\left(n^{1.67}\right)$.
-This was improved by Ball and Pepe~\cite{ball2012asymptotic}, who used methods from finite geometry to show $\ex{n}{K(5,5)} = \Omega\left(n^{7/4}\right) = \Omega\left(n^{1.75}\right)$.
+This was improved by Ball and Pepe~\cite{ball2012asymptotic}, who used specific algebraic constructions
+to show that
+\[
+    \ex{n}{K(5,5)} = \Omega\left(n^{7/4}\right) = \Omega\left(n^{1.75}\right).
+\]
 
 Even less is known about degenerate problems for hypergraphs of higher uniformity.
 For instance, not even the growth rate of the Turán number for the octahedron 3-graph
@@ -911,7 +928,9 @@ For instance, not even the growth rate of the Turán number for the octahedron 3
 The best upper bound, again, comes from~\Cref{thm:erdos64}, which gives
 $\ex{n}{K(2, 2, 2)} = \bigO{n^{11/4}} = \bigO{n^{2.75}}$,
 while the best known lower bound is
-$\ex{n}{K(2, 2, 2)} = \Omega\left(n^{8/3}\right) = \Omega\left(n^{2.67}\right)$,
+\[
+    \ex{n}{K(2, 2, 2)} = \Omega\left(n^{8/3}\right) = \Omega\left(n^{2.67}\right),
+\]
 a result by Conlon, Pohoata, and Zakharov~\cite{conlon2020random} using techniques involving random multilinear maps.
 The main difficulty for degenerate problems is that sharp lower bounds for the Turán numbers
 often rely on specific geometric or algebraic constructions that work for very few cases.

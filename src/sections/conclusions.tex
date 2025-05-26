@@ -12,7 +12,7 @@ demonstrating that these subgraphs can indeed be located algorithmically within 
 The recursive approach, which reduces the uniformity $k$ by analyzing appropriately defined link graphs,
 generalizes previous work for the $k=2$
 case by Mubayi and Turán.
-There are several avenues for future research stemming from this work:
+There are several avenues for future research starting from this work:
 
 \begin{enumerate}
     \item \textbf{Tightening Bounds and Improving Practicality:}
@@ -27,7 +27,7 @@ There are several avenues for future research stemming from this work:
     enhancing its practical significance for analyzing real-world hypergraphs which might not meet the currently proven,
     somewhat high, minimum vertex or density thresholds.
 
-    \item \textbf{Generalizing to unbalanced partite hypergraphs:}
+    \item \textbf{Generalizing to unbalanced $k$-partite $k$-graphs:}
     This approach taken in the proof of~\Cref{thm:erdos64}
     can be generalized to give a lower bound on the number of
     copies (that is, embeddings with different image sets)
@@ -45,10 +45,10 @@ There are several avenues for future research stemming from this work:
 
     \item \textbf{Exploring what happens when the density is not fixed:}
     There are versions of~\Cref{thm:erdos64-constant-density}
-    that make $n_k$ depend on $\epsilon$ and show that the size of the
-    guaranteed complete $k$-partite $k$-graph is at least $\delta n^{k-\frac{1}{t^{(k-1)}}}$,
+    in which $n_k$ depends on $\epsilon$, which show that the part size of the
+    guaranteed complete balanced $k$-partite $k$-graph is at least $\delta n^{k-\frac{1}{t^{(k-1)}}}$,
     where $\delta \to \infty$ as $\epsilon \to 1$.
-    This shows~\Cref{alg:kpartite} may not return a complete balanced $k$-partite
+    This shows that~\Cref{alg:kpartite} may not return a complete balanced $k$-partite
     $k$-graph of the best possible order of magnitude for a family of graphs with density tending to $1$.
     An interesting question is whether the algorithm can be modified to find
     a partite hypergraph of approximately the right size in these circumstances,

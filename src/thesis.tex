@@ -93,14 +93,14 @@
     thank you for the laughs, the endless discussions, the shared struggles, and maybe one too many late-night study sessions.
     It really is about the friends we make along the way.
 
-    I would like to thank Dr. Rubén Ballester and Professors Carles Casacuberta and Sergio Escalera
+    I would like to thank Doctor Rubén Ballester and Professors Carles Casacuberta and Sergio Escalera
     for guiding my first steps into the world of mathematical research
     and encouraging me to pursue a master's degree in mathematics.
 
     Thanks as well to Professor Oriol Serra and Doctors Guillem Perarnau, Juanjo Rué, and Patrick Morris
     for introducing me to the fascinating world of discrete mathematics.
 
-    Finally, I am deeply grateful to my supervisor, Richard Lang,
+    Finally, I am deeply grateful to my supervisor, Doctor Richard Lang,
     for his guidance, support, and patience throughout this thesis.
     I truly felt that you cared not only about the project, but also about my personal and academic growth.
     Thank you for the opportunity to work with you and learn from your expertise.
@@ -108,32 +108,28 @@
 }
 
 \abstracteng{
-    Turán-type problems are a central theme in extremal (hyper)graph theory,
-    asking the maximum number of edges a $k$-graph $H$ can have, as a function of its number of vertices $n$,
-    without containing a specific subgraph $G$.
-    The maximum such number of edges is called the \emph{Turán number} and is denoted $\ex{n}{G}$.
-    Any given $k$-graph $G$ has an associated constant $\pi(G)$ (which we call its \emph{Turán density})
-    such that the Turán number $\ex{n}{G}$ is $(\pi(G) + o(1)) \binom{n}{k}$ as $n \to \infty$.
-    This thesis deals with degenerate Turán problems (in which $\pi(G)=0$)
-    by focusing on finding complete balanced $k$-partite $k$-subgraphs,
-    denoted $\compoverset{k}{t}$, within a $k$-graph.
+    Turán-type problems are a central theme in extremal (hyper)graph theory.
+    They ask for the maximum number of edges a $k$-graph $H$ can have,
+    as a function of its number of vertices $n$,
+    without containing a specific subgraph $G$, denoted $\ex{n}{G}$.
+    This thesis deals with degenerate Turán-type problems, in which $\ex{n}{G} = o(n^k)$.
+    In particular, we focus on $t$-blowups of an edge,
+    denoted $\compoverset{k}{t}$.
 
-    Classical existence theorems by Kővari, Sós, Turán (for $k=2$) and Erdős (for $k \ge 2$)
+    Classical existence theorems by Kővari, Sós, and Turán (for $k=2$) and Erdős (for $k \ge 2$)
     guarantee that $k$-graphs with constant edge density contain $\compoverset{k}{t}$ where $t$
-    grows with the number of vertices $n$ (typically $t = \Omega\left((\log n)^{1/(k-1)}\right)$).
+    grows with the number of vertices $n$ (typically $t$ is on the order of $(\log n)^{1/(k-1)}$).
     These proofs are non-constructive,
-    and locating such dynamically sized subgraphs efficiently is challenging as brute-force search becomes superpolynomial.
+    and locating such large subgraphs efficiently
+    is challenging as brute-force search becomes superpolynomial in $n$.
 
     This thesis presents a deterministic, polynomial-time algorithm that bridges this gap in the constant density case.
     Given a $k$-graph with $n$ vertices and $m$ edges, our algorithm finds a $\compoverset{k}{t}$ where $t$
-    explicitly depends on $n$, $k$, and the density $d=m/n^k$, matching the $\Omega((\log n / \log(1/d))^{1/(k-1)})$
+    explicitly depends on $n$, $k$, and the density $d=m/n^k$, matching the $(\log n / \log(1/d))^{1/(k-1)}$
     scaling from existence proofs.
-    Our method generalizes the bipartite case work by Mubayi and Turán, using a recursive strategy on link graphs.
-    This provides an efficient, constructive proof for the existence of these growing
-    $\compoverset{k}{t}$ structures, demonstrating they are algorithmically findable in polynomial time.
+    Our method generalizes work on the bipartite case by Mubayi and Turán, using a recursive strategy on link graphs.
 }
 
-%%%%%%%%%
 \begin{document}
     
     \includepdf{portada.pdf}

@@ -9,7 +9,7 @@ consists of a set of vertices and a collection of edges, each being a $k$-elemen
 These structures arise naturally in areas ranging from combinatorics and computer science to data analysis and
 computational biology.
 
-A central theme in graph theory, extending readily to hypergraphs, is extremal (hyper)graph theory.
+A central branch is extremal (hyper)graph theory.
 This field seeks to understand the maximum or minimum size of a combinatorial structure satisfying certain properties.
 For instance, \emph{Turán-type problems} ask how many edges a graph can have, as a function of its number of vertices $n$,
 without containing a specific subgraph $G$.
@@ -20,7 +20,8 @@ Furthermore, the Erdős--Stone--Simonovits Theorem~\cite{erdos1946structure}
 provides asymptotic estimates for $\ex{n}{G}$ for any graph $G$ as $n \to \infty$,
 as a function of the chromatic number of $G$.
 
-These theorems do not extend directly to hypergraphs, as the combinatorial structures become significantly more complex.
+We do not yet understand how to extend these theorems to hypergraphs,
+as the combinatorial structures become significantly more complex.
 The asymptotic behavior of $\ex{n}{G}$ as $n \to \infty$
 is often characterized by the \emph{Turán density}, defined as
 \[
@@ -57,10 +58,10 @@ in dense enough hypergraphs but do not typically provide an efficient algorithm 
 If we focus on a fixed guest $k$-graph $G = (V, E)$ and let the size $n$ of the host $k$-graph $H$ grow,
 this is not a problem.
 A brute-force search over all ordered sets of $|V|$ vertices in $H$ would yield a polynomial-time algorithm
-for finding a copy of $G$ in $H$, provided that we know that $H$ has more that $\ex{n}{G}$ edges.
+for finding a copy of $G$ in $H$.
 However, the situation becomes more complex when we consider the case where $G$ is not fixed, but also grows with $n$.
 We focus on the case where the edge density of $H$ is fixed, and $G = \compoverset{k}{t}$ for some $t$ that grows with $n$.
-Careful analysis in the proof of the Erdős bound shows that this guarantees that $G$ is a subgraph of $H$ for some
+Careful analysis in the proof of Erdős' bound shows that this guarantees that $G$ is a subgraph of $H$ for some
 \begin{equation} \label{eq:t-lower-intro}
     t = \Omega\left( (\log n)^{1/(k-1) }\right).
 \end{equation}
@@ -81,19 +82,19 @@ but in fact reaches the best possible value of $t$ up to a constant factor depen
 can be shown by probabilistic arguments (see~\Cref{prop:probabilistic-lower-bound} and
 the beginning of \Cref{sec:algorithm}, where the algorithm is introduced).
 Our algorithm generalizes the approach used by Mubayi and Turán for the bipartite case ($k=2$)~\cite{MUBAYI2010174}.
-It employs a recursive strategy that mirrors the inductive proof structure of the Erdős bound,
+It employs a recursive strategy that mirrors the inductive proof structure of Erdős' bound,
 iteratively reducing the uniformity $k$ by constructing appropriate link graphs.
 
-This thesis is organized as follows.
+\textbf{Organization of the Thesis:}
 \Cref{sec:preliminaries} formally introduces some families of hypergraphs
 (including complete $k$-partite hypergraphs),
 as well as basic operations like restrictions, links, and blow-ups.
 We also use this section to introduce asymptotic notation, which is used throughout the thesis.
 \Cref{sec:extremal} provides an overview of relevant theoretical results for Turán-type problems,
 proving central theorems like the Turán Theorem (\Cref{thm:turan}), the Kővari--Sós--Turán Theorem (\Cref{thm:kst}),
-the mentioned Erdős bound (\Cref{thm:erdos64}) and a more precise version of it (\Cref{thm:erdos64-constant-density}),
+Erdős' bound (\Cref{thm:erdos64}) and a more precise version of it (\Cref{thm:erdos64-constant-density}),
 thus showing that finding a complete balanced $k$-partite $k$-graph of part sizes in the order of~\eqref{eq:t-lower-intro}
 exists $H$ when it has constant positive density.
 \Cref{sec:algorithm} presents our main algorithm (\Cref{alg:kpartite}),
 provides a rigorous proof of its correctness and analyzes its polynomial runtime complexity (\Cref{thm:kpartite}).
-Finally, \Cref{sec:conclusions} summarizes the main results of this thesis, and lays down some open problems for future research.
+Finally, \Cref{sec:conclusions} summarizes the main results of this thesis, and discusses some open problems for future research.

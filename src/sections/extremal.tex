@@ -416,10 +416,6 @@ in the following way.
     \[
         \ex{n}{\compdots{t_1}{t_k}} \leq \frac{(2k)^k}{k!} \cdot \zaroversetdots{k}{\lceil n / k \rceil}{t_1}{t_k}.
     \]
-    Similar arguments with more careful approximations prove that in fact
-    \[
-        \ex{n}{\compdots{t_1}{t_k}} \leq \left( \frac{k^k}{k!} + o(1) \right) \cdot \zaroversetdots{k}{\lceil n / k \rceil}{t_1}{t_k}.
-    \]
 
 \end{remark}
 
@@ -540,15 +536,15 @@ In 1964, Erdős~\cite{Erods1964} generalized the bound from~\eqref{eq:kst_asympt
 to arbitrary complete partite $k$-graphs in the following theorem.
 
 \begin{theorem}\label{thm:erdos64}
-    For $k \geq 2$,
+    For any integer $k \geq 2$,
     $\ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}$.
 \end{theorem}
 
 This theorem is a consequence of the following lemma.
 
 \begin{lemma}~\label{lm:erdos64-quant}
-    Let $k \geq 2$ be an integer.
-    There exists a constant $\delta = \delta_k > 0$
+    For any integer $k \geq 2$,
+    there exists a constant $\delta = \delta_k > 0$
     such that, for all integers $t \leq w$,
     \[
         \zaroverset{k}{w}{t} < \delta w^{k - \frac{1}{t^{(k-1)}}}.
@@ -579,7 +575,7 @@ This theorem is a consequence of the following lemma.
         Consider, for each set $T \in \binom{W_k}{t}$, the associated \text{$(k-1)$-link}
         \link{H}{T}{k-1}.
         We claim that it does not contain $\compoverset{k-1}{t}$ as a subgraph.
-        If it did (say, $T_1 \times \dots \times T_{k-1} \subset E(\link{H}{T}{k-1})$),
+        Otherwise, say, $T_1 \times \dots \times T_{k-1} \subset E(\link{H}{T}{k-1})$,
         then $T_1 \times \dots \times T_{k-1} \times T \subset F$
         would contradict the assumption that $H$ does not contain $\compoverset{k}{t}$ as a subgraph.
         This means that
@@ -638,14 +634,14 @@ shows that the Turán density of all $k$-partite $k$-graphs is $0$,
 completing the proof of~\Cref{prop:degenerate}.
 Note that the constant factor found in the bound of~\Cref{thm:erdos64}
 does not depend on $t$.
-This lets us restate the theorem in the following stronger form.
+This allows us to restate the theorem in the following stronger form.
 
 \begin{theorem} \label{thm:erdos64-constant-density}
     Let $k \geq 2$ be an integer.
     There exist an integer $n_k$ and a positive constant $\gamma_k$
     such that, for all
     $0 < \epsilon < 1$,
-    all $k$-graphs with more than $\epsilon \binom{n}{k}$ edges
+    all $k$-graphs with $n \geq n_k$ vertices and more than $\epsilon \binom{n}{k}$ edges
     contain $\compoverset{k}{t_n}$ as a subgraph, where
     \[
         t_n = \left\lfloor \left( \frac{\log n}{\log(\gamma_k/\epsilon)} \right)^{\frac{1}{k-1}} \right\rfloor.
@@ -702,19 +698,22 @@ This lets us restate the theorem in the following stronger form.
 
 This is the result we prove constructively in~\Cref{sec:algorithm}.
 It is stronger than~\Cref{thm:erdos64}
-because it bounds the Turán number of partite $k$-graphs uniformly,
+because it bounds the Turán number of balanced partite $k$-graphs uniformly,
 while obtaining the same order of magnitude.
 Indeed, suppose we have a fixed value for $t$.
-We may choose $\epsilon$ such that $t_n \geq t$.
-We only need that
+We may choose $\epsilon$ such that $t_n \geq t$,
+which is equivalent to
 \[
-    \epsilon \geq \gamma_k \cdot n^{-\frac{1}{t^{(k-1)}}},
+    \epsilon \geq \gamma_k \cdot n^{-\frac{1}{t^{(k-1)}}}.
 \]
-that is, the $k$-graph has at least
+For example, the number of edges of the host $k$-graph $H$ can be
 \[
-    \gamma_k \cdot n^{-\frac{1}{t^{(k-1)}}} \cdot \binom{n}{k} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}
+    \left\lceil  \gamma_k \cdot n^{-\frac{1}{t^{(k-1)}}} \cdot \binom{n}{k} \right\rceil,
 \]
-edges.
+which means that
+\[
+    \ex{n}{\compoverset{k}{t}} < \left\lceil  \gamma_k \cdot n^{-\frac{1}{t^{(k-1)}}} \cdot \binom{n}{k} \right\rceil = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}.
+\]
 Qualitatively,~\Cref{thm:erdos64-constant-density} states that
 we may find a blow-up of an edge as large as we wish, if we let the number of vertices grow
 while keeping the density constant.
@@ -758,7 +757,7 @@ The following theorem generalizes this notion to blow-ups of arbitrary $k$-graph
         \[
             F = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H \text{ and } f(V_i) \subset V_i \text{ for all } i\}.
         \]
-        By~\Cref{thm:erdos64-constant-density}, making $n_0$ large enough depending only on $\delta_2$ and $|V|$,
+        By~\Cref{thm:erdos64-constant-density}, making $n_0$ large enough in terms of $\delta_2$ and $|V|$,
         there exists some $\delta_3 = \delta_3(G, \epsilon) = \delta(|V|, \delta_2(G, \epsilon)) > 0$ such that
         $H'$ contains $\compoverset{|V|}{t_n}$ as a subgraph, where
         \[
@@ -801,7 +800,7 @@ gives little information on the growth of their Turán numbers.
 In this case, we are usually satisfied with determining the growth up to a constant factor.
 So far, we have only proven upper bounds for this growth rate.
 General lower bounds are usually obtained by probabilistic arguments,
-which are often weak and worse that lower bounds obtained by other means (See~\Cref{subsec:open-problems}
+which are often weak and worse that lower bounds obtained by other means (see~\Cref{subsec:open-problems}
 for a few examples of this in the literature).
 Here we present an example of a general probabilistic argument that applies to any guest $k$-graph.
 

@@ -367,7 +367,8 @@ which correspond to a positive fraction of all the functions from $V(G)$ to $V(H
 \subsection{Degenerate Turán-Type Problems}\label{subsec:degenerate}
 
 We now turn our attention to Turán problems for $k$-partite $k$-graphs,
-which are the ones that have Turán density $0$ (we will prove so in this section).
+which, as we shall see in this section,
+are the ones that have Turán density $0$.
 All $k$-partite $k$-graphs with part sizes $b_1 \leq a_1, \dots, b_k \leq a_k$
 are contained in $\compdots{a_1}{a_k}$ as subgraphs.
 This allows us to follow the same argument as in~\Cref{prop:extremal}
@@ -396,7 +397,7 @@ in the following way.
 \begin{remark}\label{rem:zar_vs_turan}
     Finding Zarankiewicz numbers can help us upper bound the Turán number of $\compdots{t_1}{t_k}$.
     Assume that $H$ is a $\compdots{t_1}{t_k}$-free $n$-vertex $k$-graph with $m$ edges.
-    pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
+    Pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
     (for example, $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$).
     Let $V_1, \dots, V_k$ be a uniform random partition of $V(H)$ with $|V_i| = v_i$.
     Assuming, for example, that $n \geq 2k$,
@@ -406,7 +407,7 @@ in the following way.
         k! \prod_i \frac{v_i}{n} \geq \frac{k!}{(2k)^k}
     \]
     which is independent of $n$.
-    Therefore, the expected number of edges satisfying this condition is a positive fraction of $m$.
+    Therefore, the expected number of edges satisfying this condition is a positive fraction of the number of edges $m$.
     Applying the first moment method, there is at least one partition retaining $ \frac{k!}{(2k)^k} m$ edges.
     This means that, if the size of each part is greater than $t_i$ (that is, $n \geq k t_i$ for all $i$)
     and $m$ is greater than $z(v_1, \dots, v_k; t_1, \dots, t_k) \cdot \frac{(2k)^k}{k!}$, then
@@ -415,13 +416,18 @@ in the following way.
     \[
         \ex{n}{\compdots{t_1}{t_k}} \leq \frac{(2k)^k}{k!} \cdot \zaroversetdots{k}{\lceil n / k \rceil}{t_1}{t_k}.
     \]
+    Similar arguments with more careful approximations prove that in fact
+    \[
+        \ex{n}{\compdots{t_1}{t_k}} \leq \left( \frac{k^k}{k!} + o(1) \right) \cdot \zaroversetdots{k}{\lceil n / k \rceil}{t_1}{t_k}.
+    \]
 
 \end{remark}
 
-The problem of finding the Zarankiewicz number was first posed by K. Zarankiewicz in 1951 for the
+The problem of finding the Zarankiewicz number was first posed by K. Zarankiewicz % TODO citation
+in 1951 for the
 case of bipartite 2-graphs (that is, finding $z(u, w; s, t)$),
 in terms of finding all-1 sub-matrices in a $0$-$1$ matrix.
-An upper bound for it in the case $u=w, s=t$ was found by Kővari, Sós and Turán~\cite{Kovari1954} in 1954.
+An upper bound for the number in the case $u=w, s=t$ was found by Kővari, Sós and Turán~\cite{Kovari1954} in 1954.
 This was generalized to arbitrary complete
 bipartite 2-graphs by Hyltén--Cavallius~\cite{Hylten1958} in 1958.
 The result is stated and proved here for completeness.
@@ -446,7 +452,7 @@ The result is stated and proved here for completeness.
             u \varphi(z/u) =
             u \binom{z / u}{t},
         \end{equation}
-        where we define
+        where
         \[
             \varphi(x) =
             \begin{cases}
@@ -458,7 +464,7 @@ The result is stated and proved here for completeness.
         as a consequence of Jensen's inequality.
         The other equalities come from the fact that $\varphi(d)$ agrees
         with $\binom{d}{t}$ for all integers $d \geq 0$;
-        and that by our bound on $z$, $z \geq (t-1)u \implies z/u \geq t - 1$.
+        and that by our bound on $z$, the fact that $z \geq (t-1)u$ implies that $z/u \geq t - 1$.
 
         If we had $s$ different elements of $P$ with the same second coordinate $T$,
         they would all necessarily have different first coordinates
@@ -505,18 +511,35 @@ The result is stated and proved here for completeness.
 \end{theorem}
 
 \begin{remark} \label{rem:kst_asymptotic}
-    Following~\Cref{rem:zar_vs_turan}, we can use this bound to get an upper bound on the Turán number of $K(s, t)$:
-    \[
-        \ex{n}{K(s, t)} =
-        \bigO{(s - 1)^{1 / t}\left(\left\lceil\frac{n}{2}\right\rceil - t + 1\right)n^{1 - 1 / t} + (t - 1)\left\lceil\frac{n}{2}\right\rceil} =
+    Following~\Cref{rem:zar_vs_turan}, we can use the bound obtained in~\Cref{thm:kst} to get an upper bound on the Turán number of $K(s, t)$:
+    \begin{equation} \label{eq:kst_asymptotic_noconstant}
+        \ex{n}{K(s, t)} \leq
+        (2 + o(1)) \cdot \left( (s - 1)^{1 / t}
+            \left(\left\lfloor\frac{n}{2}\right\rfloor - t + 1\right)\left\lceil \frac{n}{2} \right\rceil^{1 - 1 / t}
+            + (t - 1)\left\lceil\frac{n}{2}\right\rceil \right) =
         \bigO{n^{2 - 1 / t}}.
-    \]
+    \end{equation}
     Note that if $s < t$, we get the better bound $\bigO{n^{2 - 1 / s}}$ by interchanging the roles of $s$ and $t$.
+    Assuming, without loss of generality, that $t \leq s$, we can sligtly improve the constant factor in the bound
+    by adjusting the part sizes in the bipartite graph $H$ obtained from~\Cref{rem:zar_vs_turan}.
+    If, instead of taking $u = \lceil n/2 \rceil$ and $w = \lfloor n/2 \rfloor$, we take
+    $w = x$ and $u = n - x$,
+    we obtain
+    \begin{align*}
+        \ex{n}{K(s, t)}
+        &\leq \frac{n^2}{2x(n-x)} \left( (s-1)^{1/t}(x - t + 1)(n-x)^{1-1/t} + (t-1)(n-x) \right) \\
+        &\leq \frac{n^2}{2} \left( (s-1)^{1/t}(n-x)^{-1/t} + \frac{t-1}{x} \right).
+    \end{align*}
+    Picking, for example, $x = \Theta\left(n^{2/t}\right)$, we get
+    \[
+        \ex{n}{K(s, t)} \leq \left(\frac{(s-1)^{1/t}}{2} + o(1) \right) n^{2 - 1/t}.
+    \]
 \end{remark}
 
-In 1964, Erdős~\cite{Erods1964} generalized this result to arbitrary complete partite $k$-graphs in the following theorem.
+In 1964, Erdős~\cite{Erods1964} generalized the bound from~\eqref{eq:kst_asymptotic_noconstant}
+to arbitrary complete partite $k$-graphs in the following theorem.
 
-\begin{theorem}[Erdős 1964 Theorem]\label{thm:erdos64}
+\begin{theorem}\label{thm:erdos64}
     For $k \geq 2$,
     $\ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}$.
 \end{theorem}
@@ -898,17 +921,19 @@ using constructions related to finite projective planes that show that
 \[
     \ex{n}{K(2, 2)} = \Omega\left(n^{3/2}\right)
 \]
-(and thus, by \Cref{rem:kst_asymptotic}, $\ex{n}{K(2, t)} = \Theta\left(n^{3/2}\right)$).
+(and thus, by \Cref{rem:kst_asymptotic}, $\ex{n}{K(2, t)} = \Theta\left(n^{3/2}\right)$ for all $t \geq 2$).
 Further work by Füredi~\cite{furedi1996new},
 determined the constant factor, showing that
 \[
-    \ex{n}{K(2, t)} = \left( \frac{1}{2} \sqrt{t} n^{3/2} + o(1) \right)+ n^{3/2}.
+    \ex{n}{K(2, t)} = \left( \frac{\sqrt{t-1}}{2}  n^{3/2} + o(1) \right)+ n^{3/2},
 \]
+matching the upper bound from~\Cref{rem:kst_asymptotic}.
 For $K(3,3)$, Brown~\cite{brown1966graphs} provided a finite geometric construction that gives
 \[
     \ex{n}{K(3, 3)} = \Theta\left(n^{5/3}\right).
 \]
-The Kővári–Sós–Turán theorem is also known to be optimal up to a constant factor for $\ex{n}{K(s,t)}$ when $s \ge t!+1$, a result established
+The Kővári–Sós–Turán theorem is also known to be optimal up to a constant factor for $\ex{n}{K(s,t)}$ when $s \ge t!+1$,
+a result established
 by Kollár, Rónyai, and Szabó~\cite{kollar1996norm} using algebraic constructions known as norm-graphs.
 
 Some progress has been made for other $K(s, t)$ graphs where $s$ and $t$ have similar sizes, particularly for small values.

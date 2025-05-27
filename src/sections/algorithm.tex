@@ -44,15 +44,19 @@ applied with $\alpha = tk$ and $\beta = t^k$,
 we have that
 \[
     dn^k \geq \left( \frac{\beta - 1}{(\beta k!)^{\frac{\beta}{\beta - 1}}}  - \frac{k^k}{n^k} \right) n^{k - \frac{\alpha - k}{\beta - 1}}
-    \geq \left( \frac{t^k - 1}{t^k k!}  - \frac{k^k}{n^k} \right) n^{k - \frac{k(t-1)}{t^k - 1}}
+    \geq \left( \frac{t^k - 1}{t^k k!}  - \frac{k^k}{n^k} \right) n^{k - \frac{k(t-1)}{t^k - 1}}.
 \]
-One can check that for some $d < d' < \frac{1}{k!}$, for $n$ large enough depending only on $d$, and $k$,
-and assuming $t \geq 2$,
-this implies
+This rearranges to
 \[
-    k! d' \geq n^{-\frac{k(t-1)}{t^k - 1}} \geq k! d' \geq n^{-\frac{2k}{t^{(k-1)}}}.
+    k! d \geq \left( 1 - \frac{1}{t^k} - \frac{k! k^k}{n^k} \right) n^{-\frac{k(t-1)}{t^k - 1}}.
 \]
-Rearranging gives
+Assuming that $t \to \infty$ as $n \to \infty$ (otherwise, the value of $t$ in~\eqref{eq:t} gives a better result),
+for some $d < d' < \frac{1}{k!}$, and for $n$ large enough depending only on $d$ we have
+\[
+    k! d' \geq n^{-\frac{k(t-1)}{t^k - 1}} \geq n^{-\frac{2k}{t^{(k-1)}}},
+\]
+Where the last inequality follows from $t \geq 2$.
+This implies that
 \[
     t \leq \left( \frac{2k\log n}{\log (1/(k!d'))} \right)^{\frac{1}{k-1}} = \bigO{t(n, d, k)}.
 \]

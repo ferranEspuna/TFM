@@ -389,8 +389,8 @@ to define the following.
     satisfying $f(T_i) \subset V_i$ for all $i$.
 \end{definition}
 
-From now on, every time we talk about embeddings from one $k$-partite $k$-graph
-$G = (T_1, \dots, T_k; E)$ to another $k$-partite $k$-graph $H = (V_1, \dots, V_k; F)$,
+From now on, every time we talk about embeddings of one $k$-partite $k$-graph
+$G = (T_1, \dots, T_k; E)$ into another $k$-partite $k$-graph $H = (V_1, \dots, V_k; F)$,
 we assume the condition $f(T_i) \subset V_i$.
 Similarly to the case of complete $k$-graphs,
 $H$ contains $\compdots{t_1}{t_k}$ as a subgraph if and only if
@@ -402,7 +402,7 @@ in the following way.
 
 \begin{remark}\label{rem:zar_vs_turan}
     Finding Zarankiewicz numbers can help us upper bound the Turán number of $\compdots{t_1}{t_k}$.
-    Assume that $H$ is a $\compdots{t_1}{t_k}$-free $n$-vertex $k$-graph with $m$ edges.
+    Assume that $H$ is a $k$-graph with $n$ vertices and $m$ edges.
     Pick $v_1, \dots, v_k$ such that $\sum_{i} v_i = n $ and $v_i \sim n/k $
     (for example, $\lfloor n/k \rfloor \leq v_i \leq \lceil n/k \rceil$).
     Let $V_1, \dots, V_k$ be a uniform random partition of $V(H)$ with $|V_i| = v_i$.
@@ -410,11 +410,15 @@ in the following way.
     for any edge $e \in E(H)$, the probability that $e$ is an edge in $\compdots{V_1}{V_k}$ is
     at least
     \[
-        k! \prod_i \frac{v_i}{n} \geq \frac{k!}{(2k)^k}
+        k! \prod_i \frac{v_i}{n} \geq \frac{k!}{(2k)^k}.
     \]
-    which is independent of $n$.
-    Therefore, the expected number of edges satisfying this condition is a positive fraction of the number of edges $m$.
-    Applying the first moment method, there is at least one partition retaining $ \frac{k!}{(2k)^k} m$ edges.
+    Therefore, the expected number of edges satisfying this condition is at least
+    \[
+        m' = \frac{k!}{(2k)^k} m.
+    \]
+    This implies that, for some choice of the partition, the number of edges with one vertex in each part
+    is at least $m'$, so $H$ contains a $k$-partite $k$-graph with part sizes
+    $v_1, \dots, v_k$ and at least $m'$ edges.
     This means that, if the size of each part is greater than $t_i$ (that is, $n \geq k t_i$ for all $i$)
     and $m$ is greater than $z(v_1, \dots, v_k; t_1, \dots, t_k) \cdot \frac{(2k)^k}{k!}$, then
     $H$ must contain $\compdots{t_1}{t_k}$ as a subgraph.
@@ -424,6 +428,8 @@ in the following way.
     \]
 
 \end{remark}
+
+% TODO proofread until here
 
 The problem of finding the Zarankiewicz number was first posed by K. Zarankiewicz~\cite{zarankiewicz1951problemes}
 in 1951 for the

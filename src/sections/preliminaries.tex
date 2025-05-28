@@ -6,7 +6,7 @@ We start with some preliminaries on hypergraphs, which are the main objects of s
 
 \begin{definition}
 
-    For an integer $k \geq 1$ a \emph{$k$-uniform hypergraph} (or \emph{$k$-graph}, for short)
+    For an integer $k \geq 1$, a \emph{$k$-uniform hypergraph} (or \emph{$k$-graph}, for short)
     is a tuple $G = (V, E)$ where $V$ is a finite set
     and $E \subset \binom{V}{k}$.
     We call the elements of $V(G) = V$ its \emph{vertices}
@@ -53,7 +53,7 @@ different uniformity from a subset of vertices of a $k$-graph.
 \begin{definition} \label{def:link}
     Let $G = (V, E)$ be a $k$-graph.
     Let $1 \leq j \leq k - 1$ be an integer and let
-    $T \subset V$ be a set of vertices satisfying $k - j \leq |T|$.
+    $T \subset V$ be a set of vertices.
     The \emph{common $j$-link graph} of $T$ is the $j$-graph $\link{G}{T}{j} = (V \setminus T, E')$, where
     \[
         E' = \left\{Y \in \binom{V \setminus T}{j}\middle\vert \, X \cup Y \in E \text{ for all } X \in \binom{T}{k-j}\right\}.
@@ -96,13 +96,14 @@ to relate $k$-graphs of the same uniformity to each other.
         \label{eq:homomorphism}
         f(E) \subset E(H[f(V)]).
     \end{equation}
-    If such a homomorphism exists
-    and is injective, we say that $f$ is an \emph{embedding} of $G$ on $H$
-    and that $H$ \emph{contains} $G$ as a subgraph.
-    We write $G \subset H$.
+    If such a homomorphism is injective, we say that $f$
+    is an \emph{embedding} of $G$ into $H$.
+    If an embedding of $G$ into $H$ exists, we say that
+    $H$ \emph{contains} $G$ as a subgraph,
+    and we write $G \subset H$.
     Otherwise, we say that $H$ is $G$-\emph{free}.
 
-    If $f$ is an embedding of $G$ in $H$ and
+    If $f$ is an embedding of $G$ in $H$ and, furthermore, it satisfies
     \begin{equation}
         \label{eq:induced_embedding}
         f(E) = E(H[f(V)]),
@@ -171,9 +172,10 @@ One way to impose structure on a $k$-graph is to require that it is \emph{partit
     we say that $r = \chi_{1}(G)$ is the \emph{partiteness} of $G$.
 \end{definition}
 
-The above definition is a special case of the family of chromatic numbers of hypergraphs $\chi_{\gamma}(G)$,
+The above definition is a special case (specifically, $\gamma = 1$)
+of the family of chromatic numbers of hypergraphs $\chi_{\gamma}(G)$,
 where the condition is that an edge of the hypergraph can intersect each part in at most
-$\gamma$ vertices ~\cite{krivelevich1998chromatic}.
+$\gamma$ vertices~\cite{krivelevich1998chromatic}.
 If we set $\gamma = k - 1$, we recover the usual notion of chromatic number $\chi(G)$,
 in which we impose that edges are not fully contained in any part.
 In general, this is much weaker, but the two notions are the same when $k = 2$.
@@ -231,6 +233,11 @@ or, in the $k$-partite case, by
 \[
     K(a_1, \dots, a_k) = K^{(k)}(a_1, \dots, a_k).
 \]
+If a complete $k$-partite $k$-graph has all parts of the same size, we say that it is \emph{balanced}.
+\Cref{fig:222} shows the complete $3$-partite $3$-graph
+with $2$ vertices in each part, $K(2, 2, 2) = K^{(3)}(2, 2, 2)$.
+In contrast, \Cref{fig:k2_222} shows the complete $3$-partite $2$-graph
+$K^{(2)}(2, 2, 2)$.
 
 \begin{figure}[htbp]
     \centering
@@ -242,14 +249,9 @@ or, in the $k$-partite case, by
 \begin{figure}[htbp]
     \centering
     \input{figures/k2_222}
-    \caption{The complete 3-partite 2-graph $K^{(2)}(2, 2, 2)$, with parts $V_1, V_2, V_3$.}
+    \caption{The complete 3-partite 2-graph $K^{(2)}(2, 2, 2) = K(2, 2, 2)$, with parts $V_1, V_2, V_3$.}
     \label{fig:k2_222}
 \end{figure}
-
-\Cref{fig:222} shows the complete $3$-partite $3$-graph
-with $2$ vertices in each part, $K(2, 2, 2) = K^{(3)}(2, 2, 2)$.
-In contrast, ~\Cref{fig:k2_222} shows the complete $3$-partite $2$-graph
-$K^{(2)}(2, 2, 2)$.
 
 \subsection{Blowing Up} \label{subsec:blowup}
 Another interesting operation we can do with $k$-graphs is the following.
@@ -268,10 +270,11 @@ Another interesting operation we can do with $k$-graphs is the following.
 
 In essence, we replace each vertex with a set of $t$ vertices, and each edge with a complete $k$-partite $k$-graph
 on the corresponding parts.
-For example,~\Cref{fig:k2_222} displays the $2$-blowup of the triangle graph \completesuperindex{2}{3},
-with the edges corresponding to the three original edges of the triangle shown in different colors.
-Any complete $p$-partite $k$-graph with equal part sizes can be seen as a blowup of a complete $k$-graph.
-In particular, the complete $k$-graph $\compoverset{k}{t}$ (see~\Cref{fig:222} for an example)
+Any complete balanced $p$-partite $k$-graph can be seen as a blowup of a complete $k$-graph.
+For example, the complete $3$-partite $2$-graph $K^{(2)}(2, 2, 2)$, shown in~\Cref{fig:k2_222},
+can be seen as the $2$-blowup of the complete $2$-graph on $3$ vertices $\completesuperindex{2}{3}$.
+The edges corresponding to each of the three edges in $\completesuperindex{2}{3}$ are shown in different colors in the figure.
+More concretely, the complete $k$-graph $\compoverset{k}{t}$ (see~\Cref{fig:222} for an example)
 is often known as a \emph{blowup of an edge}, because it is a $t$-blowup of the
 $k$-graph on $k$ vertices with a single edge $\completesuperindex{k}{k}$.
 Similarly to the case of complete $k$-graphs and complete $k$-partite $k$-graphs,

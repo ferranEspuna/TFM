@@ -11,9 +11,9 @@ computational biology.
 
 A central branch is extremal (hyper)graph theory.
 This field seeks to understand the maximum or minimum size of a combinatorial structure satisfying certain properties.
-For instance, \emph{Turán-type problems} ask how many edges a graph can have, as a function of its number of vertices $n$,
+For instance, \emph{Turán-type problems} ask how many edges a $k$-graph can have, as a function of its number of vertices $n$,
 without containing a specific subgraph $G$.
-The maximum such number of edges is called the \emph{Turán number} and is denoted $\ex{n}{G}$.
+The maximum such number of edges is called the \emph{Turán number} of $G$ on $n$ vertices and is denoted $\ex{n}{G}$.
 A key result is Turán's Theorem~\cite{Turan1941},
 which determines $\ex{n}{K_r}$ for all $n$ and $r \ge 2$, where $K_r$ is the complete graph on $r$ vertices.
 Furthermore, the Erdős--Stone--Simonovits Theorem~\cite{erdos1946structure}
@@ -27,45 +27,44 @@ is often characterized by the \emph{Turán density}, defined as
 \[
     \pi(G) = \lim_{n \to \infty} \frac{\ex{n}{G}}{\binom{n}{k}}.
 \]
-A fundamental result distinguishes between two regimes: $\pi(G) = 0$ if and only if $G$ is $k$-partite
-(meaning its vertices can be partitioned into $k$ sets such that no edge has two vertices in the same set).
-Determining the exact value of $\pi(G)$ for non-$k$-partite $k$-graphs when $k > 2$
+Determining the exact value of $\pi(G)$ for $k$-graphs when $k > 2$
 is a notoriously difficult open problem for many families,
 including even small hypergraphs like the complete $3$-graph on $4$ vertices,
 $K_4^{(3)}$~\cite{keevash2011hypergraph, razborov20103}.
-
-This thesis focuses on the complementary \emph{degenerate} case, where $\pi(G) = 0$.
+This thesis focuses on the \emph{degenerate} case, where $\pi(G) = 0$.
+A fundamental result states that this is the case if and only if $G$ is $k$-partite
+(meaning its vertices can be partitioned into $k$ sets such that no edge has two vertices in the same set).
 We are particularly interested in the problem of forbidding complete balanced $k$-partite $k$-graphs,
-denoted $\compoverset{k}{t}$, which consists of $k$ disjoint sets of $t$ vertices each,
+denoted $\compoverset{k}{t}$, which consist of $k$ disjoint sets of $t$ vertices each,
 and all $t^k$ edges formed by selecting one vertex from each set.
 The classical Kővari--Sós--Turán Theorem~\cite{Kovari1954, Hylten1958}
 provides the following upper bound for $k=2$.
 \[
     \ex{n}{K(s, t)} = \bigO{n^{2 - \frac{1}{\min\{s, t\}}}}.
 \]
-Erdős~\cite{Erods1964} generalized this type of bound to higher uniformities,
+Erdős~\cite{Erods1964} found an analogous bound for complete balanced $k$-partite $k$-graphs for $k \ge 2$,
 showing that
 \begin{equation} \label{eq:erdos64-intro}
-    \ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}
+    \ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}.
 \end{equation}
-for $k \ge 2$.
 
 Upper bounds for Turán numbers, like~\eqref{eq:erdos64-intro},
 often involve counting or probabilistic arguments,
 which are inherently non-constructive.
 They guarantee the existence of the desired subgraph $\compoverset{k}{t}$
 in dense enough hypergraphs but do not typically provide an efficient algorithm to \emph{find} such a subgraph.
-If we focus on a fixed guest $k$-graph $G = (V, E)$ and let the size $n$ of the host $k$-graph $H$ grow,
-this is not a problem.
-A brute-force search over all ordered sets of $|V|$ vertices in $H$ would yield a polynomial-time algorithm
+If we focus on a fixed guest $k$-graph $G = (V, E)$ and let the number $n$ of vertices of the host $k$-graph $H$ grow,
+this is not considered a problem,
+as a brute-force search over all ordered sets of $|V|$ vertices in $H$ yields a polynomial-time algorithm
 for finding a copy of $G$ in $H$.
 However, the situation becomes more complex when we consider the case where $G$ is not fixed, but also grows with $n$.
-We focus on the case where the edge density of $H$ is fixed, and $G = \compoverset{k}{t}$ for some $t$ that grows with $n$.
-Careful analysis in the proof of Erdős' bound shows that this guarantees that $G$ is a subgraph of $H$ for some
+We focus on the case where the edge density of $H$ is fixed (that is, $H$ has at least $\epsilon \binom{n}{k}$ edges),
+and $G = \compoverset{k}{t}$ for some $t$ that can grow with $n$.
+Careful analysis of the proof of Erdős' bound shows that this guarantees that $G$ is a subgraph of $H$ for some
 \begin{equation} \label{eq:t-lower-intro}
-    t = \Omega\left( (\log n)^{1/(k-1) }\right).
+    t = \delta(\epsilon) (\log n)^{\frac{1}{k-1}}.
 \end{equation}
-Running a greedy search checking all $\binom{n}{kt}$ sets of $kt$
+Running a brute-force search checking all $\binom{n}{kt}$ sets of $kt$
 vertices in $H$ would then \textbf{not} yield a polynomial-time algorithm,
 because $\binom{n}{kt}$ grows superpolynomially with $n$.
 
@@ -94,7 +93,7 @@ We also use this section to introduce asymptotic notation, which is used through
 proving central theorems like the Turán Theorem (\Cref{thm:turan}), the Kővari--Sós--Turán Theorem (\Cref{thm:kst}),
 Erdős' bound (\Cref{thm:erdos64}) and a more precise version of it (\Cref{thm:erdos64-constant-density}),
 thus showing that finding a complete balanced $k$-partite $k$-graph of part sizes in the order of~\eqref{eq:t-lower-intro}
-exists $H$ when it has constant positive density.
+exists in $H$ when it has constant positive density.
 \Cref{sec:algorithm} presents our main algorithm (\Cref{alg:kpartite}),
 provides a rigorous proof of its correctness and analyzes its polynomial runtime complexity (\Cref{thm:kpartite}).
 Finally, \Cref{sec:conclusions} summarizes the main results of this thesis, and discusses some open problems for future research.

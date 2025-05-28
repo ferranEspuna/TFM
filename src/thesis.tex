@@ -110,15 +110,15 @@
 
 \abstracteng{
     Turán-type problems are a central theme in extremal (hyper)graph theory.
-    They ask for the maximum number of edges a $k$-graph $H$ can have,
-    as a function of its number of vertices $n$,
-    without containing a specific subgraph $G$, denoted $\ex{n}{G}$.
+    Given a fixed $k$-graph $G$,
+    they ask for the maximum number $\ex{n}{G}$ of edges a $k$-graph on $n$ vertices can have
+    without containing a specific subgraph $G$.
     This thesis deals with degenerate Turán-type problems, in which $\ex{n}{G} = o(n^k)$.
     In particular, we focus on $t$-blowups of an edge,
     denoted $\compoverset{k}{t}$.
 
     Classical existence theorems by Kővari, Sós, and Turán (for $k=2$) and Erdős (for $k \ge 2$)
-    guarantee that $k$-graphs with constant edge density contain $\compoverset{k}{t}$ where $t$
+    guarantee that $k$-graphs with constant edge density contain $\compoverset{k}{t}$ as a subgraph, where $t$
     grows with the number of vertices $n$ (typically $t$ is on the order of $(\log n)^{1/(k-1)}$).
     These proofs are non-constructive,
     and locating such large subgraphs efficiently
@@ -126,8 +126,7 @@
 
     This thesis presents a deterministic, polynomial-time algorithm that bridges this gap in the constant density case.
     Given a $k$-graph with $n$ vertices and $m$ edges, our algorithm finds a $\compoverset{k}{t}$ where $t$
-    explicitly depends on $n$, $k$, and the density $d=m/n^k$, matching the $(\log n / \log(1/d))^{1/(k-1)}$
-    scaling from existence proofs.
+    explicitly depends on $n$, $k$, and the density $d=m/n^k$, matching the best possible order of magnitude.
     Our method generalizes work on the bipartite case by Mubayi and Turán, using a recursive strategy on link graphs.
 }
 

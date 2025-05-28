@@ -180,7 +180,6 @@ Because of the difficulty of finding exact Turán numbers for $k$-graphs,
 we usually look for asymptotic approximations of them.
 In particular, we are interested in how the expression
 $\ex{n}{G}$ grows with $n$ for any fixed $k$-graph $G$.
-This is known as the \emph{Turán problem} for the $k$-graph $G$.
 For an example, we turn to the complete $2$-graph $\completesuperindex{2}{r}$,
 for which we already have an exact formula.
 In expression~\eqref{eq:turan}, we can see that
@@ -196,14 +195,15 @@ Note that the maximum number of edges in a $2$-graph on $n$ vertices is
     \binom{n}{2} = \frac{1}{2} n^2 + \mathcal{O}(n).
 \]
 The two quantities are comparable as they are both quadratic in $n$.
-This allows us to restate equation~\eqref{eq:turan_asymptotic} as
+This allows us to reinterpret equation~\eqref{eq:turan_asymptotic} as
 \begin{equation} \label{eq:turan_asymptotic_density}
     \ex{n}{\completesuperindex{2}{r}} =
     \frac{r-2}{r-1} \binom{n}{2} + \mathcal{O}(n) =
     \left(1 - \frac{1}{r-1} + o(1)\right)\binom{n}{2},
 \end{equation}
 which means that, asymptotically, the maximum \emph{edge density} of a $2$-graph on $n$ vertices
-without $K_r^{(2)}$ as a subgraph is $(r-2)/(r-1) < 1$, so we must exclude a nontrivial fraction of edges
+without $K_r^{(2)}$ as a subgraph is $(r-2)/(r-1) < 1$.
+We must exclude a nontrivial fraction of edges
 to avoid any particular complete $2$-graph.
 The following general theorem greatly restricts the growth of Turán numbers
 for all $k$-graphs.
@@ -214,8 +214,7 @@ for all $k$-graphs.
     \begin{equation} \label{eq:turan_density}
         \pi(G) = \lim_{n \to \infty} \frac{\ex{n}{G}}{\binom{n}{k}}
     \end{equation}
-    exists and is between $0$ and $1$.
-    It is called it the \emph{Turán density} of $G$.
+    exists and is in $[0, 1)$.
     \begin{proof}
         The sequence
         \[
@@ -235,7 +234,7 @@ for all $k$-graphs.
         $G$ as a subgraph.
         For each vertex $w \in W$, the $k$-graph $H_w = H[W \setminus \{w\}]$ has $n$ vertices
         and does not contain $G$ as a subgraph.
-        Therefore, it must contain at most $\ex{n}{G}$ edges.
+        Therefore, it contains at most $\ex{n}{G}$ edges.
         Consider the set
         \[
             \mathcal{P} = \left\{ (w, e) \in W \times F \mid e \in E(H_w) \right\}.
@@ -264,6 +263,7 @@ for all $k$-graphs.
     \end{proof}
 \end{theorem}
 
+We call the limit $\pi(G)$ the \emph{Turán density} of $G$.
 We can now summarize expression~\eqref{eq:turan_asymptotic_density} as follows.
 \begin{corollary} \label{cor:turan_density_kr}
     The Turán density of the complete $2$-graph $\completesuperindex{2}{r}$ is
@@ -332,23 +332,25 @@ which correspond to a positive fraction of all the functions from $V(G)$ to $V(H
     \begin{proof}
         Pick $t(G, \epsilon)$ large enough so that
         $\ex{t}{G} \leq \left(\pi(G) + \frac{\epsilon}{2}\right) \binom{t}{k}$.
-        Let $m \geq \left(\pi(G) + \epsilon \right) \binom{n}{k}$
-        be the number of edges of $H$.
+        Let $H$ = $(W, F)$ be a $k$-graph with $n \geq t$ vertices and
+        $m \geq \left(\pi(G) + \epsilon \right) \binom{n}{k}$
+        edges.
         Notice that
         \[
-            \binom{n-k}{t-k}m = \sum_{T \in \binom{V}{t}} |E(H[T])|.
+            \binom{n-k}{t-k}m = \sum_{T \in \binom{W}{t}} |E(H[T])|.
         \]
-        This is because, for each edge in $H$, we can choose a set $T \subset V$ containing it in
+        This is because, for each edge of $e \in F$ of $H$, we can choose a set $T \subset W$ containing it in
         $\binom{n-k}{t-k}$ ways.
         We define
         \[
-            P = \left\{ T \in \binom{V}{t} \middle| E(H[T]) > \left(\pi(G) + \frac{\epsilon}{2}\right) \binom{t}{k} \right\}.
+            P = \left\{ T \in \binom{W}{t} \middle| E(H[T]) > \left(\pi(G) + \frac{\epsilon}{2}\right) \binom{t}{k} \right\}.
         \]
         If $T \in \binom{V}{t}$, the number of edges in $H[T]$ is at most $\binom{t}{k}$.
         Therefore,
         \[
             \binom{n-k}{t-k}(\pi(G) + \epsilon)\binom{n}{k}
             \leq \binom{n-k}{t-k}m
+            = \sum_{T \in \binom{W}{t}} |E(H[T])|
             \leq |P| \binom{t}{k} + \left(\binom{n}{t} - |P|\right) \left(\pi(G) + \frac{\epsilon}{2}\right) \binom{t}{k}.
         \]
         Rearranging and applying standard binomial coefficient identities, we can bound $|P|$ as

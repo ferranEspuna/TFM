@@ -38,75 +38,80 @@ contain $G$ as a subgraph.
 \end{proposition}
 
 We call the integer $\ex{n}{G}$ the \emph{Turán number} of $G$ on $n$ vertices.
-The Turán number is increasing both in $n$ and under $k$-graph inclusion.
-To see this, suppose that $H$ is a $k$-graph with $n$ vertices and $\ex{n}{G}$ edges.
-The first property can be seen by adding to $H$ a new vertex $v$ with no edges containing it, obtaining $H'$.
-If $f: G \to H$ is an embedding and $v$ has a preimage $x$, it must be a vertex in $G$ with degree $0$,
-so it can be replaced by any other vertex $w \neq v$ in $v(H)$ outside the image of $f$.
-Restricting this new map to $H$, we get that $G \subset H$, in contradiction to our assumption.
-For the second, suppose that $G \subset G'$.
-Because $H$ is $G$-free, it is also $G'$-free, which means that it has at most $\ex{n}{G'}$ edges.
-Therefore, $\ex{n}{G} \leq \ex{n}{G'}$.
-As a consequence of this, we also get that the Turán number is invariant under isomorphism of $G$.
 
-There are very few $k$-graphs $G$ for which an exact formula for $\ex{n}{G}$ is known.
+\begin{remark}
+    The Turán number is increasing both in $n$ and under $k$-graph inclusion.
+    To see this, suppose that $H$ is a $G$-free $k$-graph with $n$ vertices and $\ex{n}{G}$ edges.
+    The first property can be seen by adding to $H$ a new vertex $v$ with no edges containing it, obtaining $H'$.
+    If $f: G \to H'$ is an embedding and $v$ has a preimage $x$, it must be a vertex of $G$ with degree $0$,
+    so it can be replaced by any other vertex $w \neq v$ in $v(H)$ outside the image of $f$, obtaining another embedding $f': G \to H'$.
+    Restricting this new map to $H$ (which we can do because its image is contained in the vertex set of $H$),
+    we get that $G \subset H$, in contradiction to our assumption.
+    Therefore, $H'$ is also $G$-free and has $\ex{n}{G}$ edges, so $\ex{n+1}{G} \geq \ex{n}{G}$.
+    To see that the Turán number is increasing under $k$-graph inclusion,
+    suppose that $G \subset G'$.
+    Because $H$ is $G$-free, it is also $G'$-free, which means that it has at most $\ex{n}{G'}$ edges.
+    Therefore, $\ex{n}{G} \leq \ex{n}{G'}$.
+    As a consequence of this, we also get that the Turán number is invariant under isomorphism of $G$.
+\end{remark}
+
+There are very few $k$-graphs $G$ such that an exact formula for $\ex{n}{G}$ is known.
 Of these, the most famous family of examples are the complete $2$-graphs $\completesuperindex{2}{r}$,
 for which Turán numbers were first studied by Turán~\cite{Turan1941} in 1941.
 The result is the following.
 
 \begin{theorem}[Turán's Theorem]
     \label{thm:turan}
-    Let $r > 2$ be an integer and let $n \geq r$.
+    Let $n \geq r > 2$ be integers.
     Let $a_1, \dots, a_{r-1}$ be integers such that $a_1 + \dots + a_{r-1} = n$
     and $\lfloor n / (r-1) \rfloor \leq a_i \leq \lceil n / (r-1) \rceil$ for all $i$.
     Then
     \begin{equation} \label{eq:turan}
-        \ex{n}{\completesuperindex{2}{r}} = \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y
+        \ex{n}{\completesuperindex{2}{r}} = \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y.
     \end{equation}
-    Furthermore, if $G$ is a $2$-graph with $\ex{n}{\completesuperindex{2}{r}}$ edges
-    and $G$ does not contain $K_r^{(2)}$ as a subgraph, then
+    Furthermore, if $H$ is a $K_r^{(2)}$-free $2$-graph with $\ex{n}{\completesuperindex{2}{r}}$ edges, then
     \[
-        G\cong \compdotssuperindex{2}{a_1}{a_{r-1}}.
+        H\cong \compdotssuperindex{2}{a_1}{a_{r-1}}.
     \]
 
 \end{theorem}
 
 Before the \proofref{thm:turan} of Turán's theorem, we introduce two lemmas.
 
-\begin{lemma}\label{lem:same_degree}
-    Let $G = (V, E)$ be a $2$-graph with $n$ vertices and
+\begin{lemma}\label{lem:same_degree} % checked and changed to H
+    Let $H = (V, E)$ be a $K_r^{(2)}$-free $2$-graph with $n$ vertices and
     $\ex{n}{\completesuperindex{2}{r}}$ edges.
-    If $x, y \in V$ are different vertices and $\{x, y\} \notin E$, then $d_G(x) = d_G(y)$.
+    If $x, y \in V$ are different vertices and $\{x, y\} \notin E$, then $d_H(x) = d_H(y)$.
     \begin{proof}
         We argue by contradiction.
-        Suppose, without loss of generality, that $d_G(x) > d_G(y)$.
-        We argue that we can construct a $2$-graph $G'$ with $n$ vertices
-        and more edges than $G$ that does not contain $K_r^{(2)}$ as a subgraph,
+        Suppose, without loss of generality, that $d_H(x) > d_H(y)$.
+        We argue that we can construct a $2$-graph $H'$ with $n$ vertices
+        and more edges than $H$, and which is also $K_r^{(2)}$-free,
         contradicting the definition of
         the Turán number.
 
-        The new graph $G' = (E', V')$ is constructed from $G$ by removing from $V$ the vertex $y$
+        The new graph $H' = (E', V')$ is constructed from $H$ by removing from $V$ the vertex $y$
         (and all edges containing it)
         and adding a copy $x'$ of $x$, connected to the same vertices (that is, $\{x', v\} \in E'$
         if and only if $\{x, v\} \in E$).
-        Clearly, $|V'| = |V|$ and $|E'| = E - d_G(y) + d_G(x) > |E|$.
-        To see that $G'$ does not contain $K_r^{(2)}$ as a subgraph,
-        suppose that $G'[T']$ is complete for some $T' \subset V'$ of size $r$.
-        Because $\{x, x'\}$ is not an edge in $G'$, $T'$ cannot contain both $x$ and $x'$.
-        Because the edges not containing $x'$ are the same as in $G$, which contains no $K_r^{(2)}$,
+        Clearly, $|V'| = |V|$ and $|E'| = E - d_H(y) + d_H(x) > |E|$.
+        To see that $H'$ does not contain $K_r^{(2)}$ as a subgraph,
+        suppose that $H'[T']$ is complete for some $T' \subset V'$ of size $r$.
+        Because $\{x, x'\}$ is not an edge in $H'$, $T'$ cannot contain both $x$ and $x'$.
+        Because the edges not containing $x'$ are the same as in $H$, which contains no $K_r^{(2)}$,
         we deduce that $T'$ contains $x'$ and therefore does not contain $x$.
         Now, let $T = (T' \setminus \{x'\}) \cup \{x\} \subset V$, also of size $r$.
-        We argue that the graph $G[T] = G'[T]$ must be complete, reaching a contradiction.
+        We argue that the graph $H[T] = H'[T]$ must be complete, reaching a contradiction.
         If it were not, then there would exist $v \in T, v \neq x$, such that $\{x, v\} \notin E$.
         This implies that $\{x', v\} \notin E'$, but $v \in T' \setminus \{x'\}$,
-        which contradicts our assumption that $G'[T']$ is complete.
+        which contradicts our assumption that $H'[T']$ is complete.
     \end{proof}
 \end{lemma}
 
-\begin{lemma} \label{lem:turan_complete_partite}
-    Let $G = (V, E)$ be a $2$-graph with $n$ vertices and
+\begin{lemma} \label{lem:turan_complete_partite} % checked and changed to H
+    Let $H = (V, E)$ be a $K_r^{(2)}$-free $2$-graph with $n$ vertices and
     $\ex{n}{\completesuperindex{2}{r}}$ edges.
-    Then, $G$ is a complete $p$-partite graph for some $p \geq 2$.
+    Then, $H$ is a complete $p$-partite graph for some $p \geq 2$.
     \begin{proof}
         Equivalently, we show that the relation defined by non-adjacency on $V$ (that is, $x \sim y$ when
         $\{x, y\} \notin E$) is an equivalence relation, so we can divide $V$ into equivalence classes
@@ -115,46 +120,45 @@ Before the \proofref{thm:turan} of Turán's theorem, we introduce two lemmas.
         The reflexivity and symmetry of the relation are clear.
         Suppose, by way of contradiction, that there exist $x, y, z \in V$ such that
         $x \sim z$ and $y \sim z$, but $x \nsim y$.
-        We now construct a different graph $G'$ with the same number of vertices as $G$
-        that also does not contain $K_r^{(2)}$ as a subgraph, reaching a contradiction.
-        $G'$ is constructed from $G$ by removing the vertices
+        We now construct a different graph $H' = (V', E')$ with the same number of vertices as $H$
+        that is also $K_r^{(2)}$-free, reaching a contradiction.
+        $H'$ is constructed from $H$ by removing the vertices
         $x$ and $y$ (and all the associated edges) and adding the two new vertices
         $z_1$ and $z_2$ and the edges $\{\{v, z_i\} \mid \{v, z\} \in E, i \in \{1, 2\}\}$.
 
-        First, we show that $G'$ contains no embedding of $K_r^{(2)}$.
+        First, we show that $H'$ contains no embedding of $K_r^{(2)}$.
         We make a similar argument as in the proof of~\Cref{lem:same_degree}.
-        By way of contradiction, suppose that $G'[T']$ is complete for some $T' \subset V'$ of size $r$.
-        Because $z$, $z_1$ and $z_2$ pairwise non-edges of $G'$, only one of them can be
+        By way of contradiction, suppose that $H'[T']$ is complete for some $T' \subset V'$ of size $r$.
+        Because $z$, $z_1$ and $z_2$ pairwise non-edges of $H'$, only one of them can be
         an image of a vertex in $K_r^{(2)}$.
-        However, $G'[V \setminus \{x, y\}] \subset G$ has no embedding of $K_r^{(2)}$,
+        However, $H'[V \setminus \{x, y\}] \subset H$ has no embedding of $K_r^{(2)}$,
         so at least one of the vertices in $K_r^{(2)}$ must be mapped to $z_1$ or $z_2$.
         Without loss of generality, we can write $T' = \{x_1, x_2, x_3, \dots, x_{r-1}, z_1\}$,
         with $x_i \notin \{z_2, z\}$ for all $i$.
-        However, $\{z_1, x_i\}$ is an edge in $G'$ if an only if $\{z, x_i\}$ is an edge in $G$,
-        which means that $G'[\{x_1, x_2, x_3 \dots, x_{r-1}, z\}] = G[\{x_1, x_2, x_3 \dots, x_{r-1}, z\}]$ is complete,
+        However, $\{z_1, x_i\}$ is an edge in $H'$ if an only if $\{z, x_i\}$ is an edge in $H$,
+        which means that $H'[\{x_1, x_2, x_3 \dots, x_{r-1}, z\}] = H[\{x_1, x_2, x_3 \dots, x_{r-1}, z\}]$ is complete,
         contradicting our assumption.
 
-        Now, we show that $G'$ has more edges than $G$.
-        By~\Cref{lem:same_degree}, $d_G(x) = d_G(z)$ and $d_G(y) = d_G(z)$,
-        so the three vertices $x, y, z$ have the same degree $d$ in $G$.
+        Now, we show that $H'$ has more edges than $H$.
+        By~\Cref{lem:same_degree}, $d_H(x) = d_H(z)$ and $d_H(y) = d_H(z)$,
+        so the three vertices $x, y, z$ have the same degree $d$ in $H$.
         The edges containing $x$ and the edges containing $y$ intersect at exactly the edge $\{x, y\} \in E$.
-        Therefore, by removing all of them from $G$ we are removing $2d - 1$ edges.
+        Therefore, by removing all of them from $H$ we are removing $2d - 1$ edges.
         Furthermore, for each edge containing $z$ we are adding two edges,
         and these sets of edges do not intersect because $z$ is not adjacent to $x$ or $y$ (so $\{z_1, z_2\} \notin E'$).
-        We conclude that $G'$ has $|E'| = |E| - (2d - 1) + 2d = |E| + 1 > |E| $ edges, as desired.
+        We conclude that $H'$ has $|E'| = |E| - (2d - 1) + 2d = |E| + 1 > |E| $ edges, as desired.
     \end{proof}
 \end{lemma}
 
 Now we are ready to prove Turán's theorem.
-\begin{delayedproof}{thm:turan}
-    We have shown in~\Cref{lem:turan_complete_partite} that $G = (V_1, \dots V_p; E)$ is complete.
+\begin{delayedproof}{thm:turan} % checked and changed to H
+    We have shown in~\Cref{lem:turan_complete_partite} that $H = (V_1, \dots V_p; E)$ is complete.
     In fact, we can set $p = r - 1$:
-    If $p < r - 1$, we can always add empty parts to $G$; and if it has more than $r - 1$ nonempty parts
-    (without loss of generality, $x_1 \in V_1, \dots, x_r \in V_r$), then $G[\{x_1, \dots, x_r\}]$ is complete,
+    If $p < r - 1$, we can always add empty parts to $H$; and if it has more than $r - 1$ nonempty parts
+    (without loss of generality, $x_1 \in V_1, \dots, x_r \in V_r$), then $H[\{x_1, \dots, x_r\}]$ is complete,
     which is a contradiction.
     Furthermore, any complete $(r-1)$-partite $2$-graph is $\completesuperindex{2}{r}$-free,
     because $\completesuperindex{2}{r}$ is not $(r-1)$-partite.
-
     This means that we only need to show that the choice of the part sizes $a_1, \dots, a_{r-1}$ summing to $n$
     in the statement maximizes the expression~\eqref{eq:turan}.
     The condition that $\lfloor n / (r-1) \rfloor \leq a_i \leq \lceil n / (r-1) \rceil$ for all $i$
@@ -169,7 +173,7 @@ Now we are ready to prove Turán's theorem.
         =& \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y - a_2 + a_1 - 1
         > \sum_{\{x, y\} \in \binom{[r-1]}{2}} a_x \cdot a_y,
     \end{align*}
-    in contradiction to the number of edges in $G$ being maximal.
+    in contradiction to the number of edges in $H$ being maximal.
 \end{delayedproof}
 
 Because of the difficulty of finding exact Turán numbers for $k$-graphs,

@@ -429,8 +429,6 @@ in the following way.
 
 \end{remark}
 
-% TODO proofread until here
-
 The problem of finding the Zarankiewicz number was first posed by K. Zarankiewicz~\cite{zarankiewicz1951problemes}
 in 1951 for the
 case of bipartite 2-graphs (that is, finding $z(u, w; s, t)$),
@@ -472,7 +470,8 @@ The result is stated and proved here for completeness.
         as a consequence of Jensen's inequality.
         The other equalities come from the fact that $\varphi(d)$ agrees
         with $\binom{d}{t}$ for all integers $d \geq 0$;
-        and that by our bound on $z$, the fact that $z \geq (t-1)u$ implies that $z/u \geq t - 1$.
+        and that by our bound on $z$, the fact that $z \geq (t-1)u$ implies that $z/u \geq t - 1$,
+        so $\varphi(z/u) = \binom{z/u}{t}$.
 
         If we had $s$ different elements of $P$ with the same second coordinate $T$,
         they would all necessarily have different first coordinates
@@ -489,7 +488,7 @@ The result is stated and proved here for completeness.
             u \binom{z / u}{t} \leq (s - 1) \binom{w}{t}.
         \end{equation}
         Now, because we can see $E$ as a subset of $U \times W$,
-        we get $z \leq uw \implies z/u \leq w$.
+        we get $z \leq uw$, so $z/u \leq w$.
         We claim that this implies that
         \begin{equation} \label{eq:kst_binom}
             \frac{(z/u - (t - 1))^t}{\binom{z/u}{t}} \leq \frac{(w - (t - 1))^t}{\binom{w}{t}},
@@ -499,7 +498,7 @@ The result is stated and proved here for completeness.
             g(x) = \frac{(x - (t - 1))^t}{\binom{x}{t}}
         \]
         is increasing for $x \geq t - 1$.
-        To see this, we expand the denominator into a product and absorb the $(x - (t - 1))^t$ factor.
+        To see this, we expand the denominator into a product and absorb the $(x - (t - 1))^t$ factor into it.
         \begin{equation} \label{eq:g_expansion}
             g(x) = \prod_{i=0}^{t-1} (x-(t-1)) \frac{i+1}{x-i} = t! \prod_{i=0}^{t-1} \frac{x-(t-1)}{x-i}.
         \end{equation}

@@ -70,9 +70,9 @@ because $\binom{n}{kt}$ grows superpolynomially with $n$.
 
 The main contribution of this thesis is bridging this gap by providing an efficient algorithmic solution.
 We develop and analyze a deterministic, polynomial-time algorithm that,
-given a $k$-graph $G$ with $n$ vertices and at least $dn^k$ edges (noting that $\binom{n}{k} \sim \frac{n^k}{k!}$
+given a $k$-graph $H$ with $n$ vertices and at least $dn^k$ edges (noting that $\binom{n}{k} \sim \frac{n^k}{k!}$
 so $dn^k \sim \epsilon \binom{n}{k}$ for $\epsilon = k! d$)
-finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$ within $G$, where
+finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$ within $H$, where
 \[
     \left\lfloor \left(  \frac{\log \left(n/2^{(k-1)}\right)}{\log (3/d)} \right)^{\frac{1}{k-1}} \right\rfloor,
 \]
@@ -93,8 +93,8 @@ We also use this section to introduce asymptotic notation, which is used through
 \Cref{sec:extremal} provides an overview of relevant theoretical results for Turán-type problems,
 proving central theorems like the Turán Theorem (\Cref{thm:turan}), the Kővari--Sós--Turán Theorem (\Cref{thm:kst}),
 Erdős' bound (\Cref{thm:erdos64}) and a more precise version of it (\Cref{thm:erdos64-constant-density}),
-thus showing that finding a complete balanced $k$-partite $k$-graph of part sizes in the order of~\eqref{eq:t-lower-intro}
-exists in $H$ when it has constant positive density.
+thus showing the existence a complete balanced $k$-partite subgraph of part sizes in the order of~\eqref{eq:t-lower-intro}
+in $H$ when it has constant positive density.
 \Cref{sec:algorithm} presents our main algorithm (\Cref{alg:kpartite}),
 provides a rigorous proof of its correctness and analyzes its polynomial runtime complexity (\Cref{thm:kpartite}).
 Finally, \Cref{sec:conclusions} summarizes the main results of this thesis, and discusses some open problems for future research.

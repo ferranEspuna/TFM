@@ -544,18 +544,20 @@ The result is stated and proved here for completeness.
 \end{remark}
 
 In 1964, Erdős~\cite{Erods1964} generalized the bound from~\eqref{eq:kst_asymptotic_noconstant}
-to arbitrary complete partite $k$-graphs in the following theorem.
+to arbitrary complete balanced $k$-partite $k$-graphs in the following theorem.
 
 \begin{theorem}\label{thm:erdos64}
     For any integer $k \geq 2$,
     $\ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}}$.
 \end{theorem}
 
-This theorem is a consequence of the following lemma.
+This theorem is a consequence of the following
+lemma dealing with Zarankiewicz numbers,
+so we defer its~\proofref{thm:erdos64} to after it.
 
 \begin{lemma}~\label{lm:erdos64-quant}
     For any integer $k \geq 2$,
-    there exists a constant $\delta = \delta_k > 0$
+    there exists a constant $\delta = \delta_k > 1$
     such that, for all integers $t \leq w$,
     \[
         \zaroverset{k}{w}{t} < \delta w^{k - \frac{1}{t^{(k-1)}}}.
@@ -594,9 +596,9 @@ This theorem is a consequence of the following lemma.
             \link{H}{T}{k-1} \text{ has at most $z'$ edges for all } T \in \binom{W_k}{t},
         \end{equation}
         where
-        \[
+        \begin{equation} \label{eq:z-prime}
             z' = \zaroverset{k-1}{w}{t} \leq \delta_{k-1} w^{k - 1 - \frac{1}{t^{(k-2)}}}.
-        \]
+        \end{equation}
         Now, consider the bipartite graph $H' = (U, W; F')$, where
         \begin{align*}
             U &= W_1 \times \dots \times W_{k-1}, \\
@@ -604,11 +606,11 @@ This theorem is a consequence of the following lemma.
             F' &= \{(X, y) \in U \times W \mid X \cup \{y\} \in F\}.
         \end{align*}
         Condition~\eqref{eq:conditionlink} is equivalent to saying that
-        there is no embedding of $K(z' + 1, t)$ onto $H'$ respecting the partitions.
+        there is no embedding of $K(z' + 1, t)$ into $H'$ respecting the partitions.
         Furthermore, $H'$ has the same number of edges as $H$.
         Finally, we invoke~\Cref{thm:kst} with
         ${u = |U| = w^{k-1}}$ and
-        ${s = z' + 1}$ to get
+        ${s = z' + 1}$ (using the bound from~\eqref{eq:z-prime}) to get
         \begin{equation} \label{eq:erdos64_induction}
             \delta w^{k - \frac{1}{t^{(k-1)}}} \leq
             |E| = |E'| \leq
@@ -616,7 +618,9 @@ This theorem is a consequence of the following lemma.
         \end{equation}
         Approximating, this implies that
         \[
-            \delta w^{k - \frac{1}{t^{(k-1)}}} < \delta_{k-1}^{1 / t} w^{k - \frac{1}{t^{(k-1)}}} + tw^{k-1} \leq \delta_{k-1}w^{k - \frac{1}{t^{(k-1)}}} + tw^{k-1}.
+            \delta w^{k - \frac{1}{t^{(k-1)}}}
+            < \delta_{k-1}^{1 / t} w^{k - \frac{1}{t^{(k-1)}}} + tw^{k-1}
+            < \delta_{k-1}w^{k - \frac{1}{t^{(k-1)}}} + tw^{k-1}.
         \]
         Similarly as before, one can check that $tw^{k-1} < 2w^{k-\frac{1}{t^{(k-1)}}}$.
         Therefore, we reach a contradiction whenever $\delta \geq \delta_{k-1} + 2$,
@@ -636,7 +640,7 @@ The proof of the Erdős 1964 Theorem is now straightforward.
         \ex{n}{\compoverset{k}{t}}
         \leq \frac{(2k)^k}{k!} \cdot \zaroverset{k}{\lceil n / k \rceil}{t}
         \leq 2k \cdot \frac{(2k)^k}{k!} \cdot \left\lceil \frac{n}{k} \right\rceil^{k - \frac{1}{t^{(k-1)}}}
-        \leq \frac{k \cdot 4^k}{(k-1)!} \cdot n^{k - \frac{1}{t^{(k-1)}}}. \qedhere
+        \leq \frac{k \cdot 2^{2k+1}}{(k-1)!} \cdot n^{k - \frac{1}{t^{(k-1)}}}. \qedhere
     \]
 \end{delayedproof}
 
@@ -662,7 +666,7 @@ This allows us to restate the theorem in the following stronger form.
         Suppose that $t_n \geq 2$.
         Let us define
         \[
-            c_k = \frac{k \cdot 4^k}{(k-1)!}.
+            c_k = \frac{k \cdot 2^{2k+1}}{(k-1)!}.
         \]
         In the \proofref{thm:erdos64} of~\Cref{thm:erdos64}, we have shown that
         \[
@@ -670,28 +674,36 @@ This allows us to restate the theorem in the following stronger form.
         \]
         as long as $n \geq t_n k$.
         Suppose that $H$ is a $k$-graph with $n$ vertices and $m \geq \epsilon \binom{n}{k}$ edges.
-        Suppose, furthermore, that $n \geq t_n k$
-        (we will later show that this condition can be made true independently of $n$ for our chosen $t_n$).
+        Suppose, furthermore, that the condition $n \geq t_n k$ holds
+        (we will later show that this condition can be made true independently of $n$ for our choice of $t_n$).
         This condition also implies that the number of edges of $H$ is at least
         \[
-            \epsilon \binom{n}{k} \geq \epsilon \frac{(n - k + 1)^k}{k!} \geq \epsilon \left( \frac{1}{2} \right)^k \frac{1}{k!} n^{k} = (e_k  \cdot \epsilon) n^{k},
+            \epsilon \binom{n}{k}
+            \geq \epsilon \frac{(n - k + 1)^k}{k!}
+            \geq \epsilon \left( \frac{1}{2} \right)^k \frac{1}{k!} n^{k}
+            = (e_k  \cdot \epsilon) n^{k},
         \]
         where $e_k = \frac{1}{k! \cdot 2^k}$ does not depend on $n$.
         We pick, for example,
         \[
-             \gamma_k = \frac{2c_k}{e_k} = 2 \cdot 8^k \cdot k^2,
+             \gamma_k
+             = \frac{2c_k}{e_k}
+             = 2^{3k+2} \cdot k^2,
         \]
         so that
         \[
-            \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{(k-1)}}} \leq c_k n^k  \frac{\epsilon}{\gamma_k}
-            = \frac{e_k \cdot \epsilon}{2} n^{k} \leq  \frac{|E(H)|}{2} < |E(H)|,
+            \ex{n}{\compoverset{k}{t_n}} \leq c_k n^{k - \frac{1}{t_n^{(k-1)}}}
+            \leq c_k n^k  \frac{\epsilon}{\gamma_k}
+            = \frac{e_k \cdot \epsilon}{2} n^{k}
+            \leq  \frac{|E(H)|}{2} < |E(H)|,
         \]
         which guarantees that $H$ contains $\compoverset{k}{t_n}$ as a subgraph.
         The only thing left to prove is that, for this choice of $t_n$, there exists $n_k$
         such that $n \geq n_k$ implies $n \geq t_n k$.
         Indeed, we can pick any
         \[
-            n_k \geq \left( k \left(\frac{1}{\log(\gamma_k)} \right)^{\frac{1}{k-1}}\right)^2.
+            n_k
+            \geq \left( k \left(\frac{1}{\log(\gamma_k)} \right)^{\frac{1}{k-1}}\right)^2.
         \]
         Using that $\gamma_k / \epsilon > \gamma_k$ (because $\epsilon < 1$),
         that $\gamma_k > 1$ (which can be easily checked from the definitions)
@@ -699,7 +711,7 @@ This allows us to restate the theorem in the following stronger form.
         \[
             t_n k
             = \left\lfloor \left( \frac{\log n}{\log(\gamma_k / \epsilon)} \right)^{\frac{1}{k-1}} \right\rfloor k
-            < \left\lfloor \left( \frac{\log n}{\log\gamma_k} \right)^{\frac{1}{k-1}} \right\rfloor k
+            < \left( \frac{\log n}{\log\gamma_k} \right)^{\frac{1}{k-1}} k
             <   \left( \frac{1}{\log \gamma_k} \right)^{\frac{1}{k-1}} k \sqrt{n}
             \leq \left( \frac{1}{\log \gamma_k} \right)^{\frac{1}{k-1}} k \frac{n}{\sqrt{n_k}}
             \leq n. \qedhere
@@ -751,7 +763,7 @@ The following theorem generalizes this notion to blow-ups of arbitrary $k$-graph
         Consider, as in~\Cref{rem:zar_vs_turan},
         a random partition of the vertices of $H$ into $|V|$ parts of size
         $\left\lfloor n / |V| \right\rfloor  \leq |V_i| \leq \left\lceil n / |V|  \right\rceil$.
-        Suppose that we have an embedding $f$ of $G$ in $H$.
+        Suppose that we have an embedding $f$ of $G$ into $H$.
         Assuming that $n \geq n_0 \geq 2|V|$,
         the probability that for all vertices $v_i \in V$, $f(v_i) \in V_i$ is
         \[
@@ -766,14 +778,21 @@ The following theorem generalizes this notion to blow-ups of arbitrary $k$-graph
         Consider now the $|V|$-partite $|V|$-graph $H' = (V_1, \dots, V_{|V|}; F)$,
         where
         \[
-            F = \{f(V) \mid f \text{ is an embedding of } G \text{ in } H \text{ and } f(V_i) \subset V_i \text{ for all } i\}.
+            F = \{f(V) \mid f \text{ is an embedding of } G \text{ into } H \text{ and } f(v_i) \in V_i \text{ for all } i\}.
         \]
-        By~\Cref{thm:erdos64-constant-density}, making $n_0$ large enough in terms of $\delta_2$ and $|V|$,
-        there exists some $\delta_3 = \delta_3(G, \epsilon) = \delta(|V|, \delta_2(G, \epsilon)) > 0$ such that
+        It has at least $\delta_2(G, \epsilon)n^{|V|}$ edges, so by~\Cref{thm:erdos64-constant-density},
+        making $n_0$ large enough in terms of $|V|$,
+        there exists some $\delta_3 = \delta_3(G, \epsilon)$, for example
+        \[
+            \delta_3 = \frac{1}{2} \left( \frac{1}{\log (\gamma_k / \delta_2(G, \epsilon))} \right)^{\frac{1}{|V| - 1}}
+        \]
+        such that
         $H'$ contains $\compoverset{|V|}{t_n}$ as a subgraph, where
         \[
-            t_n = \delta_3(G, \epsilon) \cdot (\log n)^{\frac{1}{|V|-1}}.
+            t_n = \delta_3(G, \epsilon) \cdot (\log n)^{\frac{1}{|V|-1}}
+            \leq \left \lfloor\left( \frac{\log n}{\log \frac{\gamma_k }{|E(H')| / \binom{n}{k}}} \right)^{\frac{1}{|V| - 1}} \right \rfloor
         \]
+        as long as $t_n \geq 2$, which is true for large enough $n$ in terms of $|V|$ and $\delta_2$, because $\delta_2 < |E(H')| / \binom{n}{k}$.
         That is, there are $|V|$ sets $T_1, \dots, T_{|V|}$ of size $t_n$ such that
         if $\{v_{i_1}, \dots, v_{i_k}\} \in E$ is an edge of $G$, then
         $\{u_{i_1}, \dots, u_{i_k}\}$ is an edge of $H_n$ for all $u_{i_j} \in T_j$.

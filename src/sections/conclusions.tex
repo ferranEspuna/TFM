@@ -12,63 +12,45 @@ demonstrating that these subgraphs can indeed be located algorithmically within 
 The recursive approach, which reduces the uniformity $k$ by analyzing appropriately defined link graphs,
 generalizes previous work for the $k=2$
 case by Mubayi and Turán.
-There are several avenues for future research starting from this work:
 
-\begin{enumerate}
-    \item \textbf{Tightening Bounds and Improving Practicality:}
-    The proofs of correctness for~\Cref{alg:kpartite}, particularly~\Cref{lm:many_edges,lm:return,lm:t_prime,lm:base_case},
-    involve several inequalities.
-    While sufficient to establish the polynomial runtime and the asymptotic nature of $t$,
-    some of these bounds are quite loose (e.g., approximations of binomial coefficients, conditions for $w \leq n/2$,
-    or the constants in the density arguments).
-    A more meticulous analysis could potentially yield sharper constants in the definition of
-    $t(n,d,k)$ or relax the minimum density requirements (\Cref{rm:min_d}).
-    This could make the algorithm applicable to sparser hypergraphs or guarantee larger $k$-partite structures for a given density,
-    enhancing its practical significance for analyzing real-world hypergraphs which might not meet the currently proven,
-    somewhat high, minimum vertex or density thresholds.
+Looking ahead, this work opens several promising avenues for future research.
+One natural direction is the refinement of the existing algorithm and its analysis.
+While the proofs of correctness for~\Cref{alg:kpartite}
+(particularly~\Cref{lm:many_edges,lm:return,lm:t_prime,lm:base_case}) establish the polynomial runtime and the asymptotic
+nature of $t$, some of the underlying inequalities are not tight.
+A more meticulous analysis could potentially yield sharper constants in the definition of $t(n,d,k)$
+or relax the minimum density requirements detailed in~\Cref{rm:min_d}.
+Such improvements could enhance the algorithm's practical significance by making it applicable to smaller hypergraphs
+or by guaranteeing larger $k$-partite structures for a given density.
+Complementing these theoretical refinements, the implementation and experimental evaluation of~\Cref{alg:kpartite}
+on synthetic or real-world hypergraph datasets would be highly valuable.
+This practical work could help identify actual performance bottlenecks and compare its empirical findings with theoretical
+guarantees, especially concerning the constants involved in the calculation of $t$.
 
-    \item \textbf{Generalizing to unbalanced $k$-partite $k$-graphs:}
-    This approach taken in the proof of~\Cref{thm:erdos64}
-    can be generalized to give a lower bound on the number of
-    copies (that is, embeddings with different image sets)
-    of $\compdots{t_1}{t_k}$ in a $k$-partite $k$-graph $G$
-    with different part sizes~\cite{carvajal2024canonical},
-    therefore upper bounding all generalized Zarankiewicz numbers.
-    Applying the same observations that we have made for the balanced case,
-    we arrive at
-    \begin{equation} \label{eq:general-partite-bound}
-        \ex{n}{\compdots{t_1}{t_k}} = \bigO{n^{k - \frac{1}{\prod_{i=1}^{k-1} t_i}}}.
-    \end{equation}
-    An algorithm finding these more general $k$-partite hypergraphs
-    of growing sizes could be obtained by modifying the current algorithm
-    and, for example, fixing the approximate ratio between the part sizes to be found.
+Beyond optimizing the current framework, a significant extension would be to generalize the types
+of structures our algorithm can find.
+The current algorithm targets balanced complete $k$-partite $k$-graphs, $\compoverset{k}{t}$.
+It would be interesting to adapt the algorithmic strategy to find unbalanced complete $k$-partite $k$-graphs, $
+\compdots{t_1}{t_k}$, where the part sizes $t_i$ may differ yet still grow with $n$.
+Theoretical bounds for this unbalanced case
+exist~\cite{carvajal2024canonical}, and an algorithm finding these more general structures,
+perhaps by fixing approximate ratios between part sizes, would be a valuable contribution.
+Further generalizing, the presented algorithm is tailored to find blow-ups of a single edge.
+A more ambitious goal would be to adapt this algorithmic framework to find $t_n$-blowups $G(t_n)$
+of an arbitrary fixed $k$-graph $G$.
+As discussed (\Cref{thm:quant-blowup}),
+$k$-graphs with density $\pi(G) + \epsilon$ are known to contain $G(t_n)$ where $t_n = \delta (\log n)^{1/(|V(G)|-1)}$.
+Developing a constructive method for these general blow-ups is a challenging but important problem.
+For the specific case of $k=2$, it is known from Bollobás and Erd\H{o}s~\cite{bollobas1973structure}
+that the optimal growth for $t_n$ is $\delta \log n$, which is better than the general bound if $|V(G)| > 2$.
+It remains an open question whether their proof can be made constructive to yield a polynomial-time algorithm,
+although the current algorithmic approach does not directly extend to this case.
 
-    \item \textbf{Exploring what happens when the density is not fixed:}
-    There are versions of~\Cref{thm:erdos64-constant-density}
-    in which $n_k$ depends on $\epsilon$, which show that the part size of the
-    guaranteed complete balanced $k$-partite $k$-graph is at least $\delta n^{k-\frac{1}{t^{(k-1)}}}$,
-    where $\delta \to \infty$ as $\epsilon \to 1$.
-    This shows that~\Cref{alg:kpartite} may not return a complete balanced $k$-partite
-    $k$-graph of the best possible order of magnitude for a family of graphs with density tending to $1$.
-    An interesting question is whether the algorithm can be modified to find
-    a partite hypergraph of approximately the right size in these circumstances,
-    maybe losing the polynomial time complexity when this size is no longer logarithmic in $n$.
-
-    \item \textbf{Finding Blow-ups of General $k$-Graphs:}
-    The presented algorithm is tailored to find blow-ups of a single edge, i.e., $\compoverset{k}{t}$.
-    A natural extension would be to adapt this algorithmic framework to find $t_n$-blowups $H(t_n)$ of an arbitrary fixed $k$-graph $H$.
-    As discussed in~\Cref{thm:quant-blowup}, $k$-graphs with density $\pi(G) + \epsilon$
-    are known to contain $G(t_n)$ where $t_n = \delta (\log n)^{1/(|V(G)|-1)}$.
-    Our current algorithm, if adapted, might yield a constructive proof for finding such blow-ups.
-    However, for $k=2$, it is known from Bollobás and Erd\H{o}s~\cite{bollobas1973structure} that the optimal growth for $t_n$
-    is $\delta \log n$, which is better than $(\log n)^{1/(|V(G)|-1)}$ if $|V(G)| > 2$.
-    It remains open whether there is a way to adapt their proof into a constructive one,
-    providing a polynomial-time algorithm.
-
-
-    \item \textbf{Implementation and Experimental Evaluation:}
-    Implementing~\Cref{alg:kpartite}
-    and evaluating its performance on various synthetic and real-world hypergraph datasets would be valuable.
-    This could help identify practical bottlenecks and compare its findings with theoretical guarantees,
-    especially concerning the constants involved in the calculation of $t$.
-\end{enumerate}
+Finally, the behavior of these Turán-type problems changes significantly when the density of the host hypergraph
+is not merely a fixed constant but approaches the maximum possible density (i.e., $d \to 1/k!$).
+In such extremely dense regimes, the guaranteed part size $t$ for $\compoverset{k}{t}$ can be much larger,
+potentially polynomial in $n$ rather than logarithmic.
+The current algorithm's efficiency relies on $t$ being relatively small.
+Investigating whether our algorithmic approach can be modified or a new one developed to find these
+much larger partite structures, even if it means potentially sacrificing strict polynomial-time complexity in $n$ when $t$
+itself is large, is another intriguing area for exploration.

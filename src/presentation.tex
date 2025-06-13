@@ -15,6 +15,17 @@
 \newcommand{\completesuperindex}[2]{\ensuremath{K^{(#1)}_{#2}}} % Complete k-graph on #2 vertices
 \newcommand{\link}[3]{\ensuremath{L_{#1}\left(#2; #3\right)}} % Link graph
 
+\makeatletter
+\def\th@mystyle{%
+    \normalfont % body font
+    \setbeamercolor{block title example}{bg=orange,fg=white}
+    \setbeamercolor{block body example}{bg=orange!20,fg=black}
+    \def\inserttheoremblockenv{exampleblock}
+  }
+\makeatother
+\theoremstyle{mystyle}
+\newtheorem*{remark}{Remark}
+
 \title[Finding Partite Hypergraphs Efficiently]{Finding Partite Hypergraphs Efficiently}
 \author{Ferran Espuña Bertomeu}
 \institute{Supervisor: Richard Lang}
@@ -28,20 +39,101 @@
 
     \frame{\titlepage}
 
-    \section{Introduction}\label{sec:introduction}
+    \section{Hypergraphs}\label{sec:notation}
 
     \begin{frame}
-        \frametitle{Definitions}
+        \frametitle{$k$-Graphs}
         \begin{definition}
-            A \emph{$k$-graph} is a pair $G = (V, E)$ where $V$ is a finite set of \emph{vertices} and $E \subseteq \binom{V}{k}$ is a set of \emph{edges}.
+            A \emph{$k$-graph} is a pair $G = (V, E)$
+            where $V$ is a finite set of \emph{vertices} and
+            $E \subseteq \binom{V}{k}$ is a set of \emph{edges}.
         \end{definition}
+        \begin{figure}[htbp]
+            \centering
+            \scalebox{0.7}{
+                \input{figures/k3_4}
+            }
+            \caption{A complete $3$-graph on $4$ vertices: $K_4^{(3)}$.}
+            \label{fig:complete_kgraph}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Partite $k$-Graphs}
+        \begin{definition}
+            A $k$-graph $G = (V, E)$ is \emph{$r$-partite}
+            if there exists a partition $V = V_1 \cup \dots \cup V_r$
+            such that every edge of $G$ intersects every part $V_i$ in at most one vertex.
+            We write $G = (V_1, \dots, V_r; E)$.
+        \end{definition}
+
+        \begin{figure}[htbp]
+            \centering
+            \scalebox{0.6}{
+                \input{figures/k2_222}
+            }
+            \caption{A complete $3$-partite $2$-graph: $K^{(3)}(2, 2, 2)$.}
+            \label{fig:complete_3partite_2graph}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Partite $k$-Graphs}
+        \begin{remark}
+            We may identify $E$ as a subset of $\mathcal{C} = \bigcup_{\{i_1, \dots, i_k \} \in \binom{[r]}{k}} V_{i_1} \times \dots \times V_{i_k}$.
+            If $E = \mathcal{C}$, we say that $G$ is a \emph{complete} $r$-partite $k$-graph.
+        \end{remark}
+
+        \begin{figure}[htbp]
+            \centering
+            \scalebox{0.55}{
+                \input{figures/k3_222}
+            }
+            \caption{A complete $3$-partite $3$-graph: $K^{(2)}(2, 2, 2)$.}
+            \label{fig:complete_3partite_3graph}
+        \end{figure}
     \end{frame}
 
     \section{Turán-Type Problems}\label{sec:turan-type}
 
     \begin{frame}
-        \frametitle{Turán Numbers}
+        \frametitle{Turán-Type Problems}
+        \begin{definition}
+            Let $G = (V, E)$ be a $k$-graph and $n \geq |V|$ an integer.
+            The \emph{Turán number} $\ex{G}{n}$ is the maximum number of edges in a $k$-graph on $n$ vertices
+            that does not contain a copy of $G$ as a subgraph.
+        \end{definition}
+        Determining $\ex{G}{n}$ or estimating it as $n \to \infty$ is known as the \emph{Turán problem} for $G$.
+        \begin{theorem}
+            For all $k$-graphs $G$ there exists a constant $\alpha (G) \in [0, 1)$ such that
+            \[
+                \ex{G}{n} = (\alpha (G) + o(1)) \cdot \binom{n}{k} \quad \text{as } n \to \infty.
+            \]
+            Furthermore, $\alpha (G) = 0$ if and only if $G$ is $k$-partite.
+        \end{theorem}
     \end{frame}
+
+    \begin{frame}
+        \frametitle{The Kővari--Sós--Turán Theorem}
+        The bound $\ex{G}{n} = o(n^k)$ can be improved by a lot.
+        \begin{definition}
+         Let $1 < t_1 \leq v_1, \dots, 1 < t_k \leq v_k$ be integers.
+            Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
+            is the largest integer $z$ for which there exists a $k$-partite $k$-graph
+            $H = (V_1, \dots V_k, F)$ with part sizes $ |V_i| = v_i$ and $|F| = z$ edges
+            such that for all choices of $W_i \subset V_i$ of sizes $|W_i| = t_i$,
+            $W_1 \times \dots \times W_k \not \subset F$.
+        \end{definition}
+        \begin{theorem}[Kővari--Sós--Turán]
+            Let $0 < s \leq u$ and $0 < t \leq w$ be integers.
+            Then
+            \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
+        \end{theorem}
+        Standard arguments then show that
+        $\ex{n}{K(s, t)} = \bigO{n^{2 - 1 / t}}$.
+    \end{frame}
+
+
 
 
 

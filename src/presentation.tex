@@ -37,145 +37,140 @@
 
 \begin{document}
 
-    \frame{\titlepage}
+\frame{\titlepage}
 
-    \section{Hypergraphs}\label{sec:notation}
+\section{Hypergraphs}\label{sec:notation}
 
-    \begin{frame}
-        \frametitle{$k$-Graphs}
-        \begin{definition}
-            A \emph{$k$-graph} is a pair $G = (V, E)$
-            where $V$ is a finite set of \emph{vertices} and
-            $E \subseteq \binom{V}{k}$ is a set of \emph{edges}.
-        \end{definition}
-        \begin{figure}[htbp]
-            \centering
-            \scalebox{0.7}{
-                \input{figures/k3_4}
-            }
-            \caption{A complete $3$-graph on $4$ vertices: $K_4^{(3)}$.}
-            \label{fig:complete_kgraph}
-        \end{figure}
-    \end{frame}
+\begin{frame}
+    \frametitle{$k$-Graphs}
+    \begin{definition}
+        A \emph{$k$-graph} is a pair $G = (V, E)$
+        where $V$ is a finite set of \emph{vertices} and
+        $E \subseteq \binom{V}{k}$ is a set of \emph{edges}.
+    \end{definition}
+    \begin{figure}[htbp]
+        \centering
+        \scalebox{0.7}{
+            \input{figures/k3_4}
+        }
+        \caption{A complete $3$-graph on $4$ vertices: $K_4^{(3)}$.}
+        \label{fig:complete_kgraph}
+    \end{figure}
+\end{frame}
 
-    \begin{frame}
-        \frametitle{Partite $k$-Graphs}
-        \begin{definition}
-            A $k$-graph $G = (V, E)$ is \emph{$r$-partite}
-            if there exists a partition $V = V_1 \cup \dots \cup V_r$
-            such that every edge of $G$ intersects every part $V_i$ in at most one vertex.
-            We write $G = (V_1, \dots, V_r; E)$.
-        \end{definition}
+\begin{frame}
+    \frametitle{Partite $k$-Graphs}
+    \begin{definition}
+        A $k$-graph $G = (V, E)$ is \emph{$r$-partite}
+        if there exists a partition $V = V_1 \cup \dots \cup V_r$
+        such that every edge of $G$ intersects every part $V_i$ in at most one vertex.
+        We write $G = (V_1, \dots, V_r; E)$.
+    \end{definition}
 
-        \begin{figure}[htbp]
-            \centering
-            \scalebox{0.6}{
-                \input{figures/k2_222}
-            }
-            \caption{A complete $3$-partite $2$-graph: $K^{(3)}(2, 2, 2)$.}
-            \label{fig:complete_3partite_2graph}
-        \end{figure}
-    \end{frame}
+    \begin{figure}[htbp]
+        \centering
+        \scalebox{0.6}{
+            \input{figures/k2_222}
+        }
+        \caption{A complete $3$-partite $2$-graph: $K^{(3)}(2, 2, 2)$.}
+        \label{fig:complete_3partite_2graph}
+    \end{figure}
+\end{frame}
 
-    \begin{frame}
-        \frametitle{Partite $k$-Graphs}
-        \begin{remark}
-            We may identify $E$ as a subset of $\mathcal{C} = \bigcup_{\{i_1, \dots, i_k \} \in \binom{[r]}{k}} V_{i_1} \times \dots \times V_{i_k}$.
-            If $E = \mathcal{C}$, we say that $G$ is a \emph{complete} $r$-partite $k$-graph.
-        \end{remark}
+\begin{frame}
+    \frametitle{Partite $k$-Graphs}
+    \begin{remark}
+        We may identify $E$ as a subset of $\mathcal{C} = \bigcup_{\{i_1, \dots, i_k \} \in \binom{[r]}{k}} V_{i_1} \times \dots \times V_{i_k}$.
+        If $E = \mathcal{C}$, we say that $G$ is a \emph{complete} $r$-partite $k$-graph.
+    \end{remark}
 
-        \begin{figure}[htbp]
-            \centering
-            \scalebox{0.55}{
-                \input{figures/k3_222}
-            }
-            \caption{A complete $3$-partite $3$-graph: $K^{(2)}(2, 2, 2)$.}
-            \label{fig:complete_3partite_3graph}
-        \end{figure}
-    \end{frame}
+    \begin{figure}[htbp]
+        \centering
+        \scalebox{0.55}{
+            \input{figures/k3_222}
+        }
+        \caption{A complete $3$-partite $3$-graph: $K^{(2)}(2, 2, 2)$.}
+        \label{fig:complete_3partite_3graph}
+    \end{figure}
+\end{frame}
 
-    \section{Turán-Type Problems}\label{sec:turan-type}
+\section{Turán-Type Problems}\label{sec:turan-type}
 
-    \begin{frame}
-        \frametitle{Turán-Type Problems}
-        \begin{definition}
-            Let $G = (V, E)$ be a $k$-graph and $n \geq |V|$ an integer.
-            The \emph{Turán number} $\ex{G}{n}$ is the maximum number of edges in a $k$-graph on $n$ vertices
-            that does not contain a copy of $G$ as a subgraph.
-        \end{definition}
-        Determining $\ex{G}{n}$ or estimating it as $n \to \infty$ is known as the \emph{Turán problem} for $G$.
-        \begin{theorem}
-            For all $k$-graphs $G$ there exists a constant $\alpha (G) \in [0, 1)$ such that
-            \[
-                \ex{G}{n} = (\alpha (G) + o(1)) \cdot \binom{n}{k} \quad \text{as } n \to \infty.
-            \]
-            Furthermore, $\alpha (G) = 0$ if and only if $G$ is $k$-partite.
-        \end{theorem}
-    \end{frame}
+\begin{frame}
+    \frametitle{Turán-Type Problems}
+    \begin{definition}
+        Let $G = (V, E)$ be a $k$-graph and $n \geq |V|$ an integer.
+        The \emph{Turán number} $\ex{G}{n}$ is the maximum number of edges in a $k$-graph on $n$ vertices
+        that does not contain a copy of $G$ as a subgraph.
+    \end{definition}
+    Determining $\ex{G}{n}$ or estimating it as $n \to \infty$ is known as the \emph{Turán problem} for $G$.
+    \begin{theorem}
+        For all $k$-graphs $G$ there exists a constant $\alpha (G) \in [0, 1)$ such that
+        \[
+            \ex{G}{n} = (\alpha (G) + o(1)) \cdot \binom{n}{k} \quad \text{as } n \to \infty.
+        \]
+        Furthermore, $\alpha (G) = 0$ if and only if $G$ is $k$-partite.
+    \end{theorem}
+\end{frame}
 
-    \begin{frame}
-        \frametitle{The Kővari--Sós--Turán Theorem}
-        The bound $\ex{G}{n} = o(n^k)$ can be improved by a lot.
-        \begin{definition}
-         Let $1 < t_1 \leq v_1, \dots, 1 < t_k \leq v_k$ be integers.
-            Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
-            is the largest integer $z$ for which there exists a $k$-partite $k$-graph
-            $H = (V_1, \dots V_k, F)$ with part sizes $ |V_i| = v_i$ and $|F| = z$ edges
-            such that for all choices of $W_i \subset V_i$ of sizes $|W_i| = t_i$,
-            $W_1 \times \dots \times W_k \not \subset F$.
-        \end{definition}
-        \begin{theorem}[Kővari--Sós--Turán]
-            Let $0 < s \leq u$ and $0 < t \leq w$ be integers.
-            Then
-            \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
-        \end{theorem}
-        Standard arguments then show that
-        $\ex{n}{K(s, t)} = \bigO{n^{2 - 1 / t}}$.
-    \end{frame}
+\begin{frame}
+    \frametitle{The Kővari--Sós--Turán Theorem}
+    The bound $\ex{G}{n} = o(n^k)$ can be improved by a lot.
+    \begin{definition}
+     Let $1 < t_1 \leq v_1, \dots, 1 < t_k \leq v_k$ be integers.
+        Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
+        is the largest integer $z$ for which there exists a $k$-partite $k$-graph
+        $H = (V_1, \dots V_k, F)$ with part sizes $ |V_i| = v_i$ and $|F| = z$ edges
+        such that for all choices of $W_i \subset V_i$ of sizes $|W_i| = t_i$,
+        $W_1 \times \dots \times W_k \not \subset F$.
+    \end{definition}
+    \begin{theorem}[Kővari--Sós--Turán]
+        Let $0 < s \leq u$ and $0 < t \leq w$ be integers.
+        Then
+        \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
+    \end{theorem}
+    Standard arguments then show that
+    $\ex{n}{K(s, t)} = \bigO{n^{2 - 1 / t}}$.
+\end{frame}
 
+\begin{frame}[fragile]
+    \vspace*{-1em}  %<-- ADD THIS LINE TO PULL EVERYTHING UP
+    \frametitle{Proof Sketch: Kővari–Sós–Turán (Example)}
 
-\begin{frame}[fragile] % 'fragile' is needed for verbatim environments like this animation
-    \frametitle{Proof Sketch: Kővari--Sós--Turán}
+    \begin{columns}[T]
 
-    \begin{columns}[T] % Split the frame into columns
-        \begin{column}{.6\textwidth}
-            \centering
-            % Input the figure generated by the python script
-            \resizebox{\textwidth}{!}{
-                \input{figures/kst_proof_sketch}
-            }
+        \begin{column}{.35\textwidth}
+            \begin{figure}
+                \centering
+                \input{figures/kst_proof_sketch}\label{fig:kst}
+            \end{figure}
         \end{column}
-        \begin{column}{.4\textwidth}
+
+        \begin{column}{.65\textwidth}
+
             \begin{itemize}
-                \item<1-> \textbf{Idea:} Double count the pairs $P = \{ (x, T) : x \in U, T \subseteq N(x), |T|=t \}$.
 
-                \item<2-> \textbf{Upper Bound:}
-                A set $T \subset W$ of size $t$ can be the second element of a pair at most $s-1$ times. Otherwise, we find a forbidden $K(s,t)$.
-                \vspace{0.5em}
+                \item<1-> \textbf{Hypothesis:}
+                $H=(U, W; E)$ is a $K(s, t)$-free bipartite $k$-graph with
+                $z = z(u, w; s, t)$ edges, where $|U| = u$ and $|W| = w$.
 
-                {\color{blue!70!black}
-                $|P| = \sum_{T \in \binom{W}{t}} |N(T)| \le (s-1) \binom{w}{t}$
-                }
+                \item<3-> \textbf{Counting Stars:}
+                For each $x \in U$, there are $\binom{d_H(x)}{t}$
+                sets $T \subset W$ of $t$ neighbors of $x$.
 
-                \item<3-> \textbf{Lower Bound:}
-                By Jensen's inequality for the convex function $f(z)=\binom{z}{t}$:
-                \vspace{0.5em}
+                \item<9-> \textbf{Averaging:} By a convexity argument,
+                the number of stars is at least $u\binom{z/u}{t}$.
 
-                {\color{teal!70!black}
-                $|P| = \sum_{x \in U} \binom{d(x)}{t} \ge u \cdot \binom{\bar{d}}{t}$
-                }
+                \item<10-> \textbf{Bounding:} Because $H$ is $K(s, t)$-free,
+                each set $T \subset W$ is the right component of at most $(s-1)$ stars.
 
-                \item<4-> \textbf{Conclusion:} Combining the bounds
-
-                $u \binom{|E|/u}{t} \le (s-1) \binom{w}{t}$
-
-                and solving for $|E|$ gives the theorem.
+                \item<13-> \textbf{Conclusion:} $u \binom{z/u}{t} \leq (s-1) \binom{w}{t}$,
+                from which the theorem follows.
             \end{itemize}
         \end{column}
     \end{columns}
+
 \end{frame}
-
-
 
 
 

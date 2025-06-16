@@ -105,13 +105,13 @@ bounding_T_indices = [1, 2]; bounding_S_indices = [0, 1]
 
 # --- NEW HIGHLIGHTING LOGIC ---
 # Highlight vertices of the first star (U1, W2, W3) from slide 11 onwards
-lines.append(r"\uncover<11->{")
+lines.append(r"\uncover<11-12>{")
 lines.append(f"  \\fill[{HIGHLIGHTED_LINE_COLOR}] (U{bounding_S_indices[0]}) circle ({DOT_THICKNESS + 0.5}pt);")
 for j in bounding_T_indices:
     lines.append(f"  \\fill[{HIGHLIGHTED_LINE_COLOR}] (W{j}) circle ({DOT_THICKNESS + 0.5}pt);")
 lines.append(r"}")
 # Highlight center of second star (U2) from slide 12 onwards
-lines.append(r"\uncover<12->{")
+lines.append(r"\uncover<12>{")
 lines.append(f"  \\fill[{HIGHLIGHTED_LINE_COLOR}] (U{bounding_S_indices[1]}) circle ({DOT_THICKNESS + 0.5}pt);")
 lines.append(r"}")
 
@@ -128,7 +128,7 @@ lines.append(r"}")
 
 lines.append(r"\uncover<13>{")
 lines.append(f"  \\node[draw, thick, fill={CALLOUT_COLOR}!20, rounded corners, align=center, text width={BOX_WIDTH-0.5}cm, overlay] at ({BOX_CENTER_X}, {BOTTOM_BOX_Y_POS}) "
-             r"{{In the example, we conclude that $10.4 \leq 12$, which is true. For bigger values of $z$ this would fail, leading to contradiction and therefore upper bounding $z$. }};")
+             r"{{In the example, we conclude that $10.4 \leq 12$, which is true. For bigger values of $z$ this would fail, leading to contradiction and therefore upper bounding $z$. In fact, z=14 already fails! }};")
 lines.append(r"}")
 
 

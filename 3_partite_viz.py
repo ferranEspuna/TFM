@@ -1,6 +1,3 @@
-# Script adapted based on request at:
-# Time: Thursday, April 24, 2025 at 3:09:08 PM CEST
-# Location: Barcelona, Catalonia, Spain
 
 import numpy as np
 from typing import Tuple, List, Dict

@@ -4,6 +4,7 @@
 \usetikzlibrary{calc}
 \usepackage{booktabs}
 \usepackage{blkarray} % For tables if needed, though likely not for a 20-min talk
+\usetikzlibrary{fit}
 
 % Thesis specific commands (simplified or as needed)
 \newcommand{\N}{\ensuremath{\mathbb{N}}}
@@ -173,5 +174,43 @@
 \end{frame}
 
 
+% SLIDE 1: THEOREM AND STRATEGY
+\begin{frame}
+    \frametitle{Erd\H{o}s's Bound for Hypergraphs (1964)}
+
+    \begin{theorem}[Erd\H{o}s '64]
+        For integers $k \ge 2, t \ge 2$,
+        $\ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{k-1}}}}.$
+    \end{theorem}
+
+    This generalizes the Kővari--Sós--Turán theorem to $k$-graphs.
+
+    It follows from a similar bound on the corresponding generalized Zarankiewicz number,
+    obtained by induction.
+
+    Suppose that $H = (V_1, \dots, V_k; F)$ is a $k$-graph with $|W_i| = w$.
+    Let $H$ have $z$ edges and no copy of $\compoverset{k}{t}$.
+
+    We set up a bipartite $k$-graph $H' = (U, W; F')$ with
+    \begin{align*}
+        U &=  W_1 \times \dots \times W_{k-1} \\
+        W &= W_k \\
+        F' &= \{(X, y) \in U \times W \mid X \cup \{y\} \in F\}.
+    \end{align*}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Erd\H{o}s's Bound: Proof Sketch ($k=3, t=2$)}
+
+    % The figure now takes up the full frame width for better legibility
+    \begin{figure}
+        \centering
+        \scalebox{0.55}{
+            \input{figures/erdos64_dual_sketch}
+        }\label{fig:erdos64_sketch}
+    \end{figure}
+
+\end{frame}
 
 \end{document}

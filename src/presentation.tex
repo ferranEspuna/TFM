@@ -105,6 +105,7 @@
     \frametitle{Turán-Type Problems}
     \begin{definition}
         Let $G = (V, E)$ be a $k$-graph and $n \geq |V|$ an integer.
+
         The \emph{Turán number} $\ex{G}{n}$ is the maximum number of edges in a $k$-graph on $n$ vertices
         that does not contain a copy of $G$ as a subgraph.
     \end{definition}
@@ -123,18 +124,19 @@
     The bound $\ex{G}{n} = o(n^k)$ can be improved by a lot.
     \begin{definition}
      Let $1 < t_1 \leq v_1, \dots, 1 < t_k \leq v_k$ be integers.
-        Then the \emph{generalized Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
-        is the largest integer $z$ for which there exists a $k$-partite $k$-graph
-        $H = (V_1, \dots V_k, F)$ with part sizes $ |V_i| = v_i$ and $|F| = z$ edges
-        such that for all choices of $W_i \subset V_i$ of sizes $|W_i| = t_i$,
-        $W_1 \times \dots \times W_k \not \subset F$.
+
+    The \emph{Zarankiewicz number} $z(v_1, \dots, v_k; t_1, \dots, t_k)$
+    is the largest integer $z$ for which:
+
+    There is a $k$-partite $k$-graph
+    $H = (V_1, \dots V_k, F)$ $ |V_i| = v_i$, $|F| = z$
+    such that for all choices of $W_i \subset V_i$, $|W_i| = t_i$,
+    $W_1 \times \dots \times W_k \not \subset F$.
     \end{definition}
     \begin{theorem}[Kővari--Sós--Turán]
-        Let $0 < s \leq u$ and $0 < t \leq w$ be integers.
-        Then
         \[z(u, w; s, t) \leq (s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\]
     \end{theorem}
-    Standard arguments then show that
+    By a probabilistic argument, this implies that
     $\ex{n}{K(s, t)} = \bigO{n^{2 - 1 / t}}$.
 \end{frame}
 
@@ -232,15 +234,20 @@
             t \geq \delta \cdot (\log n)^{1/(k-1)}.
         \]
     \end{theorem}
-    That is, $k$-graphs of constant density contain complete balanced
-    $k$-partite $k$-subgraphs of \textbf{growing} part size.
+    \uncover<2->{
+        That is, $k$-graphs of constant density contain complete balanced
+        $k$-partite $k$-subgraphs of \textbf{growing} part size.
+    }
+    \uncover<3->{
+        A probabilistic argument shows that this is tight up to the constant $\delta(k, d)$.
+    }
 
 \end{frame}
 
-\section{Algorithms}
+\section{Algorithms}\label{sec:algorithms}
 
 \begin{frame}
-    \frametitle{The algorithmic problem}
+    \frametitle{The Algorithmic problem}
     The proofs shown are \textbf{non-constructive}.
 
     \uncover<2->{
@@ -265,7 +272,28 @@
         Can we do it in polynomial time?
     }
 
+\end{frame}
 
+
+\begin{frame}
+    \frametitle{An Algorithm for $k=2$ (D. Mubayi and G. Turán)}
+    \textbf{Idea}: Mimick the proof the Kővari--Sós--Turán theorem:
+    \begin{itemize}
+        \item<2-> Find a bipartite $2$-graph $(U, W; E)$ with many edges.
+        \item<3-> For each subset $T \in \binom{W}{t}$, calculate the common neighborhood and at some point it will have size at least $s = t$.
+    \end{itemize}
+
+    \uncover<4->{\textbf{Problems}:}
+    \begin{itemize}
+        \item<5-> Finding a dense bipartite subgraph (Our argument is probabilistic, not constructive).
+        \item<6-> If we are not careful, the search space $\binom{W}{t}$ might still be too large \ldots
+    \end{itemize}
+
+    \uncover<7->{\textbf{Solution}: Set $W$ to be be a set of $w = \lfloor t / d \rfloor$ vertices of \textbf{maximum degree}.}
+    \begin{itemize}
+        \item<8-> The maximum degree conditions ensures that the bipartite subgraph has many edges (after removing the internal edges of $W$).
+        \item<8-> The choice of $w$ is crucial: If too small, the extra term in the $KST$ bound is too large; if too big, the search space $\binom{W}{t}$ is too large.
+    \end{itemize}
 
 \end{frame}
     

@@ -5,6 +5,7 @@
 \usepackage{booktabs}
 \usepackage{blkarray} % For tables if needed, though likely not for a 20-min talk
 \usetikzlibrary{fit}
+\usepackage{changepage} % <--- ADD THIS LINE
 
 % Thesis specific commands (simplified or as needed)
 \newcommand{\N}{\ensuremath{\mathbb{N}}}
@@ -203,13 +204,20 @@
 \begin{frame}[fragile]
     \frametitle{Erd\H{o}s's Bound: Proof Sketch ($k=3, t=2$)}
 
-    % The figure now takes up the full frame width for better legibility
-    \begin{figure}
-        \centering
-        \scalebox{0.55}{
-            \input{figures/erdos64_dual_sketch}
-        }\label{fig:erdos64_sketch}
-    \end{figure}
+    % Adjust the width for this content block
+    \begin{adjustwidth}{-0.5cm}{0cm} % Pulls left margin in by 1.5cm, right margin is unchanged
+
+        % Your figure is here. The \centering command is still useful
+        % to center the figure within the NEW, wider text block.
+        \begin{figure}
+            \centering
+            % I've slightly increased the scale since we have more room now. Adjust as needed.
+            \scalebox{0.6}{
+                \input{figures/erdos64_dual_sketch}
+            }
+        \end{figure}
+
+    \end{adjustwidth}
 
 \end{frame}
 

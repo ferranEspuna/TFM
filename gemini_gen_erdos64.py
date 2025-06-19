@@ -1,4 +1,5 @@
 import itertools
+import pathlib
 
 # --- Parameters ---
 SCALE = 0.8
@@ -22,18 +23,20 @@ FOUND_K22_COLOR = "purple"
 FINAL_K222_COLOR = "brown!60!red"
 
 # --- Graph Definition ---
+# H graph coordinates (shifted left and up from original)
 v_coords = {
-    'A1': (-3, 5), 'A2': (0, 7), 'A3': (3, 9),
-    'B1': (-3, 0), 'B2': (0, -2), 'B3': (3, -4),
-    'C1': (8, 0.85), 'C2': (8, 5), 'C3': (9, 3.1),
+    'A1': (-4.5, 6), 'A2': (-1.5, 8), 'A3': (1.5, 10),
+    'B1': (-4.5, 1), 'B2': (-1.5, -1), 'B3': (1.5, -3.2),
+    'C1': (6.5, 1.85), 'C2': (6.5, 6), 'C3': (7.5, 4.1),
 }
 V1_nodes, V2_nodes, V3_nodes = ['A1', 'A2', 'A3'], ['B1', 'B2', 'B3'], ['C1', 'C2', 'C3']
 
 k222_edges = [p for p in itertools.product(['A1', 'A2'], ['B1', 'B2'], ['C1', 'C2'])]
 distractor_edges = [
     ('A3', 'B3', 'C3'), ('A2', 'B3', 'C1'),
-    ('A3', 'B1', 'C2'), ('A3', 'B2', 'C3'), ('A3', 'B1', 'C1'),
-    ('A3', 'B1', 'C1'), ('A3', 'B1', 'C2'),
+    ('A3', 'B1', 'C2'), ('A3', 'B2', 'C3'),
+    ('A1', 'B3', 'C2'), ('A3', 'B2', 'C1'),
+    ('A3', 'B1', 'C1')
 ]
 hyperedges_H = list(dict.fromkeys(k222_edges + distractor_edges))
 hyperedge_fs_to_tuple_map = {frozenset(h_tuple): h_tuple for h_tuple in hyperedges_H}
@@ -53,8 +56,10 @@ U_nodes = [f"{v1}{v2}" for v1 in V1_nodes for v2 in V2_nodes]
 U_labels = {f"{v1}{v2}": f"$({v1[0]}_{v1[1]},{v2[0]}_{v2[1]})$" for v1 in V1_nodes for v2 in V2_nodes}
 W_nodes = V3_nodes
 
-u_coords_hp = {f"{V1_nodes[i]}{V2_nodes[j]}": (15, 9 - (i * 3 + j) * 1.2) for i in range(3) for j in range(3)}
-w_coords_hp = {V3_nodes[i]: (21, 6 - i * 2) for i in range(3)}
+# LAYOUT CHANGE: Shifted H' left by 2 units (e.g., 15->13, 21->19) and made it taller
+u_coords_hp = {f"{V1_nodes[i]}{V2_nodes[j]}": (13, 9.5 - (i * 3 + j) * 1.5) for i in range(3) for j in range(3)}
+w_coords_hp = {V3_nodes[i]: (19, 7 - i * 3) for i in range(3)}
+
 
 adj_Hp = {u: {w: 0 for w in W_nodes} for u in U_nodes}
 for u_node in U_nodes:
@@ -76,16 +81,15 @@ def get_2d_link_edges(w_node):
 
 # --- TikZ Generation ---
 lines = [
-    r"% TikZ code for side-by-side dual proof sketch (v4 - Visual separation).",
+    r"% TikZ code for side-by-side dual proof sketch (v6 - H' shifted left).",
     f"\\begin{{tikzpicture}}[scale={SCALE}, every node/.style={{transform shape, scale={SCALE}}}]",
 ]
 
 # --- BASE GRAPHS (Slide 1->) ---
-# ... (This part is unchanged) ...
 lines.append(r"% === BASE GRAPHS (H and H') ===")
 lines.append(r"\uncover<1->{")
 lines.append(r"\begin{scope}")
-lines.append(r"\node at (4.5, 9.5) {\Large$H$};")
+lines.append(r"\node at (3, 10.5) {\Large$H$};")
 for v, pos in v_coords.items(): lines.append(f"\\coordinate ({v}) at {pos};")
 for i, h in enumerate(hyperedges_H):
     lines.append(f"\\coordinate (R{i}) at {hyperedge_roots[h]};")
@@ -95,11 +99,12 @@ for v in v_coords: lines.append(
     f"\\fill[{H_VERT_COLOR}] ({v}) circle ({H_DOT_THICKNESS}pt) node[above=2pt, font=\\small] {{${v[0]}_{v[1]}$}};")
 lines.append(r"\end{scope}")
 lines.append(r"\begin{scope}")
-lines.append(r"\node at (18, 10.5) {\Large$H'$};")
+# LAYOUT CHANGE: Shifted H' labels left by 2 units
+lines.append(r"\node at (16, 10.5) {\Large$H'$};")
 for v, pos in u_coords_hp.items(): lines.append(f"\\coordinate ({v}) at {pos};")
 for v, pos in w_coords_hp.items(): lines.append(f"\\coordinate ({v}HP) at {pos};")
-lines.append(f"\\node[anchor=south] at (15, 10) {{{U_PARTITION_LABEL}}};")
-lines.append(f"\\node[anchor=south] at (21, 8) {{{W_PARTITION_LABEL}}};")
+lines.append(f"\\node[anchor=south] at (13, 10) {{{U_PARTITION_LABEL}}};")
+lines.append(f"\\node[anchor=south] at (19, 8.5) {{{W_PARTITION_LABEL}}};")
 for u in U_nodes:
     for w in W_nodes:
         if adj_Hp[u][w]: lines.append(f"\\draw[line width={HP_LINE_THICKNESS}pt, {HP_BASE_COLOR}] ({u}) -- ({w}HP);")
@@ -111,10 +116,11 @@ lines.append(r"\end{scope}")
 lines.append(r"}")
 
 # --- ANIMATION SEQUENCE ---
-# ... (This part is unchanged until the "Found K(2,2)" slide) ...
 slide_counter = 2
 link_colors = [LINK_C1_COLOR, LINK_C2_COLOR, LINK_C3_COLOR]
 v3_targets = ['C1', 'C2', 'C3']
+
+info_box_coords = "at (0, -2)"
 
 for i, w_target in enumerate(v3_targets):
     color = link_colors[i]
@@ -142,7 +148,7 @@ for i, w_target in enumerate(v3_targets):
     for v in link_2d_verts:
         lines.append(f"\\fill[{color}] ({v}) circle ({H_DOT_THICKNESS + 0.5}pt);")
     lines.append(r"\begin{scope}")
-    lines.append(f"\\node[draw, thick, fill={color}!20, rounded corners] at (1, -3) {{2-graph $L_H({w_target})$}};")
+    lines.append(f"\\node[draw, thick, fill={color}!20, rounded corners] {info_box_coords} {{2-graph $L_H({w_target})$}};")
     lines.append(r"\end{scope}")
     lines.append(r"\begin{scope}")
     lines.append(f"\\fill[{color}] ({w_target}HP) circle ({HP_DOT_THICKNESS + 0.5}pt);")
@@ -154,6 +160,7 @@ for i, w_target in enumerate(v3_targets):
     lines.append(f"}}")
     slide_counter += 1
 
+# ... The rest of the script remains unchanged as it will use the new coordinates ...
 lines.append(f"\n% --- Common Link for T={{C1, C2}} (Slide {slide_counter}) ---")
 lines.append(f"\\only<{slide_counter}>{{")
 s_T_nodes = [u for u in U_nodes if adj_Hp[u]['C1'] and adj_Hp[u]['C2']]
@@ -177,7 +184,6 @@ for u_node in s_T_nodes:
         lines.append(f"\\draw[line width={HP_LINE_THICKNESS + 0.8}pt, {COMMON_LINK_COLOR}] ({u_node}) -- ({w_node}HP);")
 for v in ['C1', 'C2']: lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v}HP) circle ({HP_DOT_THICKNESS + 0.5}pt);")
 lines.append(f"}}")
-
 slide_counter += 1
 lines.append(f"\n% --- 2D Graph for L(T) (Slide {slide_counter}) ---")
 lines.append(f"\\only<{slide_counter}>{{")
@@ -189,7 +195,7 @@ for v_start, v_end in common_2d_edges:
     lines.append(f"\\draw[line width=1.5pt, {COMMON_LINK_COLOR}, bend left=20] ({v_start}) to ({v_end});")
 for v in common_2d_verts:
     lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v}) circle ({H_DOT_THICKNESS + 0.5}pt);")
-lines.append(f"\\node[draw, thick, fill={COMMON_LINK_COLOR}!20, rounded corners] at (1, -3) {{2-graph $L_H(T)$}};")
+lines.append(f"\\node[draw, thick, fill={COMMON_LINK_COLOR}!20, rounded corners] {info_box_coords} {{2-graph $L_H(T)$}};")
 lines.append(r"\begin{scope}")
 s_T_nodes = [u for u in U_nodes if adj_Hp[u]['C1'] and adj_Hp[u]['C2']]
 for u_node in s_T_nodes:
@@ -199,52 +205,36 @@ for u_node in s_T_nodes:
 for v in ['C1', 'C2']: lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v}HP) circle ({HP_DOT_THICKNESS + 0.5}pt);")
 lines.append(r"\end{scope}")
 lines.append(f"}}")
-
 slide_counter += 1
 lines.append(f"\n% --- Found K(2,2) in L(T) (Slide {slide_counter}) ---")
 lines.append(f"\\only<{slide_counter}>{{")
 k22_edges = [p for p in itertools.product(['A1', 'A2'], ['B1', 'B2'])]
 k22_verts = ['A1', 'A2', 'B1', 'B2']
-# Draw the common graph faintly in the background
-# MODIFICATION: Changed faintness from !30 to !40 for better visibility
 for v_start, v_end in common_2d_edges:
     lines.append(f"\\draw[line width=1.5pt, {COMMON_LINK_COLOR}!40, bend left=20] ({v_start}) to ({v_end});")
-# Highlight the K(2,2)
 for v_start, v_end in k22_edges:
     lines.append(f"\\draw[line width=2pt, {FOUND_K22_COLOR}, bend left=20] ({v_start}) to ({v_end});")
 for v in k22_verts:
     lines.append(f"\\fill[{FOUND_K22_COLOR}] ({v}) circle ({H_DOT_THICKNESS + 0.5}pt);")
 lines.append(
-    f"\\node[draw, thick, fill={FOUND_K22_COLOR}!20, rounded corners] at (1, -3) {{$K(2,2) \\subset L_H(T)$}};")
-
-# MODIFICATION: Add H' highlights, separating K(2,2) from the rest of the link.
-lines.append(r"% MODIFICATION: Add H' highlights with visual separation")
+    f"\\node[draw, thick, fill={FOUND_K22_COLOR}!20, rounded corners] {info_box_coords} {{$K(2,2) \\subset L_H(T)$}};")
 lines.append(r"\begin{scope}")
-# Define the two groups of U_nodes
 s_T_nodes = [u for u in U_nodes if adj_Hp[u]['C1'] and adj_Hp[u]['C2']]
 k22_unodes = ['A1B1', 'A1B2', 'A2B1', 'A2B2']
 extra_link_unodes = [u for u in s_T_nodes if u not in k22_unodes]
-
-# 1. Draw the extra link parts in teal
 for u_node in extra_link_unodes:
     lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({u_node}) circle ({HP_DOT_THICKNESS + 0.5}pt);")
     for w_node in ['C1', 'C2']:
         lines.append(f"\\draw[line width={HP_LINE_THICKNESS + 0.8}pt, {COMMON_LINK_COLOR}] ({u_node}) -- ({w_node}HP);")
-
-# 2. Draw the K(2,2) parts in purple
 for u_node in k22_unodes:
     lines.append(f"\\fill[{FOUND_K22_COLOR}] ({u_node}) circle ({HP_DOT_THICKNESS + 0.5}pt);")
     for w_node in ['C1', 'C2']:
         lines.append(f"\\draw[line width={HP_LINE_THICKNESS + 0.8}pt, {FOUND_K22_COLOR}] ({u_node}) -- ({w_node}HP);")
-
-# 3. Highlight the W nodes. Since they are part of the main found structure, purple is appropriate.
 for v in ['C1', 'C2']:
     lines.append(f"\\fill[{FOUND_K22_COLOR}] ({v}HP) circle ({HP_DOT_THICKNESS + 0.5}pt);")
 lines.append(r"\end{scope}")
 lines.append(f"}}")
-
 slide_counter += 1
-# ... (Final slide is unchanged) ...
 lines.append(f"\n% --- FINAL K(2,2,2) in H (Slide {slide_counter}) ---")
 lines.append(f"\\only<{slide_counter}>{{")
 k222_nodes_H = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
@@ -256,7 +246,7 @@ for h_edge in hyperedges_H:
             f"\\draw[{FINAL_K222_COLOR}, line width={H_LINE_THICKNESS + 0.8}pt] (R{r_idx}) -- ({v});")
 for v in k222_nodes_H: lines.append(f"\\fill[{FINAL_K222_COLOR}] ({v}) circle ({H_DOT_THICKNESS + 0.5}pt);")
 lines.append(
-    f"\\node[draw, thick, fill={FINAL_K222_COLOR}!20, rounded corners, align=center] at (1, -3) {{$K(2,2,2)$ found in $H$}};")
+    f"\\node[draw, thick, fill={FINAL_K222_COLOR}!20, rounded corners, align=center] {info_box_coords} {{$K(2,2,2)$ found in $H$}};")
 lines.append(r"\begin{scope}")
 k22_unodes = ['A1B1', 'A1B2', 'A2B1', 'A2B2']
 for u_node in k22_unodes:
@@ -269,13 +259,14 @@ lines.append(f"}}")
 
 lines.append(r"\end{tikzpicture}")
 
+
 # --- Write to file ---
 output_filename = "src/figures/erdos64_dual_sketch.tex"
 try:
     pathlib.Path(output_filename).parent.mkdir(parents=True, exist_ok=True)
     with open(output_filename, "w") as f:
         f.write("\n".join(lines))
-    print(f"Success: New animated TikZ code written to '{output_filename}'")
+    print(f"Success: New animated TikZ code with H' shifted left written to '{output_filename}'")
     print(f"The animation will have {slide_counter} steps.")
 except Exception as e:
     print(f"Error: Could not write to file. {e}")

@@ -1,5 +1,4 @@
 import itertools
-import pathlib
 
 # --- Parameters ---
 SCALE = 0.8
@@ -10,7 +9,7 @@ H_DOT_THICKNESS = 4.0
 H_ROOT_THICKNESS = 2.0
 H_LINE_THICKNESS = 1.0
 HP_VERT_COLOR = "black"
-HP_DOT_THICKNESS = 2.5
+HP_DOT_THICKNESS = 4.0
 HP_LINE_THICKNESS = 0.5
 HP_BASE_COLOR = "black!30"
 
@@ -23,7 +22,6 @@ FOUND_K22_COLOR = "purple"
 FINAL_K222_COLOR = "brown!60!red"
 
 # --- Graph Definition ---
-# H graph coordinates (shifted left and up from original)
 v_coords = {
     'A1': (-4.5, 6), 'A2': (-1.5, 8), 'A3': (1.5, 10),
     'B1': (-4.5, 1), 'B2': (-1.5, -1), 'B3': (1.5, -3.2),
@@ -56,7 +54,6 @@ U_nodes = [f"{v1}{v2}" for v1 in V1_nodes for v2 in V2_nodes]
 U_labels = {f"{v1}{v2}": f"$({v1[0]}_{v1[1]},{v2[0]}_{v2[1]})$" for v1 in V1_nodes for v2 in V2_nodes}
 W_nodes = V3_nodes
 
-# LAYOUT CHANGE: Shifted H' left by 2 units (e.g., 15->13, 21->19) and made it taller
 u_coords_hp = {f"{V1_nodes[i]}{V2_nodes[j]}": (13, 9.5 - (i * 3 + j) * 1.5) for i in range(3) for j in range(3)}
 w_coords_hp = {V3_nodes[i]: (19, 7 - i * 3) for i in range(3)}
 
@@ -81,7 +78,7 @@ def get_2d_link_edges(w_node):
 
 # --- TikZ Generation ---
 lines = [
-    r"% TikZ code for side-by-side dual proof sketch (v6 - H' shifted left).",
+    r"% TikZ code for side-by-side dual proof sketch (v8 - simplified).",
     f"\\begin{{tikzpicture}}[scale={SCALE}, every node/.style={{transform shape, scale={SCALE}}}]",
 ]
 
@@ -91,15 +88,22 @@ lines.append(r"\uncover<1->{")
 lines.append(r"\begin{scope}")
 lines.append(r"\node at (3, 10.5) {\Large$H$};")
 for v, pos in v_coords.items(): lines.append(f"\\coordinate ({v}) at {pos};")
+
 for i, h in enumerate(hyperedges_H):
     lines.append(f"\\coordinate (R{i}) at {hyperedge_roots[h]};")
     lines.append(f"\\fill[gray!40] (R{i}) circle ({H_ROOT_THICKNESS}pt);")
     for v in h: lines.append(f"\\draw[gray!40, line width={H_LINE_THICKNESS}pt] (R{i}) -- ({v});")
-for v in v_coords: lines.append(
-    f"\\fill[{H_VERT_COLOR}] ({v}) circle ({H_DOT_THICKNESS}pt) node[above=2pt, font=\\small] {{${v[0]}_{v[1]}$}};")
+
+for v in v_coords:
+    label_pos = "right=2pt" if v.startswith('B') else "above=2pt"
+    lines.append(
+        f"\\fill[{H_VERT_COLOR}] ({v}) circle ({H_DOT_THICKNESS}pt) node[{label_pos}, font=\\small] {{${v[0]}_{v[1]}$}};"
+    )
+
 lines.append(r"\end{scope}")
+
+
 lines.append(r"\begin{scope}")
-# LAYOUT CHANGE: Shifted H' labels left by 2 units
 lines.append(r"\node at (16, 10.5) {\Large$H'$};")
 for v, pos in u_coords_hp.items(): lines.append(f"\\coordinate ({v}) at {pos};")
 for v, pos in w_coords_hp.items(): lines.append(f"\\coordinate ({v}HP) at {pos};")
@@ -108,10 +112,17 @@ lines.append(f"\\node[anchor=south] at (19, 8.5) {{{W_PARTITION_LABEL}}};")
 for u in U_nodes:
     for w in W_nodes:
         if adj_Hp[u][w]: lines.append(f"\\draw[line width={HP_LINE_THICKNESS}pt, {HP_BASE_COLOR}] ({u}) -- ({w}HP);")
-for u, label in U_labels.items(): lines.append(
-    f"\\fill[{HP_VERT_COLOR}] ({u}) circle ({HP_DOT_THICKNESS}pt) node[anchor=east, font=\\tiny] {{{label}}};")
-for w in W_nodes: lines.append(
-    f"\\fill[{HP_VERT_COLOR}] ({w}HP) circle ({HP_DOT_THICKNESS}pt) node[anchor=west, font=\\small] {{${w[0]}_{w[1]}$}};")
+
+for u, label in U_labels.items():
+    lines.append(
+        f"\\fill[{HP_VERT_COLOR}] ({u}) circle ({HP_DOT_THICKNESS}pt) node[anchor=east, font=\\small, xshift=-4pt] {{{label}}};"
+    )
+
+# MODIFICATION: Shift W-labels to the right to avoid overlap
+for w in W_nodes:
+    lines.append(
+        f"\\fill[{HP_VERT_COLOR}] ({w}HP) circle ({HP_DOT_THICKNESS}pt) node[anchor=west, font=\\small, xshift=4pt] {{${w[0]}_{w[1]}$}};"
+    )
 lines.append(r"\end{scope}")
 lines.append(r"}")
 
@@ -132,11 +143,13 @@ for i, w_target in enumerate(v3_targets):
             for v in h_edge: lines.append(
                 f"\\draw[{color}, line width={H_LINE_THICKNESS + 0.5}pt] (R{h_idx}) -- ({v});")
     lines.append(f"\\fill[{color}] ({w_target}) circle ({H_DOT_THICKNESS + 0.5}pt);")
+    lines.append(r"\begin{scope}")
     lines.append(f"\\fill[{color}] ({w_target}HP) circle ({HP_DOT_THICKNESS + 0.5}pt);")
     for u_node in U_nodes:
         if adj_Hp[u_node][w_target]:
             lines.append(f"\\draw[line width={HP_LINE_THICKNESS + 0.8}pt, {color}] ({u_node}) -- ({w_target}HP);")
             lines.append(f"\\fill[{color}] ({u_node}) circle ({HP_DOT_THICKNESS + 0.5}pt);")
+    lines.append(r"\end{scope}")
     lines.append(f"}}")
     slide_counter += 1
     lines.append(f"\n% --- 2D Graph for L({w_target}) (Slide {slide_counter}) ---")
@@ -160,29 +173,30 @@ for i, w_target in enumerate(v3_targets):
     lines.append(f"}}")
     slide_counter += 1
 
-# ... The rest of the script remains unchanged as it will use the new coordinates ...
 lines.append(f"\n% --- Common Link for T={{C1, C2}} (Slide {slide_counter}) ---")
 lines.append(f"\\only<{slide_counter}>{{")
 s_T_nodes = [u for u in U_nodes if adj_Hp[u]['C1'] and adj_Hp[u]['C2']]
 for h_idx, h_edge in enumerate(hyperedges_H):
     v1_v2_part_list = [v for v in h_edge if not v.startswith('C')]
     if len(v1_v2_part_list) == 2:
-      v1_v2_part = tuple(sorted(v1_v2_part_list))
-      u_node_equiv = f"{v1_v2_part[0]}{v1_v2_part[1]}"
-      if u_node_equiv in s_T_nodes and ('C1' in h_edge or 'C2' in h_edge):
-          lines.append(f"\\fill[{COMMON_LINK_COLOR}] (R{h_idx}) circle ({H_ROOT_THICKNESS}pt);")
-          for v in h_edge: lines.append(
-              f"\\draw[{COMMON_LINK_COLOR}, line width={H_LINE_THICKNESS + 0.5}pt] (R{h_idx}) -- ({v});")
+     v1_v2_part = tuple(sorted(v1_v2_part_list))
+     u_node_equiv = f"{v1_v2_part[0]}{v1_v2_part[1]}"
+     if u_node_equiv in s_T_nodes and ('C1' in h_edge or 'C2' in h_edge):
+         lines.append(f"\\fill[{COMMON_LINK_COLOR}] (R{h_idx}) circle ({H_ROOT_THICKNESS}pt);")
+         for v in h_edge: lines.append(
+             f"\\draw[{COMMON_LINK_COLOR}, line width={H_LINE_THICKNESS + 0.5}pt] (R{h_idx}) -- ({v});")
 for v in ['C1', 'C2']: lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v}) circle ({H_DOT_THICKNESS + 0.5}pt);")
 for u_node in s_T_nodes:
     v1, v2 = u_node[:2], u_node[2:]
     lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v1}) circle ({H_DOT_THICKNESS + 0.5}pt);")
     lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v2}) circle ({H_DOT_THICKNESS + 0.5}pt);")
+lines.append(r"\begin{scope}")
 for u_node in s_T_nodes:
     lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({u_node}) circle ({HP_DOT_THICKNESS + 0.5}pt);")
     for w_node in ['C1', 'C2']:
         lines.append(f"\\draw[line width={HP_LINE_THICKNESS + 0.8}pt, {COMMON_LINK_COLOR}] ({u_node}) -- ({w_node}HP);")
 for v in ['C1', 'C2']: lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v}HP) circle ({HP_DOT_THICKNESS + 0.5}pt);")
+lines.append(r"\end{scope}")
 lines.append(f"}}")
 slide_counter += 1
 lines.append(f"\n% --- 2D Graph for L(T) (Slide {slide_counter}) ---")
@@ -259,11 +273,9 @@ lines.append(f"}}")
 
 lines.append(r"\end{tikzpicture}")
 
-
 # --- Write to file ---
 output_filename = "src/figures/erdos64_dual_sketch.tex"
 try:
-    pathlib.Path(output_filename).parent.mkdir(parents=True, exist_ok=True)
     with open(output_filename, "w") as f:
         f.write("\n".join(lines))
     print(f"Success: New animated TikZ code with H' shifted left written to '{output_filename}'")

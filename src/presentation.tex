@@ -6,6 +6,7 @@
 \usepackage{blkarray} % For tables if needed, though likely not for a 20-min talk
 \usetikzlibrary{fit}
 \usepackage{changepage} % <--- ADD THIS LINE
+\useoutertheme{smoothbars}
 
 % Thesis specific commands (simplified or as needed)
 \newcommand{\N}{\ensuremath{\mathbb{N}}}
@@ -40,6 +41,8 @@
 \begin{document}
 
 \frame{\titlepage}
+
+\frame{\tableofcontents}
 
 \section{Hypergraphs}\label{sec:notation}
 
@@ -215,6 +218,61 @@
 
     \end{adjustwidth}
 
+\end{frame}
+
+\begin{frame}
+    \frametitle{Implications of Erdős's Bound}
+    Doing the calculations more carefully, we can show:
+    \begin{theorem}
+        Let $k \geq 2$ and $d > 0$.
+        Then there exists a constant $\delta = \delta(k, d) > 0$ such that
+        every $k$-graph $G$ with $n$ vertices and density $d = m/n^k$
+        contains a complete balanced $k$-partite $k$-subgraph $\compoverset{k}{t}$ with
+        \[
+            t \geq \delta \cdot (\log n)^{1/(k-1)}.
+        \]
+    \end{theorem}
+    That is, $k$-graphs of constant density contain complete balanced
+    $k$-partite $k$-subgraphs of \textbf{growing} part size.
+
+\end{frame}
+
+\section{Algorithms}
+
+\begin{frame}
+    \frametitle{The algorithmic problem}
+    The proofs shown are \textbf{non-constructive}.
+
+    \uncover<2->{
+        We would like to \textbf{find} a complete balanced $k$-partite $k$-subgraph $\compoverset{k}{t}$ in a $k$-graph $H = (V, E)$
+        with sufficiently many edges.
+        And do it \textbf{efficiently}!
+    }
+
+    \uncover<3->{
+        The naïve approach is to enumerate all $k$-partite $k$-subgraphs of $H$ and check if they are complete.
+    }
+
+    \uncover<4->{
+        \textbf{Problem:} There are on the order of
+        \[
+            \binom{n}{t} \geq \binom{n}{\delta (\log n)^{1/(k-1)}}
+        \]
+        such sets, which is \textbf{not} polynomial in $n$.
+    }
+
+    \uncover<5->{
+        Can we do it in polynomial time?
+    }
+
+
+
+\end{frame}
+    
+\section{Future Work}
+
+\begin{frame}
+    asdfsadfsdf
 \end{frame}
 
 \end{document}

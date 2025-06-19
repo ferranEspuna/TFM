@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{tikz}
 \usetikzlibrary{calc}
@@ -137,7 +137,7 @@
 
 \begin{frame}[fragile]
     \vspace*{-1em}
-    \frametitle{Kővari–Sós–Turán: Proof Sketch and Example}
+    \frametitle{Kővari–Sós–Turán: Proof Sketch. $(u, s) = (5, 3); (w, t) = (4, 2)$}
 
     \begin{columns}[T]
 
@@ -175,7 +175,6 @@
 \end{frame}
 
 
-% SLIDE 1: THEOREM AND STRATEGY
 \begin{frame}
     \frametitle{Erd\H{o}s's Bound for Hypergraphs (1964)}
 
@@ -207,11 +206,8 @@
     % Adjust the width for this content block
     \begin{adjustwidth}{-0.5cm}{0cm} % Pulls left margin in by 1.5cm, right margin is unchanged
 
-        % Your figure is here. The \centering command is still useful
-        % to center the figure within the NEW, wider text block.
         \begin{figure}
             \centering
-            % I've slightly increased the scale since we have more room now. Adjust as needed.
             \scalebox{0.6}{
                 \input{figures/erdos64_dual_sketch}
             }

@@ -86,7 +86,7 @@ lines = [
 lines.append(r"% === BASE GRAPHS (H and H') ===")
 lines.append(r"\uncover<1->{")
 lines.append(r"\begin{scope}")
-lines.append(r"\node at (3, 10.5) {\Large$H$};")
+lines.append(r"\node at (-6, 3.5) {\huge$H$};")
 for v, pos in v_coords.items(): lines.append(f"\\coordinate ({v}) at {pos};")
 
 for i, h in enumerate(hyperedges_H):
@@ -97,31 +97,31 @@ for i, h in enumerate(hyperedges_H):
 for v in v_coords:
     label_pos = "right=2pt" if v.startswith('B') else "above=2pt"
     lines.append(
-        f"\\fill[{H_VERT_COLOR}] ({v}) circle ({H_DOT_THICKNESS}pt) node[{label_pos}, font=\\small] {{${v[0]}_{v[1]}$}};"
+        f"\\fill[{H_VERT_COLOR}] ({v}) circle ({H_DOT_THICKNESS}pt) node[{label_pos}, font=\\Large] {{${v[0]}_{v[1]}$}};"
     )
 
 lines.append(r"\end{scope}")
 
 
 lines.append(r"\begin{scope}")
-lines.append(r"\node at (16, 10.5) {\Large$H'$};")
+lines.append(r"\node at (21.5, 4) {\huge$H'$};")
 for v, pos in u_coords_hp.items(): lines.append(f"\\coordinate ({v}) at {pos};")
 for v, pos in w_coords_hp.items(): lines.append(f"\\coordinate ({v}HP) at {pos};")
-lines.append(f"\\node[anchor=south] at (13, 10) {{{U_PARTITION_LABEL}}};")
-lines.append(f"\\node[anchor=south] at (19, 8.5) {{{W_PARTITION_LABEL}}};")
+lines.append(f"\\node[anchor=south] at (13, 10) {{ \\huge {U_PARTITION_LABEL} }}; ")
+lines.append(f"\\node[anchor=south] at (19, 8.5) {{ \\huge {W_PARTITION_LABEL}}};")
 for u in U_nodes:
     for w in W_nodes:
         if adj_Hp[u][w]: lines.append(f"\\draw[line width={HP_LINE_THICKNESS}pt, {HP_BASE_COLOR}] ({u}) -- ({w}HP);")
 
 for u, label in U_labels.items():
     lines.append(
-        f"\\fill[{HP_VERT_COLOR}] ({u}) circle ({HP_DOT_THICKNESS}pt) node[anchor=east, font=\\small, xshift=-4pt] {{{label}}};"
+        f"\\fill[{HP_VERT_COLOR}] ({u}) circle ({HP_DOT_THICKNESS}pt) node[anchor=east, font=\\Large, xshift=-4pt] {{{label}}};"
     )
 
 # MODIFICATION: Shift W-labels to the right to avoid overlap
 for w in W_nodes:
     lines.append(
-        f"\\fill[{HP_VERT_COLOR}] ({w}HP) circle ({HP_DOT_THICKNESS}pt) node[anchor=west, font=\\small, xshift=4pt] {{${w[0]}_{w[1]}$}};"
+        f"\\fill[{HP_VERT_COLOR}] ({w}HP) circle ({HP_DOT_THICKNESS}pt) node[anchor=west, font=\\Large, xshift=4pt] {{${w[0]}_{w[1]}$}};"
     )
 lines.append(r"\end{scope}")
 lines.append(r"}")

@@ -22,7 +22,7 @@ COMMON_LINK_COLOR = "teal"
 FOUND_K22_COLOR = "purple"
 FINAL_K222_COLOR = "brown!60!red"
 
-# --- Graph Definition (same as before) ---
+# --- Graph Definition ---
 v_coords = {
     'A1': (-3, 5), 'A2': (0, 7), 'A3': (3, 9),
     'B1': (-3, 0), 'B2': (0, -2), 'B3': (3, -4),
@@ -37,7 +37,7 @@ distractor_edges = [
     # Extra edge to make the link of T not a K(2,2) initially
     ('A3', 'B1', 'C1'), ('A3', 'B1', 'C2'),
 ]
-hyperedges_H = list(dict.fromkeys(k222_edges + distractor_edges))  # Keep order, remove duplicates
+hyperedges_H = list(dict.fromkeys(k222_edges + distractor_edges))
 hyperedge_fs_to_tuple_map = {frozenset(h_tuple): h_tuple for h_tuple in hyperedges_H}
 
 
@@ -66,28 +66,27 @@ for u_node in U_nodes:
             adj_Hp[u_node][w_node] = 1
 
 
-# Helper to get 2D link graph edges
 def get_2d_link_edges(w_node):
     edges = set()
     for h_edge in hyperedges_H:
         if w_node in h_edge:
-            v1, v2 = [v for v in h_edge if v.startswith('A') or v.startswith('B')]
-            # Ensure consistent order for drawing (V1 -> V2)
-            if v1.startswith('B'): v1, v2 = v2, v1
-            edges.add((v1, v2))
+            v_parts = [v for v in h_edge if v.startswith('A') or v.startswith('B')]
+            if len(v_parts) == 2:
+                v1, v2 = v_parts
+                if v1.startswith('B'): v1, v2 = v2, v1
+                edges.add((v1, v2))
     return list(edges)
 
 
 # --- TikZ Generation ---
 lines = [
-    r"% TikZ code for side-by-side dual proof sketch (v2 - Animated).",
+    r"% TikZ code for side-by-side dual proof sketch (v3 - H' highlights persist).",
     f"\\begin{{tikzpicture}}[scale={SCALE}, every node/.style={{transform shape, scale={SCALE}}}]",
 ]
 
 # --- BASE GRAPHS (Slide 1->) ---
 lines.append(r"% === BASE GRAPHS (H and H') ===")
 lines.append(r"\uncover<1->{")
-# H (Left)
 lines.append(r"\begin{scope}")
 lines.append(r"\node at (4.5, 9.5) {\Large$H$};")
 for v, pos in v_coords.items(): lines.append(f"\\coordinate ({v}) at {pos};")
@@ -98,7 +97,6 @@ for i, h in enumerate(hyperedges_H):
 for v in v_coords: lines.append(
     f"\\fill[{H_VERT_COLOR}] ({v}) circle ({H_DOT_THICKNESS}pt) node[above=2pt, font=\\small] {{${v[0]}_{v[1]}$}};")
 lines.append(r"\end{scope}")
-# H' (Right)
 lines.append(r"\begin{scope}")
 lines.append(r"\node at (18, 10.5) {\Large$H'$};")
 for v, pos in u_coords_hp.items(): lines.append(f"\\coordinate ({v}) at {pos};")
@@ -151,6 +149,17 @@ for i, w_target in enumerate(v3_targets):
     lines.append(r"\begin{scope}")
     lines.append(f"\\node[draw, thick, fill={color}!20, rounded corners] at (1, -3) {{2-graph $L_H({w_target})$}};")
     lines.append(r"\end{scope}")
+
+    # MODIFICATION: Add the H' highlights to this slide as well
+    lines.append(r"% MODIFICATION: Add H' highlights")
+    lines.append(r"\begin{scope}")
+    lines.append(f"\\fill[{color}] ({w_target}HP) circle ({HP_DOT_THICKNESS + 0.5}pt);")
+    for u_node in U_nodes:
+        if adj_Hp[u_node][w_target]:
+            lines.append(f"\\draw[line width={HP_LINE_THICKNESS + 0.8}pt, {color}] ({u_node}) -- ({w_target}HP);")
+            lines.append(f"\\fill[{color}] ({u_node}) circle ({HP_DOT_THICKNESS + 0.5}pt);")
+    lines.append(r"\end{scope}")
+
     lines.append(f"}}")
     slide_counter += 1
 
@@ -160,11 +169,19 @@ lines.append(f"\\only<{slide_counter}>{{")
 s_T_nodes = [u for u in U_nodes if adj_Hp[u]['C1'] and adj_Hp[u]['C2']]
 # Highlight in H
 for h_idx, h_edge in enumerate(hyperedges_H):
-    if 'C1' in h_edge and 'C2' in h_edge:
+    # This logic is a bit tricky: highlight if the edge contributes to the common link
+    v1_v2_part = tuple(sorted([v for v in h_edge if not v.startswith('C')]))
+    u_node_equiv = f"{v1_v2_part[0]}{v1_v2_part[1]}"
+    if u_node_equiv in s_T_nodes and ('C1' in h_edge or 'C2' in h_edge):
         lines.append(f"\\fill[{COMMON_LINK_COLOR}] (R{h_idx}) circle ({H_ROOT_THICKNESS}pt);")
         for v in h_edge: lines.append(
             f"\\draw[{COMMON_LINK_COLOR}, line width={H_LINE_THICKNESS + 0.5}pt] (R{h_idx}) -- ({v});")
 for v in ['C1', 'C2']: lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v}) circle ({H_DOT_THICKNESS + 0.5}pt);")
+for u_node in s_T_nodes:
+    v1, v2 = u_node[:2], u_node[2:]
+    lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v1}) circle ({H_DOT_THICKNESS + 0.5}pt);")
+    lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v2}) circle ({H_DOT_THICKNESS + 0.5}pt);")
+
 # Highlight in H'
 for u_node in s_T_nodes:
     lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({u_node}) circle ({HP_DOT_THICKNESS + 0.5}pt);")
@@ -185,6 +202,18 @@ for v_start, v_end in common_2d_edges:
 for v in common_2d_verts:
     lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v}) circle ({H_DOT_THICKNESS + 0.5}pt);")
 lines.append(f"\\node[draw, thick, fill={COMMON_LINK_COLOR}!20, rounded corners] at (1, -3) {{2-graph $L_H(T)$}};")
+
+# MODIFICATION: Add the H' highlights for the common link
+lines.append(r"% MODIFICATION: Add H' highlights")
+lines.append(r"\begin{scope}")
+s_T_nodes = [u for u in U_nodes if adj_Hp[u]['C1'] and adj_Hp[u]['C2']]
+for u_node in s_T_nodes:
+    lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({u_node}) circle ({HP_DOT_THICKNESS + 0.5}pt);")
+    for w_node in ['C1', 'C2']:
+        lines.append(f"\\draw[line width={HP_LINE_THICKNESS + 0.8}pt, {COMMON_LINK_COLOR}] ({u_node}) -- ({w_node}HP);")
+for v in ['C1', 'C2']: lines.append(f"\\fill[{COMMON_LINK_COLOR}] ({v}HP) circle ({HP_DOT_THICKNESS + 0.5}pt);")
+lines.append(r"\end{scope}")
+
 lines.append(f"}}")
 
 slide_counter += 1
@@ -202,6 +231,18 @@ for v in k22_verts:
     lines.append(f"\\fill[{FOUND_K22_COLOR}] ({v}) circle ({H_DOT_THICKNESS + 0.5}pt);")
 lines.append(
     f"\\node[draw, thick, fill={FOUND_K22_COLOR}!20, rounded corners] at (1, -3) {{$K(2,2) \\subset L_H(T)$}};")
+
+# MODIFICATION: Add H' highlights corresponding to the K(2,2)
+lines.append(r"% MODIFICATION: Add H' highlights")
+lines.append(r"\begin{scope}")
+k22_unodes = ['A1B1', 'A1B2', 'A2B1', 'A2B2']
+for u_node in k22_unodes:
+    lines.append(f"\\fill[{FOUND_K22_COLOR}] ({u_node}) circle ({HP_DOT_THICKNESS + 0.5}pt);")
+    for w_node in ['C1', 'C2']:
+        lines.append(f"\\draw[line width={HP_LINE_THICKNESS + 0.8}pt, {FOUND_K22_COLOR}] ({u_node}) -- ({w_node}HP);")
+for v in ['C1', 'C2']: lines.append(f"\\fill[{FOUND_K22_COLOR}] ({v}HP) circle ({HP_DOT_THICKNESS + 0.5}pt);")
+lines.append(r"\end{scope}")
+
 lines.append(f"}}")
 
 slide_counter += 1
@@ -209,7 +250,7 @@ lines.append(f"\n% --- FINAL K(2,2,2) in H (Slide {slide_counter}) ---")
 lines.append(f"\\only<{slide_counter}>{{")
 k222_nodes_H = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
 for h_edge in hyperedges_H:
-    if all(v in k222_nodes_H for v in h_edge) and len(h_edge) == 3:
+    if all(v in k222_nodes_H for v in h_edge) and frozenset(h_edge) in hyperedge_fs_to_tuple_map and len(h_edge) == 3:
         r_idx = hyperedges_H.index(h_edge)
         lines.append(f"\\fill[{FINAL_K222_COLOR}] (R{r_idx}) circle ({H_ROOT_THICKNESS + 0.5}pt);")
         for v in h_edge: lines.append(
@@ -217,6 +258,18 @@ for h_edge in hyperedges_H:
 for v in k222_nodes_H: lines.append(f"\\fill[{FINAL_K222_COLOR}] ({v}) circle ({H_DOT_THICKNESS + 0.5}pt);")
 lines.append(
     f"\\node[draw, thick, fill={FINAL_K222_COLOR}!20, rounded corners, align=center] at (1, -3) {{$K(2,2,2)$ found in $H$}};")
+
+# MODIFICATION: Add H' highlights for the final K(2,2,2)
+lines.append(r"% MODIFICATION: Add H' highlights")
+lines.append(r"\begin{scope}")
+k22_unodes = ['A1B1', 'A1B2', 'A2B1', 'A2B2']
+for u_node in k22_unodes:
+    lines.append(f"\\fill[{FINAL_K222_COLOR}] ({u_node}) circle ({HP_DOT_THICKNESS + 0.5}pt);")
+    for w_node in ['C1', 'C2']:
+        lines.append(f"\\draw[line width={HP_LINE_THICKNESS + 0.8}pt, {FINAL_K222_COLOR}] ({u_node}) -- ({w_node}HP);")
+for v in ['C1', 'C2']: lines.append(f"\\fill[{FINAL_K222_COLOR}] ({v}HP) circle ({HP_DOT_THICKNESS + 0.5}pt);")
+lines.append(r"\end{scope}")
+
 lines.append(f"}}")
 
 lines.append(r"\end{tikzpicture}")

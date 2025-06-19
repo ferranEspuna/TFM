@@ -228,8 +228,8 @@
     \begin{theorem}
         Let $k \geq 2$ and $d > 0$.
         Then there exists a constant $\delta = \delta(k, d) > 0$ such that
-        every $k$-graph $G$ with $n$ vertices and density $d = m/n^k$
-        contains a complete balanced $k$-partite $k$-subgraph $\compoverset{k}{t}$ with
+        every $k$-graph $G$ with $n$ vertices and $dm^k$ edges
+        contains $\compoverset{k}{t}$ with
         \[
             t \geq \delta \cdot (\log n)^{1/(k-1)}.
         \]
@@ -238,6 +238,7 @@
         That is, $k$-graphs of constant density contain complete balanced
         $k$-partite $k$-subgraphs of \textbf{growing} part size.
     }
+
     \uncover<3->{
         A probabilistic argument shows that this is tight up to the constant $\delta(k, d)$.
     }
@@ -251,13 +252,11 @@
     The proofs shown are \textbf{non-constructive}.
 
     \uncover<2->{
-        We would like to \textbf{find} a complete balanced $k$-partite $k$-subgraph $\compoverset{k}{t}$ in a $k$-graph $H = (V, E)$
-        with sufficiently many edges.
-        And do it \textbf{efficiently}!
+        We want to \textbf{find} $\compoverset{k}{t}$ in $H = (V, E)$ of constant density $d = m/n^k$.
     }
 
     \uncover<3->{
-        The naïve approach is to enumerate all $k$-partite $k$-subgraphs of $H$ and check if they are complete.
+        Naïve approach: enumerate all $k$-partite $k$-subgraphs of $H$.
     }
 
     \uncover<4->{
@@ -279,28 +278,60 @@
     \frametitle{An Algorithm for $k=2$ (D. Mubayi and G. Turán)}
     \textbf{Idea}: Mimick the proof the Kővari--Sós--Turán theorem:
     \begin{itemize}
-        \item<2-> Find a bipartite $2$-graph $(U, W; E)$ with many edges.
-        \item<3-> For each subset $T \in \binom{W}{t}$, calculate the common neighborhood and at some point it will have size at least $s = t$.
+        \item<2-> Find a bipartite subgraph $(U, W; E)$ of $H$ with many edges.
+        \item<3-> For each subset $T \in \binom{W}{t}$, calculate the common neighborhood.
+        For some $T$ it has size $s = t$.
     \end{itemize}
 
     \uncover<4->{\textbf{Problems}:}
     \begin{itemize}
-        \item<5-> Finding a dense bipartite subgraph (Our argument is probabilistic, not constructive).
-        \item<6-> If we are not careful, the search space $\binom{W}{t}$ might still be too large \ldots
+        \item<5-> Finding a dense bipartite subgraph.
+        \item<6-> If we are not careful, the search space $\binom{W}{t}$ might still be too large \dots
     \end{itemize}
 
-    \uncover<7->{\textbf{Solution}: Set $W$ to be be a set of $w = \lfloor t / d \rfloor$ vertices of \textbf{maximum degree}.}
+    \uncover<7->{\textbf{Solution}: $W$ are the $\mathbf{w = \lfloor t / d \rfloor}$ vertices of \textbf{maximum degree}. $U = V \setminus W$.}
     \begin{itemize}
-        \item<8-> The maximum degree conditions ensures that the bipartite subgraph has many edges (after removing the internal edges of $W$).
-        \item<8-> The choice of $w$ is crucial: If too small, the extra term in the $KST$ bound is too large; if too big, the search space $\binom{W}{t}$ is too large.
+        \item<8-> Max degree $\implies$ The bipartite subgraph has many edges.
+        \item<9-> $w$ is ``just right''.
+        If too small, the extra term in the $KST$ bound is too large; if too big, the search space $\binom{W}{t}$ is too large.
     \end{itemize}
-
 \end{frame}
-    
-\section{Future Work}
 
 \begin{frame}
-    asdfsadfsdf
+    \frametitle{Extending to $k$-Graphs}
+    We present a polynomial algorithm that finds a $\compoverset{k}{t}$ in a $k$-graph $H = (V, E)$ with $d n^k$ edges, where
+    \[
+        t = \left\lfloor \left(  \frac{\log \left(n/2^{(k-1)}\right)}{\log (3/d)} \right)^{\frac{1}{k-1}} \right\rfloor
+    \]
+    \begin{itemize}
+        \item<1->\textbf{First (failed) attempt}: Try to find a $k$-partite subgraph of $H$ with logarithmically sized parts except one large part.
+        \item<2->\textbf{Actual solution:} Use a \textbf{recursive} approach from the beginning.
+        \begin{itemize}
+            \item<3-> Find a set $W$ of $\mathbf{w = \lfloor 2t / d \rfloor}$ vertices of maximum degree.
+            \item<4-> There are many edges with exactly 1 vertex in $W$ (by averaging).
+            \item<5-> By $KST$, for some $T \subset W$ of size $t$, the set $L_T$ of $(k-1)$-sets of $V \setminus W$
+            forming an edge with all vertices in $T$ has size at least $\mathbf{s = d^t n^{k-1}}$.
+            \item<6-> Applying the algorithm to $H' = (V \setminus W, S)$ with $\mathbf{n' = n-w, d' = d^t}$
+            we get $\mathbf{t' \geq t}$.
+            \item<7-> It finds $\mathbf{T_1, \dots, T_{k-1}}$ complete in $H' \implies \mathbf{T_1, \dots, T_{k-1}, T}$ complete in $H$.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+    
+\section{Future Work}\label{sec:future-work}
+
+\begin{frame}
+    \frametitle{Future Work}
+    \begin{itemize}
+        \item<2-> \textbf{Refine the algorithm:} The current analysis is not tight.
+        The algorithm is not yet practical.
+        \item<3-> \textbf{Implement and test:} Evaluate the algorithm on synthetic and real-world hypergraphs.
+        \item<4-> \textbf{Generalize the structures found:} The algorithm finds complete balanced $k$-partite $k$-graphs.
+        Extending it to unbalanced seems feasible.
+        \item<5-> \textbf{Generalize the blow-ups:} The algorithm finds $t_n$-blowups of a single edge.
+        Obvious way to extend it does not yield optimal $t$.
+        \item<6-> \textbf{Extremely dense hypergraphs:} The algorithm does not yield the best order of $t$ for increasing $d \to 1/k!$.
+    \end{itemize}
 \end{frame}
 
 \end{document}

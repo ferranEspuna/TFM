@@ -1,174 +1,186 @@
-# generate_kst_proof_sketch.py (v22 - Granular highlighting)
 import itertools
 import pathlib
 
-# --- Adjacency matrix ---
-adj_matrix = [
-    [1, 1, 1, 1],  # U_1
-    [1, 1, 1, 0],  # U_2
-    [1, 0, 0, 1],  # U_3
-    [0, 1, 0, 1],  # U_4
-    [0, 0, 1, 1]  # U_5
+# --- Parameters ---
+SCALE = 0.8
+U_PARTITION_LABEL = r"$U = V_1 \times V_2$"
+W_PARTITION_LABEL = r"$W = V_3$"
+H_VERT_COLOR = "black"
+H_DOT_THICKNESS = 4.0
+H_ROOT_THICKNESS = 2.0
+H_LINE_THICKNESS = 1.0
+HP_VERT_COLOR = "black"
+HP_DOT_THICKNESS = 2.5
+HP_LINE_THICKNESS = 0.5
+HP_BASE_COLOR = "black!30"
+SET_T_COLOR = "orange"
+LINK_GRAPH_COLOR = "teal"
+FINAL_K_COLOR = "brown!60!red"
+
+# --- Graph Definition ---
+# H coordinates (Left Graph)
+v_coords = {
+    'A1': (-3, 5), 'A2': (0, 7), 'A3': (3, 9),
+    'B1': (-3, 0), 'B2': (0, -2), 'B3': (3, -4),
+    'C1': (8, 0.85), 'C2': (8, 5), 'C3': (9, 3.1),
+}
+V1, V2, V3 = ['A1', 'A2', 'A3'], ['B1', 'B2', 'B3'], ['C1', 'C2', 'C3']
+
+k222_edges = [p for p in itertools.product(['A1','A2'], ['B1','B2'], ['C1','C2'])]
+distractor_edges = [
+    ('A3', 'B3', 'C3'), ('A2', 'B3', 'C1'),
+    ('A3', 'B1', 'C2'), ('A3', 'B2', 'C3'), ('A3', 'B1', 'C1'),
 ]
-U_SIZE, W_SIZE = len(adj_matrix), len(adj_matrix[0])
 
-# --- Main Parameters for Customization ---
-GRAPH_VERTICAL_SCALE, GRAPH_HORIZONTAL_SCALE, SCALE = 1.0, 4.5, 0.8
-HIGHLIGHTED_LINE_COLOR, STARS_HIGHLIGHT_COLOR, CALLOUT_COLOR = "brown!40!red", "teal", "yellow"
-BOX_BG_COLOR = f"{HIGHLIGHTED_LINE_COLOR}!20"
-TOP_BOX_Y_POS, BOTTOM_BOX_Y_POS = 5.0, -1.5
+hyperedges_H = k222_edges + distractor_edges
+hyperedge_fs_to_tuple_map = {frozenset(h_tuple): h_tuple for h_tuple in hyperedges_H}
 
-# --- Automatically Derived Parameters ---
-BOX_CENTER_X = GRAPH_HORIZONTAL_SCALE / 2.0
-BOX_WIDTH = GRAPH_HORIZONTAL_SCALE + 2.0
 
-# --- Drawing parameters ---
-LINE_THICKNESS, DOT_THICKNESS = 0.7, 2.8
-output_filename = "src/figures/kst_proof_sketch.tex"
+def calc_root_coords(hyperedge):
+    a, b, c = (v_coords[vtx] for vtx in hyperedge)
+    ab_x_factor, c_x_factor = 0.4, 0.2
+    ab_y_factor, c_y_factor = 0.37, 0.26
+    x = (ab_x_factor * a[0] + ab_x_factor * b[0] + c_x_factor * c[0])
+    y = (ab_y_factor * a[1] + ab_y_factor * b[1] + c_y_factor * c[1])
+    return x, y
 
-# --- TikZ Code Generation ---
-lines = [r"% TikZ code for KST proof sketch, v22 (granular highlights)",
-         f"\\begin{{tikzpicture}}[scale={SCALE}, every node/.style={{transform shape, scale={SCALE}}}]",
-         r"\pgfdeclarelayer{background}\pgfdeclarelayer{main}\pgfsetlayers{background,main}"]
 
-# Define Vertex Coordinates
-u_y_coords = [4 - i * GRAPH_VERTICAL_SCALE for i in range(U_SIZE)]
-for i in range(U_SIZE): lines.append(f"\\coordinate (U{i}) at (0, {u_y_coords[i]});")
-w_y_coords = [3.5 - i * GRAPH_VERTICAL_SCALE for i in range(W_SIZE)]
-for i in range(W_SIZE): lines.append(f"\\coordinate (W{i}) at ({GRAPH_HORIZONTAL_SCALE}, {w_y_coords[i]});")
+hyperedge_roots = {h: calc_root_coords(h) for h in hyperedges_H}
 
-lines.append(r"\begin{pgfonlayer}{main}")
+# H' definitions (nodes for the dual graph)
+U_nodes = [f"{v1}{v2}" for v1 in V1 for v2 in V2]
+U_labels = {f"{v1}{v2}": f"$({v1[0]}_{v1[1]},{v2[0]}_{v2[1]})$" for v1 in V1 for v2 in V2}
+W_nodes = V3
 
-# --- STAGE 1 (Slide 1->...): Base Graph and Top Box ---
+# H' Coordinates (Right Graph, side-by-side with H)
+u_coords_hp = {f"{V1[i]}{V2[j]}": (15, 9 - (i * 3 + j) * 1.2) for i in range(3) for j in range(3)}
+w_coords_hp = {V3[i]: (21, 6 - i * 2) for i in range(3)}
+
+# Adjacency list for H'
+adj_Hp = {u: {w: 0 for w in W_nodes} for u in U_nodes}
+for u_node in U_nodes:
+    v1, v2 = u_node[:2], u_node[2:]
+    for w_node in W_nodes:
+        potential_hyperedge_fs = frozenset([v1, v2, w_node])
+        if potential_hyperedge_fs in hyperedge_fs_to_tuple_map:
+            adj_Hp[u_node][w_node] = 1
+
+# --- TikZ Generation ---
+lines = [
+    r"% TikZ code for side-by-side dual proof sketch (v12 - naming clash fixed).",
+    f"\\begin{{tikzpicture}}[scale={SCALE}, every node/.style={{transform shape, scale={SCALE}}}]",
+]
+
+# --- Graph H Drawing (Left) ---
+lines.append(r"\begin{scope}")
+lines.append(r"\node at (4.5, 8.5) {\Large$H$};")
+for v, pos in v_coords.items(): lines.append(f"\\coordinate ({v}) at {pos};")
+
 lines.append(r"\uncover<1->{")
-lines.append(
-    f"  \\node[draw, thick, fill={CALLOUT_COLOR}!20, rounded corners, align=center, text width={BOX_WIDTH}cm]"
-    f" at ({BOX_CENTER_X}, {TOP_BOX_Y_POS}) "
-    r"{This graph has the maximum number of edges ($|E|=13$) to be $K_{3,2}$-free.};")
-for i in range(U_SIZE):
-    for j in range(W_SIZE):
-        if adj_matrix[i][j] == 1: lines.append(f"  \\draw[line width={LINE_THICKNESS}pt, black!25] (U{i}) -- (W{j});")
-for i in range(U_SIZE): lines.append(
-    f"  \\fill[black] (U{i}) circle ({DOT_THICKNESS}pt) node[anchor=east] {{$U_{{{i + 1}}}$}};")
-for i in range(W_SIZE): lines.append(
-    f"  \\fill[black] (W{i}) circle ({DOT_THICKNESS}pt) node[anchor=west] {{$W_{{{i + 1}}}$}};")
+for i, h in enumerate(hyperedges_H):
+    lines.append(f"\\coordinate (R{i}) at {hyperedge_roots[h]};")
+    lines.append(f"\\fill[gray!40] (R{i}) circle ({H_ROOT_THICKNESS}pt);")
+    for v in h: lines.append(f"\\draw[gray!40, line width={H_LINE_THICKNESS}pt] (R{i}) -- ({v});")
+for v in v_coords: lines.append(f"\\fill[{H_VERT_COLOR}] ({v}) circle ({H_DOT_THICKNESS}pt) node[above=2pt, font=\\small] {{${v[0]}_{v[1]}$}};")
 lines.append(r"}")
 
-# --- STAGE 2 (Slide 2 ONLY): The "Add Edge" animation ---
-lines.append(r"\only<2>{")
-# ... (This section is kept from the previous version) ...
-target_w, target_u = [1, 2], [0, 1, 3]
-critical_u, critical_w = 3, 2
-for j in target_w: lines.append(f"  \\fill[{HIGHLIGHTED_LINE_COLOR}] (W{j}) circle ({DOT_THICKNESS + 0.5}pt);")
-for i in target_u: lines.append(f"  \\fill[{HIGHLIGHTED_LINE_COLOR}] (U{i}) circle ({DOT_THICKNESS + 0.5}pt);")
-lines.append(
-    f"  \\draw[line width={LINE_THICKNESS * 1.5}pt, {HIGHLIGHTED_LINE_COLOR}, dashed, -]"
-    f" (U{critical_u}) -- (W{critical_w}) node[midway, below, sloped, font=\\scriptsize] {{Add edge}};")
-for i in target_u:
-    for j in target_w:
-        if adj_matrix[i][j] == 1: lines.append(
-            f"  \\draw[line width={LINE_THICKNESS * 1.5}pt, {HIGHLIGHTED_LINE_COLOR}] "
-            f"(U{i}) -- (W{j});")
-
-lines.append(
-    f"  \\node[draw, thick, fill={BOX_BG_COLOR}, rounded corners, align=center, text width={BOX_WIDTH - 0.5}cm,"
-    f" overlay] at ({BOX_CENTER_X}, {BOTTOM_BOX_Y_POS}) "
-    r"{{For example, adding the edge $\{U_4, W_3\}$ creates a $K_{3,2}$ on vertices "
-    r"$\{U_1, U_2, U_4\}$ and $\{W_2, W_3\}$.}};")
+lines.append(r"\uncover<2->{")
+for v in ['C1', 'C2']: lines.append(f"\\fill[{SET_T_COLOR}] ({v}) circle ({H_DOT_THICKNESS+0.5}pt);")
 lines.append(r"}")
 
-# --- STAGE 3 (Slides 3-8): The "Counting Stars" animation ---
-# Box for this stage
-lines.append(r"\uncover<3-8>{")
-lines.append(f"  \\node[draw, thick, fill={STARS_HIGHLIGHT_COLOR}!20, rounded corners, align=center, "
-             f"text width={BOX_WIDTH - 0.5}cm, overlay] at ({BOX_CENTER_X}, {BOTTOM_BOX_Y_POS}) "
-             r"{{For $x=U_1$, we count its $\binom{4}{2}=6$ stars.}};")
-lines.append(r"}")
-# Animation loop for this stage
-star_center_u_idx = 0
-neighbors_of_u1 = [j for j, edge in enumerate(adj_matrix[star_center_u_idx]) if edge == 1]
-neighbor_pairs = list(itertools.combinations(neighbors_of_u1, 2))
-for i, pair in enumerate(neighbor_pairs):
-    slide_num = i + 3
-    lines.append(f"\\only<{slide_num}>{{")
-    lines.append(f"  \\fill[{STARS_HIGHLIGHT_COLOR}] (U{star_center_u_idx}) circle ({DOT_THICKNESS + 0.5}pt);")
-    w_idx_1, w_idx_2 = pair
-    lines.append(f"  \\fill[{STARS_HIGHLIGHT_COLOR}] (W{w_idx_1}) circle ({DOT_THICKNESS + 0.5}pt);")
-    lines.append(f"  \\fill[{STARS_HIGHLIGHT_COLOR}] (W{w_idx_2}) circle ({DOT_THICKNESS + 0.5}pt);")
-    lines.append(f"  \\draw[line width={LINE_THICKNESS * 1.5}pt, "
-                 f"{STARS_HIGHLIGHT_COLOR}] (U{star_center_u_idx}) -- (W{w_idx_1});")
+lines.append(r"\uncover<3->{")
+link_graph_contributors = []
+s_T_nodes_for_H = [u for u in U_nodes if adj_Hp[u]['C1'] and adj_Hp[u]['C2']]
+for u_node in s_T_nodes_for_H:
+    v1, v2 = u_node[:2], u_node[2:]
+    fs_c1 = frozenset([v1, v2, 'C1'])
+    if fs_c1 in hyperedge_fs_to_tuple_map:
+        link_graph_contributors.append(hyperedge_fs_to_tuple_map[fs_c1])
+    fs_c2 = frozenset([v1, v2, 'C2'])
+    if fs_c2 in hyperedge_fs_to_tuple_map:
+        link_graph_contributors.append(hyperedge_fs_to_tuple_map[fs_c2])
 
-    lines.append(f"  \\draw[line width={LINE_THICKNESS * 1.5}pt, "
-                 f"{STARS_HIGHLIGHT_COLOR}] (U{star_center_u_idx}) -- (W{w_idx_2});")
-
-    lines.append(r"}")
-
-# stage 4 averaging
-lines.append(r"\uncover<9>{")
-lines.append(
-    f"  \\node[draw, thick, fill={STARS_HIGHLIGHT_COLOR}!20, rounded corners, align=center, "
-    f"text width={BOX_WIDTH - 0.5}cm, overlay] at ({BOX_CENTER_X}, {BOTTOM_BOX_Y_POS}) "
-    r"{{In the example, there are at least $5\binom{13/5}{2} = 10.4$ stars (there are actually 12)}};")
+for h in link_graph_contributors:
+    if h in hyperedges_H:
+        r_idx = hyperedges_H.index(h)
+        lines.append(f"\\fill[{LINK_GRAPH_COLOR}] (R{r_idx}) circle ({H_ROOT_THICKNESS}pt);")
+        for v in h: lines.append(f"\\draw[{LINK_GRAPH_COLOR}, line width={H_LINE_THICKNESS}pt] (R{r_idx}) -- ({v});")
+for v in ['A1','A2','B1','B2']: lines.append(f"\\fill[{LINK_GRAPH_COLOR}] ({v}) circle ({H_DOT_THICKNESS+0.5}pt);")
 lines.append(r"}")
 
-# --- STAGE 4 (Slides 10-12): The "Bounding" animation ---
-# Box for this stage
-lines.append(r"\uncover<10-12>{")
-lines.append(f"  \\node[draw, thick, fill={HIGHLIGHTED_LINE_COLOR}!20, rounded corners, align=center, "
-             f"text width={BOX_WIDTH - 0.5}cm, overlay] at ({BOX_CENTER_X}, {BOTTOM_BOX_Y_POS}) "
-             r"{{Each set $T \subset W$ (in this case, $T = \{W_2, W_3\})$ is in at most $s-1 = 3 - 1 = 2$ stars. "
-             r"In total, at most $2 \binom{4}{2}=12$ stars.}};")
+lines.append(r"\uncover<5->{")
+k222_nodes_H = ['A1','A2','B1','B2','C1','C2']
+for h in k222_edges:
+    if h in hyperedges_H:
+        r_idx = hyperedges_H.index(h)
+        lines.append(f"\\fill[{FINAL_K_COLOR}] (R{r_idx}) circle ({H_ROOT_THICKNESS+0.5}pt);")
+        for v in h: lines.append(f"\\draw[{FINAL_K_COLOR}, line width={H_LINE_THICKNESS+0.5}pt] (R{r_idx}) -- ({v});")
+for v in k222_nodes_H: lines.append(f"\\fill[{FINAL_K_COLOR}] ({v}) circle ({H_DOT_THICKNESS+0.5}pt);")
 lines.append(r"}")
-# Define vertices for this stage
-bounding_T_indices = [1, 2]
-bounding_S_indices = [0, 1]
+lines.append(r"\end{scope}")
 
-# --- NEW HIGHLIGHTING LOGIC ---
-# Highlight vertices of the first star (U1, W2, W3) from slide 11 onwards
-lines.append(r"\uncover<11-12>{")
-lines.append(f"  \\fill[{HIGHLIGHTED_LINE_COLOR}] (U{bounding_S_indices[0]}) circle ({DOT_THICKNESS + 0.5}pt);")
-for j in bounding_T_indices:
-    lines.append(f"  \\fill[{HIGHLIGHTED_LINE_COLOR}] (W{j}) circle ({DOT_THICKNESS + 0.5}pt);")
-lines.append(r"}")
-# Highlight center of second star (U2) from slide 12 onwards
-lines.append(r"\uncover<12>{")
-lines.append(f"  \\fill[{HIGHLIGHTED_LINE_COLOR}] (U{bounding_S_indices[1]}) circle ({DOT_THICKNESS + 0.5}pt);")
-lines.append(r"}")
+# --- Graph H' Drawing (Right) ---
+lines.append(r"\begin{scope}")
+lines.append(r"\node at (18, 10.5) {\Large$H'$};")
+# Define coordinates for U and W nodes in H'
+for v, pos in u_coords_hp.items(): lines.append(f"\\coordinate ({v}) at {pos};")
+# Use a unique suffix "HP" for the coordinates of the W partition to avoid clashes
+for v, pos in w_coords_hp.items(): lines.append(f"\\coordinate ({v}HP) at {pos};") # CHANGED
 
-# Show the first star's edges on slide 11
-lines.append(r"\only<11>{")
-lines.append(f"  \\draw[line width={LINE_THICKNESS * 1.5}pt, {HIGHLIGHTED_LINE_COLOR}]"
-             f" (U{bounding_S_indices[0]}) -- (W{bounding_T_indices[0]});")
-lines.append(f"  \\draw[line width={LINE_THICKNESS * 1.5}pt, {HIGHLIGHTED_LINE_COLOR}]"
-             f" (U{bounding_S_indices[0]}) -- (W{bounding_T_indices[1]});")
-lines.append(r"}")
-# Show the second star's edges on slide 12
-lines.append(r"\only<12>{")
-lines.append(
-    f"  \\draw[line width={LINE_THICKNESS * 1.5}pt, {HIGHLIGHTED_LINE_COLOR}] "
-    f"(U{bounding_S_indices[1]}) -- (W{bounding_T_indices[0]});")
-
-lines.append(
-    f"  \\draw[line width={LINE_THICKNESS * 1.5}pt, {HIGHLIGHTED_LINE_COLOR}]"
-    f" (U{bounding_S_indices[1]}) -- (W{bounding_T_indices[1]});")
-
+lines.append(r"\uncover<1->{")
+lines.append(f"\\node[anchor=south] at (15, 10) {{{U_PARTITION_LABEL}}};")
+lines.append(f"\\node[anchor=south] at (21, 8) {{{W_PARTITION_LABEL}}};")
+# Draw edges in H' (initially grey)
+for u in U_nodes:
+    for w in W_nodes:
+        if adj_Hp[u][w]: lines.append(f"\\draw[line width={HP_LINE_THICKNESS}pt, {HP_BASE_COLOR}] ({u}) -- ({w}HP);") # CHANGED
+# Draw U nodes with labels
+for u, label in U_labels.items(): lines.append(f"\\fill[{HP_VERT_COLOR}] ({u}) circle ({HP_DOT_THICKNESS}pt) node[anchor=east, font=\\tiny] {{{label}}};")
+# Draw W nodes with labels
+for w in W_nodes: lines.append(f"\\fill[{HP_VERT_COLOR}] ({w}HP) circle ({HP_DOT_THICKNESS}pt) node[anchor=west, font=\\small] {{${w[0]}_{w[1]}$}};") # CHANGED
 lines.append(r"}")
 
-lines.append(r"\uncover<13>{")
-lines.append(
-    f"  \\node[draw, thick, fill={CALLOUT_COLOR}!20, rounded corners, align=center, text width={BOX_WIDTH - 0.5}cm,"
-    f" overlay] at ({BOX_CENTER_X}, {BOTTOM_BOX_Y_POS})"
-    r"{{In the example, we conclude that $10.4 \leq 12$, which is true. For bigger values of $z$ this would "
-    r"fail, leading to contradiction and therefore upper bounding $z$. In fact, z=14 already fails! }};")
+lines.append(r"\uncover<2->{")
+# Highlight set T (C1, C2)
+options_T = f"draw, thick, {SET_T_COLOR}, rounded corners, fit=(C1HP)(C2HP), inner sep=5pt, label distance=2pt, label={{90:$T$}}" # CHANGED
+lines.append(f"\\node[{options_T}] {{}};")
+for v in ['C1', 'C2']: lines.append(f"\\fill[{SET_T_COLOR}] ({v}HP) circle ({HP_DOT_THICKNESS+0.5}pt);") # CHANGED
 lines.append(r"}")
 
-lines.append(r"\end{pgfonlayer}\end{tikzpicture}")
+lines.append(r"\uncover<3->{")
+# Highlight nodes in S_T and edges from S_T to T
+s_T_nodes = [u for u in U_nodes if adj_Hp[u]['C1'] and adj_Hp[u]['C2']]
+for u in s_T_nodes:
+    lines.append(f"\\fill[{LINK_GRAPH_COLOR}] ({u}) circle ({HP_DOT_THICKNESS+0.5}pt);")
+    for w in ['C1', 'C2']: lines.append(f"\\draw[line width={HP_LINE_THICKNESS+0.8}pt, {LINK_GRAPH_COLOR}] ({u}) -- ({w}HP);") # CHANGED
+lines.append(r"}")
 
-# --- Write TikZ code to file ---
-output_path = pathlib.Path(output_filename)
-output_path.parent.mkdir(parents=True, exist_ok=True)
+lines.append(r"\uncover<4->{")
+# Draw a box around the link graph edges in H'
+label_link = r"{[label distance=2pt]90:Edges of $\link{H}{T}{2}$}"
+options_linkbox = f"draw, thick, {LINK_GRAPH_COLOR}, rounded corners, fit=(A1B1)(A2B2), inner sep=5pt, label={label_link}"
+lines.append(f"\\node[{options_linkbox}] (linkbox) {{}};")
+lines.append(r"}")
+
+lines.append(r"\uncover<5->{")
+# Highlight the final K(2,2,2) structure in H'
+for u in s_T_nodes:
+    lines.append(f"\\fill[{FINAL_K_COLOR}] ({u}) circle ({HP_DOT_THICKNESS+0.5}pt);")
+    for w in ['C1', 'C2']:
+        lines.append(f"\\draw[line width={HP_LINE_THICKNESS+1}pt, {FINAL_K_COLOR}] ({u}) -- ({w}HP);") # CHANGED
+for w in ['C1', 'C2']: lines.append(f"\\fill[{FINAL_K_COLOR}] ({w}HP) circle ({HP_DOT_THICKNESS+0.5}pt);") # CHANGED
+# Add label for the found K(2,2,2)
+label_final = f"{{[color={FINAL_K_COLOR}]-90:$K(2,2,2)$ found!}}"
+options_final = f"draw, very thick, {FINAL_K_COLOR}, rounded corners, fit=(A1B1)(A2B2)(C1HP)(C2HP), inner sep=8pt, label distance=-2pt, label={label_final}" # CHANGED
+lines.append(f"\\node[{options_final}] {{}};")
+lines.append(r"}")
+lines.append(r"\end{scope}")
+lines.append(r"\end{tikzpicture}")
+
+# --- Write to file ---
+output_filename = "src/figures/erdos64_dual_sketch.tex"
 try:
-    with open(output_path, "w") as f:
+    with open(output_filename, "w") as f:
         f.write("\n".join(lines))
     print(f"Success: Final complete TikZ code (v22) has been written to '{output_filename}'")
 except Exception as e:

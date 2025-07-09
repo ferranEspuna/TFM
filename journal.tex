@@ -32,7 +32,7 @@ TODO % TODO
 
 Hypergraph Turán problems study how many edges a $k$-uniform hypergraph $H = (V, E)$ with $n$ vertices can have without containing a specific subgraph $G$.
 The maximal such number is known as the \emph{Turán number} $\ex{n}{G}$.
-It is known % todo reference
+It is known~\cite{keevash2011hypergraph}
 that $\ex{n}{G} = o\left( \binom{n}{k}\right)$ if and only if $G$ is $k$-partite, i.e.,
 if its vertex set can be partitioned into $k$ disjoint sets such that each edge contains exactly one vertex from each part.
 Kővári, Sós, and Turán~\cite{Kovari1954} (for $k=2$) and
@@ -53,53 +53,66 @@ More concretely, we prove the following.
 \begin{theorem} \label{thm:main_theorem}
 There is a deterministic algorithm that, given a $k$-graph $H$ with $n$ vertices and $m=dn^k$ edges, finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$ in polynomial time, where
 \[
-    t = \left\lfloor \left( \frac{\log(n/2^{k-1})}{\log(3/d)} \right)^{\frac{1}{k-1}} \right\rfloor.
+    t = t(n, d, k) = \dots % TODO: write the formula for t
 \]
 \end{theorem}
 This value of $t$ matches the order of magnitude from existence proofs.
 In fact, a probabilistic argument shows that it is the best possible up to a constant factor.
 
-\section{Finding a Balanced $k$-Partite Subgraph}\label{sec:finding-a-balanced-$k$-partite-subgraph}
+\section{The algorithm}\label{sec:finding-a-balanced-$k$-partite-subgraph}
 
-We present a recursive algorithm, \texttt{Find\_Partite}, that finds a $\compoverset{k}{t}$ in a given $k$-graph $H$. The core idea is to reduce the uniformity of the problem from $k$ to $k-1$ in each recursive step.
+We present a recursive algorithm, \texttt{FindPartite}, that finds a $\compoverset{k}{t}$ in a given $k$-graph $H$.
+The core idea is to reduce the uniformity of the problem from $k$ to $k-1$ in each recursive step.
+The algorithm takes a $k$-graph $H$ with $n$ vertices and $m$ edges as input.
+It first defines the target part size $t$, a small set size $w$,
+and a threshold edge count $s$ for the recursive call, based on the input graph's parameters:
 
-The algorithm takes a $k$-graph $H$ as input. It first defines the target part size $t$, a small set size $w$, and a threshold edge count $s$ for the recursive call, based on the input graph's parameters ($n$, $d=m/n^k$, $k$):
 \begin{align*}
-    t(n, d, k) &= \left\lfloor \left(  \frac{\log \left(n/2^{k-1}\right)}{\log (3/d)} \right)^{\frac{1}{k-1}} \right\rfloor \\
-    w(n, d, k) &= \left\lceil \frac{2t(n, d, k)}{d} \right\rceil \\
-    s(n, d, k) &= \left\lceil d^{t(n, d, k)} n^{k-1} \right\rceil
+    t(n, d, k) &= \dots, \\
+    w(n, d, k) &= \dots, \text{ and } \\
+    s(n, d, k) &= \dots,
 \end{align*}
-
+where $d = \frac{m}{\binom{n}{k}}$ is the edge density of $H$.
 The main steps are:
 \begin{enumerate}
-    \item \textbf{Base Case ($k=1$):} A 1-graph is just a collection of vertices. Return the set of all vertices that are "edges".
-    \item \textbf{Select High-Degree Vertices:} Choose a set $W \subset V$ of $w$ vertices with the highest degrees in $H$. Let $U = V \setminus W$.
-    \item \textbf{Find a Dense Link Graph:} Iterate through all $t$-subsets $T \subset W$. For each $T$, consider the set $S$ of all $(k-1)$-subsets of $U$ that form a hyperedge with \emph{every} vertex in $T$.
-    \item \textbf{Recurse:} The pigeonhole principle, formalized by the Kővári–Sós–Turán theorem, guarantees that for at least one choice of $T$, the resulting set $S$ will be large ($|S| \ge s$). We form a new $(k-1)$-graph $H'=(U, S)$ and make a recursive call: \texttt{Find\_Partite($H'$, $k-1$)}.
-    \item \textbf{Construct Solution:} The recursive call returns $k-1$ parts $V_1, \dots, V_{k-1}$ of size at least $t$. By construction, every choice of vertices from these parts forms an edge in $H'$ with $T$. Thus, $(V_1, \dots, V_{k-1}, T)$ form the desired $\compoverset{k}{t}$ in the original graph $H$.
+    \item \textbf{Base Case ($k=1$):} The edge set of a 1-graph is just a collection of vertices.
+    Return the set of all vertices that are ``edges''.
+
+    \item \textbf{Select High-Degree Vertices:} Choose a set $W \subset V$ of $w$ vertices with the highest degrees in $H$.
+
+    \item \textbf{Find a Dense Link Graph:} Iterate through all $t$-subsets $T \subset W$.
+    For each $T$, consider the set $S$ of all $(k-1)$-subsets of $V$ that form a hyperedge with \emph{every} vertex in $T$.
+
+    \item \textbf{Recurse:} As we prove further along using the Kővári–Sós–Turán theorem, for at least one choice of $T$,
+    the resulting set $S$ will be large ($|S| \ge s$). We form a new $(k-1)$-graph $H'=(V, S)$ and make a recursive call: \texttt{FindPartite($H'$, $k-1$)}.
+
+    \item \textbf{Construct Solution:} The recursive call returns $k-1$ parts $V_1, \dots, V_{k-1}$ of size at least $t$.
+    By construction, every choice of vertices from these parts forms an edge in $H'$ with every vertex of $T$.
+    Thus, $(T_1, \dots, T_{k-1}, T)$ form the desired $\compoverset{k}{t}$ in the original graph $H$.
+
 \end{enumerate}
 
-The pseudocode is given in Algorithm \ref{alg:kpartite}.
+The pseudocode is given in Algorithm~\ref{alg:kpartite}.
 
 \begin{algorithm}[H]
     \caption{Finding a balanced partite $k$-graph}
     \label{alg:kpartite}
     \begin{algorithmic}[1]
-        \Function{Find\_Partite}{$H, k$}
+        \Function{FindPartite}{$H, k$}
             \If {$k = 1$}
                 \State \Return $(\{x \colon \{x\} \in E(H)\})$
             \EndIf
 
-            \State $n \gets |V(H)|$, $m \gets |E(H)|$, $d \gets m/n^k$
+            \State $n \gets |V(H)|$, $m \gets |E(H)|$, $d \gets \frac{m}{\binom{n}{k}}$
             \State $t \gets t(n, d, k)$, $w \gets w(n, d, k)$, $s \gets s(n, d, k)$
             \State \textbf{assert} $t \ge 2$
 
             \State $W \gets$ a set of $w$ vertices with highest degree in $H$
             \ForAll{$T \in \binom{W}{t}$}
-                \State $S \gets \{\,y \in \binom{V\setminus W}{k-1} \colon \forall x \in T, \{x\} \cup y \in E(H)\,\}$
+                \State $S \gets \{\,y \in \binom{V}{k-1} \colon \forall x \in T, \{x\} \cup y \in E(H)\,\}$
                 \If{$|S| \ge s$}
-                    \State $H' \gets (V \setminus W, S)$  \Comment{$H'$ is a $(k-1)$-graph}
-                    \State $(V_1, \dots, V_{k-1}) \gets$ \Call{Find\_Partite}{$H', k-1$}
+                    \State $H' \gets (V, S)$  \Comment{$H'$ is a $(k-1)$-graph}
+                    \State $(V_1, \dots, V_{k-1}) \gets$ \Call{FindPartite}{$H', k-1$}
                     \State \Return $(V_1, \dots, V_{k-1}, T)$
                 \EndIf
             \EndFor
@@ -107,167 +120,63 @@ The pseudocode is given in Algorithm \ref{alg:kpartite}.
     \end{algorithmic}
 \end{algorithm}
 
-\section{Analysis}
+\section{Analysis}\label{sec:analysis}
 
-We briefly sketch the proof of correctness and polynomial runtime for our algorithm. The full, detailed proofs can be found in the first author's master's thesis \cite{Espuna2025}. We assume $t \ge 2$, which holds if $d$ is not too small (e.g., $d = \Omega(n^{-1/2^{(k-1)}})$).
+We now presnt the proof of correctness and polynomial runtime for our algorithm.
+We assume $t \ge 2$ for our estimates to be easier.
+If $t < 2$, we may just return the vertices of any single edge in $H$.
 
-\subsection{Correctness}
+\subsection{Correctness}\label{subsec:correctness}
 
-The correctness of the algorithm hinges on two key lemmas, which we state here without proof.
-\begin{enumerate}
-    \item There always exists a $t$-subset $T \subseteq W$ for which the set $S$ of common neighbors satisfies $|S| \ge s$.
-    \item The recursive call \texttt{Find\_Partite($H'$, $k-1$)} is guaranteed to find parts of size at least $t$.
-\end{enumerate}
+The correctness of the algorithm hinges on these key lemmas.
+TODO % TODO
 
-The first claim follows from a double-counting argument akin to the proof of the Kővári-Sós-Turán theorem. We define a bipartite graph between the $(k-1)$-subsets of $V \setminus W$ and the vertices in $W$. By showing this graph is dense, we can guarantee the existence of a complete bipartite subgraph $K(s,t)$, which corresponds to finding the desired set $T$ and a large corresponding set $S$.
+\subsection{Complexity}\label{subsec:complexity}
+TODO re-evaluate the complexity analysis. % TODO
 
-For the second claim, we show that the new hypergraph $H'=(V \setminus W, S)$ is sufficiently dense. Its density $d'$ satisfies $d' \ge d^t$. We then prove that the target part size for the recursive call, $t' = t(n-w, d', k-1)$, satisfies $t' \ge t$. This ensures that the part sizes do not shrink during recursion. For the base case $k=2 \to k=1$, we show directly that $|S| \ge t$.
+\section{Conclusion and Future Work}\label{sec:conclusion-and-future-work}
 
-\subsection{Complexity}
-
-The algorithm runs in polynomial time in $n$. The dominant cost at each recursive level comes from the loop over all $t$-subsets of $W$. The number of iterations is $\binom{w}{t}$. Since $w = \lceil 2t/d \rceil$ and $t = \Theta((\log n)^{1/(k-1)})$, the number of iterations can be bounded:
-\[
-    \binom{w}{t} \le \left(\frac{ew}{t}\right)^t \le \left(\frac{e(2t/d + 1)}{t}\right)^t \approx \left(\frac{3e}{d}\right)^t.
-\]
-Substituting the definition of $t$, this expression is polynomial in $n$ (e.g., $\bigO{n^c}$ for some constant $c$). Inside the loop, constructing the set $S$ and the new hypergraph $H'$ takes polynomial time. Since the recursion depth is fixed at $k-1$, the total runtime is a nested polynomial, which remains polynomial in $n$. A detailed analysis shows the complexity is roughly $\bigO{n^{2k+3}}$.
-
-\section{Conclusion and Future Work}
-
-We have presented a deterministic, polynomial-time algorithm to find a large complete balanced $k$-partite subgraph in any sufficiently dense $k$-uniform hypergraph. This provides a constructive counterpart to a classical existence result by Erdős in extremal hypergraph theory.
+We have presented a deterministic,
+polynomial-time algorithm to find a large complete balanced $k$-partite subgraph in any sufficiently dense $k$-uniform hypergraph.
+This provides a constructive counterpart to a classical existence result by Erdős in extremal hypergraph theory.
 
 Several avenues for future research remain open.
 \begin{itemize}
-    \item \textbf{General Blow-ups:} Our algorithm finds a blow-up of a single edge, $\compoverset{k}{t}$. Can this framework be adapted to find a $t_n$-blowup of an arbitrary fixed $k$-graph $G$? Existence theorems guarantee such structures, but efficient algorithms are lacking.
+    \item \textbf{General Blow-ups:} Our algorithm finds a blow-up of a single edge, $\compoverset{k}{t}$.
+    Can this framework be adapted to find a $t_n$-blowup of an arbitrary fixed $k$-graph $G$? Existence theorems guarantee such structures, but efficient algorithms are lacking.
     \item \textbf{Unbalanced Partite Graphs:} The algorithm could be modified to search for unbalanced complete partite graphs $\compdots{t_1}{t_k}$, where the part sizes may grow at different rates.
-    \item \textbf{Optimality:} The bounds on $t$ are asymptotically tight, but the constants can likely be improved with a more refined analysis. For $k=2$, it is known that in dense graphs one can find a $t=\Theta(\log n)$ blow-up of any bipartite graph. It is an open question if a constructive proof for this stronger result exists for $k \ge 2$.
+    \item \textbf{Optimality:} The bounds on $t$ are asymptotically tight, but the constants can likely be improved with a more refined analysis.
+    For $k=2$, it is known that in dense graphs one can find a $t=\Theta(\log n)$ blow-up of any bipartite graph.
+    It is an open question if a constructive proof for this stronger result exists for $k \ge 2$.
 \end{itemize}
 
 \begin{thebibliography}{99}
-
-\bibitem{baber2011hypergraphs}
-R. Baber and J. Talbot.
-Hypergraphs do jump.
-\textit{Combinatorics, Probability and Computing}, 20(2):161--171, 2011.
-
-\bibitem{ball2012asymptotic}
-S. Ball and V. Pepe.
-Asymptotic improvements to the lower bound of certain bipartite Turán numbers.
-\textit{Combinatorics, Probability and Computing}, 21(3):323--329, 2012.
 
 \bibitem{bollobas1973structure}
 B. Bollobás and P. Erdős.
 On the structure of edge graphs.
 \textit{Bulletin of the London Mathematical Society}, 5(3):317–321, 1973.
 
-\bibitem{brown1966graphs}
-W. G. Brown.
-On graphs that do not contain a Thomsen graph.
-\textit{Canadian Mathematical Bulletin}, 9:281--285, 1966.
-
-\bibitem{carvajal2024canonical}
-M. A. Carvajal, G. Santos, and M. Schacht.
-Canonical Ramsey numbers for partite hypergraphs.
-\textit{arXiv preprint arXiv:2411.16218}, 2024.
-
-\bibitem{conlon2020random}
-D. Conlon, C. Pohoata, and D. Zakharov.
-Random multilinear maps and the Erdős box problem.
-\textit{Discrete Analysis}, Paper No. 17, 8, 2021.
-
-\bibitem{de2000maximum}
-D. De Caen and Z. Füredi.
-The maximum size of 3-uniform hypergraphs not containing a Fano plane.
-\textit{Journal of Combinatorial Theory, Series B}, 78(2):274--276, 2000.
-
 \bibitem{Erods1964}
 P. Erdős.
 On extremal problems of graphs and generalized graphs.
 \textit{Israel Journal of Mathematics}, 2:183–190, 1964.
-
-\bibitem{erdos1946structure}
-P. Erdős and A. H. Stone.
-On the structure of linear graphs.
-\textit{Bulletin of the American Mathematical Society}, 52:1087--1091, 1946.
-
-\bibitem{erdHos1966problem}
-P. Erdős, A. Rényi, and V. T. Sós.
-On a problem of graph theory.
-\textit{Studia Scientiarum Mathematicarum Hungarica}, 1:215--235, 1966.
-
-\bibitem{erdHos1983supersaturated}
-P. Erdős and M. Simonovits.
-Supersaturated graphs and hypergraphs.
-\textit{Combinatorica}, 3(2):181--192, 1983.
-
-\bibitem{frankl1984exact}
-P. Frankl and Z. Füredi.
-An exact result for 3-graphs.
-\textit{Discrete Mathematics}, 50(2-3):323--328, 1984.
-
-\bibitem{furedi1996new}
-Z. Füredi.
-New asymptotics for bipartite Turán numbers.
-\textit{Journal of Combinatorial Theory, Series A}, 75(1):141--144, 1996.
-
-\bibitem{Hylten1958}
-C. Hyltén-Cavallius.
-On a combinatorical problem.
-\textit{Colloquium Mathematicum}, 6:59--65, 1958.
 
 \bibitem{keevash2011hypergraph}
 P. Keevash.
 Hypergraph Turán problems.
 In \textit{Surveys in combinatorics 2011}, volume 392 of \textit{London Mathematical Society Lecture Note Series}, pages 83--139. Cambridge University Press, 2011.
 
-\bibitem{kollar1996norm}
-J. Kollár, L. Rónyai, and T. Szabó.
-Norm-graphs and bipartite Turán numbers.
-\textit{Combinatorica}, 16(3):399--406, 1996.
-
 \bibitem{Kovari1954}
 T. Kővári, V. T. Sós, and P. Turán.
 On a problem of K. Zarankiewicz.
 \textit{Colloquium Mathematicum}, 3:50–57, 1954.
-
-\bibitem{krivelevich1998chromatic}
-M. Krivelevich and B. Sudakov.
-The chromatic numbers of random hypergraphs.
-\textit{Random Structures \& Algorithms}, 12(4):381--403, 1998.
 
 \bibitem{MUBAYI2010174}
 D. Mubayi and G. Turán.
 Finding bipartite subgraphs efficiently.
 \textit{arXiv preprint arXiv:0905.2527}, 2009.
 
-\bibitem{razborov2007flag}
-A. A. Razborov.
-Flag algebras.
-\textit{The Journal of Symbolic Logic}, 72(4):1239--1282, 2007.
-
-\bibitem{razborov20103}
-A. A. Razborov.
-On 3-hypergraphs with forbidden 4-vertex configurations.
-\textit{SIAM Journal on Discrete Mathematics}, 24(3):946--963, 2010.
-
-\bibitem{reingold1977combinatorial}
-E. M. Reingold, J. Nievergelt, and N. Deo.
-\textit{Combinatorial algorithms: theory and practice}.
-Prentice-Hall, Inc., 1977.
-
-\bibitem{rodl2012complete}
-V. R"odl and M. Schacht.
-Complete partite subgraphs in dense hypergraphs.
-\textit{Random Structures \& Algorithms}, 41(4):557--573, 2012.
-
-\bibitem{Turan1941}
-P. Turán.
-Eine Extremalaufgabe aus der Graphentheorie.
-\textit{Matematikai és Fizikai Lapok}, 48:436--452, 1941.
-
-\bibitem{zarankiewicz1951problemes}
-K. Zarankiewicz.
-Problem 101.
-\textit{Colloquium Mathematicae}, 2(3-4):301, 1951.
 
 \end{thebibliography}
 

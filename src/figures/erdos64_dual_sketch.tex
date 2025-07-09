@@ -196,19 +196,19 @@
 
 % --- 2D Graph for L(C1) (Slide 3) ---
 \only<3>{
-\draw[line width=1.5pt, blue, bend left=20] (A2) to (B3);
-\draw[line width=1.5pt, blue, bend left=20] (A3) to (B1);
-\draw[line width=1.5pt, blue, bend left=20] (A2) to (B1);
 \draw[line width=1.5pt, blue, bend left=20] (A1) to (B1);
-\draw[line width=1.5pt, blue, bend left=20] (A3) to (B2);
+\draw[line width=1.5pt, blue, bend left=20] (A3) to (B1);
+\draw[line width=1.5pt, blue, bend left=20] (A2) to (B3);
 \draw[line width=1.5pt, blue, bend left=20] (A2) to (B2);
 \draw[line width=1.5pt, blue, bend left=20] (A1) to (B2);
-\fill[blue] (B1) circle (4.5pt);
+\draw[line width=1.5pt, blue, bend left=20] (A2) to (B1);
+\draw[line width=1.5pt, blue, bend left=20] (A3) to (B2);
 \fill[blue] (A3) circle (4.5pt);
-\fill[blue] (B2) circle (4.5pt);
 \fill[blue] (A1) circle (4.5pt);
-\fill[blue] (B3) circle (4.5pt);
 \fill[blue] (A2) circle (4.5pt);
+\fill[blue] (B2) circle (4.5pt);
+\fill[blue] (B1) circle (4.5pt);
+\fill[blue] (B3) circle (4.5pt);
 \begin{scope}
 \node[draw, thick, fill=blue!20, rounded corners] at (0, -2) {2-graph $L_H(C1)$};
 \end{scope}
@@ -277,18 +277,18 @@
 
 % --- 2D Graph for L(C2) (Slide 5) ---
 \only<5>{
+\draw[line width=1.5pt, orange, bend left=20] (A1) to (B1);
 \draw[line width=1.5pt, orange, bend left=20] (A3) to (B1);
 \draw[line width=1.5pt, orange, bend left=20] (A1) to (B3);
-\draw[line width=1.5pt, orange, bend left=20] (A2) to (B1);
-\draw[line width=1.5pt, orange, bend left=20] (A1) to (B1);
 \draw[line width=1.5pt, orange, bend left=20] (A2) to (B2);
 \draw[line width=1.5pt, orange, bend left=20] (A1) to (B2);
-\fill[orange] (B1) circle (4.5pt);
+\draw[line width=1.5pt, orange, bend left=20] (A2) to (B1);
 \fill[orange] (A3) circle (4.5pt);
-\fill[orange] (B2) circle (4.5pt);
 \fill[orange] (A1) circle (4.5pt);
-\fill[orange] (B3) circle (4.5pt);
 \fill[orange] (A2) circle (4.5pt);
+\fill[orange] (B2) circle (4.5pt);
+\fill[orange] (B1) circle (4.5pt);
+\fill[orange] (B3) circle (4.5pt);
 \begin{scope}
 \node[draw, thick, fill=orange!20, rounded corners] at (0, -2) {2-graph $L_H(C2)$};
 \end{scope}
@@ -425,16 +425,16 @@
 
 % --- 2D Graph for L(T) (Slide 9) ---
 \only<9>{
-\draw[line width=1.5pt, teal, bend left=20] (A3) to (B1);
-\draw[line width=1.5pt, teal, bend left=20] (A2) to (B1);
 \draw[line width=1.5pt, teal, bend left=20] (A1) to (B1);
+\draw[line width=1.5pt, teal, bend left=20] (A3) to (B1);
 \draw[line width=1.5pt, teal, bend left=20] (A2) to (B2);
 \draw[line width=1.5pt, teal, bend left=20] (A1) to (B2);
-\fill[teal] (B1) circle (4.5pt);
+\draw[line width=1.5pt, teal, bend left=20] (A2) to (B1);
 \fill[teal] (A3) circle (4.5pt);
-\fill[teal] (B2) circle (4.5pt);
 \fill[teal] (A1) circle (4.5pt);
 \fill[teal] (A2) circle (4.5pt);
+\fill[teal] (B2) circle (4.5pt);
+\fill[teal] (B1) circle (4.5pt);
 \node[draw, thick, fill=teal!20, rounded corners] at (0, -2) {2-graph $L_H(T)$};
 \begin{scope}
 \fill[teal] (A1B1) circle (4.5pt);
@@ -459,11 +459,11 @@
 
 % --- Found K(2,2) in L(T) (Slide 10) ---
 \only<10>{
-\draw[line width=1.5pt, teal!40, bend left=20] (A3) to (B1);
-\draw[line width=1.5pt, teal!40, bend left=20] (A2) to (B1);
 \draw[line width=1.5pt, teal!40, bend left=20] (A1) to (B1);
+\draw[line width=1.5pt, teal!40, bend left=20] (A3) to (B1);
 \draw[line width=1.5pt, teal!40, bend left=20] (A2) to (B2);
 \draw[line width=1.5pt, teal!40, bend left=20] (A1) to (B2);
+\draw[line width=1.5pt, teal!40, bend left=20] (A2) to (B1);
 \draw[line width=2pt, purple, bend left=20] (A1) to (B1);
 \draw[line width=2pt, purple, bend left=20] (A1) to (B2);
 \draw[line width=2pt, purple, bend left=20] (A2) to (B1);

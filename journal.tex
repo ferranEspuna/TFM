@@ -8,7 +8,7 @@
 \newcommand{\ex}[2]{\ensuremath{\mathrm{ex}(#1, #2)}}
 \newcommand{\compoverset}[2]{\ensuremath{K(#2, \overset{#1}{\dots}, #2)}}
 \newcommand{\compdots}[2]{\ensuremath{K(#1, \dots, #2)}}
-\newcommand{\bigO}[1]{\ensuremath{\mathcal{O}(#1)}}
+\newcommand{\bigO}[1]{\ensuremath{\mathcal{O}\left(#1\right)}}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -81,7 +81,7 @@ The main steps are:
     \item \textbf{Select High-Degree Vertices:} Choose a set $W \subset V$ of $w$ vertices with the highest degrees in $H$.
 
     \item \textbf{Find a Dense Link Graph:} Iterate through all $t$-subsets $T \subset W$.
-    For each $T$, consider the set $S$ of all $(k-1)$-subsets of $V$ that form a hyperedge with \emph{every} vertex in $T$.
+    For each $T$, consider the set $S$ of all $(k-1)$-subsets of $V$ that form a hyperedge with \emph{every} vertex in $T$. \label{link}
 
     \item \textbf{Recurse:} As we prove further along using the Kővári–Sós–Turán theorem, for at least one choice of $T$,
     the resulting set $S$ will be large ($|S| \ge s$). We form a new $(k-1)$-graph $H'=(V, S)$ and make a recursive call: \texttt{FindPartite($H'$, $k-1$)}.
@@ -128,8 +128,35 @@ If $t < 2$, we may just return the vertices of any single edge in $H$.
 
 \subsection{Correctness}\label{subsec:correctness}
 
-The correctness of the algorithm hinges on these key lemmas.
-TODO % TODO
+We will prove the correctness of the algorithm in two steps.
+First, we will prove that in step~\ref{link} of the algorithm
+we indeed find a set $T \in \binom{W}{t}$ such that the associated set $S \subset \binom{V}{k-1}$ has size at least $s$.
+For this, consider the bipartite graph $B$ with parts $W$ and $\binom{V}{k-1}$ with edge set
+\[
+  \left\{(x, y) \in W \times \binom{V}{k-1} \middle| \, y \cup \{x\} \in E \right\}.
+\]
+The existance of a set $T \subset W$ as desired is equivalent to there being $T \subset W$ of size $t$ and a set $S \subset \binom{V}{k-1}$ of size $s$
+such that the induced bipartite subgraph is complete.
+For this, we use a version the Kővári–Sós–Turán theorem~\cite{Kovari1954},
+which we state and prove here for completeness.
+
+\begin{lemma}\label{thm:kst}
+    Let $u, w, s, t$ be positive integers with $u \geq s$, $w \geq t$, and let $B$ be a bipartite graph with parts $W$ and $U$ such that
+    $|U| = u, |W| = w$.
+    If $B$ has more than \[(s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\] edges, then there are
+    $T \subset W$ of size $t$ and $S \subset U$ of size $s$ such that the induced bipartite subgraph $B[T, S]$ is complete.
+    \begin{proof}
+        TODO
+    \end{proof}
+\end{lemma}
+
+Note that in our case, $u = \binom{n}{k-1}$.
+The edges of $B$ correspond to the the edges containing each vertex in $W$, so there are
+\[
+    z = \sum_{y \in W} d_H(y) \geq k \cdot m \cdot \frac{w}{n} \geq \frac{k \cdot w \cdot d \cdot \binom{n}{k}}{n}
+\]
+of them, where the first inequality follows from the fact that we have picked a set of $w$ vertices with highest degree in $H$.
+\dots TODO % TODO
 
 \subsection{Complexity}\label{subsec:complexity}
 TODO re-evaluate the complexity analysis. % TODO

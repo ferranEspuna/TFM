@@ -68,9 +68,9 @@ It first defines the target part size $t$, a small set size $w$,
 and a threshold edge count $s$ for the recursive call, based on the input graph's parameters:
 
 \begin{align*}
-    t(n, d, k) &= \dots, \\
-    w(n, d, k) &= \dots, \text{ and } \\
-    s(n, d, k) &= \dots,
+    t &= t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (6/d)}  \right)^{\frac{1}{k-1}} \right \rfloor, \\
+    w &= w(n, d, k) = \left\lceil \frac{4 t}{d} \right\rceil, \text{ and } \\
+    s &= s(n, d, k) = \left\lceil \left( \frac{d}{4} \right)^t \binom{n}{k-1} \right\rceil,
 \end{align*}
 where $d = \frac{m}{\binom{n}{k}}$ is the edge density of $H$.
 The main steps are:
@@ -131,13 +131,19 @@ If $t < 2$, we may just return the vertices of any single edge in $H$.
 We will prove the correctness of the algorithm in two steps.
 First, we will prove that in step~\ref{link} of the algorithm
 we indeed find a set $T \in \binom{W}{t}$ such that the associated set $S \subset \binom{V}{k-1}$ has size at least $s$.
-For this, consider the bipartite graph $B$ with parts $W$ and $\binom{V}{k-1}$ with edge set
+For this, consider the bipartite graph $B$ with parts $\binom{V}{k-1}$ and $W$ with edge set
 \[
-  \left\{(x, y) \in W \times \binom{V}{k-1} \middle| \, y \cup \{x\} \in E \right\}.
+  \left\{(x, y) \in \binom{V}{k-1} \times W \middle| \, x \cup \{y\} \in E \right\}.
 \]
+The edges of $B$ correspond to the the edges containing each vertex in $W$, so there are
+\[
+    z = \sum_{y \in W} d_H(y) \geq k \cdot m \cdot \frac{w}{n} = \frac{k \cdot w \cdot d \cdot \binom{n}{k}}{n} = w \cdot d \cdot \binom{n - 1}{k-1}
+\]
+of them, where the inequality follows from the fact that we have picked a set of $w$ vertices with highest degree in $H$.
 The existance of a set $T \subset W$ as desired is equivalent to there being $T \subset W$ of size $t$ and a set $S \subset \binom{V}{k-1}$ of size $s$
-such that the induced bipartite subgraph is complete.
-For this, we use a version the Kővári–Sós–Turán theorem~\cite{Kovari1954},
+such that the induced bipartite subgraph $B[S, T]$ is complete.
+To prove that this is the case,
+we use a version the Kővári–Sós–Turán theorem~\cite{Kovari1954},
 which we state and prove here for completeness.
 
 \begin{lemma}\label{thm:kst}
@@ -145,18 +151,27 @@ which we state and prove here for completeness.
     $|U| = u, |W| = w$.
     If $B$ has more than \[(s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\] edges, then there are
     $T \subset W$ of size $t$ and $S \subset U$ of size $s$ such that the induced bipartite subgraph $B[T, S]$ is complete.
-    \begin{proof}
-        TODO
-    \end{proof}
 \end{lemma}
 
-Note that in our case, $u = \binom{n}{k-1}$.
-The edges of $B$ correspond to the the edges containing each vertex in $W$, so there are
+We apply this lemma with $u = \binom{n}{k-1}$.
+It can be chekced that our parameter satisfy the requirements $u \geq s$ and $w \geq t$. % TODO: check this
+Furthermore, $w \leq n$ so the set $W$ is well-defined. % TODO: check this
+Suppose, by way of contradiction, that
 \[
-    z = \sum_{y \in W} d_H(y) \geq k \cdot m \cdot \frac{w}{n} \geq \frac{k \cdot w \cdot d \cdot \binom{n}{k}}{n}
+    w \cdot d \cdot \binom{n - 1}{k-1} \leq (s - 1)^{1 / t}(w - t + 1)\binom{n}{k-1}^{1 - 1 / t} + (t - 1)\binom{n}{k-1}.
 \]
-of them, where the first inequality follows from the fact that we have picked a set of $w$ vertices with highest degree in $H$.
-\dots TODO % TODO
+Algebraic manipulation then shows that
+\[
+    \frac{1}{2} \cdot w \cdot d
+    \leq w \cdot d \cdot \left( 1 - \frac{k}{n} \right)
+    \leq w \left( \frac{s-1}{\binom{n}{k-1} } \right)^{1 / t} + (t - 1),
+\]
+where the first inequality follows from $n \geq 2k$, which follows from $t \geq 2$. % TODO: check this
+Finally, since $t \leq \frac{w \cdo d}{4}$ by the definition of $w$, we obtain
+\[
+    \left( \frac{d}{4}\right)^t \binom{n}{k-1} < s-1,
+\]
+against the definition of $s$.
 
 \subsection{Complexity}\label{subsec:complexity}
 TODO re-evaluate the complexity analysis. % TODO

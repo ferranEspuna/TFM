@@ -128,7 +128,6 @@ If $t < 2$, we may just return the vertices of any single edge in $H$.
 
 \subsection{Correctness}\label{subsec:correctness}
 
-We will prove the correctness of the algorithm in two steps.
 First, we will prove that in step~\ref{link} of the algorithm
 we indeed find a set $T \in \binom{W}{t}$ such that the associated set $S \subset \binom{V}{k-1}$ has size at least $s$.
 For this, consider the bipartite graph $B$ with parts $\binom{V}{k-1}$ and $W$ with edge set
@@ -167,11 +166,74 @@ Algebraic manipulation then shows that
     \leq w \left( \frac{s-1}{\binom{n}{k-1} } \right)^{1 / t} + (t - 1),
 \]
 where the first inequality follows from $n \geq 2k$, which follows from $t \geq 2$. % TODO: check this
-Finally, since $t \leq \frac{w \cdo d}{4}$ by the definition of $w$, we obtain
+Finally, since $t \leq \frac{w \cdot d}{4}$ by the definition of $w$, we obtain
 \[
     \left( \frac{d}{4}\right)^t \binom{n}{k-1} < s-1,
 \]
 against the definition of $s$.
+We are now ready to prove that the algorithm returns a $\compoverset{k}{t}$.
+More precisely, we show the following.
+
+\begin{theorem}
+    For $k \geq 2$, Algorithm~\ref{alg:kpartite} returns a tuple $(V_1, \dots, V_k)$ of disjoint sets $V_i \subset V(H)$ such that
+    $|V_i| \geq t$ and $H[V_1, \dots, V_k]$ is complete.
+    
+    \begin{proof}
+        We proceed by induction on $k$.
+        For $k=2$, the recursive call returns the common neighborhood $V_1$ of the vertices in $T$,
+        which is obviously disjoint from $T$, so it only remains to check that $|V_1| \geq t$.
+        Now, since by construction $|V_1| = |S| \geq s$, it is enough that
+        \[
+            s
+            = \left\lceil \left( \frac{d}{4} \right)^t n \right\rceil
+            \geq \left( \frac{d}{4} \right)^{\frac{\log n}{\log(6/d)}} n
+            = \frac{1}{n} \cdot \left( \frac{3}{2} \right)^{\frac{\log n}{\log(6/d)}} \cdot n
+            \geq \left( \frac{3}{2} \right)^t
+            \geq t.
+        \]
+        For $k \geq 3$, we assume the inductive hypothesis holds for $k-1$.
+        That is, if $d'$ is the edge density of the $(k-1)$-graph $H'$, then the recursive call returns
+        a tuple $(V_1, \dots, V_{k-1})$ of disjoint sets $V_i \subset V(H)$ such that
+        $|V_i| \geq t'=t(n, d', k-1)$ and $H'[V_1, \dots, V_{k-1}]$ is complete.
+        By construction of $H'$, this means that $H[V_1, \dots, V_{k-1}, T]$ is complete, and
+        that $T$ is disjoint from $V_1, \dots, V_{k-1}$ (as long as they are all nonempty).
+        The final step in the proof is to show that $t' \geq t$ (and in particular, that $t' \geq 2$).
+        By the definition of $s$, we have $d' \geq \left( \frac{d}{4} \right)^t$.
+        Therefore,
+        \[
+            t' \geq
+            %
+            \left\lfloor \left(  \frac{\log n}{\log \left(\frac{6}{(d/4)^t}\right)} \right)^
+            {\frac{1}{k-2}} \right\rfloor \geq
+            %
+            \left\lfloor \left(  \frac{\log n}{\log 6 - t \log (d/4)} \right)^
+            {\frac{1}{k-2}} \right\rfloor.
+        \]
+        Then, we substitute the definition of $t$, where removing the floor function
+        maintains the inequality because the right hand side is decreasing in $t$ (recall $d \leq 1$):
+        \begin{equation*} \label{eq:t_prime}
+            t' \geq
+            %
+            \left\lfloor \left(  \frac{\log n}
+            {\log 6 - \left(  \frac{\log n}{\log (6/d)} \right)^{\frac{1}{k-1}}  \log (d/4)} \right)^
+            {\frac{1}{k-2}} \right\rfloor
+            =
+            %
+            \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
+            {\frac{\log 6}{(\log n)^{\frac{1}{k-1}}} - \frac{\log (d/4)}{\log (6/d)^{\frac{1}{k-1}}} }
+            \right)^{\frac{1}{k-2}} \right\rfloor.
+        \end{equation*}
+        Note that $n \geq 6/d$, as otherwise we would have $t < 1$.
+        This allows us to find a common denominator in the expression of the lower bound for $t'$: % TODO no xD
+        \[
+            t' \geq
+            \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
+            {\frac{\log 6 - \log (d/4)}{\log(6 / d)^{\frac{1}{k-1}}} } \right)^
+            {\frac{1}{k-2}} \right\rfloor =
+            \text{NO SE CANCELA FUUUUUUUUUCK} % TODO
+        \]
+    \end{proof}
+\end{theorem}
 
 \subsection{Complexity}\label{subsec:complexity}
 TODO re-evaluate the complexity analysis. % TODO

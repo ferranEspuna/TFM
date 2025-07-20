@@ -37,9 +37,9 @@ that $\ex{n}{G} = o\left( \binom{n}{k}\right)$ if and only if $G$ is $k$-partite
 if its vertex set can be partitioned into $k$ disjoint sets such that each edge contains exactly one vertex from each part.
 Kővári, Sós, and Turán~\cite{Kovari1954} (for $k=2$) and
 Erdős~\cite{Erods1964} (for any $k \geq 2$) established that
-\begin{equation} \label{eq:erdos64-intro}
+\[ \label{eq:erdos64-intro}
     \ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}},
-\end{equation}
+\]
 where $\compoverset{k}{t}$ is the complete balanced $k$-partite $k$-graph with $k$ parts of size $t$.
 Furthermore, if $H$ is a $k$-graph with at least $d \binom{n}{k}$ edges for some constant $d > 0$, then it contains a $\compoverset{k}{t}$ with
 $t = c_d \log(n)^{1/(k-1)}$.
@@ -51,9 +51,9 @@ This paper extends their approach to the general case of $k$-uniform hypergraphs
 More concretely, we prove the following.
 
 \begin{theorem} \label{thm:main_theorem}
-There is a deterministic algorithm that, given a $k$-graph $H$ with $n$ vertices and $m=dn^k$ edges, finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$ in polynomial time, where
+There is a deterministic algorithm that, given a $k$-graph $H$ with $n$ vertices and $m=d \binom{n}{k}$ edges, finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$ in polynomial time, where
 \[
-    t = t(n, d, k) = \dots % TODO: write the formula for t
+    t = t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}  \right)^{\frac{1}{k-1}} \right \rfloor
 \]
 \end{theorem}
 This value of $t$ matches the order of magnitude from existence proofs.
@@ -68,7 +68,7 @@ It first defines the target part size $t$, a small set size $w$,
 and a threshold edge count $s$ for the recursive call, based on the input graph's parameters:
 
 \begin{align*}
-    t &= t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (6/d)}  \right)^{\frac{1}{k-1}} \right \rfloor, \\
+    t &= t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}  \right)^{\frac{1}{k-1}} \right \rfloor, \\
     w &= w(n, d, k) = \left\lceil \frac{4 t}{d} \right\rceil, \text{ and } \\
     s &= s(n, d, k) = \left\lceil \left( \frac{d}{4} \right)^t \binom{n}{k-1} \right\rceil,
 \end{align*}
@@ -122,7 +122,7 @@ The pseudocode is given in Algorithm~\ref{alg:kpartite}.
 
 \section{Analysis}\label{sec:analysis}
 
-We now presnt the proof of correctness and polynomial runtime for our algorithm.
+We now present the proof of correctness and polynomial runtime for our algorithm.
 We assume $t \ge 2$ for our estimates to be easier.
 If $t < 2$, we may just return the vertices of any single edge in $H$.
 
@@ -134,12 +134,12 @@ For this, consider the bipartite graph $B$ with parts $\binom{V}{k-1}$ and $W$ w
 \[
   \left\{(x, y) \in \binom{V}{k-1} \times W \middle| \, x \cup \{y\} \in E \right\}.
 \]
-The edges of $B$ correspond to the the edges containing each vertex in $W$, so there are
+The edges of $B$ correspond to the edges containing each vertex in $W$, so there are
 \[
     z = \sum_{y \in W} d_H(y) \geq k \cdot m \cdot \frac{w}{n} = \frac{k \cdot w \cdot d \cdot \binom{n}{k}}{n} = w \cdot d \cdot \binom{n - 1}{k-1}
 \]
 of them, where the inequality follows from the fact that we have picked a set of $w$ vertices with highest degree in $H$.
-The existance of a set $T \subset W$ as desired is equivalent to there being $T \subset W$ of size $t$ and a set $S \subset \binom{V}{k-1}$ of size $s$
+The existence of a set $T \subset W$ as desired is equivalent to there being $T \subset W$ of size $t$ and a set $S \subset \binom{V}{k-1}$ of size $s$
 such that the induced bipartite subgraph $B[S, T]$ is complete.
 To prove that this is the case,
 we use a version the Kővári–Sós–Turán theorem~\cite{Kovari1954},
@@ -153,7 +153,7 @@ which we state and prove here for completeness.
 \end{lemma}
 
 We apply this lemma with $u = \binom{n}{k-1}$.
-It can be chekced that our parameter satisfy the requirements $u \geq s$ and $w \geq t$. % TODO: check this
+It can be checked that our parameter satisfy the requirements $u \geq s$ and $w \geq t$. % TODO: check this
 Furthermore, $w \leq n$ so the set $W$ is well-defined. % TODO: check this
 Suppose, by way of contradiction, that
 \[
@@ -175,7 +175,7 @@ We are now ready to prove that the algorithm returns a $\compoverset{k}{t}$.
 More precisely, we show the following.
 
 \begin{theorem}
-    For $k \geq 2$, Algorithm~\ref{alg:kpartite} returns a tuple $(V_1, \dots, V_k)$ of disjoint sets $V_i \subset V(H)$ such that
+    For $k \geq 2$, if $t \geq 2$, Algorithm~\ref{alg:kpartite} returns a tuple $(V_1, \dots, V_k)$ of disjoint sets $V_i \subset V(H)$ such that
     $|V_i| \geq t$ and $H[V_1, \dots, V_k]$ is complete.
     
     \begin{proof}
@@ -186,27 +186,36 @@ More precisely, we show the following.
         \[
             s
             = \left\lceil \left( \frac{d}{4} \right)^t n \right\rceil
-            \geq \left( \frac{d}{4} \right)^{\frac{\log n}{\log(6/d)}} n
-            = \frac{1}{n} \cdot \left( \frac{3}{2} \right)^{\frac{\log n}{\log(6/d)}} \cdot n
-            \geq \left( \frac{3}{2} \right)^t
-            \geq t.
+            \geq \left( \frac{d}{4} \right)^{\frac{\log n}{\log(16/d)}} n
+            = \frac{1}{n} \cdot 4^{\frac{\log n}{\log(16/d)}} \cdot n
+            \geq 4^t
+            > t.
         \]
+
         For $k \geq 3$, we assume the inductive hypothesis holds for $k-1$.
-        That is, if $d'$ is the edge density of the $(k-1)$-graph $H'$, then the recursive call returns
+        If $d'$ is the edge density of the $(k-1)$-graph $H'$
+        and $t' = t(n, d', k-1)$, as long as $t' \geq 2$, the recursive call returns
         a tuple $(V_1, \dots, V_{k-1})$ of disjoint sets $V_i \subset V(H)$ such that
-        $|V_i| \geq t'=t(n, d', k-1)$ and $H'[V_1, \dots, V_{k-1}]$ is complete.
-        By construction of $H'$, this means that $H[V_1, \dots, V_{k-1}, T]$ is complete, and
-        that $T$ is disjoint from $V_1, \dots, V_{k-1}$ (as long as they are all nonempty).
-        The final step in the proof is to show that $t' \geq t$ (and in particular, that $t' \geq 2$).
+        $|V_i| \geq t'$ and $H'[V_1, \dots, V_{k-1}]$ is complete.
+
+        We claim that $t' \geq t$.
+        This implies that $t' \geq 2$ so we get to apply the inductive hypothesis to $H'$.
+        Furthermore, the sets $V_i$ are at least as large as desired.
+        By construction of $H'$, for all $(x_1, \dots x_{k-1}, y) \in V_1 \times \dots \times V_{k-1} \times T$,
+        we have that $\{x_1, \dots, x_{k-1}, y\} \in E(H)$.
+        In particular, because all $V_i$ are nonempty, this implies that $T$ is disjoint from each of them.
+        Finally, $H[V_1, \dots, V_{k-1}, T]$ is complete, finishing the proof.
+
+        Let us now prove the claim that $t' \geq t$.
         By the definition of $s$, we have $d' \geq \left( \frac{d}{4} \right)^t$.
         Therefore,
         \[
             t' \geq
             %
-            \left\lfloor \left(  \frac{\log n}{\log \left(\frac{6}{(d/4)^t}\right)} \right)^
+            \left\lfloor \left(  \frac{\log n}{\log \left(\frac{16}{(d/4)^t}\right)} \right)^
             {\frac{1}{k-2}} \right\rfloor \geq
             %
-            \left\lfloor \left(  \frac{\log n}{\log 6 - t \log (d/4)} \right)^
+            \left\lfloor \left(  \frac{\log n}{\log 16 - t \log (d/4)} \right)^
             {\frac{1}{k-2}} \right\rfloor.
         \]
         Then, we substitute the definition of $t$, where removing the floor function
@@ -215,23 +224,53 @@ More precisely, we show the following.
             t' \geq
             %
             \left\lfloor \left(  \frac{\log n}
-            {\log 6 - \left(  \frac{\log n}{\log (6/d)} \right)^{\frac{1}{k-1}}  \log (d/4)} \right)^
+            {\log 16 - \left(  \frac{\log n}{\log (16/d)} \right)^{\frac{1}{k-1}}  \log (d/4)} \right)^
             {\frac{1}{k-2}} \right\rfloor
             =
             %
             \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
-            {\frac{\log 6}{(\log n)^{\frac{1}{k-1}}} - \frac{\log (d/4)}{\log (6/d)^{\frac{1}{k-1}}} }
+            {\frac{\log 16}{(\log n)^{\frac{1}{k-1}}} - \frac{\log (d/4)}{\log (16/d)^{\frac{1}{k-1}}} }
             \right)^{\frac{1}{k-2}} \right\rfloor.
         \end{equation*}
-        Note that $n \geq 6/d$, as otherwise we would have $t < 1$.
-        This allows us to find a common denominator in the expression of the lower bound for $t'$: % TODO no xD
+        If we bound the denominator by showing that
+        \begin{equation} \label{eq:denominator_bound}
+            \frac{\log 16}{(\log n)^{\frac{1}{k-1}}} - \frac{\log (d/4)}{\log (16/d)^{\frac{1}{k-1}}}
+            \leq \left( \log (16/d) \right)^{\left( 1 - \frac{1}{k-1} \right)},
+        \end{equation}
+        then the expression simplifies to
         \[
-            t' \geq
-            \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
-            {\frac{\log 6 - \log (d/4)}{\log(6 / d)^{\frac{1}{k-1}}} } \right)^
-            {\frac{1}{k-2}} \right\rfloor =
-            \text{NO SE CANCELA FUUUUUUUUUCK} % TODO
+            t'
+            %
+            \geq \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
+            {\left( \log (16/d) \right)^{\left( 1 - \frac{1}{k-1} \right)}}
+            \right)^{\frac{1}{k-2}} \right\rfloor
+            %
+            = \left\lfloor \left(  \frac{\log n}
+            {\log (16/d)}
+            \right)^{\frac{1}{k-2}\left( 1 - \frac{1}{k-1} \right)} \right\rfloor
+            = \left\lfloor \left(  \frac{\log n}{\log (16/d)} \right)^{\frac{1}{k-1}} \right\rfloor
+            = t,
         \]
+        as desired.
+        Suppose, by way of contradiction, that~\eqref{eq:denominator_bound} does not hold.
+        We can rewrite
+        \[
+            (\log (16/d))^{\left( 1 - \frac{1}{k-1} \right)}
+            = \frac{\log (16/d)}{\log (16/d)^{\frac{1}{k-1}}}
+        \]
+        and rearrange the inequality to obtain
+        \[
+            \frac{\log 16}{(\log n)^{\frac{1}{k-1}}}
+            > \frac{\log (16/d) + \log (d/4)}{\log (16/d)^{\frac{1}{k-1}}}
+            = \frac{\log 4}{(\log (16/d))^{\frac{1}{k-1}}}.
+        \]
+        This implies that
+        \[
+            t
+            \leq \left( \frac{\log n}{\log (16/d)} \right)^{\frac{1}{k-1}}
+            < \frac{\log 16}{\log 4} = 2,
+        \]
+        which contradicts the assumption that $t \geq 2$.
     \end{proof}
 \end{theorem}
 

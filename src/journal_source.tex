@@ -1,31 +1,21 @@
 \maketitle
 
-% ABSTRACT
-% E-JC papers must include an abstract. The abstract should consist of a
-% succinct statement of background followed by a listing of the principal
-% new results that are to be found in the paper. The abstract should be
-% informative, clear, and as complete as possible. Phrases like
-% "we investigate..." or "we study..." should be kept to a minimum in
-% favor of "we prove that..."  or "we show that...".  Do not include equation
-% numbers, unexpanded citations (such as "[23]"), or any other references
-% to things in the paper that are not defined in the abstract. The abstract
-% may be distributed without the rest of the  paper so it must be entirely
-% self-contained.  Try to include all words and phrases that someone
-% might search for when looking for your paper.
-
 \begin{abstract}
-  TODO % TODO
+We give a deterministic polynomial-time algorithm that, for a given $k$-uniform hypergraph $H$ with $n$ vertices and edge density $d$,
+finds a $\compoverset{k}{t}$ subgraph with parts of size at least $c_d (\log n)^{1/(k-1)}$,
+building on work by Mubayi and Tur\'{a}n for the $k=2$ case.
+This value for the part size matches the order of magnitude guaranteed by the non-constructive proof due to Erd\H{o}s and is tight up to a constant factor.
 \end{abstract}
 
 \section{Introduction}\label{sec:introduction}
 
-Hypergraph Turán problems study how many edges a $k$-uniform hypergraph $H = (V, E)$ with $n$ vertices can have without containing a specific subgraph $G$.
-The maximal such number is known as the \emph{Turán number} $\ex{n}{G}$.
+Hypergraph Tur\'{a}n problems study how many edges a $k$-uniform hypergraph $H = (V, E)$ with $n$ vertices can have without containing a specific subgraph $G$.
+The maximal such number is known as the \emph{Tur\'{a}n number} $\ex{n}{G}$.
 It is known~\cite{keevash2011hypergraph}
 that $\ex{n}{G} = o\left( \binom{n}{k}\right)$ if and only if $G$ is $k$-partite, i.e.,
 if its vertex set can be partitioned into $k$ disjoint sets such that each edge contains exactly one vertex from each part.
-Kővári, Sós, and Turán~\cite{Kovari1954} (for $k=2$) and
-Erdős~\cite{Erods1964} (for any $k \geq 2$) established that
+Kőv\'{a}ri, S\'{o}s, and Tur\'{a}n~\cite{Kovari1954} (for $k=2$) and
+Erd\H{o}s~\cite{Erods1964} (for any $k \geq 2$) established that
 \[ \label{eq:erdos64-intro}
     \ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}},
 \]
@@ -35,8 +25,8 @@ $t = c_d \log(n)^{1/(k-1)}$.
 
 This result is non-constructive, meaning it guarantees the existence of such a subgraph but does not provide an efficient way to find it.
 Note that a simple brute-force search for a $\compoverset{k}{t}$ would involve checking all $\binom{n}{kt}$ vertex subsets, which is superpolynomial in $n$ for $t = \Theta((\log n)^{1/(k-1)})$.
-Mubayi and Turán~\cite{MUBAYI2010174} developed a polynomial-time algorithm for the case $k=2$, which reaches the stated order of magnitude for the subgraph part size.
-This paper extends their approach to the general case of $k$-uniform hypergraphs, reaching analogous results for $k \ge 3$.
+Mubayi and Tur\'{a}n~\cite{MUBAYI2010174} developed a polynomial-time algorithm for the case $k=2$, which reaches the stated order of magnitude for the subgraph part size.
+This work extends their approach to the general case of $k$-uniform hypergraphs, reaching analogous results for $k \ge 3$.
 More concretely, we prove the following.
 
 \begin{theorem} \label{thm:main_theorem}
@@ -72,7 +62,7 @@ The main steps are:
     \item \textbf{Find a Dense Link Graph:} Iterate through all $t$-subsets $T \subset W$.
     For each $T$, consider the set $S$ of all $(k-1)$-subsets of $V$ that form a hyperedge with \emph{every} vertex in $T$. \label{link}
 
-    \item \textbf{Recurse:} As we prove further along using the Kővári–Sós–Turán theorem, for at least one choice of $T$,
+    \item \textbf{Recurse:} As we prove further along using the Kőv\'{a}ri–S\'{o}s–Tur\'{a}n theorem, for at least one choice of $T$,
     the resulting set $S$ will be large ($|S| \ge s$). We form a new $(k-1)$-graph $H'=(V, S)$ and make a recursive call: \texttt{FindPartite($H'$, $k-1$)}.
 
     \item \textbf{Construct Solution:} The recursive call returns $k-1$ parts $V_1, \dots, V_{k-1}$ of size at least $t$.
@@ -144,7 +134,7 @@ of them, where the inequality follows from the fact that we have picked a set of
 The existence of a set $T \subset W$ as desired is equivalent to there being $T \subset W$ of size $t$ and a set $S \subset \binom{V}{k-1}$ of size $s$
 such that the induced bipartite subgraph $B[S, T]$ is complete.
 To prove that this is the case,
-we use a version the Kővári–Sós–Turán theorem~\cite{Kovari1954},
+we use a version the Kőv\'{a}ri–S\'{o}s–Tur\'{a}n theorem~\cite{Kovari1954},
 which we state and prove here for completeness.
 
 \begin{lemma}\label{thm:kst}
@@ -282,7 +272,7 @@ TODO re-evaluate the complexity analysis. % TODO
 
 We have presented a deterministic,
 polynomial-time algorithm to find a large complete balanced $k$-partite subgraph in any sufficiently dense $k$-uniform hypergraph.
-This provides a constructive counterpart to a classical existence result by Erdős in extremal hypergraph theory.
+This provides a constructive counterpart to a classical existence result by Erd\H{o}s in extremal hypergraph theory.
 
 Several avenues for future research remain open.
 \begin{itemize}
@@ -294,18 +284,9 @@ Several avenues for future research remain open.
     It is an open question if a constructive proof for this stronger result exists for $k \ge 2$.
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% The following optional unnumbered section is where you put personal acknowledgements,
-% research grant support, and similar things.  Do not put them on the front page.
 \subsection*{Acknowledgements}
 
-The ideas in this paper stem from the author's master's thesis at Universitat Polit\`{e}cnica de Catalunya,
-under the supervision of Dr. Richard Lang.
+The ideas in this work stem from the author's master's thesis of the same name,
+Universitat Polit\`{e}cnica de Catalunya,
+under the supervision of Richard Lang.
 The author thanks Dr. Lang for suggesting the problem and for his guidance and support throughout the project.
-
-%BIBLIOGRAPHY
-% You do not have to use the same format for your references, but
-%    include everything in this file.
-% If you use BibTeX to create a bibliography, copy the .bbl file into here.
-% We recommend you use \doi{...} and \arxiv{...} like the examples below,
-% as they give a short display form with an active link to the full url.

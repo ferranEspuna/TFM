@@ -268,61 +268,49 @@ More precisely, we show the following.
 \section{Proof of Polynomial Complexity}\label{sec:complexity} % TODO this is gemini generated, check it
 
 We now analyze the computational complexity of Algorithm~\ref{alg:kpartite} to show that it runs in time polynomial in $n$ for any fixed uniformity $k$.
+We consider the input hypergraph $H$ to be given as an adjacency matrix.
+We make the assumption that we have a machine with arbitrarily large random-access memory that can store
+floating-point numbers with arbitrary precision and operate on them in constant time.
+Not making this assumption would only add logarithmic factors to the running time, which we ignore for simplicity.
 
 Let $T_k(n)$ denote the worst-case running time of the function \texttt{FindPartite} when called on a $k$-uniform hypergraph with $n$ vertices.
 The algorithm's structure gives a recurrence relation for $T_k(n)$.
-We will analyze the cost of the operations within a single call, excluding the recursive step.
+We will analyze the cost of the operations within a single call for a fixed $k$, excluding the recursive step.
 
-First, consider the initialization steps.
-The parameters $n, m, d, t, w, s$ are computed.
-This requires knowing the number of vertices and edges.
-The number of edges $m$ can be counted in $O(n^k)$ time, but it is often given as part of the input.
-Computing the degrees of all vertices requires iterating through all $m$ edges, taking $O(k \cdot m) = O(k \cdot d \binom{n}{k}) = O(n^k)$ time.
-Once degrees are known, the set $W$ of the $w$ vertices with the highest degrees can be found in $O(n)$ time using a selection algorithm (e.g., Quickselect).
-Thus, the cost of all steps before the main loop is $O(n^k)$.
+Assuming that the input matrix consists of a flattened boolean array of size $n^k$,
+querying whether a set of $k$ vertices forms an edge in $H$ can be done in constant time.
+Therefore, calculating the number of edges $m$ can be done in $\bigO{n^k}$ time by iterating through all $\binom{n}{k}$ possible edges.
+The parameters $n, m, d, t, w, s$ are computed in constant time after this step.
 
-The main part of the computation happens in the \texttt{for} loop, which iterates through all $t$-subsets $T$ of $W$.
-The number of iterations is bounded by $\binom{w}{t}$.
-As shown in the proof of correctness (and can be verified with a more detailed calculation), this quantity is bounded by a polynomial in $n$.
-Specifically, using the bound $t \ge 2$:
-$$
-\binom{w}{t} \le \left(\frac{ew}{t}\right)^t \le \left(\frac{e(4t/d + 1)}{t}\right)^t = \left(\frac{4e}{d} + \frac{e}{t}\right)^t \le \left(\frac{5e}{d}\right)^t
-$$
-Since $t = \Theta((\log n)^{1/(k-1)})$ and $d$ is bounded below by a term related to $n^{-1/2}$, it follows that $\log(\binom{w}{t}) = O(t \log(1/d)) = O(\log n)$.
-This implies that $\binom{w}{t} = n^{O(1)}$, i.e., the number of iterations is polynomially bounded in $n$.
-Let's denote this bound by $\text{poly}(n)$.
+The set $W$ of $w$ vertices with highest degrees can be constructed in time $\bigO{n^k}$, by, for example,
+creating an array with the degree of each vertex (in time  $\bigO{n \cdot n^{k-1}} = \bigO{n^k}$), sorting it (in time $\bigO{n \log n}$),
+and taking the first $w$ elements.
 
-Inside each iteration of the loop, the algorithm constructs the set $S$.
-A straightforward way to implement this is to iterate through all $\binom{n}{k-1} = O(n^{k-1})$ possible $(k-1)$-subsets $y \subset V$.
-For each $y$, we must check if $\{x\} \cup y$ is an edge in $H$ for all $x \in T$.
-Assuming the edge set $E(H)$ is stored in a hash table or a similar structure that allows for constant-time lookups on average, each check takes $O(k)$ time. The check is performed for all $t$ vertices in $T$. Therefore, the cost of constructing $S$ in a single iteration is:
-$$
-O\left(\binom{n}{k-1} \cdot t \cdot k\right) = O(n^{k-1} \cdot t)
-$$
-The algorithm makes at most one recursive call, as it returns immediately after a successful call.
-Therefore, the total running time $T_k(n)$ is governed by the recurrence:
-$$
-T_k(n) = O(n^k) + \text{poly}(n) \cdot O(t \cdot n^{k-1}) + T_{k-1}(n)
-$$
-The term for the loop dominates the $O(n^k)$ initialization cost.
-Let's denote the non-recursive work at level $k$ by $P_k(n) = \text{poly}(n) \cdot O(t \cdot n^{k-1})$.
-Since $t$ grows polylogarithmically with $n$, $P_k(n)$ is a polynomial in $n$ for any fixed $k$.
+The subsets of $t$ elements of $W$ can be iterated through in time $\bigO{\binom{w}{t}}$~\cite{reingold1977combinatorial}.
+Similarly to the proof in the Mubayi and Tur\'{a}n paper~\cite{MUBAYI2010174}, we can bound this quantity by a polynomial in $n$.
+Indeed,
 
-The recurrence relation simplifies to:
-$$
-T_k(n) = P_k(n) + T_{k-1}(n)
-$$
-with a base case of $T_1(n) = O(n)$.
-Unrolling this recurrence, we get:
-$$
-T_k(n) = P_k(n) + P_{k-1}(n) + \dots + P_2(n) + T_1(n)
-$$
-This is a sum of $k-1$ polynomials in $n$.
-The total running time is therefore dominated by the polynomial of the highest degree, which is $P_k(n)$.
-$$
-T_k(n) = O(P_k(n)) = \text{poly}(n) \cdot O(t \cdot n^{k-1})
-$$
-As this expression is a polynomial in $n$ for any fixed $k$, we conclude that the algorithm runs in polynomial time.
+\[
+    \binom{w}{t} \leq \left(\frac{ew}{t}\right)^t \leq \left(\frac{e(4t/d + 1)}{t}\right)^t \leq \left(\frac{5e}{d}\right)^t < e^{t(3 + \log (1/d))},
+\]
+and from $t  < \frac{\log n}{\log (1/d)} \leq \log n$ and $d > \frac{1}{\sqrt{n}}$, we have that
+\[
+    \binom{w}{t} < e^{3 \log n + \log n} = n^{4}.
+\]
+
+In each iteration of the loop, the set $S$ can be constructed in the following way.
+We initialize a flattened boolean array $A$ of size $n^{k-1}$,
+with all entries set to \texttt{true}.
+We iterate through all $x \in \binom{[n]}{k-1}$ and $y \in T$
+and set the entry corresponding to $x$ to \texttt{false} if $x \cup \{y\}$ is not an edge in $H$.
+All in all, this takes $\bigO{tn^{k-1}} = \bigO{n^k}$ steps, and then counting the number of \texttt{true} entries in the array takes $\bigO{n^{k-1}}$ time.
+Therefore, the for loop (with the recursive call) takes $\bigO{\binom{w}{t} n^{k}} = \bigO{n^{k+4}}$ time.
+
+Finally, when the condition $|S| \geq s$ is satisfied, the recursive call to \texttt{FindPartite} is made.
+We can pass the array $A$ to the recursive call directly, and the recurive call takes time $T_{k-1}(n)$.
+Putting everything together, we have the recurrence relation $T_k(n) = T_{k-1}(n) + \bigO{n^{k+4}}$.
+This, together with the base case $T_1(n) = \bigO{n}$, gives us $T_k(n) = \bigO{n^{k+4}}$.
+
 
 
 

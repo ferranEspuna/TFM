@@ -153,10 +153,10 @@ Suppose, by way of contradiction, that
 Algebraic manipulation then shows that
 \[
     \frac{1}{2} \cdot w \cdot d
-    \leq w \cdot d \cdot \left( 1 - \frac{k}{n} \right)
-    \leq w \left( \frac{s-1}{\binom{n}{k-1} } \right)^{1 / t} + (t - 1),
+    \leq w \cdot d \cdot \left( 1 - \frac{k-1}{n} \right)
+    < w \left( \frac{s-1}{\binom{n}{k-1} } \right)^{1 / t} + (t - 1),
 \]
-where the first inequality follows from $n \geq 2k$, which follows from $t \geq 2$. % TODO: check this
+where the first inequality follows from $n \geq 16^{2^{k-1}} > 2(k-1)$, which follows from $t \geq 2$ and $d \leq 1$.
 Finally, since $t \leq \frac{w \cdot d}{4}$ by the definition of $w$, we obtain
 \[
     \left( \frac{d}{4}\right)^t \binom{n}{k-1} < s-1,
@@ -176,8 +176,9 @@ More precisely, we show the following.
         Now, since by construction $|V_1| = |S| \geq s$, it is enough that
         \[
             s
-            = \left\lceil \left( \frac{d}{4} \right)^t n \right\rceil
-            \geq \left( \frac{d}{4} \right)^{\frac{\log n}{\log(16/d)}} n
+            = \left\lceil \left( \frac{d}{4} \right)^t \cdot n \right\rceil
+            \geq \left( \frac{d}{4} \right)^{\frac{\log n}{\log(16/d)}}  \cdot n =
+            \left( 4 \cdot \frac{d}{16} \right)^{\frac{\log n}{\log(16/d)}} \cdot n
             = \frac{1}{n} \cdot 4^{\frac{\log n}{\log(16/d)}} \cdot n
             \geq 4^t
             > t.

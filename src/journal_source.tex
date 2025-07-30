@@ -294,12 +294,12 @@ Indeed,
 \[
     \binom{w}{t} \leq \left(\frac{ew}{t}\right)^t
     \leq \left(\frac{e(4t/d + 1)}{t}\right)^t
-    \leq \left(\frac{4e}{d} + \frac{1}{2}  \right)^t
+    \leq \left(\frac{4e}{d} + \frac{e}{2}  \right)^t
     \leq \left(\frac{4.5 \cdot e}{d}\right)^t < e^{t(2.6 + \log (1/d))},
 \]
-and from $t  < \frac{\log n}{\log (1/d)} \leq \log n$ and $d > \frac{1}{\sqrt{n}}$, we have that
+and from $t  < \frac{\log n}{\log (1/d)} \leq \log n$, we have that
 \[
-    \binom{w}{t} < e^{2.6 \cdot \log n + 0.5 \cdot \log n} = n^{3.1}.
+    \binom{w}{t} < e^{2.6 \cdot \log n + \log n} = n^{3.6}.
 \]
 
 In each iteration of the loop, the set $S$ can be constructed in the following way.
@@ -308,12 +308,12 @@ with all entries set to \texttt{true}.
 We iterate through all $x \in \binom{[n]}{k-1}$ and $y \in T$
 and set the entry corresponding to $x$ to \texttt{false} if $x \cup \{y\}$ is not an edge in $H$.
 All in all, this takes $\bigO{tn^{k-1}} = \bigO{n^k}$ steps, and then counting the number of \texttt{true} entries in the array takes $\bigO{n^{k-1}}$ time.
-Therefore, the for loop (with the recursive call) takes $\bigO{\binom{w}{t} n^{k}} = \bigO{n^{k+3.1}}$ time.
+Therefore, the for loop (with the recursive call) takes $\bigO{\binom{w}{t} n^{k}} = \bigO{n^{k+3.6}}$ time.
 
 Finally, when the condition $|S| \geq s$ is satisfied, the recursive call to \texttt{FindPartite} is made.
 We can pass the array $A$ to the recursive call directly, and the recurive call takes time $T_{k-1}(n)$.
-Putting everything together, we have the recurrence relation $T_k(n) = T_{k-1}(n) + \bigO{n^{k+3.1}}$.
-This, together with the base case $T_1(n) = \bigO{n}$, gives us $T_k(n) = \bigO{n^{k+3.1}}$.
+Putting everything together, we have the recurrence relation $T_k(n) = T_{k-1}(n) + \bigO{n^{k+3.6}}$.
+This, together with the base case $T_1(n) = \bigO{n}$, gives us $T_k(n) = \bigO{n^{k+3.6}}$.
 
 \section{Conclusion and Future Work}\label{sec:conclusion-and-future-work}
 

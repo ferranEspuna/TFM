@@ -24,7 +24,7 @@ Furthermore, if $H$ is a $k$-graph with at least $d \binom{n}{k}$ edges for some
 $t = c_d \log(n)^{1/(k-1)}$.
 
 This result is non-constructive, meaning it guarantees the existence of such a subgraph but does not provide an efficient way to find it.
-Note that a simple brute-force search for a $\compoverset{k}{t}$ would involve checking all $\binom{n}{kt}$ vertex subsets, which is superpolynomial in $n$ for $t = \Theta((\log n)^{1/(k-1)})$.
+Note that a simple brute-force search for a $\compoverset{k}{t}$ would involve checking all $\binom{n}{kt}$ vertex subsets, which is superpolynomial in $n$ for $t = \bigO{(\log n)^{1/(k-1)}}$.
 Mubayi and Tur\'{a}n~\cite{MUBAYI2010174} developed a polynomial-time algorithm for the case $k=2$, which reaches the stated order of magnitude for the subgraph part size.
 This work extends their approach to the general case of $k$-uniform hypergraphs, reaching analogous results for $k \ge 3$.
 More concretely, we prove the following.

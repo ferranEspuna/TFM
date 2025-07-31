@@ -310,11 +310,16 @@ Indeed,
     \binom{w}{t} \leq \left(\frac{ew}{t}\right)^t
     \leq \left(\frac{e(4t/d + 1)}{t}\right)^t
     \leq \left(\frac{4e}{d} + \frac{e}{2}  \right)^t
-    \leq \left(\frac{4.5 \cdot e}{d}\right)^t < e^{t(2.6 + \log (1/d))}\,,
+    \leq \left(\frac{4.5 \cdot e}{d}\right)^t < e^{t(2.6 + \log (1/d))}
+    = e^{2.6 \cdot t} e^{\log (1/d) \cdot t}\,.
 \]
-and from $t  < \frac{\log n}{\log (1/d)} \leq \log n$, we have that
+For the first term, we use the fact that $t < (\log n)^{1/(k-1)} \leq \log n$
+and so ${e^{2.6 \cdot t} < e^{2.6 \cdot \log n} = n^{2.6}}$.
+For the second term, we use the fact that $t < (\log(n)/\log(1/d))^{1/(k-1)} \leq \log(n)/\log(1/d)$,
+so $e^{\log (1/d) \cdot t} < n$.
+All in all, we have
 \[
-    \binom{w}{t} < e^{2.6 \cdot \log n + \log n} = n^{3.6}\,.
+    \binom{w}{t} < n^{2.6} n = n^{3.6}\,.
 \]
 In each iteration of the loop, the set $S$ can be constructed in the following way.
 We initialize a flattened boolean array $A$ of size $n^{k-1}$,

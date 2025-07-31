@@ -16,7 +16,7 @@ It is known~\cite{keevash2011hypergraph}
 that $\ex{n}{G}$ is sublinear in $\binom{n}{k}$ if and only if $G$ is $k$-partite, i.e.,
 if its vertex set can be partitioned into $k$ disjoint sets such that each edge contains exactly one vertex from each part.
 Kőv\'{a}ri, S\'{o}s, and Tur\'{a}n~\cite{Kovari1954} (for $k=2$) and
-Erd\H{o}s~\cite{Erods1964} (for any $k \geq 2$) established that
+Erd\H{o}s~\cite{Erdos1964} (for any $k \geq 2$) established that
 \[ \label{eq:erdos64-intro}
     \ex{n}{\compoverset{k}{t}} \leq \binom{n}{k} \cdot n^{-\frac{1}{k-1}}\,.
 \]
@@ -24,15 +24,15 @@ This result implies the following.
 
 \begin{remark} \label{rk:order}
     If $H$ is a $k$-graph with at least $d \binom{n}{k}$ edges for some constant $d > 0$, then it contains $\compoverset{k}{t}$
-    as a subgraph, with $t = c(d, k) \log(n)^{1/(k-1)}$.
+    as a subgraph, with $t = c(d, k) (\log(n))^{1/(k-1)}$.
 \end{remark}
 
 Furthermore, the order of magnitude of $t$ is tight up to a constant factor:
 For some constant $\hat{c}(d, k) > 0$,
-there are graphs with $n$ vertices and edge density
+there are $k$-graphs with $n$ vertices and edge density
 $d$ that do not contain $\compoverset{k}{\hat{t}}$ as a subgraph, where
 $\hat{t} = \hat{c}(d, k)\log(n)^{1/(k-1)}$.
-This was already noted by Erd\H{o}s~\cite{Erods1964} and can be proved via the random alteration method~\cite{alon2016probabilistic}.
+This was already noted by Erd\H{o}s~\cite{Erdos1964} and can be proved via the random alteration method~\cite{alon2016probabilistic}.
 
 
 Due to the fundamental role of Erd\H{o}s' result, % TODO citation?
@@ -325,7 +325,7 @@ All in all, this takes $\bigO{tn^{k-1}} = \bigO{n^k}$ steps, and then counting t
 Therefore, the for loop (with the recursive call) takes $\bigO{\binom{w}{t} n^{k}} = \bigO{n^{k+3.6}}$ time.
 
 Finally, when the condition $|S| \geq s$ is satisfied, the recursive call to \texttt{FindPartite} is made.
-We can pass the array $A$ to the recursive call directly, and the recurive call takes time $T_{k-1}(n)$.
+We can pass the array $A$ to the recursive call directly, and the recursive call takes time $T_{k-1}(n)$.
 Putting everything together, we have the recurrence relation $T_k(n) = T_{k-1}(n) + \bigO{n^{k+3.6}}$.
 This, together with the base case $T_1(n) = \bigO{n}$, gives us $T_k(n) = \bigO{n^{k+3.6}}$.
 

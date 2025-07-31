@@ -2,41 +2,53 @@
 
 \begin{abstract}
 We give a deterministic polynomial-time algorithm that, for a given $k$-uniform hypergraph $H$ with $n$ vertices and edge density $d$,
-finds a $\compoverset{k}{t}$ subgraph with parts of size at least $c_d (\log n)^{1/(k-1)}$,
-building on work by Mubayi and Tur\'{a}n for the $k=2$ case.
-This value for the part size matches the order of magnitude guaranteed by the non-constructive proof due to Erd\H{o}s and is tight up to a constant factor.
+finds a $\compoverset{k}{t}$ subgraph with parts of size at least ${c(d, k)(\log n)^{1/(k-1)}}$.
+This generalizes work by Mubayi and Tur\'{a}n for bipartite graphs.
+The value we obtain for the part size matches the order of magnitude guaranteed by the non-constructive proof due to
+Erd\H{o}s and is tight up to a constant factor.
 \end{abstract}
 
 \section{Introduction}\label{sec:introduction}
 
-Hypergraph Tur\'{a}n problems study how many edges a $k$-uniform hypergraph $H = (V, E)$ with $n$ vertices can have without containing a specific subgraph $G$.
+Hypergraph Tur\'{a}n problems concern how many edges a $k$-uniform hypergraph $H = (V, E)$ with $n$ vertices can have without containing a specific subgraph $G$.
 The maximal such number is known as the \emph{Tur\'{a}n number} $\ex{n}{G}$.
 It is known~\cite{keevash2011hypergraph}
-that $\ex{n}{G} = o\left( \binom{n}{k}\right)$ if and only if $G$ is $k$-partite, i.e.,
+that $\ex{n}{G}$ is sublinear in $\binom{n}{k}$ if and only if $G$ is $k$-partite, i.e.,
 if its vertex set can be partitioned into $k$ disjoint sets such that each edge contains exactly one vertex from each part.
 Kőv\'{a}ri, S\'{o}s, and Tur\'{a}n~\cite{Kovari1954} (for $k=2$) and
 Erd\H{o}s~\cite{Erods1964} (for any $k \geq 2$) established that
 \[ \label{eq:erdos64-intro}
-    \ex{n}{\compoverset{k}{t}} = \bigO{n^{k - \frac{1}{t^{(k-1)}}}},
+    \ex{n}{\compoverset{k}{t}} \leq \binom{n}{k} \cdot n^{-\frac{1}{k-1}}\,.
 \]
-where $\compoverset{k}{t}$ is the complete balanced $k$-partite $k$-graph with $k$ parts of size $t$.
-Furthermore, if $H$ is a $k$-graph with at least $d \binom{n}{k}$ edges for some constant $d > 0$, then it contains a $\compoverset{k}{t}$ with
-$t = c_d \log(n)^{1/(k-1)}$.
+This result implies the following.
 
-This result is non-constructive, meaning it guarantees the existence of such a subgraph but does not provide an efficient way to find it.
-Note that a simple brute-force search for a $\compoverset{k}{t}$ would involve checking all $\binom{n}{kt}$ vertex subsets, which is superpolynomial in $n$ for $t = \bigO{(\log n)^{1/(k-1)}}$.
-Mubayi and Tur\'{a}n~\cite{MUBAYI2010174} developed a polynomial-time algorithm for the case $k=2$, which reaches the stated order of magnitude for the subgraph part size.
+\begin{remark} \label{rk:order}
+    If $H$ is a $k$-graph with at least $d \binom{n}{k}$ edges for some constant $d > 0$, then it contains $\compoverset{k}{t}$
+    as a subgraph, with $t = c(d, k) \log(n)^{1/(k-1)}$.
+\end{remark}
+
+Furthermore, the order of magnitude of $t$ is tight up to a constant factor:
+For some constant $\hat{c}(d, k) > 0$,
+there are graphs with $n$ vertices and edge density
+$d$ that do not contain $\compoverset{k}{\hat{t}}$ as a subgraph, where
+$\hat{t} = \hat{c}(d, k)\log(n)^{1/(k-1)}$.
+This was already noted by Erd\H{o}s~\cite{Erods1964} and can be proved via the random alteration method~\cite{alon2016probabilistic}.
+
+
+Due to the fundamental role of Erd\H{o}s' result, % TODO citation?
+it is natural to ask whether a fast search algorithm for a complete $k$-partite subgraph of the size stated in Remark~\ref{rk:order} exists.
+A brute-force search for a $\compoverset{k}{t}$ would involve checking all $\binom{n}{kt}$ vertex subsets, which is superpolynomial in $n$ for ${t = \bigOmega{(\log n)^{1/(k-1)}}}$.
+For $k=2$, Mubayi and Tur\'{a}n~\cite{MUBAYI2010174} developed a deterministic polynomial-time algorithm which reaches the stated order of magnitude for the subgraph part size.
 This work extends their approach to the general case of $k$-uniform hypergraphs, reaching analogous results for $k \ge 3$.
 More concretely, we prove the following.
 
 \begin{theorem} \label{thm:main_theorem}
 There is a deterministic algorithm that, given a $k$-graph $H$ with $n$ vertices and $m=d \binom{n}{k}$ edges, finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$ in polynomial time, where
 \[
-    t = t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}  \right)^{\frac{1}{k-1}} \right \rfloor
+    t = t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}  \right)^{\frac{1}{k-1}} \right \rfloor \,.
 \]
 \end{theorem}
-This value of $t$ matches the order of magnitude from existence proofs.
-In fact, a probabilistic argument shows that it is the best possible up to a constant factor.
+This value of $t$ matches the order of magnitude from Remark~\ref{rk:order}.
 
 \section{The algorithm}\label{sec:finding-a-balanced-$k$-partite-subgraph}
 
@@ -45,19 +57,18 @@ The core idea is to reduce the uniformity of the problem from $k$ to $k-1$ in ea
 The algorithm takes a $k$-graph $H$ with $n$ vertices and $m$ edges as input.
 It first defines the target part size $t$, a small set size $w$,
 and a threshold edge count $s$ for the recursive call, based on the input graph's parameters:
-
 \begin{align*}
-    t &= t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}  \right)^{\frac{1}{k-1}} \right \rfloor, \\
-    w &= w(n, d, k) = \left\lceil \frac{4 t}{d} \right\rceil, \text{ and } \\
-    s &= s(n, d, k) = \left\lceil \left( \frac{d}{4} \right)^t \binom{n}{k-1} \right\rceil,
+    t &= t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}  \right)^{\frac{1}{k-1}} \right \rfloor\,, \\
+    w &= w(n, d, k) = \left\lceil \frac{4 t}{d} \right\rceil\,, \text{ and } \\
+    s &= s(n, d, k) = \left\lceil \left( \frac{d}{4} \right)^t \binom{n}{k-1} \right\rceil\,,
 \end{align*}
 where $d = \frac{m}{\binom{n}{k}}$ is the edge density of $H$.
 The main steps are:
 \begin{enumerate}
-    \item \textbf{Base Case ($k=1$):} The edge set of a 1-graph is just a collection of vertices.
+    \item \textbf{Base Case ($k=1$):} The edge set of a 1-graph is just a collection of singleton sets of vertices.
     Return the set of all vertices that are ``edges''.
 
-    \item \textbf{Select High-Degree Vertices:} Choose a set $W \subset V$ of $w$ vertices with the highest degrees in $H$. \label{W}
+    \item \textbf{Select High-Degree Vertices:} Choose a set $W \subset V$ of $w$ vertices with the highest degrees in~$H$. \label{W}
 
     \item \textbf{Find a Dense Link Graph:} Iterate through all $t$-subsets $T \subset W$.
     For each $T$, consider the set $S$ of all $(k-1)$-subsets of $V$ that form a hyperedge with \emph{every} vertex in $T$. \label{link}
@@ -99,11 +110,13 @@ The pseudocode is given in Algorithm~\ref{alg:kpartite}.
     \end{algorithmic}
 \end{algorithm}
 
-We now present the proof of correctness and polynomial runtime for our algorithm.
+\section{Proof of correctness}\label{sec:correctness}
+
+We now present the proof that Algorithm~\ref{alg:kpartite} is correct in the sense that
+all the steps are well-defined and that it returns a tuple $(V_1, \dots, V_k)$ of disjoint sets $V_i \subset V(H)$
+of size at least $t$ spanning a complete $k$-partite subgraph in $H$.
 We assume $t \ge 2$ for our estimates to be easier.
 If $t < 2$, we may just return the vertices of any single edge in $H$.
-
-\section{Proof of correctness}\label{sec:correctness}
 
 It is not immediately clear that the set $W$ defined in step~\ref{W} of the algorithm
 is well-defined, as for this it is necessary that $w \leq n$.
@@ -112,9 +125,9 @@ implies that $ 1 \geq d \geq \frac{16}{\sqrt {n}}$.
 Suppose, by way of contradiction, that $w > n$.
 Then, we have
 \[
-    n \leq w - 1 \leq \frac{4t}{d} \leq \frac{4\log n}{d\log(16/d)} \leq \frac{4 \sqrt {n} \log n }{16 \log(16/d)}.
+    n \leq w - 1 \leq \frac{4t}{d} \leq \frac{4\log n}{d\log(16/d)} \leq \frac{4 \sqrt {n} \log n }{16 \log(16/d)}\,.
 \]
-Taking, for example, the logarithms to be in base $e$, we note that $\log x \leq \sqrt {x}$ for all positive $x$,
+Taking the logarithms to be in base $e$, we note that $\log x \leq \sqrt {x}$ for all positive $x$,
 and that $\log(16/d) \geq \log(16) > 1$.
 Therefore, we get $n \leq \frac{n}{4}$, which is a contradiction.
 
@@ -124,7 +137,7 @@ $S \subset \binom{V}{k-1}$ has size at least $s$.
 That is, Algorithm~\ref{alg:kpartite} reaches line~\ref{recurse} at some point in the for loop.
 For this, consider the bipartite graph $B$ with parts $\binom{V}{k-1}$ and $W$ with edge set
 \[
-  \left\{(x, y) \in \binom{V}{k-1} \times W \middle| \, x \cup \{y\} \in E \right\}.
+  \left\{(x, y) \in \binom{V}{k-1} \times W \middle| \, x \cup \{y\} \in E \right\}\,.
 \]
 The edges of $B$ correspond to the edges containing each vertex in $W$, so there are
 \[
@@ -134,35 +147,37 @@ of them, where the inequality follows from the fact that we have picked a set of
 The existence of a set $T \subset W$ as desired is equivalent to there being $T \subset W$ of size $t$ and a set $S \subset \binom{V}{k-1}$ of size $s$
 such that the induced bipartite subgraph $B[S, T]$ is complete.
 To prove that this is the case,
-we use a version the Kőv\'{a}ri–S\'{o}s–Tur\'{a}n theorem~\cite{Kovari1954},
-which we state and prove here for completeness.
+we use the following version the Kőv\'{a}ri–S\'{o}s–Tur\'{a}n theorem~\cite{Kovari1954}.
 
 \begin{lemma}\label{thm:kst}
     Let $u, w, s, t$ be positive integers with $u \geq s$, $w \geq t$, and let $B$ be a bipartite graph with parts $W$ and $U$ such that
     $|U| = u, |W| = w$.
     If $B$ has more than \[(s - 1)^{1 / t}(w - t + 1)u^{1 - 1 / t} + (t - 1)u\] edges, then there are
-    $T \subset W$ of size $t$ and $S \subset U$ of size $s$ such that the induced bipartite subgraph $B[T, S]$ is complete.
+    $T \subset W$ of size $t$ and $S \subset U$ of size $s$ such that the induced bipartite subgraph $B[S, T]$ is complete.
 \end{lemma}
 
 We apply this lemma with $u = \binom{n}{k-1}$.
 It is clear from the definitions that our parameter satisfy the requirements $u \geq s$ and $w \geq t$.
 Suppose, by way of contradiction, that
 \[
-    w \cdot d \cdot \binom{n - 1}{k-1} \leq (s - 1)^{1 / t}(w - t + 1)\binom{n}{k-1}^{1 - 1 / t} + (t - 1)\binom{n}{k-1}.
+    w \cdot d \cdot \binom{n - 1}{k-1} \leq (s - 1)^{1 / t}(w - t + 1)\binom{n}{k-1}^{1 - 1 / t} + (t - 1)\binom{n}{k-1}\,.
 \]
 Algebraic manipulation then shows that
 \[
     \frac{1}{2} \cdot w \cdot d
     \leq w \cdot d \cdot \left( 1 - \frac{k-1}{n} \right)
-    < w \left( \frac{s-1}{\binom{n}{k-1} } \right)^{1 / t} + (t - 1),
+    < w \left( \frac{s-1}{\binom{n}{k-1} } \right)^{1 / t} + (t - 1)\,,
 \]
 where the first inequality follows from $n \geq 16^{2^{k-1}} > 2(k-1)$, which follows from $t \geq 2$ and $d \leq 1$.
 Finally, since $t \leq \frac{w \cdot d}{4}$ by the definition of $w$, we obtain
 \[
-    \left( \frac{d}{4}\right)^t \binom{n}{k-1} < s-1,
+    \left( \frac{d}{4}\right)^t \binom{n}{k-1} < s-1\,,
 \]
-against the definition of $s$.
-We are now ready to prove that the algorithm returns a $\compoverset{k}{t}$.
+in contradiction to the definition of $s$.
+So far, we have shown that the sets defined in Algorithm~\ref{alg:kpartite}
+are well-defined and that the recursive call in line~\ref{recurse} is reached.
+We are now ready to prove that the algorithm returns a $\compoverset{k}{t}$
+by examining what happens in the recursive call.
 More precisely, we show the following.
 
 \begin{theorem}
@@ -177,11 +192,11 @@ More precisely, we show the following.
         \[
             s
             = \left\lceil \left( \frac{d}{4} \right)^t \cdot n \right\rceil
-            \geq \left( \frac{d}{4} \right)^{\frac{\log n}{\log(16/d)}}  \cdot n =
-            \left( 4 \cdot \frac{d}{16} \right)^{\frac{\log n}{\log(16/d)}} \cdot n
+            \geq \left( \frac{d}{4} \right)^{\frac{\log n}{\log(16/d)}}  \cdot n
+            = \left( 4 \cdot \frac{d}{16} \right)^{\frac{\log n}{\log(16/d)}} \cdot n
             = \frac{1}{n} \cdot 4^{\frac{\log n}{\log(16/d)}} \cdot n
             \geq 4^t
-            > t.
+            > t\,.
         \]
 
         For $k \geq 3$, we assume the inductive hypothesis holds for $k-1$.
@@ -208,10 +223,10 @@ More precisely, we show the following.
             {\frac{1}{k-2}} \right\rfloor \geq
             %
             \left\lfloor \left(  \frac{\log n}{\log 16 - t \log (d/4)} \right)^
-            {\frac{1}{k-2}} \right\rfloor.
+            {\frac{1}{k-2}} \right\rfloor\,.
         \]
         Then, we substitute the definition of $t$, where removing the floor function
-        maintains the inequality because the right hand side is decreasing in $t$ (recall $d \leq 1$):
+        maintains the inequality because the right side is decreasing in $t$ (recall $d \leq 1$):
         \begin{equation*} \label{eq:t_prime}
             t' \geq
             %
@@ -222,14 +237,14 @@ More precisely, we show the following.
             %
             \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
             {\frac{\log 16}{(\log n)^{\frac{1}{k-1}}} - \frac{\log (d/4)}{\log (16/d)^{\frac{1}{k-1}}} }
-            \right)^{\frac{1}{k-2}} \right\rfloor.
+            \right)^{\frac{1}{k-2}} \right\rfloor\,.
         \end{equation*}
-        If we bound the denominator by showing that
+        We claim that we bound the denominator by showing that
         \begin{equation} \label{eq:denominator_bound}
             \frac{\log 16}{(\log n)^{\frac{1}{k-1}}} - \frac{\log (d/4)}{\log (16/d)^{\frac{1}{k-1}}}
-            \leq \left( \log (16/d) \right)^{\left( 1 - \frac{1}{k-1} \right)},
+            \leq \left( \log (16/d) \right)^{\left( 1 - \frac{1}{k-1} \right)}\,.
         \end{equation}
-        then the expression simplifies to
+        Then, the expression simplifies to
         \[
             t'
             %
@@ -241,10 +256,11 @@ More precisely, we show the following.
             {\log (16/d)}
             \right)^{\frac{1}{k-2}\left( 1 - \frac{1}{k-1} \right)} \right\rfloor
             = \left\lfloor \left(  \frac{\log n}{\log (16/d)} \right)^{\frac{1}{k-1}} \right\rfloor
-            = t,
+            = t\,,
         \]
         as desired.
-        Suppose, by way of contradiction, that Inequality~\eqref{eq:denominator_bound} does not hold.
+        Let us prove Inequality~\eqref{eq:denominator_bound}.
+        Suppose, by way of contradiction, that it does not hold.
         We can rewrite
         \[
             (\log (16/d))^{\left( 1 - \frac{1}{k-1} \right)}
@@ -254,19 +270,19 @@ More precisely, we show the following.
         \[
             \frac{\log 16}{(\log n)^{\frac{1}{k-1}}}
             > \frac{\log (16/d) + \log (d/4)}{\log (16/d)^{\frac{1}{k-1}}}
-            = \frac{\log 4}{(\log (16/d))^{\frac{1}{k-1}}}.
+            = \frac{\log 4}{(\log (16/d))^{\frac{1}{k-1}}}\,.
         \]
         This implies that
         \[
             t
             \leq \left( \frac{\log n}{\log (16/d)} \right)^{\frac{1}{k-1}}
-            < \frac{\log 16}{\log 4} = 2,
+            < \frac{\log 16}{\log 4} = 2\,,
         \]
         which contradicts the assumption that $t \geq 2$.
     \end{proof}
 \end{theorem}
 
-\section{Proof of Polynomial Complexity}\label{sec:complexity} % TODO this is gemini generated, check it
+\section{Proof of Polynomial Complexity}\label{sec:complexity}
 
 We now analyze the computational complexity of Algorithm~\ref{alg:kpartite} to show that it runs in time polynomial in $n$ for any fixed uniformity $k$.
 We consider the input hypergraph $H$ to be given as an adjacency matrix.
@@ -288,20 +304,18 @@ creating an array with the degree of each vertex (in time  $\bigO{n \cdot n^{k-1
 and taking the first $w$ elements.
 
 The subsets of $t$ elements of $W$ can be iterated through in time $\bigO{\binom{w}{t}}$~\cite{reingold1977combinatorial}.
-Similarly to the proof in the Mubayi and Tur\'{a}n paper~\cite{MUBAYI2010174}, we can bound this quantity by a polynomial in $n$.
+Similarly to the argument by Mubayi and Tur\'{a}n~\cite{MUBAYI2010174}, we can bound this quantity by a polynomial in $n$.
 Indeed,
-
 \[
     \binom{w}{t} \leq \left(\frac{ew}{t}\right)^t
     \leq \left(\frac{e(4t/d + 1)}{t}\right)^t
     \leq \left(\frac{4e}{d} + \frac{e}{2}  \right)^t
-    \leq \left(\frac{4.5 \cdot e}{d}\right)^t < e^{t(2.6 + \log (1/d))},
+    \leq \left(\frac{4.5 \cdot e}{d}\right)^t < e^{t(2.6 + \log (1/d))}\,,
 \]
 and from $t  < \frac{\log n}{\log (1/d)} \leq \log n$, we have that
 \[
-    \binom{w}{t} < e^{2.6 \cdot \log n + \log n} = n^{3.6}.
+    \binom{w}{t} < e^{2.6 \cdot \log n + \log n} = n^{3.6}\,.
 \]
-
 In each iteration of the loop, the set $S$ can be constructed in the following way.
 We initialize a flattened boolean array $A$ of size $n^{k-1}$,
 with all entries set to \texttt{true}.
@@ -324,11 +338,11 @@ This provides a constructive counterpart to a classical existence result by Erd\
 Several avenues for future research remain open.
 \begin{itemize}
     \item \textbf{General Blow-ups:} Our algorithm finds a blow-up of a single edge, $\compoverset{k}{t}$.
-    Can this framework be adapted to find a $t_n$-blowup of an arbitrary fixed $k$-graph $G$? Existence theorems guarantee such structures, but efficient algorithms are lacking.
-    \item \textbf{Unbalanced Partite Graphs:} The algorithm could be modified to search for unbalanced complete partite graphs $\compdots{t_1}{t_k}$, where the part sizes may grow at different rates.
+    Can this framework be adapted to find a $t$-blowup of an arbitrary fixed $k$-graph $G$ when its Tur\'{a}n density is exceeded by a positive constant?
+    For example, for $k=2$, there are existence results for $t = \bigOmega{\log n}$~\cite{bollobas1973structure}, but directly adapting Algorithm~\ref{alg:kpartite} would only
+    yield t = $\bigO{(\log n)^{1/(|V(G) - 1|)}}$.
+    \item \textbf{Unbalanced k-Partite Graphs:} The algorithm could be modified to search for unbalanced complete partite graphs $\compdots{t_1}{t_k}$, where the part sizes may grow at different rates.
     \item \textbf{Optimality:} The bounds on $t$ are asymptotically tight, but the constants can likely be improved with a more refined analysis.
-    For $k=2$, it is known that in dense graphs one can find a $t=\Theta(\log n)$ blow-up of any bipartite graph.
-    It is an open question if a constructive proof for this stronger result exists for $k \ge 2$.
 \end{itemize}
 
 \subsection*{Acknowledgements}
@@ -336,4 +350,4 @@ Several avenues for future research remain open.
 The ideas in this work stem from the author's master's thesis of the same name,
 Universitat Polit\`{e}cnica de Catalunya,
 under the supervision of Richard Lang.
-The author thanks Dr. Lang for suggesting the problem and for his guidance and support throughout the project.
+The author thanks him for suggesting the problem and for his guidance and support throughout the project.

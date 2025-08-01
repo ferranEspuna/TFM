@@ -19,7 +19,7 @@ if its vertex set can be partitioned into $k$ disjoint sets such that each edge 
 Kőv\'{a}ri, S\'{o}s, and Tur\'{a}n~\cite{Kovari1954} (for $k=2$) and
 Erd\H{o}s~\cite{Erdos1964} (for any $k \geq 2$) established that
 \[ \label{eq:erdos64-intro}
-    \ex{n}{\compoverset{k}{t}} \leq \binom{n}{k} \cdot n^{-\frac{1}{k-1}}\,.
+    \ex{n}{\compoverset{k}{t}} \leq \binom{n}{k} \cdot n^{-\frac{1}{t^{(k-1)}}}\,.
 \]
 This result implies the following.
 
@@ -79,7 +79,7 @@ The main steps are:
 
     \item \textbf{Construct Solution:} The recursive call returns $k-1$ parts $V_1, \dots, V_{k-1}$ of size at least $t$.
     By construction, every choice of vertices from these parts forms an edge in $H'$ with every vertex of $T$.
-    Thus, $(T_1, \dots, T_{k-1}, T)$ form the desired $\compoverset{k}{t}$ in the original graph $H$.
+    Thus, $(V_1, \dots, V_{k-1}, T)$ form the desired $\compoverset{k}{t}$ in the original graph $H$.
 
 \end{enumerate}
 
@@ -129,8 +129,8 @@ Then, we have
     n \leq w - 1 \leq \frac{4t}{d} \leq \frac{4\log n}{d\log(16/d)} \leq \frac{4 \sqrt{n} \log n }{16 \log(16/d)}\,.
 \]
 Taking the logarithms to be in base $e$, we note that $\log x \leq \sqrt{x}$ for all positive $x$,
-and that $\log(16/d) \geq \log(16) > 1$.
-Therefore, we get $n \leq \frac{n}{4}$, which is a contradiction.
+and that $\log(16/d) > 1$.
+Therefore, we get $n < \frac{n}{4}$, which is a contradiction.
 
 Next, we prove that in step~\ref{link} of the algorithm
 we indeed find a set $T \in \binom{W}{t}$ such that the associated set

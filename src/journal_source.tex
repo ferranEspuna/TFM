@@ -75,7 +75,7 @@ The main steps are:
     For each $T$, consider the set $S$ of all $(k-1)$-subsets of $V$ that form a hyperedge with \emph{every} vertex in $T$. \label{link}
 
     \item \textbf{Recurse:} As we prove further along using the Kőv\'{a}ri–S\'{o}s–Tur\'{a}n theorem, for at least one choice of $T$,
-    the resulting set $S$ will be large ($|S| \ge s$). We form a new $(k-1)$-graph $H'=(V, S)$ and make a recursive call: \texttt{FindPartite($H'$, $k-1$)}.
+    the resulting set $S$ is large ($|S| \ge s$). We form a new $(k-1)$-graph $H'=(V, S)$ and make a recursive call: \texttt{FindPartite($H'$, $k-1$)}.
 
     \item \textbf{Construct Solution:} The recursive call returns $k-1$ parts $V_1, \dots, V_{k-1}$ of size at least $t$.
     By construction, every choice of vertices from these parts forms an edge in $H'$ with every vertex of $T$.
@@ -132,7 +132,7 @@ Taking the logarithms to be in base $e$, we note that $\log x \leq \sqrt{x}$ for
 and that $\log(16/d) \geq \log(16) > 1$.
 Therefore, we get $n \leq \frac{n}{4}$, which is a contradiction.
 
-Next, we will prove that in step~\ref{link} of the algorithm
+Next, we prove that in step~\ref{link} of the algorithm
 we indeed find a set $T \in \binom{W}{t}$ such that the associated set
 $S \subset \binom{V}{k-1}$ has size at least $s$.
 That is, Algorithm~\ref{alg:kpartite} reaches line~\ref{recurse} at some point in the for loop.
@@ -157,7 +157,7 @@ we use the following version~\cite{Hylten1958} of the Kőv\'{a}ri–S\'{o}s–Tu
     $T \subset W$ of size $t$ and $S \subset U$ of size $s$ such that the induced bipartite subgraph $B[S, T]$ is complete.
 \end{lemma}
 
-We apply this lemma with $u = \binom{n}{k-1}$.
+We apply the lemma with $u = \binom{n}{k-1}$.
 It is clear from the definitions that our parameter satisfy the requirements $u \geq s$ and $w \geq t$.
 Suppose, by way of contradiction, that
 \[
@@ -293,7 +293,7 @@ Not making this assumption would only add logarithmic factors to the running tim
 
 Let $T_k(n)$ denote the worst-case running time of the function \texttt{FindPartite} when called on a $k$-uniform hypergraph with $n$ vertices.
 The algorithm's structure gives a recurrence relation for $T_k(n)$.
-We will analyze the cost of the operations within a single call for a fixed $k$, excluding the recursive step.
+We first analyze the cost of the operations within a single call for a fixed $k$, excluding the recursive step.
 
 Assuming that the input matrix consists of a flattened boolean array of size $n^k$,
 querying whether a set of $k$ vertices forms an edge in $H$ can be done in constant time.

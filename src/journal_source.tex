@@ -306,7 +306,8 @@ Therefore, calculating the number of edges $m$ can be done in $\bigO{n^k}$ time 
 The parameters $n, m, d, t, w, s$ are computed in constant time after this step.
 
 The set $W$ of $w$ vertices with highest degrees can be constructed in time $\bigO{n^k}$, by, for example,
-creating an array with the degree of each vertex (in time  $\bigO{n \cdot n^{k-1}} = \bigO{n^k}$), sorting it (in time $\bigO{n \log n}$),
+creating an array with the degree of each vertex (in time  $\bigO{n \cdot n^{k-1}} = \bigO{n^k}$),
+sorting it in descending order (in time $\bigO{n \log n}$),
 and taking the first $w$ elements.
 
 The subsets of $t$ elements of $W$ can be iterated through in time $\bigO{\binom{w}{t}}$~\cite{reingold1977combinatorial}.

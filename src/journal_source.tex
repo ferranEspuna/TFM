@@ -24,13 +24,13 @@ Erd\H{o}s~\cite{Erdos1964} (for any $k \geq 2$) established that
 This result implies the following.
 
 \begin{remark} \label{rk:order}
-    If $H$ is a $k$-graph with at least $d \binom{n}{k}$ edges for some constant $d > 0$, then it contains $\compoverset{k}{t}$
+    If $H$ is a $k$-uniform hypergraph with at least $d \binom{n}{k}$ edges for some constant $d > 0$, then it contains $\compoverset{k}{t}$
     as a subgraph, with $t = c(d, k) (\log(n))^{1/(k-1)}$.
 \end{remark}
 
 Furthermore, the order of magnitude of $t$ is tight up to a constant factor:
 For some constant $\hat{c}(d, k) > 0$,
-there are $k$-graphs with $n$ vertices and edge density
+there are $k$-uniform hypergraphs with $n$ vertices and edge density
 $d$ that do not contain $\compoverset{k}{\hat{t}}$ as a subgraph, where
 $\hat{t} = \hat{c}(d, k)\log(n)^{1/(k-1)}$.
 This was already noted by Erd\H{o}s~\cite{Erdos1964} and can be proved via the random alteration method~\cite{alon2016probabilistic}.
@@ -44,7 +44,7 @@ This work extends their approach to the general case of $k$-uniform hypergraphs,
 More concretely, we prove the following.
 
 \begin{theorem} \label{thm:main_theorem}
-There is a deterministic algorithm that, given a $k$-graph $H$ with $n$ vertices and $m=d \binom{n}{k}$ edges, finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$ in polynomial time, where
+There is a deterministic algorithm that, given a $k$-uniform hypergraph $H$ with $n$ vertices and $m=d \binom{n}{k}$ edges, finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$ in polynomial time, where
 \[
     t = t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}  \right)^{\frac{1}{k-1}} \right \rfloor \,.
 \]
@@ -53,9 +53,9 @@ This value of $t$ matches the order of magnitude from Remark~\ref{rk:order}.
 
 \section{The algorithm}\label{sec:finding-a-balanced-$k$-partite-subgraph}
 
-We present a recursive algorithm, \texttt{FindPartite}, that finds a $\compoverset{k}{t}$ in a given $k$-graph $H$.
+We present a recursive algorithm, \texttt{FindPartite}, that finds a $\compoverset{k}{t}$ in a given $k$-uniform hypergraph $H$.
 The core idea is to reduce the uniformity of the problem from $k$ to $k-1$ in each recursive step.
-The algorithm takes a $k$-graph $H$ with $n$ vertices and $m$ edges as input.
+The algorithm takes a $k$-uniform hypergraph $H$ with $n$ vertices and $m$ edges as input.
 It first defines the target part size $t$, a small set size $w$,
 and a threshold edge count $s$ for the recursive call, based on the input hypergraph's parameters:
 \begin{align*}
@@ -66,7 +66,7 @@ and a threshold edge count $s$ for the recursive call, based on the input hyperg
 where $d = \frac{m}{\binom{n}{k}}$ is the edge density of $H$.
 The main steps are:
 \begin{enumerate}
-    \item \textbf{Base Case ($k=1$):} The edge set of a 1-graph is just a collection of singleton sets of vertices.
+    \item \textbf{Base Case ($k=1$):} The edge set of a 1-uniform hypergraph is just a collection of singleton sets of vertices.
     Return the set of all vertices that are ``edges''.
 
     \item \textbf{Select High-Degree Vertices:} Choose a set $W \subset V$ of $w$ vertices with the highest degrees in~$H$. \label{W}
@@ -75,7 +75,7 @@ The main steps are:
     For each $T$, consider the set $S$ of all $(k-1)$-subsets of $V$ that form a hyperedge with \emph{every} vertex in $T$. \label{link}
 
     \item \textbf{Recurse:} As we prove further along using the Kőv\'{a}ri–S\'{o}s–Tur\'{a}n theorem, for at least one choice of $T$,
-    the resulting set $S$ is large ($|S| \ge s$). We form a new $(k-1)$-graph $H'=(V, S)$ and make a recursive call: \texttt{FindPartite($H'$, $k-1$)}.
+    the resulting set $S$ is large ($|S| \ge s$). We form a new $(k-1)$-uniform hypergraph $H'=(V, S)$ and make a recursive call: \texttt{FindPartite($H'$, $k-1$)}.
 
     \item \textbf{Construct Solution:} The recursive call returns $k-1$ parts $V_1, \dots, V_{k-1}$ of size at least $t$.
     By construction, every choice of vertices from these parts forms an edge in $H'$ with every vertex of $T$.
@@ -86,7 +86,7 @@ The main steps are:
 The pseudocode is given in Algorithm~\ref{alg:kpartite}.
 
 \begin{algorithm}[H]
-    \caption{Finding a balanced partite $k$-graph}
+    \caption{Finding a balanced partite $k$-uniform hypergraph}
     \label{alg:kpartite}
     \begin{algorithmic}[1]
         \Function{FindPartite}{$H, k$}
@@ -102,7 +102,7 @@ The pseudocode is given in Algorithm~\ref{alg:kpartite}.
             \ForAll{$T \in \binom{W}{t}$}
                 \State $S \gets \{\,y \in \binom{V}{k-1} \colon \forall x \in T, \{x\} \cup y \in E(H)\,\}$
                 \If{$|S| \ge s$}
-                    \State $H' \gets (V, S)$  \Comment{$H'$ is a $(k-1)$-graph}
+                    \State $H' \gets (V, S)$  \Comment{$H'$ is a $(k-1)$-uniform hypergraph}
                     \State $(V_1, \dots, V_{k-1}) \gets$ \Call{FindPartite}{$H', k-1$} \label{recurse}
                     \State \Return $(V_1, \dots, V_{k-1}, T)$
                 \EndIf
@@ -203,7 +203,7 @@ More precisely, we show the following.
         \]
 
         For $k \geq 3$, we assume the inductive hypothesis holds for $k-1$.
-        If $d'$ is the edge density of the $(k-1)$-graph $H'$
+        If $d'$ is the edge density of the $(k-1)$-uniform hypergraph $H'$
         and $t' = t(n, d', k-1)$, as long as $t' \geq 2$, the recursive call returns
         a tuple $(V_1, \dots, V_{k-1})$ of disjoint sets $V_i \subset V(H)$ such that
         $|V_i| \geq t'$ and $H'[V_1, \dots, V_{k-1}]$ is complete.
@@ -349,7 +349,7 @@ This provides a constructive counterpart to a classical existence result by Erd\
 Several avenues for future research remain open.
 \begin{itemize}
     \item \textbf{General Blow-ups:} Our algorithm finds a blow-up of a single edge, $\compoverset{k}{t}$.
-    Can this framework be adapted to find a $t$-blowup of an arbitrary fixed $k$-graph $G$ when its Tur\'{a}n density is exceeded by a positive constant?
+    Can this framework be adapted to find a $t$-blowup of an arbitrary fixed $k$-uniform hypergraph $G$ when its Tur\'{a}n density is exceeded by a positive constant?
     For example, for $k=2$, there are existence results for $t = \bigOmega{\log n}$~\cite{bollobas1973structure}, but directly adapting Algorithm~\ref{alg:kpartite} would only
     yield t = $\bigO{(\log n)^{1/(|V(G)| - 1)}}$.
     \item \textbf{Unbalanced k-Partite Graphs:} The algorithm could be modified to search for unbalanced complete partite graphs $\compdots{t_1}{t_k}$, where the part sizes may grow at different rates.

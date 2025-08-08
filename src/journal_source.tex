@@ -57,7 +57,7 @@ We present a recursive algorithm, \texttt{FindPartite}, that finds a $\compovers
 The core idea is to reduce the uniformity of the problem from $k$ to $k-1$ in each recursive step.
 The algorithm takes a $k$-graph $H$ with $n$ vertices and $m$ edges as input.
 It first defines the target part size $t$, a small set size $w$,
-and a threshold edge count $s$ for the recursive call, based on the input graph's parameters:
+and a threshold edge count $s$ for the recursive call, based on the input hypergraph's parameters:
 \begin{align*}
     t &= t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}  \right)^{\frac{1}{k-1}} \right \rfloor\,, \\
     w &= w(n, d, k) = \left\lceil \frac{4 t}{d} \right\rceil\,, \text{ and } \\
@@ -110,6 +110,7 @@ The pseudocode is given in Algorithm~\ref{alg:kpartite}.
         \EndFunction
     \end{algorithmic}
 \end{algorithm}
+\newpage
 
 \section{Proof of correctness}\label{sec:correctness}
 

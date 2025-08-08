@@ -163,10 +163,11 @@ Suppose, by way of contradiction, that
 \[
     w \cdot d \cdot \binom{n - 1}{k-1} \leq (s - 1)^{1 / t}(w - t + 1)\binom{n}{k-1}^{1 - 1 / t} + (t - 1)\binom{n}{k-1}\,.
 \]
-Algebraic manipulation then shows that
+Dividing by $\binom{n}{k-1}$ then shows that
 \[
     \frac{1}{2} \cdot w \cdot d
-    \leq w \cdot d \cdot \left( 1 - \frac{k-1}{n} \right)
+    \leq \left( 1 - \frac{k-1}{n}\right) \cdot w \cdot d
+    = w \cdot d \cdot \frac{\binom{n-1}{k-1}}{\binom{n}{k-1}}
     < w \left( \frac{s-1}{\binom{n}{k-1} } \right)^{1 / t} + (t - 1)\,,
 \]
 where the first inequality follows from $n \geq 16^{2^{k-1}} > 2(k-1)$, which follows from $t \geq 2$ and $d \leq 1$.
@@ -208,11 +209,14 @@ More precisely, we show the following.
 
         We claim that $t' \geq t$.
         This implies that $t' \geq 2$ so we get to apply the inductive hypothesis to $H'$.
-        Furthermore, the sets $V_i$ are at least as large as desired.
-        By construction of $H'$, for all $(x_1, \dots x_{k-1}, y) \in V_1 \times \dots \times V_{k-1} \times T$,
-        we have that $\{x_1, \dots, x_{k-1}, y\} \in E(H)$.
-        In particular, because all $V_i$ are nonempty, this implies that $T$ is disjoint from each of them.
-        Furthermore, $H[V_1, \dots, V_{k-1}, T]$ is complete, finishing the proof.
+        Furthermore, the sets $V_i$ that we obtain when applying the algorithm to $H'$
+        are of size at least $t' \geq t$.
+        By construction of $S$, all the edges in $H'$ are disjoint from $T$,
+        and therefore so are the sets $V_i$.
+        This means that the sets $V_1, \dots, V_{k-1}, T$ are disjoint.
+        In addition, for all $(x_1, \dots x_{k-1}, y) \in V_1 \times \dots \times V_{k-1} \times T$,
+        we have that $\{x_1, \dots, x_{k-1}\} \in S$ so $\{x_1, \dots, x_{k-1}, y\} \in E(H)$.
+        Equivalently, $H[V_1, \dots, V_{k-1}, T]$ is complete, finishing the proof.
 
         Let us now prove the claim that $t' \geq t$.
         By the definition of $s$, we have $d' \geq \left( \frac{d}{4} \right)^t$.
@@ -286,16 +290,16 @@ More precisely, we show the following.
 \section{Proof of Polynomial Complexity}\label{sec:complexity}
 
 We now analyze the computational complexity of Algorithm~\ref{alg:kpartite} to show that it runs in time polynomial in $n$ for any fixed uniformity $k$.
-We consider the input hypergraph $H$ to be given as an adjacency matrix.
-We make the assumption that we have a machine with arbitrarily large random-access memory that can store
-floating-point numbers with arbitrary precision and operate on them in constant time.
-Not making this assumption would only add logarithmic factors to the running time, which we ignore for simplicity.
+We consider the input hypergraph $H$ to be given as an adjacency $k$-dimensional tensor.
+We make the assumption that we have a machine with arbitrarily large random-access memory,
+and that the operations on integers and floating-point numbers take constant time.
+Not making these assumptions would only add logarithmic factors to the running time, which we ignore for simplicity.
 
 Let $T_k(n)$ denote the worst-case running time of the function \texttt{FindPartite} when called on a $k$-uniform hypergraph with $n$ vertices.
 The algorithm's structure gives a recurrence relation for $T_k(n)$.
 We first analyze the cost of the operations within a single call for a fixed $k$, excluding the recursive step.
 
-Assuming that the input matrix consists of a flattened boolean array of size $n^k$,
+Assuming that the input tensor consists of a flattened boolean array of size $n^k$,
 querying whether a set of $k$ vertices forms an edge in $H$ can be done in constant time.
 Therefore, calculating the number of edges $m$ can be done in $\bigO{n^k}$ time by iterating through all $\binom{n}{k}$ possible edges.
 The parameters $n, m, d, t, w, s$ are computed in constant time after this step.

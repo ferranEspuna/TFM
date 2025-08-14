@@ -16,29 +16,32 @@ The maximal such number is known as the \emph{Tur\'{a}n number} $\ex{n}{G}$.
 It is known~\cite{keevash2011hypergraph}
 that $\ex{n}{G}$ is sublinear in $\binom{n}{k}$ if and only if $G$ is $k$-partite, i.e.,
 if its vertex set can be partitioned into $k$ disjoint sets such that each edge contains exactly one vertex from each part.
-Kőv\'{a}ri, S\'{o}s, and Tur\'{a}n~\cite{Kovari1954} (for $k=2$) and
+K\H{o}v\'{a}ri, S\'{o}s, and Tur\'{a}n~\cite{Kovari1954} (for $k=2$) and
 Erd\H{o}s~\cite{Erdos1964} (for any $k \geq 2$) established that
-\[ \label{eq:erdos64-intro}
-    \ex{n}{\compoverset{k}{t}} \leq \binom{n}{k} \cdot n^{-\frac{1}{t^{(k-1)}}}\,.
+\[
+    \ex{n}{\compoverset{k}{t}} \leq \binom{n}{k} \cdot n^{-\frac{1}{t^{k-1}}},
 \]
+where $\compoverset{k}{t}$ is the hypergraph consisting of $k$ disjoint sets $V_1, \dots, V_k$ of size $t$
+and all hyperedges of the form $\{x_1, \dots, x_k\}$ with $x_i \in V_i$ for $i = 1, \dots, k$.
 This result implies the following.
 
 \begin{remark} \label{rk:order}
     If $H$ is a $k$-uniform hypergraph with at least $d \binom{n}{k}$ edges for some constant $d > 0$, then it contains $\compoverset{k}{t}$
-    as a subgraph, with $t = c(d, k) (\log(n))^{1/(k-1)}$.
+    as a subgraph, with $t = c(d, k) (\log n)^{1/(k-1)}$.
 \end{remark}
 
 Furthermore, the order of magnitude of $t$ is tight up to a constant factor:
 For some constant $\hat{c}(d, k) > 0$,
-there are $k$-uniform hypergraphs with $n$ vertices and edge density
-$d$ that do not contain $\compoverset{k}{\hat{t}}$ as a subgraph, where
-$\hat{t} = \hat{c}(d, k)\log(n)^{1/(k-1)}$.
+there are $k$-uniform hypergraphs with $n$ vertices and at least $d \binom{n}{k}$ edges
+that do not contain $\compoverset{k}{\hat{t}}$ as a subgraph, where
+$\hat{t} = \hat{c}(d, k)(\log n)^{1/(k-1)}$.
 This was already noted by Erd\H{o}s~\cite{Erdos1964} and can be proved via the random alteration method~\cite{alon2016probabilistic}.
 
 
 Due to the fundamental role of Erd\H{o}s' result,
 it is natural to ask whether a fast search algorithm for a complete $k$-partite subgraph of the size stated in Remark~\ref{rk:order} exists.
-A brute-force search for a $\compoverset{k}{t}$ would involve checking all $\binom{n}{kt}$ vertex subsets, which is superpolynomial in $n$ for ${t = \bigOmega{(\log n)^{1/(k-1)}}}$.
+A brute-force search for a $\compoverset{k}{t}$ would involve checking all $\binom{n}{kt}$ vertex subsets,
+which is super-polynomial in the number of vertices $n$ for ${t = \bigOmega{(\log n)^{1/(k-1)}}}$.
 For $k=2$, Mubayi and Tur\'{a}n~\cite{MUBAYI2010174} developed a deterministic polynomial-time algorithm which reaches the stated order of magnitude for the subgraph part size.
 This work extends their approach to the general case of $k$-uniform hypergraphs, reaching analogous results for $k \ge 3$.
 More concretely, we prove the following.
@@ -46,22 +49,22 @@ More concretely, we prove the following.
 \begin{theorem} \label{thm:main_theorem}
 There is a deterministic algorithm that, given a $k$-uniform hypergraph $H$ with $n$ vertices and $m=d \binom{n}{k}$ edges, finds a complete balanced $k$-partite subgraph $\compoverset{k}{t}$ in polynomial time, where
 \[
-    t = t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}  \right)^{\frac{1}{k-1}} \right \rfloor \,.
+    t = t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}\right)^{\frac{1}{k-1}}\right\rfloor.
 \]
 \end{theorem}
 This value of $t$ matches the order of magnitude from Remark~\ref{rk:order}.
 
-\section{The algorithm}\label{sec:finding-a-balanced-$k$-partite-subgraph}
+\section{The algorithm}\label{sec:algorithm}
 
 We present a recursive algorithm, \texttt{FindPartite}, that finds a $\compoverset{k}{t}$ in a given $k$-uniform hypergraph $H$.
-The core idea is to reduce the uniformity of the problem from $k$ to $k-1$ in each recursive step.
+The core idea is to reduce the uniformity of the host hypergraph $H$ from $k$ to $k-1$ in each recursive step.
 The algorithm takes a $k$-uniform hypergraph $H$ with $n$ vertices and $m$ edges as input.
 It first defines the target part size $t$, a small set size $w$,
 and a threshold edge count $s$ for the recursive call, based on the input hypergraph's parameters:
 \begin{align*}
-    t &= t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}  \right)^{\frac{1}{k-1}} \right \rfloor\,, \\
-    w &= w(n, d, k) = \left\lceil \frac{4 t}{d} \right\rceil\,, \text{ and } \\
-    s &= s(n, d, k) = \left\lceil \left( \frac{d}{4} \right)^t \binom{n}{k-1} \right\rceil\,,
+    t &= t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}\right)^{\frac{1}{k-1}}\right\rfloor, \\
+    w &= w(n, d, k) = \left\lceil \frac{4 t}{d}\right\rceil \text{, and } \\
+    s &= s(n, d, k) = \left\lceil \left( \frac{d}{4}\right)^t \binom{n}{k-1}\right\rceil,
 \end{align*}
 where $d = \frac{m}{\binom{n}{k}}$ is the edge density of $H$.
 The main steps are:
@@ -71,22 +74,29 @@ The main steps are:
 
     \item \textbf{Select High-Degree Vertices:} Choose a set $W \subset V$ of $w$ vertices with the highest degrees in~$H$. \label{W}
 
-    \item \textbf{Find a Dense Link Graph:} Iterate through all $t$-subsets $T \subset W$.
-    For each $T$, consider the set $S$ of all $(k-1)$-subsets of $V$ that form a hyperedge with \emph{every} vertex in $T$. \label{link}
+    \item \textbf{Find a Dense Link Graph:} Iterate through all subsets $T \subset W$ of size $t$.
+    For each $T$, consider the set $S$ of all subsets $y \subset V$ of size $k-1$ that form a hyperedge with \emph{every} vertex in $T$. \label{link}
 
-    \item \textbf{Recurse:} As we prove further along using the Kőv\'{a}ri–S\'{o}s–Tur\'{a}n theorem, for at least one choice of $T$,
+    \item \textbf{Recurse:} As we prove further along using the K\H{o}v\'{a}ri–S\'{o}s–Tur\'{a}n theorem, for at least one choice of $T$,
     the resulting set $S$ is large ($|S| \ge s$). We form a new $(k-1)$-uniform hypergraph $H'=(V, S)$ and make a recursive call: \texttt{FindPartite($H'$, $k-1$)}.
 
     \item \textbf{Construct Solution:} The recursive call returns $k-1$ parts $V_1, \dots, V_{k-1}$ of size at least $t$.
-    By construction, every choice of vertices from these parts forms an edge in $H'$ with every vertex of $T$.
-    Thus, $(V_1, \dots, V_{k-1}, T)$ form the desired $\compoverset{k}{t}$ in the original graph $H$.
+    Every choice of one vertex from each of these parts forms an edge in $H'$.
+    By construction, they form an edge of $H$ with every vertex in $T$.
+    Thus, $V_1, \dots, V_{k-1}, T$ span the desired $\compoverset{k}{t}$ subgraph in the original $k$-uniform hypergraph.
 
 \end{enumerate}
 
 The pseudocode is given in Algorithm~\ref{alg:kpartite}.
+In section~\ref{sec:correctness}, we formally prove that this algorithm is correct,
+in the sense that it returns a tuple $(V_1, \dots, V_k)$ of disjoint sets $V_i \subset V(H)$
+of size at least $t$ spanning a complete $k$-partite subgraph in $H$.
+In Section~\ref{sec:complexity}, we
+show that it runs in polynomial time in the number of vertices $n$ of the input hypergraph $H$.
+This will conclude the proof of Theorem~\ref{thm:main_theorem}.
 
 \begin{algorithm}[H]
-    \caption{Finding a balanced partite $k$-uniform hypergraph}
+    \caption{Finding a balanced $k$-partite $k$-uniform subgraph}
     \label{alg:kpartite}
     \begin{algorithmic}[1]
         \Function{FindPartite}{$H, k$}
@@ -96,7 +106,7 @@ The pseudocode is given in Algorithm~\ref{alg:kpartite}.
 
             \State $n \gets |V(H)|$, $m \gets |E(H)|$, $d \gets \frac{m}{\binom{n}{k}}$
             \State $t \gets t(n, d, k)$, $w \gets w(n, d, k)$, $s \gets s(n, d, k)$
-            \State \textbf{assert} $t \ge 2$
+            \State \textbf{assert} $(t \ge 2)$
 
             \State $W \gets$ a set of $w$ vertices with highest degree in $H$
             \ForAll{$T \in \binom{W}{t}$}
@@ -110,12 +120,12 @@ The pseudocode is given in Algorithm~\ref{alg:kpartite}.
         \EndFunction
     \end{algorithmic}
 \end{algorithm}
-\newpage
 
 \section{Proof of correctness}\label{sec:correctness}
 
-We now present the proof that Algorithm~\ref{alg:kpartite} is correct in the sense that
-all the steps are well-defined and that it returns a tuple $(V_1, \dots, V_k)$ of disjoint sets $V_i \subset V(H)$
+We now present the proof that
+all the steps in Algorithm~\ref{alg:kpartite} are well-defined and that
+it returns a tuple $(V_1, \dots, V_k)$ of disjoint sets $V_i \subset V(H)$
 of size at least $t$ spanning a complete $k$-partite subgraph in $H$.
 We assume $t \ge 2$ for our estimates to be easier.
 If $t < 2$, we may just return the vertices of any single edge in $H$.
@@ -127,7 +137,7 @@ implies that $ 1 \geq d \geq \frac{16}{\sqrt{n}}$.
 Suppose, by way of contradiction, that $w > n$.
 Then, we have
 \[
-    n \leq w - 1 \leq \frac{4t}{d} \leq \frac{4\log n}{d\log(16/d)} \leq \frac{4 \sqrt{n} \log n }{16 \log(16/d)}\,.
+    n \leq w - 1 \leq \frac{4t}{d} \leq \frac{4\log n}{d\log(16/d)} \leq \frac{4 \sqrt{n} \log n }{16 \log(16/d)}.
 \]
 Taking the logarithms to be in base $e$, we note that $\log x \leq \sqrt{x}$ for all positive $x$,
 and that $\log(16/d) > 1$.
@@ -139,7 +149,7 @@ $S \subset \binom{V}{k-1}$ has size at least $s$.
 That is, Algorithm~\ref{alg:kpartite} reaches line~\ref{recurse} at some point in the for loop.
 For this, consider the bipartite graph $B$ with parts $\binom{V}{k-1}$ and $W$ with edge set
 \[
-  \left\{(x, y) \in \binom{V}{k-1} \times W \middle| \, x \cup \{y\} \in E \right\}\,.
+  \left\{(x, y) \in \binom{V}{k-1} \times W \middle| \, x \cup \{y\} \in E\right\}.
 \]
 The edges of $B$ correspond to the edges containing each vertex in $W$, so there are
 \[
@@ -149,7 +159,7 @@ of them, where the inequality follows from the fact that we have picked a set of
 The existence of a set $T \subset W$ as desired is equivalent to there being $T \subset W$ of size $t$ and a set $S \subset \binom{V}{k-1}$ of size $s$
 such that the induced bipartite subgraph $B[S, T]$ is complete.
 To prove that this is the case,
-we use the following version~\cite{Hylten1958} of the Kőv\'{a}ri–S\'{o}s–Tur\'{a}n theorem~\cite{Kovari1954}.
+we use the following version~\cite{Hylten1958} of the K\H{o}v\'{a}ri–S\'{o}s–Tur\'{a}n theorem~\cite{Kovari1954}.
 
 \begin{lemma}\label{thm:kst}
     Let $u, w, s, t$ be positive integers with $u \geq s$, $w \geq t$, and let $B$ be a bipartite graph with parts $W$ and $U$ such that
@@ -159,22 +169,22 @@ we use the following version~\cite{Hylten1958} of the Kőv\'{a}ri–S\'{o}s–Tu
 \end{lemma}
 
 We apply the lemma with $u = \binom{n}{k-1}$.
-It is clear from the definitions that our parameter satisfy the requirements $u \geq s$ and $w \geq t$.
+It is clear from the definitions that our parameters satisfy the requirements $u \geq s$ and $w \geq t$.
 Suppose, by way of contradiction, that
 \[
-    w \cdot d \cdot \binom{n - 1}{k-1} \leq (s - 1)^{1 / t}(w - t + 1)\binom{n}{k-1}^{1 - 1 / t} + (t - 1)\binom{n}{k-1}\,.
+    w \cdot d \cdot \binom{n - 1}{k-1} \leq z \leq (s - 1)^{1 / t}(w - t + 1)\binom{n}{k-1}^{1 - 1 / t} + (t - 1)\binom{n}{k-1}.
 \]
 Dividing by $\binom{n}{k-1}$ then shows that
 \[
     \frac{1}{2} \cdot w \cdot d
     \leq \left( 1 - \frac{k-1}{n}\right) \cdot w \cdot d
     = w \cdot d \cdot \frac{\binom{n-1}{k-1}}{\binom{n}{k-1}}
-    < w \left( \frac{s-1}{\binom{n}{k-1} } \right)^{1 / t} + (t - 1)\,,
+    < w \left( \frac{s-1}{\binom{n}{k-1} }\right)^{1 / t} + (t - 1),
 \]
 where the first inequality follows from $n \geq 16^{2^{k-1}} > 2(k-1)$, which follows from $t \geq 2$ and $d \leq 1$.
 Finally, since $t \leq \frac{w \cdot d}{4}$ by the definition of $w$, we obtain
 \[
-    \left( \frac{d}{4}\right)^t \binom{n}{k-1} < s-1\,,
+    \left( \frac{d}{4}\right)^t \binom{n}{k-1} < s-1,
 \]
 in contradiction to the definition of $s$.
 So far, we have shown that the sets defined in Algorithm~\ref{alg:kpartite}
@@ -194,17 +204,18 @@ More precisely, we show the following.
         Now, since by construction $|V_1| = |S| \geq s$, it is enough that
         \[
             s
-            = \left\lceil \left( \frac{d}{4} \right)^t \cdot n \right\rceil
-            \geq \left( \frac{d}{4} \right)^{\frac{\log n}{\log(16/d)}}  \cdot n
-            = \left( 4 \cdot \frac{d}{16} \right)^{\frac{\log n}{\log(16/d)}} \cdot n
-            = \frac{1}{n} \cdot 4^{\frac{\log n}{\log(16/d)}} \cdot n
+            = \left\lceil \left( \frac{d}{4}\right)^t \cdot n\right\rceil
+            \geq \left( \frac{d}{4}\right)^{\frac{\log n}{\log(16/d)}}  \cdot n
+            = \left( 4 \cdot \frac{d}{16}\right)^{\frac{\log n}{\log(16/d)}} \cdot n
+            = 4^{\frac{\log n}{\log(16/d)}} \cdot \frac{1}{n} \cdot n
             \geq 4^t
-            > t\,.
+            > t.
         \]
 
         For $k \geq 3$, we assume the inductive hypothesis holds for $k-1$.
-        If $d'$ is the edge density of the $(k-1)$-uniform hypergraph $H'$
-        and $t' = t(n, d', k-1)$, as long as $t' \geq 2$, the recursive call returns
+        Let $d'$ be the edge density of $H'$ (which is the obtained $(k-1)$-uniform hypergraph)
+        and $t'$ be $t(n, d', k-1)$.
+        As long as $t' \geq 2$, the recursive call returns
         a tuple $(V_1, \dots, V_{k-1})$ of disjoint sets $V_i \subset V(H)$ such that
         $|V_i| \geq t'$ and $H'[V_1, \dots, V_{k-1}]$ is complete.
 
@@ -213,76 +224,76 @@ More precisely, we show the following.
         Furthermore, the sets $V_i$ that we obtain when applying the algorithm to $H'$
         are of size at least $t' \geq t$.
         By construction of $S$, all the edges in $H'$ are disjoint from $T$,
-        and therefore so are the sets $V_i$.
+        hence the sets $V_i$ are also disjoint from $T$.
         This means that the sets $V_1, \dots, V_{k-1}, T$ are disjoint.
         In addition, for all $(x_1, \dots x_{k-1}, y) \in V_1 \times \dots \times V_{k-1} \times T$,
         we have that $\{x_1, \dots, x_{k-1}\} \in S$ so $\{x_1, \dots, x_{k-1}, y\} \in E(H)$.
         Equivalently, $H[V_1, \dots, V_{k-1}, T]$ is complete, finishing the proof.
 
         Let us now prove the claim that $t' \geq t$.
-        By the definition of $s$, we have $d' \geq \left( \frac{d}{4} \right)^t$.
+        By the definition of $s$, we have $d' \geq \left( \frac{d}{4}\right)^t$.
         Therefore,
         \[
             t' \geq
             %
-            \left\lfloor \left(  \frac{\log n}{\log \left(\frac{16}{(d/4)^t}\right)} \right)^
-            {\frac{1}{k-2}} \right\rfloor \geq
+            \left\lfloor \left(  \frac{\log n}{\log \left(\frac{16}{(d/4)^t}\right)}\right)^
+            {\frac{1}{k-2}}\right\rfloor =
             %
-            \left\lfloor \left(  \frac{\log n}{\log 16 - t \log (d/4)} \right)^
-            {\frac{1}{k-2}} \right\rfloor\,.
+            \left\lfloor \left(  \frac{\log n}{\log 16 + t \log (4/d)}\right)^
+            {\frac{1}{k-2}}\right\rfloor.
         \]
         Then, we substitute the definition of $t$, where removing the floor function
-        maintains the inequality because the right side is decreasing in $t$ (recall $d \leq 1$):
+        maintains the inequality because the right side is decreasing in $t$:
         \begin{equation*}
             t' \geq
             %
             \left\lfloor \left(  \frac{\log n}
-            {\log 16 - \left(  \frac{\log n}{\log (16/d)} \right)^{\frac{1}{k-1}}  \log (d/4)} \right)^
-            {\frac{1}{k-2}} \right\rfloor
+            {\log 16 + \left(  \frac{\log n}{\log (16/d)}\right)^{\frac{1}{k-1}}  \log (4/d)}\right)^
+            {\frac{1}{k-2}}\right\rfloor
             =
             %
             \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
-            {\frac{\log 16}{(\log n)^{\frac{1}{k-1}}} - \frac{\log (d/4)}{\log (16/d)^{\frac{1}{k-1}}} }
-            \right)^{\frac{1}{k-2}} \right\rfloor\,.
+            {\frac{\log 16}{(\log n)^{\frac{1}{k-1}}} + \frac{\log (4/d)}{\log (16/d)^{\frac{1}{k-1}}} }
+           \right)^{\frac{1}{k-2}}\right\rfloor.
         \end{equation*}
-        We claim that we bound the denominator by showing that
+        We claim that we can bound the denominator by showing that
         \begin{equation} \label{eq:denominator_bound}
-            \frac{\log 16}{(\log n)^{\frac{1}{k-1}}} - \frac{\log (d/4)}{\log (16/d)^{\frac{1}{k-1}}}
-            \leq \left( \log (16/d) \right)^{\left( 1 - \frac{1}{k-1} \right)}\,.
+            \frac{\log 16}{(\log n)^{\frac{1}{k-1}}} + \frac{\log (4/d)}{\log (16/d)^{\frac{1}{k-1}}}
+            \leq \left( \log (16/d)\right)^{\left( 1 - \frac{1}{k-1}\right)}.
         \end{equation}
         Then, the expression simplifies to
         \[
             t'
             %
             \geq \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
-            {\left( \log (16/d) \right)^{\left( 1 - \frac{1}{k-1} \right)}}
-            \right)^{\frac{1}{k-2}} \right\rfloor
+            {\left( \log (16/d)\right)^{\left( 1 - \frac{1}{k-1}\right)}}
+            \right)^{\frac{1}{k-2}}\right\rfloor
             %
             = \left\lfloor \left(  \frac{\log n}
             {\log (16/d)}
-            \right)^{\frac{1}{k-2}\left( 1 - \frac{1}{k-1} \right)} \right\rfloor
-            = \left\lfloor \left(  \frac{\log n}{\log (16/d)} \right)^{\frac{1}{k-1}} \right\rfloor
-            = t\,,
+            \right)^{\frac{1}{k-2}\left( 1 - \frac{1}{k-1}\right)}\right\rfloor
+            = \left\lfloor \left(  \frac{\log n}{\log (16/d)}\right)^{\frac{1}{k-1}}\right\rfloor
+            = t,
         \]
         as desired.
         Let us prove Inequality~\eqref{eq:denominator_bound}.
         Suppose, by way of contradiction, that it does not hold.
         We can rewrite
         \[
-            (\log (16/d))^{\left( 1 - \frac{1}{k-1} \right)}
+            (\log (16/d))^{\left( 1 - \frac{1}{k-1}\right)}
             = \frac{\log (16/d)}{\log (16/d)^{\frac{1}{k-1}}}
         \]
         and rearrange the inequality to obtain
         \[
             \frac{\log 16}{(\log n)^{\frac{1}{k-1}}}
-            > \frac{\log (16/d) + \log (d/4)}{\log (16/d)^{\frac{1}{k-1}}}
-            = \frac{\log 4}{(\log (16/d))^{\frac{1}{k-1}}}\,.
+            > \frac{\log (16/d) - \log (4/d)}{\log (16/d)^{\frac{1}{k-1}}}
+            = \frac{\log 4}{(\log (16/d))^{\frac{1}{k-1}}}.
         \]
         This implies that
         \[
             t
-            \leq \left( \frac{\log n}{\log (16/d)} \right)^{\frac{1}{k-1}}
-            < \frac{\log 16}{\log 4} = 2\,,
+            \leq \left( \frac{\log n}{\log (16/d)}\right)^{\frac{1}{k-1}}
+            < \frac{\log 16}{\log 4} = 2,
         \]
         which contradicts the assumption that $t \geq 2$.
     \end{proof}
@@ -305,7 +316,7 @@ querying whether a set of $k$ vertices forms an edge in $H$ can be done in const
 Therefore, calculating the number of edges $m$ can be done in $\bigO{n^k}$ time by iterating through all $\binom{n}{k}$ possible edges.
 The parameters $n, m, d, t, w, s$ are computed in constant time after this step.
 
-The set $W$ of $w$ vertices with highest degrees can be constructed in time $\bigO{n^k}$, by, for example,
+The set $W$ of $w$ vertices with highest degrees can be constructed in time $\bigO{n^k}$, for instance, by
 creating an array with the degree of each vertex (in time  $\bigO{n \cdot n^{k-1}} = \bigO{n^k}$),
 sorting it in descending order (in time $\bigO{n \log n}$),
 and taking the first $w$ elements.
@@ -316,17 +327,17 @@ Indeed,
 \[
     \binom{w}{t} \leq \left(\frac{ew}{t}\right)^t
     \leq \left(\frac{e(4t/d + 1)}{t}\right)^t
-    \leq \left(\frac{4e}{d} + \frac{e}{2}  \right)^t
+    \leq \left(\frac{4e}{d} + \frac{e}{2}\right)^t
     \leq \left(\frac{4.5 \cdot e}{d}\right)^t < e^{t(2.6 + \log (1/d))}
-    = e^{2.6 \cdot t} e^{\log (1/d) \cdot t}\,.
+    = e^{2.6 \cdot t} e^{\log (1/d) \cdot t}.
 \]
 For the first term, we use the fact that $t < (\log n)^{1/(k-1)} \leq \log n$
 and so ${e^{2.6 \cdot t} < e^{2.6 \cdot \log n} = n^{2.6}}$.
-For the second term, we use that $t < (\log(n)/\log(1/d))^{1/(k-1)} \leq \log(n)/\log(1/d)$,
+For the second term, we use that $t < ((\log n)/\log(1/d))^{1/(k-1)} \leq (\log n)/\log(1/d)$,
 so $e^{\log (1/d) \cdot t} < n$.
 All in all, we have
 \[
-    \binom{w}{t} < n^{2.6} n = n^{3.6}\,.
+    \binom{w}{t} < n^{2.6} n = n^{3.6}.
 \]
 In each iteration of the loop, the set $S$ can be constructed in the following way.
 We initialize a flattened boolean array $A$ of size $n^{k-1}$,
@@ -341,7 +352,7 @@ We can pass the array $A$ to the recursive call directly, and the recursive call
 Putting everything together, we have the recurrence relation $T_k(n) = T_{k-1}(n) + \bigO{n^{k+3.6}}$.
 This, together with the base case $T_1(n) = \bigO{n}$, gives us $T_k(n) = \bigO{n^{k+3.6}}$.
 
-\section{Conclusion and Future Work}\label{sec:conclusion-and-future-work}
+\section{Concluding Remarks and Future Work}\label{sec:conclusion-and-future-work}
 
 We have presented a deterministic,
 polynomial-time algorithm to find a large complete balanced $k$-partite subgraph in any sufficiently dense $k$-uniform hypergraph.
@@ -352,14 +363,14 @@ Several avenues for future research remain open.
     \item \textbf{General Blow-ups:} Our algorithm finds a blow-up of a single edge, $\compoverset{k}{t}$.
     Can this framework be adapted to find a $t$-blowup of an arbitrary fixed $k$-uniform hypergraph $G$ when its Tur\'{a}n density is exceeded by a positive constant?
     For example, for $k=2$, there are existence results for $t = \bigOmega{\log n}$~\cite{bollobas1973structure}, but directly adapting Algorithm~\ref{alg:kpartite} would only
-    yield t = $\bigO{(\log n)^{1/(|V(G)| - 1)}}$.
+    yield $t = \bigO{(\log n)^{1/(|V(G)| - 1)}}$.
     \item \textbf{Unbalanced k-Partite Graphs:} The algorithm could be modified to search for unbalanced complete partite graphs $\compdots{t_1}{t_k}$, where the part sizes may grow at different rates.
-    \item \textbf{Optimality:} The bounds on $t$ are asymptotically tight, but the constants can likely be improved with a more refined analysis.
+    \item \textbf{Optimality:} The bounds on $t$ are asymptotically tight, but the constants can be improved significantly with a more refined analysis.
 \end{itemize}
 
 \subsection*{Acknowledgements}
 
-The ideas in this work stem from the author's master's thesis of the same name,
+The ideas in this work stem from the author's master's thesis of the same name at
 Universitat Polit\`{e}cnica de Catalunya,
 under the supervision of Richard Lang.
 The author thanks him for suggesting the problem and for his guidance and support throughout the project.

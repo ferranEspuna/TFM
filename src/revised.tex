@@ -78,7 +78,11 @@
         t = t(n, d, k) = \left\lfloor \left( \frac{\log n}{\log (16/d)}\right)^{\frac{1}{k-1}}\right\rfloor.
     \]
     \end{theorem}
-    This value of $t$ matches the order of magnitude from Remark~\ref{rk:order}.
+    This value of $t$ matches the asymptotic order of magnitude from Remark~\ref{rk:order}.
+    It is worth noting, however, that while our result is asymptotically tight regarding the dependence on $n$,
+    the constant factor obtained by our algorithm is smaller than that guaranteed by probabilistic existence proofs
+    (for example, we do not have $c(d, k) \to \infty$ as $d \to 1$).
+    We focus here on establishing polynomial-time constructibility rather than optimizing this constant to match the best known existential bounds.
 
     \section{The algorithm}\label{sec:algorithm}
 
@@ -261,20 +265,19 @@
             Therefore,
             \[
                 t' \geq
-    \left\lfloor \left(  \frac{\log n}{\log \left(\frac{16}{(d/4)^t}\right)}\right)^
+                \left\lfloor \left(  \frac{\log n}{\log \left(\frac{16}{(d/4)^t}\right)}\right)^
                 {\frac{1}{k-2}}\right\rfloor =
-    \left\lfloor \left(  \frac{\log n}{\log 16 + t \log (4/d)}\right)^
-                {\frac{1}{k-2}}\right\rfloor.
+                \left\lfloor \left(  \frac{\log n}{\log 16 + t \log (4/d)}\right)^{\frac{1}{k-2}}\right\rfloor.
             \]
             Then, we substitute the definition of $t$, where removing the floor function
             maintains the inequality because the right side is decreasing in $t$:
             \begin{equation*}
                 t' \geq
-    \left\lfloor \left(  \frac{\log n}
+                \left\lfloor \left(  \frac{\log n}
                 {\log 16 + \left(  \frac{\log n}{\log (16/d)}\right)^{\frac{1}{k-1}}  \log (4/d)}\right)^
                 {\frac{1}{k-2}}\right\rfloor
                 =
-    \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
+                \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
                 {\frac{\log 16}{(\log n)^{\frac{1}{k-1}}} + \frac{\log (4/d)}{\log (16/d)^{\frac{1}{k-1}}} }
                \right)^{\frac{1}{k-2}}\right\rfloor.
             \end{equation*}
@@ -286,10 +289,10 @@
             Then, the expression simplifies to
             \[
                 t'
-    \geq \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
+                \geq \left\lfloor \left(  \frac{(\log n)^{\left(1-\frac{1}{k-1}\right)}}
                 {\left( \log (16/d)\right)^{\left( 1 - \frac{1}{k-1}\right)}}
                 \right)^{\frac{1}{k-2}}\right\rfloor
-    = \left\lfloor \left(  \frac{\log n}
+                = \left\lfloor \left(  \frac{\log n}
                 {\log (16/d)}
                 \right)^{\frac{1}{k-2}\left( 1 - \frac{1}{k-1}\right)}\right\rfloor
                 = \left\lfloor \left(  \frac{\log n}{\log (16/d)}\right)^{\frac{1}{k-1}}\right\rfloor
@@ -323,18 +326,22 @@
 
     We now analyze the computational complexity of Algorithm~\ref{alg:kpartite} to show that it runs in time polynomial in $n$ for any fixed uniformity $k$.
     We consider the input hypergraph $H$ to be given as an adjacency $k$-dimensional tensor.
-    We make the assumption that we have a machine with arbitrarily large random-access memory,
-    and that the operations on integers and floating-point numbers take constant time.
-    Not making these assumptions would only add logarithmic factors to the running time, which we ignore for simplicity.
+    If the hypergraph is provided sparsely (e.g., as a list of $m$ edges), it can be preprocessed in polynomial time by reindexing the vertices and removing isolated ones.
+    This reduces the effective number of vertices to $n'$ such that $n' \le k \cdot m$.
+    Consequently, the tensor initialization time and space become $\bigO{(km)^k}$, which remains polynomial in the sparse input size for fixed $k$.
+    Since we will prove the algorithm is polynomial-time in this new size, the resulting algorithm is also polynomial in the sparse size.
+
+    We perform the analysis under the standard Word RAM model with word size $\Omega(\log n)$.
+    This allows for basic arithmetic operations and array indexing on values up to $n^k$ to be performed in $\bigO{1}$ time.
 
     Let $T_k(n)$ denote the worst-case running time of the function \texttt{FindPartite} when called on a $k$-uniform hypergraph with $n$ vertices.
     The algorithm's structure gives a recurrence relation for $T_k(n)$.
     We first analyze the cost of the operations within a single call for a fixed $k$, excluding the recursive step.
 
-    Assuming that the input tensor consists of a boolean adjacency tensor of size $n^k$,
-    querying whether a set of $k$ vertices forms an edge in $H$ can be done in constant time.
+    Querying whether a set of $k$ vertices forms an edge in $H$ can be done in constant time.
     Therefore, calculating the number of edges $m$ can be done in $\bigO{n^k}$ time by iterating through all $\binom{n}{k}$ possible edges.
-    The parameters $n, m, d, t, w, s$ are computed in constant time after this step.
+    The parameters $t, w$, and $s$ can then be calculated in polylogarithmic time: If one wants to avoid the arithmetic on real
+    numbers, the values can be obtained via binary search on equations obtained by rearranging the definitions of $t, w$, and $s$.
 
     The set $W$ of $w$ vertices with highest degrees can be constructed in time $\bigO{n^k}$, for instance, by
     creating an array with the degree of each vertex (in time  $\bigO{n \cdot n^{k-1}} = \bigO{n^k}$),
@@ -365,12 +372,14 @@
     We iterate through all $x \in \binom{[n]}{k-1}$ and $y \in T$
     and set the entry corresponding to $x$ to \texttt{false} if $x \cup \{y\}$ is not an edge in $H$.
     All in all, this takes $\bigO{tn^{k-1}} = \bigO{n^k}$ steps, and then counting the number of \texttt{true} entries in the array takes $\bigO{n^{k-1}}$ time.
-    Therefore, the for loop (with the recursive call) takes $\bigO{\binom{w}{t} n^{k}} = \bigO{n^{k+3.6}}$ time.
+    Therefore, the for loop (without the recursive call) takes $\bigO{\binom{w}{t} n^{k}} = \bigO{n^{k+3.6}}$ time.
 
     Finally, when the condition $|S| \geq s$ is satisfied, the recursive call to \texttt{FindPartite} is made.
     We can pass the array $A$ to the recursive call directly, and the recursive call takes time $T_{k-1}(n)$.
     Putting everything together, we have the recurrence relation $T_k(n) = T_{k-1}(n) + \bigO{n^{k+3.6}}$.
     This, together with the base case $T_1(n) = \bigO{n}$, gives us $T_k(n) = \bigO{n^{k+3.6}}$.
+    Similar analysis shows that if the more restrictive Turing Machine computational model is used,
+    the algorithm runs in time $\bigO{n^{2k + 3.6} p_k(\log(n))}$ where $p_k$ is some polynomial depending on $k$.
 
     \section{Concluding Remarks and Future Work}\label{sec:conclusion-and-future-work}
 

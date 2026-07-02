@@ -7,7 +7,7 @@ from itertools import combinations
 
 from tqdm import tqdm
 
-from random_graph import Hypergraph, RandomPermutationHypergraph, LinkGraph, RandomOracleGraph, StupidHypergraph
+from random_graph import Hypergraph, LinkGraph, StupidHypergraph
 
 random.seed(1234)
 
@@ -79,14 +79,19 @@ def get_partite(h: Hypergraph, min_m=None, t=None) -> Tuple[List, ...]:
     return list(T), *get_partite(h_prime, min_s, t=t)
 
 
-N = 10000000
-p = 0.9
-K = 3
-M = int((p - 0.001) * binom(N, K))
-print(f"n: {N}, k: {K}, m: {M}")
+def main():
+    N = 10000000
+    p = 0.9
+    K = 3
+    M = int((p - 0.001) * binom(N, K))
+    print(f"n: {N}, k: {K}, m: {M}")
 
-# G = RandomOracleGraph(K, p, N)
+    # G = RandomOracleGraph(K, p, N)
 
-G = StupidHypergraph(K, 2, N)
-print('generated')
-print(get_partite(G))
+    G = StupidHypergraph(K, 2, N)
+    print('generated')
+    print(get_partite(G))
+
+
+if __name__ == "__main__":
+    main()

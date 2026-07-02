@@ -1,5 +1,9 @@
 import numpy as np
+from pathlib import Path
 from typing import Tuple, Dict, List
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+FIGURES_DIR = PROJECT_ROOT / "src" / "figures"
 
 # --- Adjustable parameters ---
 LINE_THICKNESS = 1.5  # Thickness of edge lines
@@ -104,8 +108,11 @@ lines.insert(3, r"\pgfsetlayers{background,main}") # Set drawing order
 lines.append(r"\end{tikzpicture}")
 
 # --- Write TikZ code to a file ---
-filename = "src/figures/k2_222.tex" # Updated filename
-with open(filename, "w") as f:
-    f.write("\n".join(lines))
+output_path = FIGURES_DIR / "k2_222.tex"
+output_path.parent.mkdir(parents=True, exist_ok=True)
+output_path.write_text("\n".join(lines), encoding="utf-8")
 
-print(f"TikZ code for K^(2)(2, 2, 2) with predefined edge colors has been written to '{filename}'")
+print(
+    "TikZ code for K^(2)(2, 2, 2) with predefined edge colors has "
+    f"been written to '{output_path.relative_to(PROJECT_ROOT)}'"
+)

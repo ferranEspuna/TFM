@@ -2,6 +2,9 @@
 import itertools
 import pathlib
 
+PROJECT_ROOT = pathlib.Path(__file__).resolve().parents[2]
+FIGURES_DIR = PROJECT_ROOT / "src" / "figures"
+
 # --- Adjacency matrix ---
 adj_matrix = [
     [1, 1, 1, 1],  # U_1
@@ -24,7 +27,7 @@ BOX_WIDTH = GRAPH_HORIZONTAL_SCALE + 2.0
 
 # --- Drawing parameters ---
 LINE_THICKNESS, DOT_THICKNESS = 0.7, 2.8
-output_filename = "src/figures/kst_proof_sketch.tex"
+output_path = FIGURES_DIR / "kst_proof_sketch.tex"
 
 # --- TikZ Code Generation ---
 lines = []
@@ -57,7 +60,7 @@ lines.append(r"\only<2>{")
 target_w, target_u = [1, 2], [0, 1, 3]; critical_u, critical_w = 3, 2
 for j in target_w: lines.append(f"  \\fill[{HIGHLIGHTED_LINE_COLOR}] (W{j}) circle ({DOT_THICKNESS + 0.5}pt);")
 for i in target_u: lines.append(f"  \\fill[{HIGHLIGHTED_LINE_COLOR}] (U{i}) circle ({DOT_THICKNESS + 0.5}pt);")
-lines.append(f"  \\draw[line width={LINE_THICKNESS*1.5}pt, {HIGHLIGHTED_LINE_COLOR}, dashed, -] (U{critical_u}) -- (W{critical_w}) node[midway, below, sloped, font=\scriptsize] {{Add edge}};")
+lines.append(f"  \\draw[line width={LINE_THICKNESS*1.5}pt, {HIGHLIGHTED_LINE_COLOR}, dashed, -] (U{critical_u}) -- (W{critical_w}) node[midway, below, sloped, font=\\scriptsize] {{Add edge}};")
 for i in target_u:
     for j in target_w:
         if adj_matrix[i][j] == 1: lines.append(f"  \\draw[line width={LINE_THICKNESS*1.5}pt, {HIGHLIGHTED_LINE_COLOR}] (U{i}) -- (W{j});")
@@ -136,10 +139,12 @@ lines.append(r"}")
 lines.append(r"\end{pgfonlayer}\end{tikzpicture}")
 
 # --- Write TikZ code to file ---
-output_path = pathlib.Path(output_filename)
 output_path.parent.mkdir(parents=True, exist_ok=True)
 try:
-    with open(output_path, "w") as f: f.write("\n".join(lines))
-    print(f"Success: Final complete TikZ code (v22) has been written to '{output_filename}'")
+    output_path.write_text("\n".join(lines), encoding="utf-8")
+    print(
+        "Success: Final complete TikZ code (v22) has been written to "
+        f"'{output_path.relative_to(PROJECT_ROOT)}'"
+    )
 except Exception as e:
     print(f"Error: Could not write to file. {e}")

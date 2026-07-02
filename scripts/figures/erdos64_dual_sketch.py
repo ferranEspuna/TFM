@@ -1,4 +1,8 @@
 import itertools
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+FIGURES_DIR = PROJECT_ROOT / "src" / "figures"
 
 # --- Parameters ---
 SCALE = 0.8
@@ -274,11 +278,14 @@ lines.append(f"}}")
 lines.append(r"\end{tikzpicture}")
 
 # --- Write to file ---
-output_filename = "src/figures/erdos64_dual_sketch.tex"
+output_path = FIGURES_DIR / "erdos64_dual_sketch.tex"
+output_path.parent.mkdir(parents=True, exist_ok=True)
 try:
-    with open(output_filename, "w") as f:
-        f.write("\n".join(lines))
-    print(f"Success: New animated TikZ code with H' shifted left written to '{output_filename}'")
+    output_path.write_text("\n".join(lines), encoding="utf-8")
+    print(
+        "Success: New animated TikZ code with H' shifted left written to "
+        f"'{output_path.relative_to(PROJECT_ROOT)}'"
+    )
     print(f"The animation will have {slide_counter} steps.")
 except Exception as e:
     print(f"Error: Could not write to file. {e}")

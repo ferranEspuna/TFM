@@ -1,6 +1,10 @@
 import itertools
 import numpy as np
+from pathlib import Path
 from typing import Tuple, Dict, List
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+FIGURES_DIR = PROJECT_ROOT / "src" / "figures"
 
 # --- Adjustable parameters ---
 LINE_THICKNESS = 1.5  # Thickness of hyperedge lines
@@ -110,8 +114,11 @@ for name in vertex_names:
 lines.append(r"\end{tikzpicture}")
 
 # --- Write TikZ code to a file ---
-filename = "src/figures/k3_4.tex" # Updated filename
-with open(filename, "w") as f:
-    f.write("\n".join(lines))
+output_path = FIGURES_DIR / "k3_4.tex"
+output_path.parent.mkdir(parents=True, exist_ok=True)
+output_path.write_text("\n".join(lines), encoding="utf-8")
 
-print(f"TikZ code for K_4^(3) with predefined edge colors has been written to '{filename}'")
+print(
+    "TikZ code for K_4^(3) with predefined edge colors has been "
+    f"written to '{output_path.relative_to(PROJECT_ROOT)}'"
+)

@@ -1,6 +1,8 @@
 import itertools
-import os
-import math  # For ceiling function
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+FIGURES_DIR = PROJECT_ROOT / "src" / "figures"
 
 # --- Adjustable parameters ---
 
@@ -402,21 +404,17 @@ for v_label in V_minus_T:
 lines.append(r"\end{tikzpicture}")
 
 # --- Write TikZ code to a file ---
-filename = "common_link.tex"  # Changed filename
-output_dir = "src/figures"
-
-if output_dir:
-    os.makedirs(output_dir, exist_ok=True)
-    full_path = os.path.join(output_dir, filename)
-else:
-    full_path = filename
+full_path = FIGURES_DIR / "common_link.tex"
+full_path.parent.mkdir(parents=True, exist_ok=True)
 
 try:
-    with open(full_path, "w") as f:
-        f.write("\n".join(lines))
+    full_path.write_text("\n".join(lines), encoding="utf-8")
 
     # --- Summary Output ---
-    print(f"\nDetailed TikZ code for the common link graph has been written to '{full_path}'")
+    print(
+        "\nDetailed TikZ code for the common link graph has been written to "
+        f"'{full_path.relative_to(PROJECT_ROOT)}'"
+    )
     print(f" - T: {T}")
     print(f" - k={k}, j={j}, required |H n T| = {required_X_size}")
 
@@ -448,5 +446,5 @@ try:
     print(
         f"   - other_generic ({categories_summary.get('other_generic', {}).get('count', 0)}): Other hyperedges. Style: {categories_summary.get('other_generic', {}).get('example_style', 'N/A')}")
 
-except IOError as e:
+except OSError as e:
     print(f"Error writing file '{full_path}': {e}")

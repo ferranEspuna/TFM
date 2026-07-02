@@ -3,7 +3,11 @@ from typing import Tuple, List
 from itertools import combinations
 from functools import cache
 from scipy.special import binom
-from random_permutation import RandomPermutation
+
+try:
+    from random_permutation import RandomPermutation
+except ImportError:
+    RandomPermutation = None
 
 
 class Hypergraph:
@@ -74,6 +78,11 @@ class StupidHypergraph(Hypergraph):
 class RandomPermutationHypergraph(Hypergraph):
 
     def __init__(self, n, k, m, N):
+        if RandomPermutation is None:
+            raise ImportError(
+                "RandomPermutationHypergraph requires the optional "
+                "'random_permutation' package/module."
+            )
         super().__init__(n, k, N)
         self.m = m
         self.perm = RandomPermutation(binom(n, k), num_ciphers=1)
@@ -121,17 +130,18 @@ class LinkGraph(Hypergraph):
 
 
 if __name__ == "__main__":
-    G = RandomOracleGraph(10, 3, 0.5)
+    G = RandomOracleGraph(k=3, p=0.5, N=10)
     print(G.num_edges())
     print(G.expected_num_edges())
 
-    H = RandomPermutationHypergraph(10, 3, 60)
-    print(H.num_edges())
+    if RandomPermutation is not None:
+        H = RandomPermutationHypergraph(n=10, k=3, m=60, N=10)
+        print(H.num_edges())
 
-    real_n_edges = 0
-    for i, e in enumerate(combinations(range(10), 3)):
-        if H.is_edge(e):
-            real_n_edges += 1
-        assert i == H.get_edge_index(e)
+        real_n_edges = 0
+        for i, e in enumerate(combinations(range(10), 3)):
+            if H.is_edge(e):
+                real_n_edges += 1
+            assert i == H.get_edge_index(e)
 
-    assert real_n_edges == H.num_edges()
+        assert real_n_edges == H.num_edges()

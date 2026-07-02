@@ -1,3 +1,15 @@
+## Project build outputs
+/build/
+/dist/
+/out/
+/src/figures/*.tex
+
+## Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
